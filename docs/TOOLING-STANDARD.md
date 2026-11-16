@@ -1,17 +1,19 @@
 # Tooling standard
 
-This standard describes the authoring and verification tools for the AutonomyTechnologies course site. It complements the content standards: [guide](GUIDE-STANDARD.md), [lab](LAB-STANDARD.md), and [worked solutions](EXERCISE-SOLUTIONS-STANDARD.md).
+This standard describes the authoring and verification tools for the AutonomyTechnologies course site. It complements the content standards: [markup](MARKUP-STANDARD.md), [guide](GUIDE-STANDARD.md), [lab](LAB-STANDARD.md), [appendix](APPENDIX-STANDARD.md), and [worked solutions](EXERCISE-SOLUTIONS-STANDARD.md).
 
 ## Tool roles
 
 | Tool | Role | Inputs and outputs |
 |---|---|---|
+| `tools/page-check.sh` | Run a page's whole acceptance pipeline | Regenerates the `.tex` and `.pdf` from the HTML, scans the LaTeX log, renders a contact sheet, runs the checker (errors and a quotient written with "/" fail), and runs the workspace probe. Prints PASS/FAIL/SKIP; `--no-pdf` and `--no-probe` skip steps. It is the one explicit generation command; the checker itself stays read-only. |
 | `tools/guide-to-tex.py` | Convert a course page to printable LaTeX | Reads one HTML source and writes one `.tex` file at the explicit destination. The HTML remains authoritative. |
 | `latexmk -xelatex` | Build the printable copy | Reads the generated `.tex` and writes the `.pdf`; run from the subject folder so relative assets resolve. |
 | `tools/stack-fractions.py` | Turn quotients written with “/” into stacked fractions | Rewrites the named pages in place (`--list` only shows the changes) and lists function quotients such as sin x/cos x to convert by hand; regenerate the `.tex` and `.pdf` afterwards. |
 | `tools/check-guide.py` | Validate a guide, lab, appendix, exercise, or tutorial page against the applicable standard | Reads the page and linked project files; prints errors and warnings. Exit 0 means no errors; warnings still need review. |
 | `node --test` | Check pure subject calculations, lab challenge data, and generators | Reads the `tests/` suite and shared JavaScript modules; makes no site build output. |
-| BrowserTests smoke suite | Check static routes and shared browser behaviors | Lives in the workspace `BrowserTests/`; register every new student-facing page in `staticPages`. |
+| BrowserTests smoke suite | Check static routes and shared browser behaviors | Lives in the workspace `BrowserTests/`; it finds every page under `mei/`, `apdr/` and `eei/` on disk, and `scripts/verify.sh Education/AutonomyTechnologies` runs this project's subset. |
+| BrowserTests probe (`npm run probe -- <page>`) | The Interface change standard matrix for one page | Chromium and WebKit at 390, 1288 and 1440 px, light and dark; overflow and errors per combination; screenshots in the session scratchpad. `page-check.sh` runs it. |
 
 The tools are local authoring and verification helpers. The published site is static HTML, CSS, JavaScript, and generated PDFs; `tools/` is not loaded by the site. The Jekyll workflow deploys the static files and is not a substitute for the project checker or browser checks.
 
@@ -25,7 +27,13 @@ The tools are local authoring and verification helpers. The published site is st
 
 ## Normal authoring workflow
 
-From the repository root, convert a source page and build its PDF:
+From the repository root, one command runs the pipeline for a page:
+
+```sh
+tools/page-check.sh eei/ch1-electrostatic-fields.html
+```
+
+It is the same as running these by hand:
 
 ```sh
 python3 -I tools/guide-to-tex.py eei/ch1-electrostatic-fields.html eei/ch1-electrostatic-fields.tex

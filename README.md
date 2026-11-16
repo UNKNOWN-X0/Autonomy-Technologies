@@ -34,85 +34,19 @@ Every page works on phone and desktop and follows your system's light or dark mo
 ## Repository layout
 
 ```
-index.html              Home page: review schedule, semesters, subjects
-eei/                    Electrical Engineering I chapter materials
-  ch1-electrostatic-fields.html      Chapter 1 study guide (the single source)
-  ch1-electrostatic-fields.pdf/.tex  Print version, generated from the guide
-  ch1-electrostatic-fields-lab.html  Chapter 1 lab: predict-then-reveal experiments
-mei/                    Mathematics for Engineers I chapter materials
-  ch1-statements-logic-sets.html     MEI Chapter 1 guide (the single source)
-  ch1-statements-logic-sets.pdf/.tex Print version and generated LaTeX source
-  ch1-statements-logic-sets-lab.html Chapter 1 lab
-  ch2-real-numbers.html, .pdf/.tex   Chapter 2 guide and print version
-  ch2-real-numbers-lab.html          Chapter 2 lab
-  ch3-mappings.html, .pdf/.tex       Chapter 3 guide and print version
-  ch3-mappings-lab.html              Chapter 3 lab
-apdr/                   Algorithms, Programming, and Data Representation materials
-  ch2-computers.html             Lecture 2 study guide (the single source)
-  ch2-computers.pdf/.tex         Print version and generated LaTeX source
-  ch2-computers-lab.html         Chapter 2 predict-then-reveal lab
-  ch12a-boolean-algebra.html Boolean algebra study guide for Chapter 12a
-  ch12a-boolean-algebra.pdf/.tex Print version and generated LaTeX source
-  ch12a-boolean-algebra-lab.html Chapter 12a Boolean algebra predict-then-reveal lab
-  ch3-data-representation.html Chapter 3 study guide (the single source)
-  ch3-data-representation.pdf/.tex Print version and generated LaTeX source
-  ch3-data-representation-lab.html Chapter 3 predict-then-reveal lab
-  ch4-floating-point-numbers.html Chapter 4 floating-point study guide
-  ch4-floating-point-numbers-lab.html Chapter 4 predict-then-reveal lab
-  ch4-floating-point-numbers.pdf/.tex Print version and generated LaTeX source
-  ch34a-integer-and-floating-point.html Chapter 34a combined study guide
-  ch34a-integer-and-floating-point.pdf/.tex Print version and generated LaTeX source
-  ch34a-integer-and-floating-point-lab.html Chapter 34a predict-then-reveal lab
-  ch5-memory-organisation.html, .pdf/.tex Chapter 5 guide and print version
-  ch5-memory-organisation-lab.html Chapter 5 predict-then-reveal lab
-about/
-  how-to-use.html       How to use the site
-  version-log.html      What changed in each release
-css/
-  system.css            Shared sign system: tokens, subject colours, code squares, buttons, tooltip
-  index.css             Home page layout
-  guide.css             Guide and lab shell: contents rail, header, boxes, answers, checklist, concept map
-  lab.css               Lab: challenge card, stage, controls, analogy cards
-js/
-  index.js              Review today board
-  settings.js           Theme, motion and text size; loads js/hud.js
-  hud.js                HUD layer shared by every page
-  nav.js                Contents rail and chapter switcher
-  orb.js                The turning code-graph orb on the home page
-  guide.js              Guide: saved ticks, review log, contents highlight, section links
-  concept-map.js        Guide: the clickable "How the chapter fits together" map
-  lab.js                Lab engine: challenges, confidence, verdict, results, progress
-  tooltip.js            Hover and focus tooltips from data-tip
-  eei/ch1-physics.js    Chapter 1 formulas (no DOM; also loaded by the tests)
-  eei/ch1-lab.js        Chapter 1 experiments
-  apdr/ch2-physics.js   APDR Chapter 2 rules and calculations
-  apdr/ch2-lab.js       APDR Chapter 2 experiments
-  apdr/ch3-physics.js   APDR Chapter 3 conversions and arithmetic
-  apdr/ch3-lab.js       APDR Chapter 3 experiments
-  apdr/ch4-physics.js   APDR Chapter 4 calculations
-  apdr/ch4-lab.js       APDR Chapter 4 experiments
-  apdr/ch34-physics.js  Calculations shared by the combined Chapter 34a lab and tests
-  apdr/ch34-lab.js      APDR Chapter 34a experiments
-  apdr/ch12-*.js, apdr/ch5-*.js  APDR Chapter 12a and 5 calculations and experiments
-  mei/ch<N>-physics.js  MEI Chapter 1–3 maths (answer keys and tests use it)
-  mei/ch<N>-lab.js      MEI Chapter 1–3 experiments
-  mei/expr.js           Safe parser for the f(x) students type in the MEI labs
-tests/                  Physics, lab-challenge and generator tests: node --test
-tools/
-  guide-to-tex.py       Converts a guide page into its LaTeX file
-  check-guide.py        Checks guides, labs, appendices, exercises and tutorials
-  graph-describe.py     Plain-English notes for the Graphify page (run by the graph refresh)
-  graph-orb.py          3D layout of the graph for the home-page orb (run by the graph refresh)
-docs/
-  GUIDE-STANDARD.md     What a finished study guide contains and how it is checked
-  LAB-STANDARD.md       What a finished lab contains and how it is checked
-assets/preview.png      Screenshot used in this README
-assets/graph-orb.json   Orb layout written by tools/graph-orb.py
+index.html        Home page: review schedule, semesters, subjects
+apdr/ mei/ eei/   One folder per subject: each chapter's guide (the HTML is the single source), its
+                  generated .tex and .pdf, its lab, and the subject's worked exercises, tutorials and appendices
+about/            How to use the site, and the version log
+css/  js/         Shared by every page of a kind; chapter scripts live in js/<subject>/
+tests/            Physics, lab-challenge and generator tests (node --test)
+tools/            Offline helpers: page-check.sh, check-guide.py, guide-to-tex.py, stack-fractions.py,
+                  graph-describe.py, graph-orb.py (not loaded by the site)
+docs/             The standards: MARKUP, GUIDE, LAB, APPENDIX, EXERCISE-SOLUTIONS, TOOLING
+assets/           preview.png (this README's screenshot), graph-orb.json (written by graph-orb.py)
 ```
 
-Authoring and verification tool contracts are documented in [docs/TOOLING-STANDARD.md](docs/TOOLING-STANDARD.md).
-
-No build step for the site. Fonts load from Google Fonts; formulas are plain HTML.
+What a visitor sees is listed on the home page; what each file kind must contain is in [docs/](docs/) and the rules every change meets are in [STANDARDS.md](STANDARDS.md). No build step for the site. Fonts load from Google Fonts; formulas are plain HTML.
 
 ### Regenerating a guide's PDF
 
@@ -133,39 +67,19 @@ for g in */ch*.html; do
 done
 ```
 
-Then run `python3 -I tools/check-guide.py <guide>.html`; it flags a PDF older than its `.tex`. Every PDF carries a faint diagonal "Made by Thanate Amornjiraporn (Focus)" watermark, set in the converter's preamble.
+`tools/page-check.sh <guide>.html` does all of this for one page and checks the result; `python3 -I tools/check-guide.py <guide>.html` alone flags a PDF older than its `.tex`. Every PDF carries a faint diagonal "Made by Thanate Amornjiraporn (Focus)" watermark, set in the converter's preamble.
 
 In the PDF, every answer block moves to an Answers section at the end, so the questions can be tried first.
 
 ## Design
 
-The pages follow one sign system, modelled on German systematic signage: solid colour fields, square code signs, a strict grid. The rules live in `css/system.css`, which every page loads first. `DESIGN.md` documents the full system.
-
-- **Main colour:** FAU blue `#04316A` for page headers, section markers, buttons and the most overdue review row. Only things you can click use the action colour.
-- **Subject colours:** each subject owns one hue, and its follow-on courses use the next step of that hue, lighter to darker (I, II, III). The labels on top are always dark ink.
-
-  | Subject | I | II | III |
-  | --- | --- | --- | --- |
-  | APDR (violet) | `#BCB2FF` | `#A497EA` | `#8C7ED0` |
-  | MEI (green) | `#BDE892` | `#A4CD79` | `#8CB460` |
-  | EEI (amber) | `#E6B55D` | `#CC9C42` | `#B28324` |
-  | MATLAB (cyan) | `#80ECF1` | `#64D1D7` | `#48B7BD` |
-
-  They were built in OKLCH: the label contrast is at least 4.9:1 on every step, and the four subjects stay apart under simulated red-green and blue-yellow colour blindness. Use a subject with the class `s-<code>-<step>`, e.g. `s-mei-2` for Mathematics for Engineers II.
-- **State is shown by line form:** dashed outline means not yet (an unticked skill, a course part with no material), solid means done or available.
-- **Font:** Hanken Grotesk (SIL Open Font License, via Google Fonts).
-- **Site mark:** an original animated icon, the Singularity: two orbits precess around a glowing core while a charge travels the outer orbit, from fundamentals to AI. Motion stops for visitors who prefer reduced motion, and the favicon is a still version. The FAU logo is not used; it is a protected university trademark.
-- **Theme, motion and text size** follow your device unless you choose otherwise under Settings (the gear beside **All semesters**). Pages print without the colour fields.
+The pages follow one sign system, modelled on German systematic signage: FAU blue sign fields, square subject code signs in one colour family per subject, a strict grid, no rounded corners or shadows, and motion only where something changed. [DESIGN.md](DESIGN.md) is the full system and `css/system.css` implements it; every page loads that file first. Theme, motion and text size follow your device unless you choose otherwise under Settings. Pages print without the colour fields.
 
 ## Adding pages
 
-- **A new semester:** in `index.html`, copy the `<section class="semester">` block, change its id (`sem-2`) and heading, and add a matching link in the header's semester list.
-- **A new subject:** copy an `<li class="subject">` block. Give it the subject's class (`s-apdr-1`, `s-mei-2`, …); a brand-new subject also needs its colour family added to `css/system.css`.
-- **A course part that has material:** add the class `has` to its `<li>`, so it turns from dashed to solid.
-- **A release:** add an entry at the top of [about/version-log.html](about/version-log.html) (next version number, date, what changed for students), and update [about/how-to-use.html](about/how-to-use.html) if a feature works differently.
-- **A study guide:** follow [docs/GUIDE-STANDARD.md](docs/GUIDE-STANDARD.md) and copy the structure of `eei/ch1-electrostatic-fields.html`. Put it in the subject's folder as `<code>/ch<N>-<topic>.html` (e.g. `mei/ch1-sequences.html`). Load `../css/system.css` followed at once by `../js/settings.js` (theme, motion and text size, applied before the page paints; it also loads the HUD layer, `js/hud.js`), then `../css/guide.css`, then `../js/guide.js` and `../js/nav.js` (the contents rail and chapter switcher; the chapter list is read from `index.html`), and link home with `../index.html`; give the `<body>` the subject class and a storage key, e.g. `<body class="s-mei-1" data-key="mei1-ch1">`. Then add a `<li class="chapter">` to the subject's chapter list (the template is in a comment in `index.html`), with `data-key` matching the guide and `data-total` set to the number of checklist items, so the review board can read its progress. Run `python3 -I tools/check-guide.py <guide>.html` before committing.
-- **A lab:** follow [docs/LAB-STANDARD.md](docs/LAB-STANDARD.md) and copy `eei/ch1-electrostatic-fields-lab.html`. The chapter's formulas go in `js/<code>/ch<N>-physics.js` with tests in `tests/`, its experiments in `js/<code>/ch<N>-lab.js`. On the hub, add a Lab button and set `data-lab` (experiments) and `data-total` (checklist + experiments).
-- Commit. GitHub Pages updates the site within a minute or two.
+- **A new semester or subject:** in `index.html`, copy the `<section class="semester">` or `<li class="subject">` block (the templates are in comments there); a brand-new subject also needs its colour family in `css/system.css`. A course part with material gets the class `has`.
+- **A study guide, lab, appendix or worked-solutions page:** follow its standard in [docs/](docs/), which names the reference page to copy, then run `tools/page-check.sh <page>` until it passes.
+- **A release:** add an entry at the top of [about/version-log.html](about/version-log.html) and update [about/how-to-use.html](about/how-to-use.html) if a feature works differently. Commit; GitHub Pages updates the site within a minute or two.
 
 ## Hosting
 
@@ -181,7 +95,7 @@ Setup (once): **Settings → Pages → Build and deployment → Source: Deploy f
 
 - `index.html`: the hub. `<subject>/`: each subject's chapter guides (with their PDF and LaTeX) and labs.
 - `js/` and `css/`: shared by every page of a kind; chapter-specific scripts live in `js/<subject>/`.
-- `docs/`: the guide and lab standards. `DESIGN.md` and `PRODUCT.md` stay at the root, where the design tooling reads them.
+- `docs/`: the standards. `DESIGN.md` and `PRODUCT.md` stay at the root, where the design tooling reads them.
 - `tools/` and `tests/`: offline helpers and checks, not loaded by the site.
 - `assets/`: images.
 

@@ -1,8 +1,8 @@
 # Lab standard
 
-What "done" means for a chapter lab: a page of predict-then-reveal experiments beside the chapter's study guide. It complements [GUIDE-STANDARD.md](GUIDE-STANDARD.md), which covers the guide the lab belongs to, and [DESIGN.md](../DESIGN.md), which covers the visual system.
+What "done" means for a chapter lab: a page of predict-then-reveal experiments beside the chapter's study guide. It complements [GUIDE-STANDARD.md](GUIDE-STANDARD.md), which covers the guide the lab belongs to, [MARKUP-STANDARD.md](MARKUP-STANDARD.md), which covers how notation is written, and [DESIGN.md](../DESIGN.md), which covers the visual system.
 
-**Reference lab:** [EEI Chapter 1, Electrostatic Fields](../eei/ch1-electrostatic-fields-lab.html). Its design brief is `.impeccable/surfaces/eei-ch1-lab.md`.
+**Reference lab:** [EEI Chapter 1, Electrostatic Fields](../eei/ch1-electrostatic-fields-lab.html). Its design brief is `.impeccable/surfaces/eei-ch1-lab.md`. **Check:** `tools/page-check.sh <subject>/ch<N>-<topic>-lab.html`, then the lab player (below).
 
 **Sections:** [Principles](#principles) · [Files](#files) · [Page](#page) · [Experiments](#experiments) · [Challenges](#challenges) · [Stage](#stage-and-interaction) · [Layout](#layout) · [Motion](#motion) · [Physics](#physics-and-tests) · [Guide links](#links-to-and-from-the-guide) · [Acceptance](#acceptance) · [Updating](#updating-a-lab)
 
@@ -14,7 +14,7 @@ What "done" means for a chapter lab: a page of predict-then-reveal experiments b
 | Calibration | Every prediction carries a confidence (sure / think so / guessing). "Sure but wrong" answers are collected in the results as the ideas to revisit first. |
 | Show the mechanism | The reveal animates what causes the result (components at a boundary, charge flowing in wires, enclosed charge), not just the final number. |
 | One idea per challenge | Each challenge isolates one misconception that a student is likely to hold. |
-| Explore any time | Every challenge card has an **Explore freely** button that opens the sandbox straight away; **Back to challenge N** returns to the waiting challenge, and finishing all challenges still ticks the skill. (Changed 2026-11-04 at the owner’s request; the sandbox used to open only after the challenges.) |
+| Explore any time | Every challenge card has an **Explore freely** button that opens the sandbox straight away; **Back to challenge N** returns to the waiting challenge, and finishing all challenges still ticks the skill. |
 
 ## Files
 
@@ -27,12 +27,12 @@ Chapter numbers may include a lowercase letter suffix (for example, `12a` or `34
 | Chapter scripts | `js/<subject>/ch<N>-physics.js` (formulas only, no DOM) and `js/<subject>/ch<N>-lab.js` (the experiments). |
 | Tests | `tests/<subject>-ch<N>-physics.test.js`, run with `node --test`. |
 | Hub | The chapter's `<li class="chapter">` links to the lab, has `data-lab` equal to the number of experiments, and `data-total` equal to guide checklist items plus `data-lab`. |
-| Smoke suite | The lab page is listed in the workspace's `BrowserTests/tests/smoke.spec.js`. |
+| Smoke suite | The workspace smoke suite finds the lab on disk (pages under `mei/`, `apdr/`, `eei/`); the lab player test plays every challenge of every lab it finds. |
 
 ## Page
 
 - **Shell:** the guide's: same header sign, contents rail, Guide | Lab switcher (Lab current), and source note.
-- **Notation:** the lab's own text follows the guide standard's [Signs](GUIDE-STANDARD.md#signs): every quotient a stacked fraction (`span.frac`), “/” only inside exponents and limits, in units and between words. A lab script that writes a quotient into the page's HTML builds the same `span.frac`; text set with `textContent` (a readout, an aria label) keeps “/”. `python3 -I tools/stack-fractions.py <lab>.html` converts the static text.
+- **Notation:** the lab's own text follows the [markup standard's Signs](MARKUP-STANDARD.md#signs): every quotient a stacked fraction (`span.frac`), “/” only inside exponents and limits, in units and between words. A lab script that writes a quotient into the page's HTML builds the same `span.frac`; text set with `textContent` (a readout, an aria label) keeps “/”. `python3 -I tools/stack-fractions.py <lab>.html` converts the static text.
 - **Body:** `<body class="s-<subject>-<n> lab" data-key="<guide key>" data-guide="<guide file>" data-skills="<guide checklist count>">`. Sharing the key makes lab progress land in the guide's store.
 - **Scripts, in this order:** `../js/<subject>/ch<N>-physics.js`, `../js/lab.js`, `../js/<subject>/ch<N>-lab.js`, `../js/tooltip.js`.
 - **Blocks, in this order:** standfirst; "How the lab works" (`#how`); one section per experiment; "Your results" (`#lab-results`); source note. A `<noscript>` note links to the guide.
@@ -64,7 +64,7 @@ Chapter numbers may include a lowercase letter suffix (for example, `12a` or `34
 
 ## Generated challenges (New challenge)
 
-Add `generate()` wherever the question is a calculation or a classification that random values can vary; leave it out where the fixed questions are about one idea or one picture (timing limits, Gauss surfaces, numerical stability), because random versions would only repeat them. 35 of 53 experiments have one (2026-11-05).
+Add `generate()` wherever the question is a calculation or a classification that random values can vary; leave it out where the fixed questions are about one idea or one picture (timing limits, Gauss surfaces, numerical stability), because random versions would only repeat them.
 
 | Part | Rule |
 |---|---|
@@ -83,8 +83,7 @@ Add `generate()` wherever the question is a calculation or a classification that
 - **Dragging:** the `.stage` element listens for pointer events and picks the nearest object within reach (about 30 px). The redrawn shapes never receive the pointer, so a drag survives redraws in Safari. Every draggable object also moves with the arrow keys (Shift for bigger steps) and keeps focus while it moves.
 - **Readouts:** values carry units with SI prefixes through `fmt()`, in tabular figures. Where a comparison is the point, show factors against a stored state ("×2", "×½", "unchanged").
 - **Sandbox state:** `sandbox()` clears every challenge-only field, and Replay re-renders the first challenge from a clean state.
-- **Your own values:** where a preset list limits what can be tried, add an "Or try your own" fieldset (`fieldset.own`) with typed inputs (`data-own`), checked as you type, with a one-line message (`[data-own-msg]`) that says what is wrong and how to fix it. Typed rules go through `js/mei/expr.js` (arithmetic, logic and set expressions, no `eval`). Results update as you type and are shown as soon as the sandbox opens; keep a button only for a step the student takes on purpose (Run one step, Add a charge, Compare from here), never for a calculation that is instant. Bit-pattern fields carry `data-bitcells` (or `data-bitcells="task=decode"` when a `[data-task]` select decides whether the field holds bits); `js/lab.js` adds a row of toggle cells in unbreakable nibbles that flip one bit and fire `input`. Boolean rules in a chapter's own letters go through `Expr.bool(text, "CWR")`. A long formula field takes a whole row (`label.field-row.wide`). Dropdowns a lab builds after load call `Lab.enhance(select)`. Clickable stage cells (APDR 12a K-map and ANF) mirror a typed field, so keyboard users have the same control, and the stage gets the `clicks` class for its pointer cursor.
-- **Bit fields:** a typed field that holds a bit pattern gets `data-bitcells`; `js/lab.js` draws a row of clickable cells under it (one toggle per bit, a gap every four bits, counted from the binary point when there is one) that flips one bit per press and keeps the field and the result in step. `data-bitcells="<control>=<value>"` shows the row only while that control holds that value.
+- **Your own values:** where a preset list limits what can be tried, add an "Or try your own" fieldset (`fieldset.own`) with typed inputs (`data-own`), checked as you type, with a one-line message (`[data-own-msg]`) that says what is wrong and how to fix it. Typed rules go through `js/mei/expr.js` (arithmetic, logic and set expressions, no `eval`). Results update as you type and are shown as soon as the sandbox opens; keep a button only for a step the student takes on purpose (Run one step, Add a charge, Compare from here), never for a calculation that is instant. Bit-pattern fields carry `data-bitcells`; `js/lab.js` draws a row of clickable cells under the field (one toggle per bit, a gap every four bits, counted from the binary point when there is one) that flips one bit per press, fires `input`, and keeps the field and the result in step. `data-bitcells="<control>=<value>"` (such as `task=decode`) shows the row only while that control holds that value. Boolean rules in a chapter's own letters go through `Expr.bool(text, "CWR")`. A long formula field takes a whole row (`label.field-row.wide`). Dropdowns a lab builds after load call `Lab.enhance(select)`. Clickable stage cells (APDR 12a K-map and ANF) mirror a typed field, so keyboard users have the same control, and the stage gets the `clicks` class for its pointer cursor.
 - **Saving your own setup:** where building a setup takes effort (the EEI charge layout), offer Save and Restore buttons that keep it in `localStorage` under `<prefix>-layout`, restored on a later visit. Read it in `try`/`catch` and ignore anything malformed.
 - **Hover help:** tooltips (`data-tip`) only repeat or explain what is already visible.
 
@@ -122,16 +121,21 @@ Add `generate()` wherever the question is a calculation or a classification that
 
 A lab is done when all of the following hold:
 
-1. `python3 -I tools/check-guide.py <guide>.html` exits 0. It checks the lab next to the guide: shared key, engine files, experiment sections with stage, challenge and controls, `#lab-results`, the hub's `data-lab` and `data-total`, and the guide links.
-2. `node --test` passes, including `tests/lab-challenges.test.js`, which checks every lab's challenge data and reports how often the answer is the first option.
-3. Every challenge of every experiment is played, then replayed once, in Playwright Chromium **and WebKit**, at 1280 px and 390 px, in light and dark mode and with reduced motion. There are no console errors, the stage is on screen at every reveal, card and stage are the same height side by side with no jump at the reveal, and no page scrolls sideways.
-4. Each sandbox is used: dragging with the mouse and by touch, arrow keys, and every control. Values are read only after a frame has settled.
-5. Every experiment with `generate()` is played at least three times in both engines through **New challenge** and **Another challenge**, with no console errors and a verdict each time; sample prompts and explanations are read for sense, not only checked by the test.
-6. The BrowserTests smoke suite passes.
-7. `scripts/refresh-graph.sh --changed` from the workspace root has run.
+1. `tools/page-check.sh <lab>.html` passes. It checks the lab through its guide with `tools/check-guide.py` (shared key, engine files, experiment sections with stage, challenge and controls, `#lab-results`, the hub's `data-lab` and `data-total`, the guide links) and probes the lab in Chromium and WebKit at 390, 1288 and 1440 px in light and dark.
+2. `node --test tests/*.test.js` passes (in `scripts/verify.sh`), including `tests/lab-challenges.test.js`, which checks every lab's challenge data and how often the answer is the first option, and `tests/lab-generators.test.js`, which checks 300 generated challenges per experiment.
+3. The lab player passes: from the workspace `BrowserTests`, `npm run labs` plays every fixed challenge of every lab it finds on disk at 1280 px in Chromium and WebKit, replays each experiment once, goes through **Explore freely** and back, presses **New challenge** and **Another challenge** where offered, plays the first challenge of each experiment at 390 px, and repeats that with reduced motion in Chromium; every reveal must produce a verdict with the stage on screen, and the run must log no console or page errors and never scroll sideways. It takes about 40 minutes, so `scripts/verify.sh` does not run it: run it when a lab changes, or one lab with `npx playwright test --project labs-chromium --grep <lab file>`.
+4. Look at the probe screenshots: card and stage are the same height side by side with no jump at the reveal. Use each changed sandbox by hand: dragging with the mouse and by touch, arrow keys, every control; read a few generated prompts and explanations for sense.
+5. Reduced motion: the reveal jumps straight to the final state with every value, trail and marker drawn (the lab player's reduced-motion pass checks the verdict appears; the drawing is a look).
 
 ## Updating a lab
 
 - **New challenge:** give it a new `id`. Students who finished the experiment see it once; their lab skill stays ticked. Keep 4 per experiment by retiring one.
 - **New experiment:** add its section, its contents entry, its guide link, and raise `data-lab` and `data-total` on the hub in the same change. The checker fails until they match.
 - **Renamed experiment:** change titles freely; never change the experiment `id`.
+
+## Decisions
+
+Dated owner decisions that shaped the rules above; the rules themselves carry no dates.
+
+- **2026-11-04:** the sandbox opens at any time through **Explore freely**; it used to open only after the four challenges. Finishing the challenges still ticks the skill.
+- **2026-11-05:** generated challenges (**New challenge**) exist wherever random values vary a calculation or classification; experiments about one idea or one picture stay fixed by design.

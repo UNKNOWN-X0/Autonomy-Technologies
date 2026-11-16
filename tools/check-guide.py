@@ -60,6 +60,16 @@ class Report:
         self.warnings.append(msg)
 
 
+def check_smoke(path, rep):
+    """The workspace smoke suite finds every page under mei/, apdr/ and eei/ on disk; any other page needs a row."""
+    rel = os.path.relpath(path, ROOT)
+    if rel.split("/")[0] in ("mei", "apdr", "eei"):
+        return
+    smoke = os.path.join(ROOT, "..", "..", "BrowserTests", "tests", "smoke.spec.js")
+    if os.path.exists(smoke) and os.path.basename(path) not in open(smoke, encoding="utf-8").read():
+        rep.warn("BrowserTests smoke.spec.js does not list %s (pages outside mei/, apdr/, eei/ need a staticPages row)" % os.path.basename(path))
+
+
 WORKED_PAGE = re.compile(r"([a-z]+)/(blackboard-exercise|exercise|tutorial)-(\d+)-worked-solutions\.html")
 
 
@@ -95,6 +105,23 @@ def check_files(root, html, path, page_dir, rep):
     subs = re.findall(r"[₀-₉]", plain)
     if subs:
         rep.warn("%d Unicode subscript digit(s) (the PDF font has none): use <sub> in text, x_{12} in figure data" % len(subs))
+    # the remaining Signs rows that a regex can check (docs/MARKUP-STANDARD.md, Signs); code in a card is not maths
+    mtext = " ".join(re.sub(r"<[^>]*>", " ", re.sub(r"<code\b.*?</code>", " ", a + b, flags=re.S)) for a, b in maths)
+    # a hyphen between numbers or brackets is a minus; between letters it is a word (two’s-complement, 7-bit)
+    hyphens = len(re.findall(r"(?<=[\d)\]])\s*-\s*(?=[\d(])", mtext))
+    if hyphens:
+        rep.warn("%d hyphen(s) used as minus in formulas: write − (U+2212)" % hyphens)
+    greek = len(re.findall(r"[ΣΠ](?!m\()", mtext))
+    if greek:
+        rep.warn("%d Greek Σ/Π in formulas: use the n-ary signs ∑ and ∏ with op op-sum markup (Σm(…) is a name and is fine)" % greek)
+    # C and MATLAB lines in a card keep their own characters (Signs); they carry ; or a type word or an → gloss
+    stars = sum(s.count("*") for s in (re.sub(r"<[^>]*>", " ", re.sub(r"<code\b.*?</code>", " ", a + b, flags=re.S)) for a, b in maths)
+                if ";" not in s and "→" not in s and not re.search(r"\b(int|void|char|double|float)\b|\*\s*\(|^\s*\*\s*\w", s))
+    if stars:
+        rep.warn("%d asterisk(s) in formulas: write a product as · or ×" % stars)
+    ascii_rel = len(re.findall(r"&lt;=|&gt;=|!=|-&gt;|=&gt;|<=|>=|->|=>", mtext))
+    if ascii_rel:
+        rep.warn("%d ASCII relation(s) or arrow(s) in formulas (<=, >=, !=, ->, =>): use ≤ ≥ ≠ → ⇒" % ascii_rel)
     stem = os.path.splitext(path)[0]
     base = os.path.basename(stem)
     for ext in (".pdf", ".tex"):
@@ -178,9 +205,7 @@ def check_exercise(path, rel, rep, kind="Exercise"):
         rep.err("index.html does not link to %s from its subject's %s tab" % (rel, kind))
     elif "data-note=" not in link.group(1) or "data-no=" not in link.group(1):
         rep.err("the hub link to %s needs data-no and data-note (its row number and what it covers)" % rel)
-    smoke = os.path.join(ROOT, "..", "..", "BrowserTests", "tests", "smoke.spec.js")
-    if os.path.exists(smoke) and os.path.basename(path) not in open(smoke, encoding="utf-8").read():
-        rep.warn("BrowserTests smoke.spec.js does not list %s" % os.path.basename(path))
+    check_smoke(path, rep)
     return rep
 
 
@@ -241,9 +266,7 @@ def check_appendix(path, rel, rep):
         rep.err("index.html does not link to %s from its subject's Appendix tab" % rel)
     elif "data-note=" not in link.group(1) or "data-no=" not in link.group(1):
         rep.err("the hub link to %s needs data-no and data-note (its letter and what it covers)" % rel)
-    smoke = os.path.join(ROOT, "..", "..", "BrowserTests", "tests", "smoke.spec.js")
-    if os.path.exists(smoke) and os.path.basename(path) not in open(smoke, encoding="utf-8").read():
-        rep.warn("BrowserTests smoke.spec.js does not list %s" % os.path.basename(path))
+    check_smoke(path, rep)
     return rep
 
 
