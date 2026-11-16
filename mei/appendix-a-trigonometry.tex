@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · MEI · Personal reference}
+\fancyhead[R]{\small\sffamily Appendix A: Trigonometric identities}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Appendix A: Trigonometric identities}
+\author{Mathematics for Engineers I \ensuremath{\cdot} Module 62765 \ensuremath{\cdot} Personal reference\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large \textbf{Personal study supplement supplied by the student; not a lecturer handout or official course material.} Use these identities to simplify, transform and compare trigonometric expressions. The formulas below use radians; replace \textit{u} and \textit{v} with angles in radians when evaluating them.}
+
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{A.1 Reciprocal and quotient identities}
+
+\Needspace{8\baselineskip}
+These definitions connect sine, cosine and tangent to their reciprocals. Quotient identities express tangent and cotangent using sine and cosine.
+
+\begin{equationcard}{Reciprocals}
+\[ \begin{gathered} \sin \, {u}\, =\, \dfrac{1}{\text{csc}\, {u}}\, \quad \, \cos \, {u}\, =\, \dfrac{1}{\text{sec}\, {u}}\, \quad \, \tan \, {u}\, =\, \dfrac{1}{\text{cot}\, {u}} \\ \text{csc}\, {u}\, =\, \dfrac{1}{\sin \, {u}}\, \quad \, \text{sec}\, {u}\, =\, \dfrac{1}{\cos \, {u}}\, \quad \, \text{cot}\, {u}\, =\, \dfrac{1}{\tan \, {u}} \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Quotients}
+\[ \begin{gathered} \tan \, {u}\, =\, \dfrac{\sin \, {u}}{\cos \, {u}}\, \quad \, \text{cot}\, {u}\, =\, \dfrac{\cos \, {u}}{\sin \, {u}} \end{gathered} \]
+{\small The expressions require nonzero denominators: for example, tan \textit{u} is undefined when cos \textit{u} = 0.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{A.2 Pythagorean identities}
+
+\Needspace{8\baselineskip}
+Start with the unit-circle equation sin² \textit{u} + cos² \textit{u} = 1. Dividing by cos² \textit{u} or sin² \textit{u} gives the other two forms.
+
+\begin{equationcard}{Three equivalent forms}
+\[ \begin{gathered} \sin ^{2}\, {u}\, +\, \cos ^{2}\, {u}\, =\, 1 \\ 1\, +\, \tan ^{2}\, {u}\, =\, \text{sec}^{2}\, {u} \\ 1\, +\, \text{cot}^{2}\, {u}\, =\, \text{csc}^{2}\, {u} \end{gathered} \]
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{A.3 Cofunction and even–odd identities}
+
+\Needspace{10\baselineskip}
+Complementary angles exchange each trigonometric function with its cofunction. Changing the sign of an angle leaves cosine and secant unchanged; sine, tangent, cosecant and cotangent change sign.
+
+\begin{equationcard}{Cofunctions}
+\[ \begin{gathered} \sin \left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \cos \, {u}\, \quad \, \cos \left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \sin \, {u} \\ \tan \left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \text{cot}\, {u}\, \quad \, \text{cot}\left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \tan \, {u} \\ \text{sec}\left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \text{csc}\, {u}\, \quad \, \text{csc}\left(\dfrac{π}{2}\, -\, {u}\right)\, =\, \text{sec}\, {u} \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Even and odd}
+\[ \begin{gathered} \sin (-{u})\, =\, -\sin \, {u}\, \quad \, \cos (-{u})\, =\, \cos \, {u}\, \quad \, \tan (-{u})\, =\, -\tan \, {u} \\ \text{csc}(-{u})\, =\, -\text{csc}\, {u}\, \quad \, \text{sec}(-{u})\, =\, \text{sec}\, {u}\, \quad \, \text{cot}(-{u})\, =\, -\text{cot}\, {u} \end{gathered} \]
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{A.4 Sum and difference formulas}
+
+\Needspace{9\baselineskip}
+These expand a function of a combined angle into products of functions of the two separate angles. The cosine formula changes the sign between its two terms.
+
+\begin{equationcard}{Sine and cosine}
+\[ \begin{gathered} \sin ({u}\, +\, {v})\, =\, \sin \, {u}\, \cos \, {v}\, +\, \cos \, {u}\, \sin \, {v} \\ \sin ({u}\, -\, {v})\, =\, \sin \, {u}\, \cos \, {v}\, -\, \cos \, {u}\, \sin \, {v} \\ \cos ({u}\, +\, {v})\, =\, \cos \, {u}\, \cos \, {v}\, -\, \sin \, {u}\, \sin \, {v} \\ \cos ({u}\, -\, {v})\, =\, \cos \, {u}\, \cos \, {v}\, +\, \sin \, {u}\, \sin \, {v} \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Tangent}
+\[ \begin{gathered} \tan ({u}\, \pm \, {v})\, =\, \dfrac{\tan \, {u}\, \pm \, \tan \, {v}}{1\, \mp \, \tan \, {u}\, \tan \, {v}} \end{gathered} \]
+{\small Use matching signs: the upper signs give the sum formula, and the lower signs give the difference formula. The denominator must be nonzero.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{A.5 Double-angle and triple-angle formulas}
+
+\Needspace{9\baselineskip}
+Put \textit{v} = \textit{u} in the sum formulas to get double angles. The three triple-angle formulas follow by applying them again and simplifying.
+
+\begin{equationcard}{Double angles}
+\[ \begin{gathered} \sin \, 2{u}\, =\, 2\, \sin \, {u}\, \cos \, {u} \\ \cos \, 2{u}\, =\, \cos ^{2}\, {u}\, -\, \sin ^{2}\, {u}\, =\, 2\, \cos ^{2}\, {u}\, -\, 1\, =\, 1\, -\, 2\, \sin ^{2}\, {u} \\ \tan \, 2{u}\, =\, \dfrac{2\, \tan \, {u}}{1\, -\, \tan ^{2}\, {u}} \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Triple angles}
+\[ \begin{gathered} \sin \, 3{u}\, =\, 3\, \sin \, {u}\, -\, 4\, \sin ^{3}\, {u} \\ \cos \, 3{u}\, =\, 4\, \cos ^{3}\, {u}\, -\, 3\, \cos \, {u} \\ \tan \, 3{u}\, =\, \dfrac{3\, \tan \, {u}\, -\, \tan ^{3}\, {u}}{1\, -\, 3\, \tan ^{2}\, {u}} \end{gathered} \]
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{A.6 Power reduction and half angles}
+
+\Needspace{8\baselineskip}
+Power-reduction identities replace squares of sine or cosine with a double-angle cosine. Half-angle identities use the same cosine and a sign chosen from the quadrant of {\small\ensuremath{\dfrac{{u}}{2}}}.
+
+\begin{equationcard}{Power reduction}
+\[ \begin{gathered} \sin ^{2}\, {u}\, =\, \dfrac{1\, -\, \cos \, 2{u}}{2}\, \quad \, \cos ^{2}\, {u}\, =\, \dfrac{1\, +\, \cos \, 2{u}}{2} \\ \tan ^{2}\, {u}\, =\, \dfrac{1\, -\, \cos \, 2{u}}{1\, +\, \cos \, 2{u}} \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Half angles}
+\[ \begin{gathered} \sin \left(\dfrac{{u}}{2}\right)\, =\, \pm \sqrt{\dfrac{1\, -\, \cos \, {u}}{2}}\, \quad \, \cos \left(\dfrac{{u}}{2}\right)\, =\, \pm \sqrt{\dfrac{1\, +\, \cos \, {u}}{2}} \\ \tan \left(\dfrac{{u}}{2}\right)\, =\, \dfrac{1\, -\, \cos \, {u}}{\sin \, {u}}\, =\, \dfrac{\sin \, {u}}{1\, +\, \cos \, {u}} \end{gathered} \]
+{\small The \ensuremath{\pm} sign is determined by whether sin or cos is positive or negative at the half-angle. The quotient forms for tan({\small\ensuremath{\dfrac{{u}}{2}}}) require their denominators to be nonzero.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{A.7 Product-to-sum formulas}
+
+\Needspace{9\baselineskip}
+These convert products into sums or differences. They are useful when integrating products or comparing expressions with different frequencies.
+
+\begin{equationcard}{Products of sine and cosine}
+\[ \begin{gathered} \sin \, {u}\, \sin \, {v}\, =\, \tfrac{1}{2}[\cos ({u}\, -\, {v})\, -\, \cos ({u}\, +\, {v})] \\ \cos \, {u}\, \cos \, {v}\, =\, \tfrac{1}{2}[\cos ({u}\, -\, {v})\, +\, \cos ({u}\, +\, {v})] \\ \sin \, {u}\, \cos \, {v}\, =\, \tfrac{1}{2}[\sin ({u}\, +\, {v})\, +\, \sin ({u}\, -\, {v})] \\ \cos \, {u}\, \sin \, {v}\, =\, \tfrac{1}{2}[\sin ({u}\, +\, {v})\, -\, \sin ({u}\, -\, {v})] \end{gathered} \]
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{A.8 Sum-to-product formulas}
+
+\Needspace{9\baselineskip}
+These reverse the previous transformations, writing a sum or difference as a product. They can turn pairs of sine or cosine terms into one compact expression.
+
+\begin{equationcard}{Sums and differences}
+\[ \begin{gathered} \sin \, {u}\, +\, \sin \, {v}\, =\, 2\, \sin \left(\dfrac{{u}\, +\, {v}}{2}\right)\, \cos \left(\dfrac{{u}\, -\, {v}}{2}\right) \\ \sin \, {u}\, -\, \sin \, {v}\, =\, 2\, \cos \left(\dfrac{{u}\, +\, {v}}{2}\right)\, \sin \left(\dfrac{{u}\, -\, {v}}{2}\right) \\ \cos \, {u}\, +\, \cos \, {v}\, =\, 2\, \cos \left(\dfrac{{u}\, +\, {v}}{2}\right)\, \cos \left(\dfrac{{u}\, -\, {v}}{2}\right) \\ \cos \, {u}\, -\, \cos \, {v}\, =\, -2\, \sin \left(\dfrac{{u}\, +\, {v}}{2}\right)\, \sin \left(\dfrac{{u}\, -\, {v}}{2}\right) \end{gathered} \]
+\end{equationcard}
+\end{keepsection}
+
+
+\vfill{\small \textbf{Personal supplement supplied by Thanate Amornjiraporn (Focus).} This is the student's own reference material, reorganised and annotated for personal study. It was not supplied, written, reviewed or endorsed by the lecturer and is not official FAU course material. Use it as a memory aid and check identities and domain restrictions when applying them.}
+
+\end{document}
