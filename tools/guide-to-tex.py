@@ -228,6 +228,9 @@ def var_math(node):
     out = []
     for k in node.kids:
         if isinstance(k, str):
+            # a letter followed by U+0305 (combining overline, the conjugate z̅) becomes \overline{z}: the maths
+            # fonts have no combining overline glyph, so it would otherwise print as a missing character
+            k = re.sub("(.)\u0305", r"\\overline{\1}", k)
             out.append(re.sub(r" +", r"\\,", k))
         else:
             out.append(math_wrap(k))

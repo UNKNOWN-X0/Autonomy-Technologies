@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794920384.2267768,
-    "seen": 1794920559.859112,
-    "ast_hash": "31031a82d2f2c8b837d34a3c06945f52",
+    "mtime": 1794921742.5641866,
+    "seen": 1794921961.626904,
+    "ast_hash": "654a29f1d6c91ada16b899ee218ca406",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1794920384.2545974,
-    "seen": 1794920559.859072,
-    "ast_hash": "85717a4e592a8dbd0da1afa6b21a5402",
+    "mtime": 1794922588.6630201,
+    "seen": 1794922680.249897,
+    "ast_hash": "8012bd1b33ff5663271462821642414c",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -78,15 +78,15 @@
     "semantic_hash": ""
   },
   "tools/guide-to-tex.py": {
-    "mtime": 1794408885.2391713,
-    "seen": 1794409071.643101,
-    "ast_hash": "99e3f572307fe6a753f0eb26056e7a57",
+    "mtime": 1794921824.5755186,
+    "seen": 1794921961.626854,
+    "ast_hash": "129cb2ad2b0c02c8561e68c0c6cc2c9f",
     "semantic_hash": ""
   },
   "eei/ch1-electrostatic-fields.html": {
-    "mtime": 1794920384.2620533,
-    "seen": 1794920559.859099,
-    "ast_hash": "724d5794de617c92c9decd7a8767cd11",
+    "mtime": 1794922435.4207635,
+    "seen": 1794922680.2499259,
+    "ast_hash": "8723e2725e12960279ee4642f04a5bc5",
     "semantic_hash": ""
   },
   "tools/check-guide.py": {
@@ -408,9 +408,9 @@
     "semantic_hash": ""
   },
   "mei/ch3-mappings.html": {
-    "mtime": 1794920384.2470188,
-    "seen": 1794920559.859118,
-    "ast_hash": "3810c83d33f6b663aebfd1823ce55772",
+    "mtime": 1794920998.3447597,
+    "seen": 1794921043.048348,
+    "ast_hash": "1363b274ca84daddf2ce802cb2ac996f",
     "semantic_hash": ""
   },
   "js/mei/ch3-lab.js": {
@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1794829920.1481323,
-    "seen": 1794837427.9972742,
-    "ast_hash": "fd7652de2e3e02dd0a280c052504e4f1",
+    "mtime": 1794921751.3358061,
+    "seen": 1794921961.6268659,
+    "ast_hash": "bf6660c4496f3cba22bf316dd3f7640f",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -492,8 +492,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1794920175.6785166,
-    "seen": 1794920559.859009,
+    "mtime": 1794922123.0655115,
+    "seen": 1794922680.249844,
     "ast_hash": "86dcc5a16307f3d250638ba04e911137",
     "semantic_hash": ""
   },
@@ -711,6 +711,18 @@
     "mtime": 1794920384.247864,
     "seen": 1794920559.859113,
     "ast_hash": "906e344a2c2ea8d07f466fb952b4b958",
+    "semantic_hash": ""
+  },
+  ".impeccable/config.json": {
+    "mtime": 1794920808.3918645,
+    "seen": 1794921043.0482402,
+    "ast_hash": "c157f145b386df01e8f217d30cd92699",
+    "semantic_hash": ""
+  },
+  "mei/ch4-complex-numbers.html": {
+    "mtime": 1794922079.9709206,
+    "seen": 1794922680.249946,
+    "ast_hash": "c28acbf69747cd1907b689b7818512cb",
     "semantic_hash": ""
   }
 }

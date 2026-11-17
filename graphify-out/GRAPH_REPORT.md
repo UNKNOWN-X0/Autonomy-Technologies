@@ -1,7 +1,7 @@
 # Graph Report - AutonomyTechnologies  (2026-11-17)
 
 ## Corpus Check
-- 72 files · ~308,323 words
+- 73 files · ~316,983 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 6 file(s) not represented in the graph (top: .css 4, (none) 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9eb9a121`
+- Built from commit: `29e4b126`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,14 +85,14 @@
 10. `check()` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Experiments` --references--> `generate()`  [INFERRED]
-  docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Challenges` --references--> `reveal()`  [INFERRED]
   docs/LAB-STANDARD.md → js/nav.js
 - `Formulas` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Markup` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
+- `Experiments` --references--> `generate()`  [INFERRED]
+  docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Code` --references--> `route()`  [INFERRED]
   STANDARDS.md → js/index.js
 
@@ -299,7 +299,7 @@ Nodes (3): Acceptance, Appendix standard, Page
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.144) - this node is a cross-community bridge._
+  _High betweenness centrality (0.138) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

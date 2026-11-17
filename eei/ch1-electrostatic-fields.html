@@ -442,6 +442,7 @@
           <p>A field line is a curve whose tangent at every point has the direction of <var>E</var>. Arrows on the line show the direction. In vector plots the arrow length shows the field strength; in line plots the density of lines does.</p>
           <div class="figs"><figure class="viz" data-kind="field dipole"><figcaption><strong>A dipole</strong>: field lines start on +<var>q</var> and end on −<var>q</var>. They never cross, and they crowd together where the field is strong.</figcaption></figure></div>
           <p class="plain"><strong>In plain words:</strong> field lines are a picture of <var>E</var>: at every point the line runs in the direction of the field, starting on positive charges and ending on negative ones. Where the lines crowd together the field is strong; where they spread out it is weak.</p>
+          <div class="eq"><strong>Direction of a field line</strong><span class="formula">d<var>s</var> ∥ <var>E</var>(<var>r</var>)</span><span class="eq-note"><span class="say">Read it as: “a short step d s along a field line points the same way as the field at that point”.</span>This restates the definition above: the tangent of the line has the direction of <var>E</var>. Arrows on the line point along <var>E</var>; the line itself carries no information about the size of <var>E</var> except through how densely the lines are drawn.</span></div>
           <ol class="method-list">
             <li>Construction: find <var>E</var> at a starting point.</li>
             <li>Step a short distance in that direction and find <var>E</var> again.</li>
@@ -964,10 +965,10 @@
           <details class="answers">
             <summary>Show working</summary>
             <ol>
-              <li><var>D</var> = <span class="frac"><span><var>Q</var></span><span>2πρ<var>l</var></span></span>, <var>U</var> = <var>Q</var> <span class="frac"><span>ln(<span class="frac"><span><var>b</var></span><span><var>a</var></span></span>)</span><span>2π ε <var>l</var></span></span>, <span class="frac"><span><var>C</var></span><span><var>l</var></span></span> = <span class="frac"><span>2π ε<sub>0</sub>ε<sub>r</sub></span><span>ln 4</span></span> ≈ 88.3 pF/m, so <var>C</var> ≈ 883 pF.</li>
-              <li><var>Q</var> = <var>C U</var> ≈ 88 nC.</li>
-              <li><var>E</var>(ρ) = <span class="frac"><span><var>U</var></span><span>ρ ln(<span class="frac"><span><var>b</var></span><span><var>a</var></span></span>)</span></span>: about 144 kV/m at ρ = 0.5 mm and 36 kV/m at ρ = 2 mm. The field is strongest at the inner conductor, so breakdown starts there.</li>
-              <li><var>W</var><sub>e</sub> = ½<var>C U</var><sup>2</sup> ≈ 4.4 μJ.</li>
+              <li><var>D</var> = <span class="frac"><span><var>Q</var></span><span>2πρ<var>l</var></span></span>, <var>U</var> = <var>Q</var> <span class="frac"><span>ln(<span class="frac"><span><var>b</var></span><span><var>a</var></span></span>)</span><span>2π ε <var>l</var></span></span>, <span class="frac"><span><var>C</var></span><span><var>l</var></span></span> = <span class="frac"><span>2π ε<sub>0</sub>ε<sub>r</sub></span><span>ln 4</span></span> ≈ 88.3 pF/m, so <var>C</var> ≈ 883 pF. <span class="sec-ref">§1.10</span> <span class="sec-ref">§1.9</span> <span class="sec-ref">§1.13</span></li>
+              <li><var>Q</var> = <var>C U</var> ≈ 88 nC. <span class="sec-ref">§1.13</span></li>
+              <li><var>E</var>(ρ) = <span class="frac"><span><var>U</var></span><span>ρ ln(<span class="frac"><span><var>b</var></span><span><var>a</var></span></span>)</span></span>: about 144 kV/m at ρ = 0.5 mm and 36 kV/m at ρ = 2 mm. The field is strongest at the inner conductor, so breakdown starts there. <span class="sec-ref">§1.10</span> <span class="sec-ref">§1.12</span></li>
+              <li><var>W</var><sub>e</sub> = ½<var>C U</var><sup>2</sup> ≈ 4.4 μJ. <span class="sec-ref">§1.14</span></li>
             </ol>
           </details>
           <h3>B. Two-layer plate capacitor</h3>
@@ -981,10 +982,10 @@
           <details class="answers">
             <summary>Show working</summary>
             <ol>
-              <li><var>D</var>: the field is normal to the interface and there is no surface charge, so <var>D</var><sub>n1</sub> = <var>D</var><sub>n2</sub>.</li>
-              <li><var>U</var> = <var>D</var>(<span class="frac"><span><var>d</var><sub>1</sub></span><span>ε<sub>1</sub></span></span> + <span class="frac"><span><var>d</var><sub>2</sub></span><span>ε<sub>2</sub></span></span>), so <var>D</var> = 300 <span class="frac"><span>ε<sub>0</sub></span><span>0.5 mm + 0.5 mm</span></span> ≈ 2.66 <span class="frac"><span>μC</span><span>m²</span></span>. <var>E</var><sub>1</sub> = 150 kV/m and <var>E</var><sub>2</sub> = 75 kV/m; 150 V across each layer.</li>
-              <li><var>Q</var> = <var>D A</var> ≈ 26.6 nC, <var>C</var> = <span class="frac"><span><var>Q</var></span><span><var>U</var></span></span> ≈ 88.5 pF. Series: <var>C</var><sub>1</sub> = <var>C</var><sub>2</sub> ≈ 177 pF, so <var>C</var> ≈ 88.5 pF.</li>
-              <li>½ × 177 pF × 150<sup>2</sup> ≈ 2.0 μJ per layer, 4.0 μJ in total, which matches ½<var>C U</var><sup>2</sup>.</li>
+              <li><var>D</var>: the field is normal to the interface and there is no surface charge, so <var>D</var><sub>n1</sub> = <var>D</var><sub>n2</sub>. <span class="sec-ref">§1.11</span></li>
+              <li><var>U</var> = <var>D</var>(<span class="frac"><span><var>d</var><sub>1</sub></span><span>ε<sub>1</sub></span></span> + <span class="frac"><span><var>d</var><sub>2</sub></span><span>ε<sub>2</sub></span></span>), so <var>D</var> = 300 <span class="frac"><span>ε<sub>0</sub></span><span>0.5 mm + 0.5 mm</span></span> ≈ 2.66 <span class="frac"><span>μC</span><span>m²</span></span>. <var>E</var><sub>1</sub> = 150 kV/m and <var>E</var><sub>2</sub> = 75 kV/m; 150 V across each layer. <span class="sec-ref">§1.9</span> <span class="sec-ref">§1.12</span></li>
+              <li><var>Q</var> = <var>D A</var> ≈ 26.6 nC, <var>C</var> = <span class="frac"><span><var>Q</var></span><span><var>U</var></span></span> ≈ 88.5 pF. Series: <var>C</var><sub>1</sub> = <var>C</var><sub>2</sub> ≈ 177 pF, so <var>C</var> ≈ 88.5 pF. <span class="sec-ref">§1.13</span></li>
+              <li>½ × 177 pF × 150<sup>2</sup> ≈ 2.0 μJ per layer, 4.0 μJ in total, which matches ½<var>C U</var><sup>2</sup>. <span class="sec-ref">§1.14</span></li>
             </ol>
           </details>
         </section>

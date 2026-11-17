@@ -579,7 +579,8 @@ html.sweeping .chapter.started:not(.lit) .no::before {
 .parts:not([role="tablist"]) li {
   box-sizing: border-box;
   min-height: 40px;
-  padding: 0 16px;
+  /* block padding insets the text when a chip's links wrap; one-line chips keep their height through min-height */
+  padding: 6px 16px;
   border: 2px solid var(--line);
   background: none;
   color: var(--muted);

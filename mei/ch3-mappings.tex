@@ -316,6 +316,20 @@ Let f:\ensuremath{\mathbb{R}}\ensuremath{\to}\ensuremath{\mathbb{R}} be f(x)=x\t
 \end{enumerate}
 \end{workedbox}
 
+\begin{workedbox}{Worked example \ensuremath{\cdot} preimages of whole sets}
+Let f:\ensuremath{\mathbb{Z}}\ensuremath{\to}\ensuremath{\mathbb{Z}}, f(x)=|x|, and let n\ensuremath{\in}\ensuremath{\mathbb{N}}.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item The outputs are 0 and every positive integer, so Im(f)=\ensuremath{\mathbb{N}}\textsubscript{0}.
+\item The inputs with |x|\ensuremath{\in}\{1,…,n\} are \ensuremath{\pm}1,…,\ensuremath{\pm}n, so f\textsuperscript{\ensuremath{-}1}(\{1,…,n\})=\{\ensuremath{-}n,…,\ensuremath{-}1,1,…,n\}. Adding negative numbers to the target set changes nothing, because no input reaches them.
+\item No absolute value is negative, so f\textsuperscript{\ensuremath{-}1}(\{\ensuremath{-}1,\ensuremath{-}2,\ensuremath{-}3,…\})=\ensuremath{\emptyset}.
+\item f(\ensuremath{\mathbb{N}})=\ensuremath{\mathbb{N}} and f(\ensuremath{\mathbb{Z}}\textbackslash{}\{0\})=\ensuremath{\mathbb{N}}: different input sets can have the same image.
+\end{enumerate}
+
+Check with n=2: the inputs \ensuremath{-}2, \ensuremath{-}1, 1, 2 give 2, 1, 1, 2, all in \{1,2\}, and 0 gives 0, which is not.
+\end{workedbox}
+
 \Needspace{7\baselineskip}
 \begin{notebox}\textbf{Trap:} f\textsuperscript{\ensuremath{-}1}(B) means “inputs that land in B”; it does not mean “apply the inverse function”. The inverse function exists only if f is injective.\end{notebox}
 
@@ -433,6 +447,18 @@ Consider f(x)=x\textsuperscript{2} with domain [0,\ensuremath{\infty}).
 \end{enumerate}
 \end{workedbox}
 
+\begin{workedbox}{Worked example \ensuremath{\cdot} one-to-one but not onto}
+Assign to each citizen holding an identity card the number on that card, with codomain the set of all possible card numbers.
+
+\Needspace{6\baselineskip}
+\begin{enumerate}
+\item A number is issued only once, so two different people never share a number: the mapping is injective.
+\item Not every possible number has been issued yet, so some codomain values have no preimage: the mapping is not surjective.
+\end{enumerate}
+
+Check: if every number were already used, no new card could be issued, which is why the codomain must be larger than the image.
+\end{workedbox}
+
 \Needspace{6\baselineskip}
 \begin{notebox}\textbf{Memory hook:} injective asks “does any output have two inputs?”; surjective asks “does any codomain value have no input?”. State the codomain before answering.\end{notebox}
 
@@ -533,6 +559,19 @@ Let f:\ensuremath{\mathbb{R}}\ensuremath{\to}\ensuremath{\mathbb{R}}, f(x)=2x+3.
 \item Therefore f\textsuperscript{\ensuremath{-}1}(y)={\small\ensuremath{\dfrac{\mathrm{y}-3}{2}}}, with domain \ensuremath{\mathbb{R}}.
 \item Check: f\textsuperscript{\ensuremath{-}1}(f(x))={\small\ensuremath{\dfrac{(2\mathrm{x}+3)-3}{2}}}=x. Also f(f\textsuperscript{\ensuremath{-}1}(y))=2({\small\ensuremath{\dfrac{\mathrm{y}-3}{2}}})+3=y.
 \end{enumerate}
+\end{workedbox}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} invert a decreasing function}
+Let f:\ensuremath{\mathbb{R}}\ensuremath{\to}\ensuremath{\mathbb{R}}, f(x)=\ensuremath{-}3x+3.
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item If x\textsubscript{1}\ensuremath{<}x\textsubscript{2} then \ensuremath{-}3x\textsubscript{1}\ensuremath{>}\ensuremath{-}3x\textsubscript{2}, so f is strictly decreasing and therefore injective. Its image is \ensuremath{\mathbb{R}}.
+\item Set y=\ensuremath{-}3x+3 and solve: 3x=3\ensuremath{-}y, so x=1\ensuremath{-}{\small\ensuremath{\dfrac{\mathrm{y}}{3}}}.
+\item Therefore f\textsuperscript{\ensuremath{-}1}(y)=\ensuremath{-}{\small\ensuremath{\dfrac{1}{3}}}y+1 with D(f\textsuperscript{\ensuremath{-}1})=\ensuremath{\mathbb{R}}.
+\end{enumerate}
+
+Check: f\textsuperscript{\ensuremath{-}1}(f(x))=\ensuremath{-}{\small\ensuremath{\dfrac{1}{3}}}(\ensuremath{-}3x+3)+1=x\ensuremath{-}1+1=x. The two graphs cross on the line y=x, at x={\small\ensuremath{\dfrac{3}{4}}}.
 \end{workedbox}
 
 \Needspace{6\baselineskip}
@@ -681,6 +720,19 @@ Solve x\textsuperscript{2}\ensuremath{-}5x+6=0.
 \item The roots are {\small\ensuremath{\dfrac{5\pm 1}{2}}}, hence x=2 or x=3.
 \item Check by factoring: x\textsuperscript{2}\ensuremath{-}5x+6=(x\ensuremath{-}2)(x\ensuremath{-}3). Substitution gives zero at both roots.
 \end{enumerate}
+\end{workedbox}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} a double root}
+Find and classify the roots of P(x)=2x\textsuperscript{2}\ensuremath{-}8x+8.
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Here a=2, b=\ensuremath{-}8, c=8, so D=(\ensuremath{-}8)\textsuperscript{2}\ensuremath{-}4\ensuremath{\cdot}2\ensuremath{\cdot}8=64\ensuremath{-}64=0.
+\item D=0 gives one double root: x\textsubscript{1}=x\textsubscript{2}=\ensuremath{-}{\small\ensuremath{\dfrac{\mathrm{b}}{2\mathrm{a}}}}=\ensuremath{-}{\small\ensuremath{\dfrac{-8}{4}}}=2.
+\item The factorisation keeps the leading coefficient: P(x)=2(x\ensuremath{-}2)\textsuperscript{2}.
+\end{enumerate}
+
+Check: P(2)=8\ensuremath{-}16+8=0, and expanding 2(x\ensuremath{-}2)\textsuperscript{2}=2x\textsuperscript{2}\ensuremath{-}8x+8. The parabola touches the x-axis at 2 without crossing it.
 \end{workedbox}
 
 \Needspace{8\baselineskip}
@@ -877,6 +929,19 @@ With r\ensuremath{\geq}0 and unrestricted angle, polar coordinates are not uniqu
 \item Convert the region 0\ensuremath{\leq}r\ensuremath{\leq}2, 0\ensuremath{\leq}φ\ensuremath{\leq}{\small\ensuremath{\dfrac{π}{4}}}. Since r\textsuperscript{2}=x\textsuperscript{2}+y\textsuperscript{2}, it lies inside the circle x\textsuperscript{2}+y\textsuperscript{2}\ensuremath{\leq}4. The angle range is the first-quadrant wedge between y=0 and y=x, so 0\ensuremath{\leq}y\ensuremath{\leq}x.
 \item Check a boundary point: r=2, φ={\small\ensuremath{\dfrac{π}{4}}} gives x=y=\ensuremath{\sqrt{2}} and x\textsuperscript{2}+y\textsuperscript{2}=4.
 \end{enumerate}
+\end{workedbox}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} one point in each position}
+Convert (1,1), (0,2) and (1,\ensuremath{-}1) to polar coordinates with φ\ensuremath{\in}[0,2π).
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item (1,1): r=\ensuremath{\sqrt{2}}, x\ensuremath{>}0 and y\ensuremath{\geq}0, so φ=arctan 1={\small\ensuremath{\dfrac{π}{4}}}.
+\item (0,2): r=2. Here x=0 and y\ensuremath{>}0, so the arctan rule does not apply and φ={\small\ensuremath{\dfrac{π}{2}}}.
+\item (1,\ensuremath{-}1): r=\ensuremath{\sqrt{2}}. Now x\ensuremath{>}0 but y\ensuremath{<}0, so φ=arctan(\ensuremath{-}1)+2π=\ensuremath{-}{\small\ensuremath{\dfrac{π}{4}}}+2π={\small\ensuremath{\dfrac{7π}{4}}}.
+\end{enumerate}
+
+Check the last point: \ensuremath{\sqrt{2}} cos({\small\ensuremath{\dfrac{7π}{4}}})=1 and \ensuremath{\sqrt{2}} sin({\small\ensuremath{\dfrac{7π}{4}}})=\ensuremath{-}1. Without the +2π the angle \ensuremath{-}{\small\ensuremath{\dfrac{π}{4}}} lies outside [0,2π).
 \end{workedbox}
 
 \Needspace{7\baselineskip}
