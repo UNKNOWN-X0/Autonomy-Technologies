@@ -205,6 +205,8 @@ def check_exercise(path, rel, rep, kind="Exercise"):
         rep.err("index.html does not link to %s from its subject's %s tab" % (rel, kind))
     elif "data-note=" not in link.group(1) or "data-no=" not in link.group(1):
         rep.err("the hub link to %s needs data-no and data-note (its row number and what it covers)" % rel)
+    if link and not re.search(r'data-added="\d{4}-\d\d-\d\d"', link.group(1)):
+        rep.err("the hub link to %s needs data-added=\"YYYY-MM-DD\", the day it went online (js/whatsnew.js)" % rel)
     check_smoke(path, rep)
     return rep
 
@@ -266,6 +268,8 @@ def check_appendix(path, rel, rep):
         rep.err("index.html does not link to %s from its subject's Appendix tab" % rel)
     elif "data-note=" not in link.group(1) or "data-no=" not in link.group(1):
         rep.err("the hub link to %s needs data-no and data-note (its letter and what it covers)" % rel)
+    if link and not re.search(r'data-added="\d{4}-\d\d-\d\d"', link.group(1)):
+        rep.err("the hub link to %s needs data-added=\"YYYY-MM-DD\", the day it went online (js/whatsnew.js)" % rel)
     check_smoke(path, rep)
     return rep
 
@@ -475,6 +479,8 @@ def check(path):
         want = len(boxes) + lab_count
         if int(entry.group(1)) != want:
             rep.err("index.html data-total is %s but the checklist has %d items and the lab %d experiments (%d)" % (entry.group(1), len(boxes), lab_count, want))
+        if not re.search(r'data-key="%s"[^>]*data-added="\d{4}-\d\d-\d\d"' % re.escape(key), hub):
+            rep.err("index.html chapter entry needs data-added=\"YYYY-MM-DD\", the day it went online (js/whatsnew.js)")
         dl = re.search(r'data-key="%s"[^>]*data-lab="(\d+)"' % re.escape(key), hub)
         if lab_count and (not dl or int(dl.group(1)) != lab_count):
             rep.err("index.html chapter entry needs data-lab=\"%d\" (lab experiments)" % lab_count)

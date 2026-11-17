@@ -63,7 +63,7 @@ Every PDF carries a faint "Made by Thanate Amornjiraporn (Focus)" watermark, and
 
 ## Adding pages
 
-- **A study guide, lab, appendix, or worked-solutions page:** follow its standard in [docs/](docs/). Each names the reference page to copy and the check to pass; the [markup standard](docs/MARKUP-STANDARD.md) says how maths, signs, and diagrams are written.
+- **A study guide, lab, appendix, or worked-solutions page:** follow its standard in [docs/](docs/). Each names the reference page to copy and the check to pass. Its hub entry carries `data-added` with the day it goes online, so it shows in the "Recently added" notice for two weeks; the [markup standard](docs/MARKUP-STANDARD.md) says how maths, signs, and diagrams are written.
 - **A new semester or subject:** in `index.html`, copy the `<section class="semester">` or `<li class="subject">` block (the templates are in comments there); a new subject also needs its colour family in `css/system.css`. A course part with material gets the class `has`.
 - **A release:** add an entry at the top of [about/version-log.html](about/version-log.html) and update [about/how-to-use.html](about/how-to-use.html) if a feature works differently. Commit; GitHub Pages updates the site within a minute or two.
 

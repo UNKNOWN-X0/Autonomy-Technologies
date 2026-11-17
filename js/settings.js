@@ -20,11 +20,15 @@
   try {
     if (localStorage.getItem("rail-folded") === "1") root.classList.add("rail-folded");
   } catch (e) {}
-  // The HUD layer (js/hud.js) rides along with this file, so pages need no extra script tag.
+  // The HUD layer (js/hud.js) and the "Recently added" notice (js/whatsnew.js) ride along with this file, so pages
+  // need no extra script tag.
   if (document.currentScript) {
-    var hud = document.createElement("script");
-    hud.src = document.currentScript.src.replace(/settings\.js(\?.*)?$/, "hud.js");
-    document.head.appendChild(hud);
+    var me = document.currentScript.src;
+    ["hud.js", "whatsnew.js"].forEach(function (name) {
+      var s = document.createElement("script");
+      s.src = me.replace(/settings\.js(\?.*)?$/, name);
+      document.head.appendChild(s);
+    });
   }
   // Every script asks this instead of the media query, so the site setting and the system setting both count.
   window.siteReduceMotion = function () {

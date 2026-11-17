@@ -32,7 +32,7 @@
   "30": "Agent instructions",
   "31": "Formula tests (APDR 2 and 3, MEI 3)",
   "32": "APDR 5 lab: memory",
-  "33": "Guide checker and PDF converter internals",
+  "33": "MEI 4 lab: complex numbers",
   "34": "MEI 1 formulas",
   "35": "MEI 3 lab: mappings",
   "36": "Heading effects and reading chip",
@@ -52,8 +52,10 @@
   "50": "Tooling rules",
   "51": "Worked-solutions rules",
   "52": "EEI 2 formulas",
-  "53": "Lab question generator tests",
-  "54": "EEI 2 formula tests",
+  "53": "MEI 4 formulas: complex arithmetic",
+  "54": "Recently added notice",
   "55": "APDR 3/4 lab: floating-point accuracy",
-  "56": "Appendix rules"
+  "56": "Appendix rules",
+  "57": "Lab challenge tests",
+  "58": "MEI 4 formula tests"
 }

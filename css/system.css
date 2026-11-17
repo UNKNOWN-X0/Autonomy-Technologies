@@ -956,3 +956,147 @@ dialog.settings h2 {
   border-top: 0;
   padding-top: 0;
 }
+
+/* "Recently added" (js/whatsnew.js): pages that went online in the last 14 days and are not dismissed yet, in a small
+   panel at the bottom right (full width on phones). It never takes focus or blocks the page. Built like the settings
+   console: --hud-c corner brackets on surface, square corners, no shadow; each page named by its subject code square. */
+.whats-new {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 60;
+  width: min(360px, calc(100vw - 32px));
+  padding: 14px 16px 16px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--hud-c), var(--hud-c)) left top / 14px 2px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) left top / 2px 14px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) right top / 14px 2px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) right top / 2px 14px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) left bottom / 14px 2px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) left bottom / 2px 14px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) right bottom / 14px 2px no-repeat,
+    linear-gradient(var(--hud-c), var(--hud-c)) right bottom / 2px 14px no-repeat,
+    var(--surface);
+  color: var(--ink);
+  font: 400 1rem/1.4 var(--f-body);
+}
+.wn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.wn-h {
+  margin: 0;
+  font: 800 1.1rem/1.2 var(--f-display);
+}
+.wn-x {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid var(--act);
+  background: transparent;
+  color: var(--act);
+  cursor: pointer;
+}
+.wn-x:hover {
+  background: var(--fau-tint);
+}
+.whats-new ul {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.whats-new li {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+.whats-new li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 6px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color 150ms var(--ease);
+}
+.whats-new li a:hover {
+  background: var(--paper);
+}
+.wn-code {
+  flex: none;
+  width: 4.2em;
+  padding: 4px 5px;
+  background: var(--course);
+  color: var(--code-ink);
+  font: 800 0.75rem/1.2 var(--f-display);
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.wn-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.wn-title {
+  font: 700 0.95rem/1.25 var(--f-display);
+}
+.wn-meta {
+  color: var(--muted);
+  font: 500 0.8rem/1.3 var(--f-body);
+}
+.wn-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wn-foot a {
+  color: var(--link);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.wn-foot .btn {
+  min-height: 40px;
+}
+@media (max-width: 600px) {
+  .whats-new {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    width: auto;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .whats-new {
+    animation: wn-in 320ms var(--ease) both;
+  }
+  .whats-new.out {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 200ms var(--ease),
+      transform 200ms var(--ease);
+  }
+}
+.whats-new.out {
+  opacity: 0;
+}
+@keyframes wn-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@media print {
+  .whats-new {
+    display: none;
+  }
+}
