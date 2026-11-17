@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794941976.0089078,
-    "seen": 1794942142.890008,
-    "ast_hash": "c7a0919bbd014c4d03b84cf8dc9b3b97",
+    "mtime": 1794943155.5155303,
+    "seen": 1794943580.473152,
+    "ast_hash": "604fac204edcf3623b6ae529381298d6",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "tools/check-guide.py": {
-    "mtime": 1794923836.1396732,
-    "seen": 1794940637.073931,
-    "ast_hash": "ba99eb6288f08e18064fc6162c079eae",
+    "mtime": 1794943137.7248378,
+    "seen": 1794943580.4730968,
+    "ast_hash": "6dca21f22e9c0d30c0e30b4c537005b6",
     "semantic_hash": ""
   },
   "js/tooltip.js": {
@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1794942131.0991235,
-    "seen": 1794942142.8899572,
-    "ast_hash": "171231cbdef96ee16807b4a183d3358f",
+    "mtime": 1794943578.3769298,
+    "seen": 1794943580.473112,
+    "ast_hash": "d117c0019207195ac9b0c9eb093a304a",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -492,8 +492,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1794940788.499151,
-    "seen": 1794942142.889775,
+    "mtime": 1794942170.544621,
+    "seen": 1794943580.473048,
     "ast_hash": "527c0b8b310ddc9a3667833d7100576a",
     "semantic_hash": ""
   },
@@ -759,6 +759,12 @@
     "mtime": 1794941996.90373,
     "seen": 1794942142.890026,
     "ast_hash": "23e60b537de8dd75b87733d1e5d9c1a5",
+    "semantic_hash": ""
+  },
+  "eei/appendix-b-mathematical-tools.html": {
+    "mtime": 1794943537.0940995,
+    "seen": 1794943580.4731362,
+    "ast_hash": "ea840ba8bdbfcccb827ed959039ba614",
     "semantic_hash": ""
   }
 }

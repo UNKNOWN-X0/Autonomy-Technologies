@@ -115,7 +115,8 @@ def check_files(root, html, path, page_dir, rep):
     if greek:
         rep.warn("%d Greek Σ/Π in formulas: use the n-ary signs ∑ and ∏ with op op-sum markup (Σm(…) is a name and is fine)" % greek)
     # C and MATLAB lines in a card keep their own characters (Signs); they carry ; or a type word or an → gloss
-    stars = sum(s.count("*") for s in (re.sub(r"<[^>]*>", " ", re.sub(r"<code\b.*?</code>", " ", a + b, flags=re.S)) for a, b in maths)
+    # a superscript that is only an asterisk is the complex conjugate (EEI notation x*), not a product
+    stars = sum(s.count("*") for s in (re.sub(r"<[^>]*>", " ", re.sub(r"<code\b.*?</code>|<sup>\*</sup>", " ", a + b, flags=re.S)) for a, b in maths)
                 if ";" not in s and "→" not in s and not re.search(r"\b(int|void|char|double|float)\b|\*\s*\(|^\s*\*\s*\w", s))
     if stars:
         rep.warn("%d asterisk(s) in formulas: write a product as · or ×" % stars)
