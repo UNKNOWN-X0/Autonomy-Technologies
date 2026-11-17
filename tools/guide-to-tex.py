@@ -69,7 +69,7 @@ TEXT_MATH = {"′": r"{}^{\prime}", "∑": r"\textstyle\sum", "∏": r"\textstyl
              "≈": r"\approx", "∝": r"\propto", "≪": r"\ll", "≤": r"\leq", "≥": r"\geq",
              "→": r"\to", "≠": r"\neq", "±": r"\pm", "∓": r"\mp", "·": r"\cdot",
              "×": r"\times", "−": "-", "√": r"\surd", "∞": r"\infty", "Σ": r"\Sigma",
-             "½": r"\tfrac12", "¬": r"\neg", "∧": r"\land", "∨": r"\lor",
+             "½": r"\tfrac12", "⅓": r"\tfrac13", "ℓ": r"\ell", "¬": r"\neg", "∧": r"\land", "∨": r"\lor",
              "⇒": r"\Rightarrow", "⇔": r"\Leftrightarrow", "∀": r"\forall", "∃": r"\exists",
              "∈": r"\in", "∉": r"\notin", "⊂": r"\subset", "⊆": r"\subseteq", "⊊": r"\subsetneq",
              "∪": r"\cup", "∩": r"\cap", "∅": r"\emptyset", "ℕ": r"\mathbb{N}",
@@ -129,7 +129,7 @@ def inline(node):
 
 
 # ---------- math mode (formula spans) ----------
-MATH_MAP = {"′": "'", "−": "-", "∘": r"\circ ", "↦": r"\mapsto ", "·": r"\cdot ", "×": r"\times ", "≈": r"\approx ", "½": r"\tfrac{1}{2}",
+MATH_MAP = {"′": "'", "−": "-", "∘": r"\circ ", "↦": r"\mapsto ", "·": r"\cdot ", "×": r"\times ", "≈": r"\approx ", "½": r"\tfrac{1}{2}", "⅓": r"\tfrac{1}{3}", "ℓ": r"\ell ",
             "Σ": r"\sum", "→": r"\to ", "∝": r"\propto ", "≪": r"\ll ", "√": r"\sqrt",
             "∞": r"\infty ", "≥": r"\geq ", "≤": r"\leq ", "±": r"\pm ", "∓": r"\mp ",
             "¬": r"\neg ", "∧": r"\land ", "∨": r"\lor ", "⇒": r"\Rightarrow ", "⇔": r"\Leftrightarrow ",
