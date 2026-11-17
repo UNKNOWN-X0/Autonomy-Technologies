@@ -532,6 +532,16 @@ def check_lab(path, key, rep):
 def main(paths):
     failed = False
     for p in paths:
+        # A lab is checked through its guide (check_lab runs from there); checking the lab file itself reports
+        # false errors such as missing PDF links, because labs have no print copy.
+        if p.endswith("-lab.html"):
+            guide = p[: -len("-lab.html")] + ".html"
+            if not os.path.exists(guide):
+                print("%s: lab has no guide beside it (%s)" % (p, guide))
+                failed = True
+                continue
+            print("%s: checking through its guide %s" % (p, guide))
+            p = guide
         rep = check(p)
         print("%s: %d errors, %d warnings" % (rep.name, len(rep.errors), len(rep.warnings)))
         for e in rep.errors:

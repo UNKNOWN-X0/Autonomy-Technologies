@@ -584,6 +584,12 @@ def main():
     print(f"graph-describe: {len(notes)} node notes" + (", shown in graph.html" if shown else ""))
     if unknown:
         print("graph-describe: add a plain description to FILES for: " + ", ".join(unknown))
+    labels_path = OUT / ".graphify_labels.json"
+    labels = json.loads(labels_path.read_text(encoding="utf-8")) if labels_path.exists() else {}
+    unnamed = sorted({str(n["community"]) for n in graph["nodes"] if "community" in n} - set(labels), key=int)
+    if unnamed:
+        print("graph-describe: name these communities in graphify-out/.graphify_labels.json, then run "
+              "`graphify cluster-only .` and this script again (STANDARDS.md, Graph): " + ", ".join(unnamed))
 
 
 if __name__ == "__main__":

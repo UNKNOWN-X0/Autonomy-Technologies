@@ -115,7 +115,7 @@ Add `generate()` wherever the question is a calculation or a classification that
 
 - **Guide to lab:** each matching guide section ends, just before its recall check, with `<p class="lab-link">` pointing at the experiment's anchor and naming it. The PDF converter drops these links.
 - **Lab to guide:** each challenge's `ref` produces a "Guide §…" link in the verdict and in the "Sure, but wrong" list.
-- **Checker:** `tools/check-guide.py` warns when an experiment has no guide link.
+- **Checker:** `tools/check-guide.py` (given the lab or its guide; a lab is always checked through its guide) warns when an experiment has no guide link.
 
 ## Acceptance
 

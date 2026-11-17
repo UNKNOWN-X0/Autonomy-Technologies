@@ -24,7 +24,7 @@ Personal study material written from the lecture notes. Each chapter has a retri
 
 ## Capabilities and Constraints
 
-- Structure: **semester → subject → course parts → chapters**. Semester 1 subjects: 92313 Algorithms, programming, and data representation (APDR: lecture, blackboard exercise, computer exercise); 62765 Mathematics for Engineers I (MEI: lecture, exercise); 92315 Electrical Engineering I (EEI: lecture, exercise, tutorial); 92317 Introduction to MATLAB (course, not started yet). Later semesters add sections, and some subjects continue as II and III.
+- Structure: **semester → subject → course parts → chapters**. Semester 1 subjects: 23131 Algorithms, programming, and data representation (APDR: lecture, blackboard exercise, computer exercise); 27651 Mathematics for Engineers I (MEI: lecture, exercise); 23151 Electrical Engineering I (EEI: lecture, exercise, tutorial); 23171 Introduction to MATLAB (course, not started yet). Later semesters add sections, and some subjects continue as II and III.
 - Static HTML, CSS and JS with no build step, published by GitHub Pages (Jekyll, `main` branch, root folder). The repository must stay public.
 - Pages: hub `index.html`, plus one folder per subject holding its chapter guides (`eei/ch1-electrostatic-fields.html`). Guides share `css/guide.css` and `js/guide.js`.
 - Maths is plain HTML (variables, sub- and superscripts, fraction spans), so it shows without JavaScript and in print.

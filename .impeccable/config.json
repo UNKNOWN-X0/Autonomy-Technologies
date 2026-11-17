@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "cambria math",
+        "createdAt": "2026-11-17T13:06:48.373Z",
+        "reason": "Claude: DESIGN.md Formula typography names Cambria Math in the math fallback stack"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "math\",\"stix two math\",\"times new roman\",serif",
+        "createdAt": "2026-11-17T13:06:48.391Z",
+        "reason": "Claude: DESIGN.md Formula typography names this math fallback stack"
+      }
+    ]
+  }
+}

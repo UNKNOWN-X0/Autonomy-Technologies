@@ -26,7 +26,7 @@ When two files disagree, the owner above wins and the other is fixed. The worksp
 
 How the hub, the rail, and the labs are built, and what a change must respect.
 
-- **Hub states.** `js/index.js` returns early when nothing is started (`if (!started)`), so a feature every visitor should see is called before that return. Check the hub with empty storage (first visit) and with seeded progress (`<key>-checks` in localStorage).
+- **Hub states.** `js/index.js` returns early when nothing is started (`if (!started)`), so a feature every visitor should see is called before that return. A chapter counts as started once its `<key>-log` has a study day. The workspace smoke test "hub renders for a first visit and with progress" loads the hub both ways; a new feature for every visitor adds its own assertion there.
 - **Headings and scripts.** `js/hud.js` (loaded by `js/settings.js`) runs after DOMContentLoaded, after `guide.js` and `nav.js` have read heading text. Anything that changes headings or adds UI near them stays outside the `h2` element.
 - **Hub route stops.** Route stops are pseudo-elements on each row's `.no` (number), not on the row, so they stay level with the number when a phone row stacks its buttons; `route()` ends the lit stretch on that number too. The lit line is `.subjects::after`, which paints after every child, so anything that must sit on top of it (the `.route-stop` at a subject tile) needs its own `z-index`. A row type added to a subject's panels (like `.part-item`) gets `.no::before` stops in the same selector list as chapters.
 - **Hub tabs and folding.** `js/index.js` builds the course-part tabs first, then the subject folds, which fold `.part-panels` (whatever tab is open) and relabel on the `parttab` event. Only subjects with more than one part get tabs. Exercise rows use `li.part-item`, never `li.chapter`: progress, the radar, and the route count every `li.chapter`.
@@ -39,7 +39,7 @@ How the hub, the rail, and the labs are built, and what a change must respect.
 
 ## Graph
 
-- **Community names** in `graphify-out/.graphify_labels.json` are written by hand in plain words ("EEI 1 lab: fields and capacitors"), because the owner reads the graph page. They survive refreshes while a community keeps most of its members; a new or reshaped community falls back to a file or function name. After a refresh, name any such community in that file and run `graphify cluster-only .` (no LLM labelling: it would need a paid backend), then `python3 -I tools/graph-describe.py`.
+- **Community names** in `graphify-out/.graphify_labels.json` are written by hand in plain words ("EEI 1 lab: fields and capacitors"), because the owner reads the graph page. They survive refreshes while a community keeps most of its members; a new or reshaped community falls back to a file or function name. After a refresh, `tools/graph-describe.py` lists every community with no name in that file; name each one there and run `graphify cluster-only .` (no LLM labelling: it would need a paid backend), then `python3 -I tools/graph-describe.py`.
 - **Node notes.** `tools/graph-describe.py` gives every node a plain-English note on graph.html (hover and the node panel), from the code comment above it, its name, and a hand-written description of its file; the workspace refresh runs it after each update. When it prints "add a plain description to FILES", add the new file to its `FILES` table; a well-connected node with a vague note gets a line in `OVERRIDES`. A clear comment above a new function is the best source.
 
 ## Lessons

@@ -1,7 +1,7 @@
-# Graph Report - AutonomyTechnologies  (2026-11-16)
+# Graph Report - AutonomyTechnologies  (2026-11-17)
 
 ## Corpus Check
-- 72 files · ~308,388 words
+- 72 files · ~308,323 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 6 file(s) not represented in the graph (top: .css 4, (none) 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `41f20646`
+- Built from commit: `9eb9a121`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -29,9 +29,9 @@
 - APDR 2 lab: computers and logic
 - APDR 2 guide: lecture source
 - APDR 2 guide: topics
-- index.js
+- Home page and chapter rail
 - APDR 4 lab: floating point
-- compile
+- MEI formula parser
 - Helper notes for AI agents
 - Saved question: hosting
 - Saved question: learner journey
@@ -41,36 +41,36 @@
 - Concept map
 - EEI lab design brief
 - Site preview picture
-- Study Pages project guide
+- Course overview: subjects and pages
 - APDR 4 formulas
 - APDR 3 formulas
 - APDR 34a lab: integers and floats
 - MEI 2 lab: real numbers
-- Project instructions
+- Agent instructions
 - Formula tests (APDR 2 and 3, MEI 3)
 - APDR 5 lab: memory
-- check-guide.py
+- Guide checker and PDF converter internals
 - MEI 1 formulas
 - MEI 3 lab: mappings
 - Heading effects and reading chip
 - Lab question and MEI tests
 - MEI 2 formulas
 - MEI 3 formulas
-- Study guide standard
+- Study guide rules
 - EEI 2 lab: currents and resistance
 - APDR 5 formulas
 - EEI 1 formula tests
-- Product
-- apdr/ch2-physics.js
+- Product truth
+- APDR 2 lab: NAND gate models
 - PDF converter core and graph notes
-- page-check.sh
+- Page check script
 - Home page orb
-- Tooling standard
-- Exercise solutions standard
+- Tooling rules
+- Worked-solutions rules
 - EEI 2 formulas
 - Lab question generator tests
 - EEI 2 formula tests
-- Appendix standard
+- Appendix rules
 
 ## God Nodes (most connected - your core abstractions)
 1. `fieldPlayground()` - 30 edges
@@ -89,9 +89,9 @@
   docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Challenges` --references--> `reveal()`  [INFERRED]
   docs/LAB-STANDARD.md → js/nav.js
-- `Markup` --references--> `T()`  [INFERRED]
-  docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Formulas` --references--> `T()`  [INFERRED]
+  docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
+- `Markup` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Code` --references--> `route()`  [INFERRED]
   STANDARDS.md → js/index.js
@@ -153,7 +153,7 @@ Nodes (3): APDR lecture slides: Algorithms, programming and data representation;
 Cohesion: 0.20
 Nodes (11): Algorithm, Boolean expressions, Boolean laws, De Morgan's laws, Logic gates, NAND, Physical circuits, Program language (+3 more)
 
-### Community 13 - "index.js"
+### Community 13 - "Home page and chapter rail"
 Cohesion: 0.05
 Nodes (37): ago(), countUp(), foldBoard(), go(), light(), reach(), reroute(), route() (+29 more)
 
@@ -161,7 +161,7 @@ Nodes (37): ago(), countUp(), foldBoard(), go(), light(), reach(), reroute(), ro
 Cohesion: 0.11
 Nodes (29): animate(), arithmeticResult(), arrow(), box(), challenge(), colours(), drawArithmetic(), drawFraction() (+21 more)
 
-### Community 15 - "compile"
+### Community 15 - "MEI formula parser"
 Cohesion: 0.23
 Nodes (16): bool(), compile(), atom(), expr(), power(), startsAtom(), take(), term() (+8 more)
 
@@ -185,7 +185,7 @@ Nodes (32): arrow(), charge(), COORD(), add(), arc(), axis(), dot(), fit() (+24 
 Cohesion: 0.46
 Nodes (7): below(), box(), draw(), pulse(), redraw(), select(), stopPulses()
 
-### Community 25 - "Study Pages project guide"
+### Community 25 - "Course overview: subjects and pages"
 Cohesion: 0.20
 Nodes (13): Electrical Engineering I study cards, Mathematics for Engineers I study cards, Study Pages home page, Active-recall study workflow, Electrical Engineering I, Electrostatic Fields interactive lab, Electrostatic Fields study guide, GitHub Pages hosting (+5 more)
 
@@ -205,7 +205,7 @@ Nodes (16): challenge(), colors(), draw(), drawColumns(), drawFields(), drawLine
 Cohesion: 0.16
 Nodes (26): binaryDraw(), bindSlider(), boundsDraw(), box(), distanceDraw(), distinct(), guess(), inductionDraw() (+18 more)
 
-### Community 30 - "Project instructions"
+### Community 30 - "Agent instructions"
 Cohesion: 0.67
 Nodes (3): Local workflow, Project data, Project instructions
 
@@ -213,7 +213,7 @@ Nodes (3): Local workflow, Project data, Project instructions
 Cohesion: 0.26
 Nodes (12): box(), challenge(), colours(), draw(), fit(), hx(), label(), line() (+4 more)
 
-### Community 33 - "check-guide.py"
+### Community 33 - "Guide checker and PDF converter internals"
 Cohesion: 0.10
 Nodes (14): all_nodes(), answers_of(), check(), check_appendix(), check_exercise(), check_files(), check_lab(), check_smoke() (+6 more)
 
@@ -237,7 +237,7 @@ Nodes (6): context(), fake(), loadExperiments(), ROOT, runEngine(), cube
 Cohesion: 0.14
 Nodes (4): discriminant(), relationValues(), roots(), squarePreimages()
 
-### Community 40 - "Study guide standard"
+### Community 40 - "Study guide rules"
 Cohesion: 0.18
 Nodes (11): Acceptance, Content rules, Decisions, Files, Labs, Page structure, Practice and testing, Principles (+3 more)
 
@@ -245,11 +245,11 @@ Nodes (11): Acceptance, Content rules, Decisions, Files, Labs, Page structure, P
 Cohesion: 0.18
 Nodes (18): angle(), challenge(), draw(), marker(), text(), fmt(), getControls(), mount() (+10 more)
 
-### Community 45 - "Product"
+### Community 45 - "Product truth"
 Cohesion: 0.20
 Nodes (10): Accessibility & Inclusion, Brand Commitments, Capabilities and Constraints, Evidence on Hand, Operating Context, Platform, Product, Product Principles (+2 more)
 
-### Community 46 - "apdr/ch2-physics.js"
+### Community 46 - "APDR 2 lab: NAND gate models"
 Cohesion: 0.36
 Nodes (4): nand(), nandAnd(), nandCircuit(), nandOr()
 
@@ -257,7 +257,7 @@ Nodes (4): nand(), nandAnd(), nandCircuit(), nandOr()
 Cohesion: 0.06
 Nodes (38): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs, amap_data() (+30 more)
 
-### Community 48 - "page-check.sh"
+### Community 48 - "Page check script"
 Cohesion: 0.48
 Nodes (6): fail(), pass(), PATH, page-check.sh script, skip(), warn()
 
@@ -265,11 +265,11 @@ Nodes (6): fail(), pass(), PATH, page-check.sh script, skip(), warn()
 Cohesion: 0.54
 Nodes (7): draw(), frame(), kick(), load(), readColours(), reduced(), token()
 
-### Community 50 - "Tooling standard"
+### Community 50 - "Tooling rules"
 Cohesion: 0.33
 Nodes (6): Acceptance, Normal authoring workflow, Source and generated files, Tool changes, Tool roles, Tooling standard
 
-### Community 51 - "Exercise solutions standard"
+### Community 51 - "Worked-solutions rules"
 Cohesion: 0.40
 Nodes (5): Acceptance, Exercise solutions standard, Files and source, Learning sequence, Page frame
 
@@ -281,7 +281,7 @@ Nodes (5): Acceptance, EEI Chapter 2 lab: Stationary Currents, Experiments (in c
 Cohesion: 0.38
 Nodes (5): context(), defsOf(), fake(), labs, ROOT
 
-### Community 56 - "Appendix standard"
+### Community 56 - "Appendix rules"
 Cohesion: 0.67
 Nodes (3): Acceptance, Appendix standard, Page
 
@@ -298,8 +298,8 @@ Nodes (3): Acceptance, Appendix standard, Page
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `STANDARDS.md`?**
-  _High betweenness centrality (0.149) - this node is a cross-community bridge._
+- **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
+  _High betweenness centrality (0.144) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**
