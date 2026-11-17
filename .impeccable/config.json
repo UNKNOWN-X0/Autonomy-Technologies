@@ -14,6 +14,129 @@
         "value": "math\",\"stix two math\",\"times new roman\",serif",
         "createdAt": "2026-11-17T13:06:48.391Z",
         "reason": "Claude: DESIGN.md Formula typography names this math fallback stack"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(0, 0, 0)",
+        "createdAt": "2026-11-17T13:46:37.424Z",
+        "reason": "Claude: the only source is the square-root bar (.sqrt > .rad border-top: currentColor in css/guide.css); the static scan resolves currentColor as black. No literal black exists in css/"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.444Z",
+        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "about/*.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.460Z",
+        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "mei/*.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.476Z",
+        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "eei/*.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.491Z",
+        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "apdr/*.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.508Z",
+        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "*/*-lab.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.523Z",
+        "reason": "Claude: lab .stage frames hold a full-bleed canvas with no text; .seg and .analogy centre their labels in 40-44px boxes; checked css/lab.css"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "eei/ch1-electrostatic-fields.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.540Z",
+        "reason": "Claude: the only finding is a square-root radicand span whose border-top is the root bar, which must touch its radicand (css/guide.css .sqrt > .rad)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "eei/tutorial-5-worked-solutions.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.556Z",
+        "reason": "Claude: the only finding is a square-root radicand span whose border-top is the root bar, which must touch its radicand (css/guide.css .sqrt > .rad)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "mei/exercise-4-worked-solutions.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.572Z",
+        "reason": "Claude: the only finding is a square-root radicand span whose border-top is the root bar, which must touch its radicand (css/guide.css .sqrt > .rad)"
+      },
+      {
+        "rule": "em-dash-overuse",
+        "value": "*",
+        "files": [
+          "apdr/ch3-data-representation-lab.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.588Z",
+        "reason": "Claude: the dashes are empty-readout placeholders in <dd data-out>/<output> that lab JavaScript replaces with values, not prose"
+      },
+      {
+        "rule": "em-dash-overuse",
+        "value": "*",
+        "files": [
+          "eei/ch1-electrostatic-fields-lab.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.605Z",
+        "reason": "Claude: the dashes are empty-readout placeholders in <dd data-out>/<output> that lab JavaScript replaces with values, not prose"
+      },
+      {
+        "rule": "em-dash-overuse",
+        "value": "*",
+        "files": [
+          "eei/ch2-stationary-currents-lab.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.623Z",
+        "reason": "Claude: the dashes are empty-readout placeholders in <dd data-out>/<output> that lab JavaScript replaces with values, not prose"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-17T13:46:37.712Z",
+        "reason": "Claude: DESIGN.md Weight Signs Rule: weight, not size, separates headings from text on the hub"
       }
     ]
   }
