@@ -1,7 +1,9 @@
 # Graph Report - AutonomyTechnologies  (2026-11-18)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 87 files · ~413,420 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 8 file(s) not represented in the graph (top: .css 5, (none) 2, .ico 1)
 
 ## Summary
 - 1466 nodes · 2947 edges · 75 communities (61 shown, 14 thin omitted)
@@ -9,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ec573a29`
+- Built from commit: `11708a13`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -375,7 +377,7 @@ Nodes (7): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.151) - this node is a cross-community bridge._
+  _High betweenness centrality (0.138) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795007164.1176622,
-    "seen": 1795007521.656043,
-    "ast_hash": "a682eea5d070d137e2193eaf84b6e4c9",
+    "mtime": 1795010330.1236362,
+    "seen": 1795010454.899808,
+    "ast_hash": "977fbdfae5f11b9ad97cf460955f61a9",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -168,9 +168,9 @@
     "semantic_hash": ""
   },
   "apdr/ch2-computers.html": {
-    "mtime": 1794992088.1746554,
-    "seen": 1794992147.374604,
-    "ast_hash": "96a234a4bc1c7e82afa162c2803e7d40",
+    "mtime": 1795008944.3154151,
+    "seen": 1795010454.89977,
+    "ast_hash": "bbfd127936077b81203cb041460be84a",
     "semantic_hash": ""
   },
   "js/mei/ch1-lab.js": {
@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795008608.7500534,
-    "seen": 1795008689.887421,
-    "ast_hash": "ef6b778ecd0aacf5d469245100c891b7",
+    "mtime": 1795023935.681586,
+    "seen": 1795024025.899754,
+    "ast_hash": "4cc2800991cb40c8260179c37e665801",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -492,8 +492,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795008093.0413651,
-    "seen": 1795008689.887043,
+    "mtime": 1795023568.494914,
+    "seen": 1795024025.899679,
     "ast_hash": "bd57063a632fddafaac7ca02ec370960",
     "semantic_hash": ""
   },
@@ -696,9 +696,9 @@
     "semantic_hash": ""
   },
   "docs/APPENDIX-STANDARD.md": {
-    "mtime": 1795007510.9172688,
-    "seen": 1795007521.656018,
-    "ast_hash": "7018c0e1e76bf563ce8704e3244c157c",
+    "mtime": 1795023935.680509,
+    "seen": 1795024025.899775,
+    "ast_hash": "3b3de2c425291fd02eda17ad4814fbfa",
     "semantic_hash": ""
   },
   "docs/MARKUP-STANDARD.md": {
@@ -876,15 +876,15 @@
     "semantic_hash": ""
   },
   "tools/print-sheet.cjs": {
-    "mtime": 1795008386.0861242,
-    "seen": 1795008689.887386,
-    "ast_hash": "bf17742c93dca43416f1cc110807e021",
+    "mtime": 1795023999.5086598,
+    "seen": 1795024025.899742,
+    "ast_hash": "8be9b63fa3077c760cdf2239bf2eceac",
     "semantic_hash": ""
   },
   "mei/appendix-b-exam-sheet-i.html": {
-    "mtime": 1795008585.6831028,
-    "seen": 1795008689.8874738,
-    "ast_hash": "ca8b23e6668314270a74f69436b3e5cb",
+    "mtime": 1795023935.6791523,
+    "seen": 1795024025.899801,
+    "ast_hash": "e3b1171ec230f66aaa6126045d8f887c",
     "semantic_hash": ""
   }
 }

@@ -22,7 +22,8 @@ const pdf = src.replace(/\.html$/, ".pdf");
 
 (async () => {
   const browser = await chromium.launch();
-  const tab = await browser.newPage({ viewport: { width: 794, height: 1123 } });
+  // Heading animations must not change the text or its metrics during printing.
+  const tab = await browser.newPage({ viewport: { width: 794, height: 1123 }, reducedMotion: "reduce" });
   await tab.goto("file://" + src, { waitUntil: "networkidle" });
   await tab.emulateMedia({ media: "print", colorScheme: "light" });
   // measure only in the real print face: fonts.ready alone can resolve before a web font is even requested
