@@ -32,3 +32,15 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch34a-integer-and-floating-point.html | b84f5b2fc185 | 2026-11-18 | Pass, no errors found |
 | js/apdr/ch34-lab.js | 2c099865cd67 | 2026-11-18 | Pass, no errors found |
 | apdr/ch34a-integer-and-floating-point-lab.html | b02acd7a4a49 | 2026-11-18 | Pass, no errors found |
+| apdr/ch4-floating-point-numbers.html | 220ae2ba84f8 | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch4-lab.js | 9125950cb3e3 | 2026-11-18 | Pass, no errors found |
+| apdr/ch4-floating-point-numbers-lab.html | ca9bb154e731 | 2026-11-18 | Pass, no errors found |
+| apdr/ch5-memory-organisation.html | 22d02a1e679b | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch5-lab.js | 1729b778334b | 2026-11-18 | Pass, no errors found |
+| apdr/ch5-memory-organisation-lab.html | cc9916107222 | 2026-11-18 | Pass, no errors found |
+| apdr/ch6-branching-and-iteration.html | 001cf7198fb1 | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| js/apdr/ch6-lab.js | 93a879b5e5c8 | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| apdr/ch6-branching-and-iteration-lab.html | 2be95e2d663b | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| apdr/ch7-functions-tuples-lists.html | 0c4f0adee920 | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| js/apdr/ch7-lab.js | 49c208979c62 | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| apdr/ch7-functions-tuples-lists-lab.html | 7382bbd45340 | 2026-11-18 | Pass; Python results re-run in Python 3 |
