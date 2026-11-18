@@ -23,3 +23,12 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | mei/ch2-real-numbers-lab.html | 12792e5c05be | 2026-11-18 | Pass |
 | mei/ch3-mappings-lab.html | 44203fef40ef | 2026-11-18 | Pass |
 | mei/ch4-complex-numbers-lab.html | 5fae6e75a783 | 2026-11-18 | Pass |
+| apdr/ch2-computers.html | e59f2b85b99d | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch2-lab.js | fa150f9e449b | 2026-11-18 | Pass, no errors found |
+| apdr/ch2-computers-lab.html | 783894f08f69 | 2026-11-18 | Pass, no errors found |
+| apdr/ch3-data-representation.html | 91fd975fb7ab | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch3-lab.js | 3eb6515a0fbf | 2026-11-18 | Pass, no errors found |
+| apdr/ch3-data-representation-lab.html | 81f6f2e0380f | 2026-11-18 | Pass, no errors found |
+| apdr/ch34a-integer-and-floating-point.html | b84f5b2fc185 | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch34-lab.js | 2c099865cd67 | 2026-11-18 | Pass, no errors found |
+| apdr/ch34a-integer-and-floating-point-lab.html | b02acd7a4a49 | 2026-11-18 | Pass, no errors found |
