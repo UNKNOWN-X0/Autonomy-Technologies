@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "eei/ch1-electrostatic-fields.html": {
-    "mtime": 1795039625.3739777,
-    "seen": 1795040020.890694,
-    "ast_hash": "9fddd5433baff9de6c107e4ad8e83fcc",
+    "mtime": 1795041212.6501462,
+    "seen": 1795041533.210043,
+    "ast_hash": "a5f874943bca0ff15d3145ff1959fa6b",
     "semantic_hash": ""
   },
   "tools/check-guide.py": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795040903.7881708,
-    "seen": 1795040933.204469,
-    "ast_hash": "170707f108dbf26e24599723575f380c",
+    "mtime": 1795040993.223795,
+    "seen": 1795041533.209931,
+    "ast_hash": "828c2f802a4d096443f20c2002006fb6",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795040904.8047,
-    "seen": 1795040933.2046552,
-    "ast_hash": "6850ea11fa52997efa6e98e9bfd1016d",
+    "mtime": 1795041384.310863,
+    "seen": 1795041533.210036,
+    "ast_hash": "1e4562e0b2d62a03e076697cdf20ff66",
     "semantic_hash": ""
   }
 }
