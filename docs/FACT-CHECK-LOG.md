@@ -44,3 +44,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch7-functions-tuples-lists.html | 0c4f0adee920 | 2026-11-18 | Pass; Python results re-run in Python 3 |
 | js/apdr/ch7-lab.js | 49c208979c62 | 2026-11-18 | Pass; Python results re-run in Python 3 |
 | apdr/ch7-functions-tuples-lists-lab.html | 7382bbd45340 | 2026-11-18 | Pass; Python results re-run in Python 3 |
+| apdr/ch12a-boolean-algebra.html | 5a852c79bbab | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
+| js/apdr/ch12-lab.js | ea2623f1040f | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
+| apdr/ch12a-boolean-algebra-lab.html | 745f928d5340 | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
