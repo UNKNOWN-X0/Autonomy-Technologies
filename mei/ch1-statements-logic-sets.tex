@@ -437,7 +437,7 @@ Let X=\{a,b\}. List \ensuremath{\mathcal{P}}(X) and its size.
 Each operation is easiest to understand by asking when an arbitrary element x belongs to the result. Sets with empty intersection are called \textbf{disjoint}.
 
 \begin{equationcard}{Operations and membership tests}
-\[ \begin{gathered} {x}\, \in \, {A}\, \cup \, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \lor \, ({x}\, \in \, {B}) \\ {x}\, \in \, {A}\, \cap \, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \in \, {B}) \\ {x}\, \in \, {A}\, \\, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B}) \\ {A}\, \times \, {B}\, =\, \{({a},{b}):\, {a}\, \in \, {A}\, \text{and}\, {b}\, \in \, {B}\} \\ {A}^{c}\, =\, {X}\, \\, {A},\, \text{where}\, {X}\, \text{is}\, \text{the}\, \text{fixed}\, \text{non}-\text{empty}\, \text{universal}\, \text{set} \end{gathered} \]
+\[ \begin{gathered} {x}\, \in \, {A}\, \cup \, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \lor \, ({x}\, \in \, {B}) \\ {x}\, \in \, {A}\, \cap \, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \in \, {B}) \\ {x}\, \in \, {A}\, \setminus \, {B}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B}) \\ {A}\, \times \, {B}\, =\, \{({a},{b}):\, {a}\, \in \, {A}\, \text{and}\, {b}\, \in \, {B}\} \\ {A}^{c}\, =\, {X}\, \setminus \, {A},\, \text{where}\, {X}\, \text{is}\, \text{the}\, \text{fixed}\, \text{non}-\text{empty}\, \text{universal}\, \text{set} \end{gathered} \]
 {\small \emph{Read it as: “x is in A union B exactly when x is in A or x is in B”, and the same with “and” for the intersection.}\par Pairs are ordered: (a,b) is generally different from (b,a). A complement is defined for A \ensuremath{\subset} X, relative to X. The notes also write an overline, A̅, for A\ensuremath{^{c}}.}
 \end{equationcard}
 
@@ -549,7 +549,7 @@ Set identities can be proved by translating both sides into membership condition
 \end{center}
 
 \begin{equationcard}{Logic and sets side by side}
-\[ \begin{gathered} {A}\land {B}\, ↔\, {A}\cap {B} \\ {A}\lor {B}\, ↔\, {A}\cup {B} \\ \neg {A}\, ↔\, {A}^{c} \\ {A}\, \Rightarrow \, {B}\, ↔\, {A}\subset {B} \\ {A}\, \Leftrightarrow \, {B}\, ↔\, {A}\, =\, {B} \end{gathered} \]
+\[ \begin{gathered} {A}\land {B}\, \leftrightarrow \, {A}\cap {B} \\ {A}\lor {B}\, \leftrightarrow \, {A}\cup {B} \\ \neg {A}\, \leftrightarrow \, {A}^{c} \\ {A}\, \Rightarrow \, {B}\, \leftrightarrow \, {A}\subset {B} \\ {A}\, \Leftrightarrow \, {B}\, \leftrightarrow \, {A}\, =\, {B} \end{gathered} \]
 {\small Each set rule in Theorem 1.13 is the matching logic rule of Theorem 1.4 applied to membership: for example x\ensuremath{\in}A\ensuremath{\cap}B \ensuremath{\Leftrightarrow} x\ensuremath{\in}A \ensuremath{\land} x\ensuremath{\in}B. The notes prove (R1) this way: x\ensuremath{\in}(A\ensuremath{^{c}})\ensuremath{^{c}} \ensuremath{\Leftrightarrow} \ensuremath{\neg}(x\ensuremath{\in}A\ensuremath{^{c}}) \ensuremath{\Leftrightarrow} \ensuremath{\neg}\ensuremath{\neg}(x\ensuremath{\in}A) \ensuremath{\Leftrightarrow} x\ensuremath{\in}A (notes p. 11).}
 \end{equationcard}
 

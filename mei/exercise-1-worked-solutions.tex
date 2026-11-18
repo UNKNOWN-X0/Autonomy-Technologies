@@ -443,24 +443,24 @@ Let \textit{A}, \textit{B} and \textit{C} mean that Anton, Bert and Christoph, r
 For i), membership in \textit{A} \textbackslash{} \textit{B} means “in \textit{A} and not in \textit{B}”. Intersecting with \textit{C} adds one more “and”:
 
 \Needspace{4\baselineskip}
-\begin{equation*}{x}\, \in \, ({A}\, \\, {B})\, \cap \, {C}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B})\, \land \, ({x}\, \in \, {C})\end{equation*}
+\begin{equation*}{x}\, \in \, ({A}\, \setminus \, {B})\, \cap \, {C}\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B})\, \land \, ({x}\, \in \, {C})\end{equation*}
 
 Keep the part shared by \textit{A} and \textit{C} that lies outside \textit{B}.
 \item \Needspace{5\baselineskip}
 For ii), union means “or”. Keep every point in \textit{C}, together with any point that is in \textit{A} but outside \textit{B}:
 
-\begin{equation*}{x}\, \in \, ({A}\, \\, {B})\, \cup \, {C}\, \Leftrightarrow \, (({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B}))\, \lor \, ({x}\, \in \, {C})\end{equation*}
+\begin{equation*}{x}\, \in \, ({A}\, \setminus \, {B})\, \cup \, {C}\, \Leftrightarrow \, (({x}\, \in \, {A})\, \land \, ({x}\, \notin \, {B}))\, \lor \, ({x}\, \in \, {C})\end{equation*}
 \item \Needspace{5\baselineskip}
 For iii), a complement keeps the points in \textit{X} that fail membership in the whole union. De Morgan’s law changes “not (P or Q)” to “not P and not Q”:
 
 \Needspace{4\baselineskip}
-\begin{equation*}(({A}\, \\, {B})\, \cup \, {C})^{\mathrm{c}}\, =\, (({A}\, \\, {B})^{\mathrm{c}})\, \cap \, {C}^{\mathrm{c}}\, =\, ({A}^{\mathrm{c}}\, \cup \, {B})\, \cap \, {C}^{\mathrm{c}}\end{equation*}
+\begin{equation*}(({A}\, \setminus \, {B})\, \cup \, {C})^{\mathrm{c}}\, =\, (({A}\, \setminus \, {B})^{\mathrm{c}})\, \cap \, {C}^{\mathrm{c}}\, =\, ({A}^{\mathrm{c}}\, \cup \, {B})\, \cap \, {C}^{\mathrm{c}}\end{equation*}
 
 So keep points outside \textit{C} and either outside \textit{A} or inside \textit{B}.
 \item \Needspace{5\baselineskip}
 For iv), first combine the two differences: \textit{A} \textbackslash{} \textit{C} and \textit{B} \textbackslash{} \textit{C} together are all of \textit{A} \ensuremath{\cup} \textit{B} with \textit{C} removed. Complementing adds \textit{C} back and keeps the points outside both \textit{A} and \textit{B}:
 
-\begin{equation*}(({A}\, \\, {C})\, \cup \, ({B}\, \\, {C}))^{\mathrm{c}}\, =\, (({A}\, \cup \, {B})\, \\, {C})^{\mathrm{c}}\, =\, ({A}\, \cup \, {B})^{\mathrm{c}}\, \cup \, {C}\end{equation*}
+\begin{equation*}(({A}\, \setminus \, {C})\, \cup \, ({B}\, \setminus \, {C}))^{\mathrm{c}}\, =\, (({A}\, \cup \, {B})\, \setminus \, {C})^{\mathrm{c}}\, =\, ({A}\, \cup \, {B})^{\mathrm{c}}\, \cup \, {C}\end{equation*}
 \item \textbf{Check:} in iii) any point inside \textit{C} is excluded; in iv) every point inside \textit{C} is included. That opposite treatment is a quick way to catch a misplaced complement.
 \end{enumerate}
 \end{workedbox}
@@ -481,9 +481,9 @@ For iv), first combine the two differences: \textit{A} \textbackslash{} \textit{
 \begin{equation*}{A}\, \cap \, {B}\, =\, \emptyset \end{equation*}
 
 \Needspace{4\baselineskip}
-\begin{equation*}{A}\, \\, {B}\, =\, {A}\end{equation*}
+\begin{equation*}{A}\, \setminus \, {B}\, =\, {A}\end{equation*}
 
-\begin{equation*}{B}\, \\, {A}\, =\, {B}\end{equation*}
+\begin{equation*}{B}\, \setminus \, {A}\, =\, {B}\end{equation*}
 \item \Needspace{5\baselineskip}
 The Cartesian product asks for ordered pairs whose first entry is in the first factor and second entry is in the second:
 
@@ -508,7 +508,7 @@ There are 2² = 4 subsets, matching the two elements of \textit{C}.
 \item \Needspace{4\baselineskip}
 Take any \textit{x}. It belongs to the left-hand side exactly when it is in \textit{A} but not in \textit{A} \textbackslash{} \textit{B}:
 
-\begin{equation*}{x}\, \in \, {A}\, \\, ({A}\, \\, {B})\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, \neg ({x}\, \in \, {A}\, \\, {B})\end{equation*}
+\begin{equation*}{x}\, \in \, {A}\, \setminus \, ({A}\, \setminus \, {B})\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, \neg ({x}\, \in \, {A}\, \setminus \, {B})\end{equation*}
 \item \Needspace{4\baselineskip}
 Expand the inner difference: \textit{x} \ensuremath{\in} \textit{A} \textbackslash{} \textit{B} means \textit{x} \ensuremath{\in} \textit{A} and \textit{x} \ensuremath{\notin} \textit{B}. Therefore:
 
@@ -516,7 +516,7 @@ Expand the inner difference: \textit{x} \ensuremath{\in} \textit{A} \textbacksla
 \item \Needspace{5\baselineskip}
 Because we already know \textit{x} \ensuremath{\in} \textit{A}, the negated inner condition reduces to \textit{x} \ensuremath{\in} \textit{B}. Thus membership is equivalent to \textit{x} \ensuremath{\in} \textit{A} and \textit{x} \ensuremath{\in} \textit{B}:
 
-\begin{equation*}{x}\, \in \, {A}\, \\, ({A}\, \\, {B})\, \Leftrightarrow \, {x}\, \in \, {A}\, \cap \, {B}\end{equation*}
+\begin{equation*}{x}\, \in \, {A}\, \setminus \, ({A}\, \setminus \, {B})\, \Leftrightarrow \, {x}\, \in \, {A}\, \cap \, {B}\end{equation*}
 \item This is true for every \textit{x}, so both sets contain exactly the same elements. Hence \textbf{\textit{A} \textbackslash{} (\textit{A} \textbackslash{} \textit{B}) = \textit{A} \ensuremath{\cap} \textit{B}.}
 \end{enumerate}
 \end{workedbox}
@@ -734,7 +734,7 @@ Its four subsets are:
 \item \Needspace{5\baselineskip}
 Take arbitrary \textit{x} \ensuremath{\in} \textit{X}. It belongs to the left side when \textit{x} \ensuremath{\in} \textit{A} and it is not true that \textit{x} is in \textit{B} but outside \textit{C}:
 
-\begin{equation*}{x}\, \in \, {A}\, \\, ({B}\, \\, {C})\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, \neg (({x}\, \in \, {B})\, \land \, ({x}\, \notin \, {C}))\end{equation*}
+\begin{equation*}{x}\, \in \, {A}\, \setminus \, ({B}\, \setminus \, {C})\, \Leftrightarrow \, ({x}\, \in \, {A})\, \land \, \neg (({x}\, \in \, {B})\, \land \, ({x}\, \notin \, {C}))\end{equation*}
 \item \Needspace{4\baselineskip}
 By De Morgan’s law, the negated bracket says \textit{x} \ensuremath{\notin} \textit{B} or \textit{x} \ensuremath{\in} \textit{C}. Distribute the outer “and”:
 
@@ -745,7 +745,7 @@ By De Morgan’s law, the negated bracket says \textit{x} \ensuremath{\notin} \t
 \item \Needspace{5\baselineskip}
 Translate the two terms back into sets: the first is \textit{A} \textbackslash{} \textit{B}; the second is \textit{A} \ensuremath{\cap} \textit{C}. Therefore both sides have exactly the same members:
 
-\begin{equation*}{A}\, \\, ({B}\, \\, {C})\, =\, ({A}\, \\, {B})\, \cup \, ({A}\, \cap \, {C})\end{equation*}
+\begin{equation*}{A}\, \setminus \, ({B}\, \setminus \, {C})\, =\, ({A}\, \setminus \, {B})\, \cup \, ({A}\, \cap \, {C})\end{equation*}
 \end{enumerate}
 \end{workedbox}
 

@@ -59,7 +59,7 @@ Every sign has one way to be written. The page and the PDF then draw it the same
 | Brackets round a stacked fraction | `<span class="delim">(</span>` … `<span class="delim">)</span>` in worked lines | brackets as tall as the fraction; `\left( … \right)` in the PDF | — | — |
 | Minus − and ± ∓ | U+2212 (−), U+00B1, U+2213 | — | a hyphen `-` as minus | yes, between numbers or brackets |
 | Products · and × | `·` for a product and the dot product; `×` for the cross product, a Cartesian product and powers of ten (2.5 × 10<sup>3</sup>) | — | `*` or the letter x | yes, `*` outside code |
-| Relations = ≠ ≈ < > ≤ ≥, arrows → ⇒ ⇔ ↦ | the Unicode sign, a space either side at the top level | — | `<=`, `>=`, `!=`, `->`, `=>` | yes |
+| Relations = ≠ ≈ < > ≤ ≥, arrows → ⇒ ⇔ ↦ ↔ | the Unicode sign, a space either side at the top level | — | `<=`, `>=`, `!=`, `->`, `=>` | yes |
 | Prime ′ (complement, derivative) | U+2032, as in <var>x</var>′ and (<var>A</var> · <var>B</var>)′ | ′ in text, `'` in PDF maths | a straight apostrophe `'` | yes, in formulas |
 | Index, power | `<sub>`, `<sup>`; in figure data and drawn labels, `x_{12}` or `e_ρ` | real sub- and superscripts | Unicode subscript digits ₀–₉ (the PDF font has none) or ⁴–⁹ | yes, subscript digits |
 | Unit vector | `<var>e</var><sub>ρ</sub>`; `e_ρ` in figure labels | italic e with an upright index | `e_ρ` typed into text | — |
