@@ -87,6 +87,46 @@
     return parts.sort().join("\n");
   }
 
+  var SAVED = /-(checks|log|lab)$/;
+  // Every chapter's ticks, review days and lab answers as one object, for a backup file.
+  function exportData(store) {
+    var data = {};
+    for (var i = 0; i < store.length; i++) {
+      var k = store.key(i);
+      if (SAVED.test(k)) data[k] = read(store, k, null);
+    }
+    return { site: "autonomy-technologies", version: 1, exported: new Date().toISOString(), data: data };
+  }
+  // Merges a backup into this browser: a skill ticked in either is ticked, review days are joined, and lab answers
+  // saved here win over the file's. Returns the number of chapters' entries changed; throws on a file that is not a backup.
+  function importData(store, file) {
+    if (!file || file.site !== "autonomy-technologies" || !file.data || typeof file.data !== "object") throw new Error("not a progress file from this site");
+    var changed = 0;
+    Object.keys(file.data).forEach(function (k) {
+      var v = file.data[k];
+      if (!SAVED.test(k) || !v || typeof v !== "object") return;
+      var have = read(store, k, null),
+        out;
+      if (/-checks$/.test(k)) {
+        out = Object.assign({}, have || {});
+        Object.keys(v).forEach(function (c) {
+          if (v[c]) out[c] = true;
+        });
+      } else if (/-log$/.test(k)) {
+        var days = ((have && Array.isArray(have.days) && have.days) || []).slice();
+        (Array.isArray(v.days) ? v.days : []).forEach(function (d) {
+          if (/^\d{4}-\d\d-\d\d$/.test(d) && days.indexOf(d) === -1) days.push(d);
+        });
+        out = { days: days.sort() };
+      } else out = Object.assign({}, v, have || {});
+      if (JSON.stringify(out) !== JSON.stringify(have)) {
+        write(store, k, out);
+        changed++;
+      }
+    });
+    return changed;
+  }
+
   // localStorage, or an in-memory stand-in where the browser blocks storage (reading the property itself can throw).
   var local;
   try {
@@ -102,7 +142,7 @@
     };
   }
 
-  var api = { local: local, GAPS: GAPS, stamp: stamp, read: read, write: write, logDay: logDay, prune: prune, count: count, review: review, signature: signature };
+  var api = { local: local, GAPS: GAPS, stamp: stamp, read: read, write: write, logDay: logDay, prune: prune, count: count, review: review, signature: signature, exportData: exportData, importData: importData };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.siteProgress = api;
 })(this);

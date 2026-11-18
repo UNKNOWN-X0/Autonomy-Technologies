@@ -194,6 +194,62 @@
     note.className = "settings-note";
     note.textContent = "Saved in this browser. System follows your device's own setting.";
     form.appendChild(note);
+    // Progress backup: Safari may clear a site's saved data after 7 days without a visit, and ticks never leave
+    // this browser, so a file carries them to safety or to another device. Only on pages that load js/progress.js.
+    var P = window.siteProgress;
+    if (P) {
+      var fsP = document.createElement("fieldset"),
+        lgP = document.createElement("legend"),
+        row = document.createElement("p"),
+        out = document.createElement("button"),
+        inn = document.createElement("button"),
+        pick = document.createElement("input"),
+        said = document.createElement("p");
+      lgP.textContent = "Progress";
+      row.className = "settings-links";
+      out.type = inn.type = "button";
+      out.className = inn.className = "btn";
+      out.textContent = "Export progress";
+      inn.textContent = "Import progress";
+      pick.type = "file";
+      pick.accept = "application/json,.json";
+      pick.hidden = true;
+      said.className = "settings-note";
+      said.setAttribute("aria-live", "polite");
+      said.textContent = "Ticks, review days and lab answers, as a file. Import merges a file into this browser.";
+      out.addEventListener("click", function () {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(P.exportData(P.local), null, 1)], { type: "application/json" }));
+        a.download = "study-progress-" + P.stamp() + ".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+        said.textContent = "Saved " + a.download + ". Keep it somewhere safe.";
+      });
+      inn.addEventListener("click", function () {
+        pick.click();
+      });
+      pick.addEventListener("change", function () {
+        var f = pick.files && pick.files[0];
+        pick.value = "";
+        if (!f) return;
+        f.text().then(function (txt) {
+          var n = P.importData(P.local, JSON.parse(txt));
+          said.textContent = n ? "Merged " + n + " saved entries. Reloading…" : "Nothing new in that file.";
+          if (n) setTimeout(function () { location.reload(); }, 900);
+        }).catch(function () {
+          said.textContent = "That file is not a progress file from this site.";
+        });
+      });
+      row.appendChild(out);
+      row.appendChild(inn);
+      fsP.appendChild(lgP);
+      fsP.appendChild(row);
+      fsP.appendChild(said);
+      fsP.appendChild(pick);
+      form.appendChild(fsP);
+    }
     // How to use and the Version log, linked from the folder this script was loaded from.
     var base = (document.currentScript || {}).src || (document.querySelector('script[src$="settings.js"]') || {}).src;
     if (base) {
@@ -228,7 +284,7 @@
     b.type = "button";
     b.className = "settings-btn";
     b.setAttribute("aria-label", "Settings");
-    b.dataset.tip = "Theme, motion and text size";
+    b.dataset.tip = "Theme, motion, text size and progress backup";
     b.appendChild(gear());
     b.addEventListener("click", function () {
       if (dlg.showModal) dlg.showModal();

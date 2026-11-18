@@ -75,3 +75,33 @@ test("signature changes only with progress keys", () => {
 test("stamp is the local calendar date", () => {
   assert.strictEqual(P.stamp(new Date(2026, 0, 5, 23, 59)), "2026-01-05");
 });
+
+test("export then import into another browser merges ticks, days and lab answers (#4)", () => {
+  const phone = store({
+    "x-checks": JSON.stringify({ a: true, "lab-1": true }),
+    "x-log": JSON.stringify({ days: ["2026-11-01"] }),
+    "x-lab": JSON.stringify({ c1: "sure" }),
+    "site-settings": JSON.stringify({ theme: "dark" }),
+  });
+  const file = JSON.parse(JSON.stringify(P.exportData(phone)));
+  assert.deepStrictEqual(Object.keys(file.data).sort(), ["x-checks", "x-lab", "x-log"], "settings are not progress");
+  const laptop = store({
+    "x-checks": JSON.stringify({ b: true, a: false }),
+    "x-log": JSON.stringify({ days: ["2026-11-03"] }),
+    "x-lab": JSON.stringify({ c1: "guess" }),
+  });
+  assert.strictEqual(P.importData(laptop, file), 2, "checks and log change; the lab answers here already win");
+  assert.deepStrictEqual(JSON.parse(laptop.getItem("x-checks")), { b: true, a: true, "lab-1": true });
+  assert.deepStrictEqual(JSON.parse(laptop.getItem("x-log")).days, ["2026-11-01", "2026-11-03"]);
+  assert.deepStrictEqual(JSON.parse(laptop.getItem("x-lab")), { c1: "guess" }, "answers here win");
+  assert.strictEqual(P.importData(laptop, file), 0, "importing twice changes nothing");
+});
+
+test("import rejects a file that is not a backup, and skips foreign keys", () => {
+  const s = store({});
+  assert.throws(() => P.importData(s, { hello: 1 }));
+  assert.throws(() => P.importData(s, null));
+  assert.strictEqual(P.importData(s, { site: "autonomy-technologies", data: { "site-settings": { theme: "x" }, "y-log": { days: ["bad", "2026-11-01"] } } }), 1);
+  assert.strictEqual(s.getItem("site-settings"), null);
+  assert.deepStrictEqual(JSON.parse(s.getItem("y-log")).days, ["2026-11-01"]);
+});
