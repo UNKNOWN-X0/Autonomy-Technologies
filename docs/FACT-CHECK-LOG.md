@@ -50,3 +50,9 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | eei/ch1-electrostatic-fields.html | 7970d8196aef | 2026-11-18 | Pass; all 38 practice and both exam answers recomputed; fixed: uniqueness theorem was called the reason field lines cannot cross (the reason is that E has one direction at each point) |
 | js/eei/ch1-lab.js | fa04095b9acb | 2026-11-18 | Pass, no errors found |
 | eei/ch1-electrostatic-fields-lab.html | c5f857947918 | 2026-11-18 | Pass, no errors found |
+| eei/ch2-stationary-currents.html | 6b74416c71cc | 2026-11-18 | Pass, no errors found |
+| js/eei/ch2-lab.js | cf43492bbb80 | 2026-11-18 | Pass, no errors found |
+| eei/ch2-stationary-currents-lab.html | b8d7a71b26cb | 2026-11-18 | Pass, no errors found |
+| eei/ch3-dc-networks.html | d9c879826cf5 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
+| js/eei/ch3-lab.js | 676198ec1501 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
+| eei/ch3-dc-networks-lab.html | e0cc7bab7d8f | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
