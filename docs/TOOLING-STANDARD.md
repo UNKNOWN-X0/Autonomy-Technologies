@@ -13,10 +13,10 @@ This standard describes the authoring and verification tools for the AutonomyTec
 | `tools/print-sheet.cjs` | Print an exam sheet (`<main data-print="sheet">`) to its A4 PDF with Chromium | `node tools/print-sheet.cjs <page> [--fit]`: `--fit` writes the largest fitting `--pt` per side into the page; fails when a side overflows or the PDF has more pages than sides. Uses the workspace BrowserTests Playwright install; `tools/page-check.sh` runs it for sheet pages. |
 | `tools/check-guide.py` | Validate a guide, lab, appendix, exercise, or tutorial page against the applicable standard | Reads the page and linked project files; prints errors and warnings. Exit 0 means no errors; warnings still need review. |
 | `node --test` | Check pure subject calculations, lab challenge data, and generators | Reads the `tests/` suite and shared JavaScript modules; makes no site build output. |
-| BrowserTests smoke suite | Check static routes and shared browser behaviors | Lives in the workspace `BrowserTests/`; it finds every page under `mei/`, `apdr/` and `eei/` on disk, and `scripts/verify.sh Education/AutonomyTechnologies` runs this project's subset. |
+| BrowserTests smoke suite | Check static routes and shared browser behaviors | Lives in the workspace `BrowserTests/`; it finds every page under `mei/`, `apdr/` and `eei/` on disk, and `scripts/verify.sh Education/Autonomy-Technologies` runs this project's subset. |
 | BrowserTests probe (`npm run probe -- <page>`) | The Interface change standard matrix for one page | Chromium and WebKit at 390, 1288 and 1440 px, light and dark; overflow and errors per combination; screenshots in the session scratchpad. `page-check.sh` runs it. |
 
-The tools are local authoring and verification helpers. The published site is static HTML, CSS, JavaScript, and generated PDFs; `tools/` is not loaded by the site. The Jekyll workflow deploys the static files and is not a substitute for the project checker or browser checks.
+The tools are local authoring and verification helpers. The published site is static HTML, CSS, JavaScript, and generated PDFs; `tools/` is not loaded by the site. GitHub Pages serves the static files as they are (`.nojekyll`). The CI workflow (`.github/workflows/checks.yml`) runs the unit tests and the page checker without the PDF-age checks; it does not replace the local `tools/page-check.sh` run or the browser checks.
 
 ## Source and generated files
 

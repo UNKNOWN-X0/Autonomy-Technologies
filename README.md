@@ -33,7 +33,7 @@ Every page works on phone and desktop, follows your system's light or dark mode 
 
 ## Repository layout
 
-```
+```text
 index.html        Home page: review schedule, semesters, subjects
 apdr/ mei/ eei/   One folder per subject: each chapter's guide (the HTML is the single source),
                   its generated .tex and .pdf, its lab, and the subject's worked exercises,
@@ -73,4 +73,4 @@ One sign system, modelled on German systematic signage: FAU blue sign fields, sq
 
 ## Hosting
 
-Published by **GitHub Pages with Jekyll** from the `main` branch, root folder; every commit to `main` publishes within a minute or two. The pages carry no Jekyll front matter, so they are served exactly as uploaded, and `.github/workflows/jekyll-docker.yml` builds the site on every push as a separate check. The repository must stay public for free Pages hosting. Upload the HTML **and** its `css/` and `js/` folders together; the pages are not self-contained.
+Published by **GitHub Pages** from the `main` branch, root folder; every commit to `main` publishes within a minute or two. `.nojekyll` makes Pages serve the files exactly as uploaded, with no Jekyll build. `.github/workflows/checks.yml` runs the unit tests and `tools/check-guide.py` on every page for each push and pull request (PDF-age checks are skipped there, because a fresh checkout dates every file the same). The repository must stay public for free Pages hosting. Upload the HTML **and** its `css/` and `js/` folders together; the pages are not self-contained.

@@ -1,26 +1,17 @@
-/* Study guide behaviour. Set <body data-key="<prefix>">; ticks save as <prefix>-checks, review days as <prefix>-log. */
+/* Study guide behaviour. Set <body data-key="<prefix>">; ticks save as <prefix>-checks, review days as <prefix>-log
+   (rules in js/progress.js). */
 (function () {
-  var PREFIX = document.body.dataset.key || "guide",
+  var P = window.siteProgress,
+    PREFIX = document.body.dataset.key || "guide",
     KEY = PREFIX + "-checks",
     LOG = PREFIX + "-log",
-    saved = {},
-    log = { days: [] };
-  try {
-    saved = JSON.parse(localStorage.getItem(KEY) || "{}");
-    log = JSON.parse(localStorage.getItem(LOG) || '{"days":[]}');
-  } catch (e) {}
+    saved = P.read(P.local, KEY, {}),
+    log = P.read(P.local, LOG, { days: [] });
   if (!Array.isArray(log.days)) log.days = [];
+  var stamp = P.stamp;
 
-  function stamp() {
-    var d = new Date();
-    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-  }
   function logToday() {
-    var t = stamp();
-    if (log.days.indexOf(t) === -1) log.days.push(t);
-    try {
-      localStorage.setItem(LOG, JSON.stringify(log));
-    } catch (e) {}
+    log = P.logDay(P.local, PREFIX);
     render();
   }
 
@@ -28,18 +19,15 @@
     reduce = window.siteReduceMotion ? window.siteReduceMotion() : window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     bars = [],
     hold = -1; // segment kept empty while a ticked skill travels to it
+  // A checklist item renamed or removed since the last visit would still count on the hub: drop its old key.
+  if (boxes.length && P.prune(saved, Array.prototype.map.call(boxes, function (b) { return b.dataset.k; }))) P.write(P.local, KEY, saved);
   boxes.forEach(function (cb) {
     cb.checked = !!saved[cb.dataset.k];
     cb.addEventListener("change", function () {
       // Re-read first: a lab in another tab may have ticked lab-<id> since this page loaded.
-      try {
-        var fresh = JSON.parse(localStorage.getItem(KEY) || "{}");
-        if (fresh && typeof fresh === "object") saved = fresh;
-      } catch (e) {}
+      saved = P.read(P.local, KEY, {});
       saved[cb.dataset.k] = cb.checked;
-      try {
-        localStorage.setItem(KEY, JSON.stringify(saved));
-      } catch (e) {}
+      P.write(P.local, KEY, saved);
       // A new tick flies to the bar segment it fills, if a bar is on screen; otherwise the segment just fills.
       var target = null;
       hold = -1;
@@ -53,7 +41,9 @@
         });
         if (target) hold = idx;
       }
-      logToday();
+      // only a new tick is a study day: unticking must not reset the spaced review
+      if (cb.checked) logToday();
+      else render();
       if (target)
         travel(cb, target, function () {
           hold = -1;
@@ -171,6 +161,17 @@
     if (button && button.disabled) button.textContent = "Reviewed today";
   }
   render();
+  // Another tab (this chapter's lab, or this guide twice) saved progress: show it here without a reload.
+  window.addEventListener("storage", function (e) {
+    if (e.key !== KEY && e.key !== LOG) return;
+    saved = P.read(P.local, KEY, {});
+    log = P.read(P.local, LOG, { days: [] });
+    if (!Array.isArray(log.days)) log.days = [];
+    boxes.forEach(function (cb) {
+      cb.checked = !!saved[cb.dataset.k];
+    });
+    render();
+  });
   // Once the first fill has played, a newly ticked segment fills at once.
   setTimeout(function () {
     bars.forEach(function (bar) {

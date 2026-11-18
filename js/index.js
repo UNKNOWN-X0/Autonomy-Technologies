@@ -5,24 +5,10 @@
       c.style.setProperty("--c", Math.min(i, 6));
     });
   });
-  // Spaced review: each distinct study day logged by a guide widens the gap.
-  var GAPS = [1, 7, 30];
-  var DAY = 86400000;
-
+  // Progress rules (counts, spaced review) live in js/progress.js.
+  var P = window.siteProgress;
   function read(key, fallback) {
-    try {
-      return JSON.parse(localStorage.getItem(key)) || fallback;
-    } catch (e) {
-      return fallback;
-    }
-  }
-  function today() {
-    var d = new Date();
-    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
-  }
-  function parseDay(s) {
-    var p = s.split("-");
-    return Date.UTC(+p[0], +p[1] - 1, +p[2]);
+    return P.read(P.local, key, fallback);
   }
   // Guide skills first, then lab experiments after a small gap. --i staggers the fill animation.
   function ticksHTML(c) {
@@ -48,40 +34,25 @@
     var total = +li.dataset.total || 0;
     var checks = read(key + "-checks", {});
     var lab = +li.dataset.lab || 0;
-    var labDone = Object.keys(checks).filter(function (k) {
-      return checks[k] && k.indexOf("lab-") === 0;
-    }).length;
-    var guideDone = Object.keys(checks).filter(function (k) {
-      return checks[k] && k.indexOf("lab-") !== 0;
-    }).length;
-    var done = guideDone + labDone;
+    var n = P.count(checks, total, lab);
     var log = read(key + "-log", { days: [] });
-    var days = (log.days || []).slice().sort();
+    var r = P.review(log.days, n.done);
     var item = {
       li: li,
       code: li.dataset.code,
       course: li.dataset.course,
       title: li.querySelector(".title").textContent,
       links: li.querySelector(".go").innerHTML,
-      done: Math.min(done, total),
+      done: n.done,
       total: total,
       lab: lab,
-      labDone: Math.min(labDone, lab),
-      guideDone: Math.min(guideDone, total - lab),
-      state: "new",
-      since: null,
-      gap: GAPS[0],
-      weight: 0,
+      labDone: n.labDone,
+      guideDone: n.guideDone,
+      state: r.state,
+      since: r.since,
+      gap: r.gap,
+      weight: r.weight,
     };
-    if (days.length) {
-      item.gap = GAPS[Math.min(days.length, GAPS.length) - 1];
-      item.since = Math.round((today() - parseDay(days[days.length - 1])) / DAY);
-      item.weight = item.since / item.gap;
-      item.state = item.weight >= 2 ? "overdue" : item.weight >= 1 ? "due" : "fresh";
-    } else if (done > 0) {
-      item.state = "due";
-      item.weight = 1;
-    }
     li.classList.toggle("started", item.state !== "new");
     li.querySelector(".ticks").innerHTML = ticksHTML(item) + "<b>" + item.done + "/" + total + "</b>";
     li.querySelector(".ticks").classList.toggle("mastered", total > 0 && item.done === total);
@@ -134,6 +105,18 @@
       route();
     });
   }
+  // The hub is drawn from saved progress once. Coming Back from a guide (the browser restores this page from its
+  // cache without running scripts) or a tick in another tab would leave it stale, so reload when progress changed.
+  var drawn = P.signature(P.local);
+  function stale() {
+    if (P.signature(P.local) !== drawn) location.reload();
+  }
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) stale();
+  });
+  window.addEventListener("storage", function (e) {
+    if (e.key && /-(checks|log)$/.test(e.key)) stale();
+  });
   route();
   window.addEventListener("resize", reroute);
   window.addEventListener("load", reroute);

@@ -79,6 +79,8 @@ for (const page of labPages()) {
 function runEngine(challenge, setup) {
   const errors = [];
   const ctx = context({ console: { error: (m) => errors.push(m) } });
+  vm.runInContext(fs.readFileSync(path.join(ROOT, "js/progress.js"), "utf8"), ctx);
+  ctx.window.siteProgress = ctx.siteProgress;
   vm.runInContext(fs.readFileSync(path.join(ROOT, "js/lab.js"), "utf8"), ctx);
   ctx.window.Lab.experiment({ id: "x", title: "X", card: fake(), lock() {}, setup, sandbox() {}, challenges: [{ id: "c", short: "", ref: "1.1", prompt: "", options: [], answer: "a", why: "", ...challenge }] });
   return errors;

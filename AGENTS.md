@@ -14,7 +14,7 @@ not a separate workflow guide.
 
 ## Local workflow
 
-- **Tests:** `node --test tests/*.test.js` (registered in the workspace `scripts/test-all.sh`, so **Test: all projects** and `scripts/verify.sh Education/AutonomyTechnologies` run it).
+- **Tests:** `node --test tests/*.test.js` (registered in the workspace `scripts/test-all.sh`, so **Test: all projects** and `scripts/verify.sh Education/Autonomy-Technologies` run it).
 - **Pages:** the HTML is the single source. After changing a page, `python3 -I tools/stack-fractions.py <page>` for any quotient still written with "/", then `tools/page-check.sh <page>` (regenerates the `.tex` and `.pdf`, checks the page, probes it) must pass. Never commit a `.tex` or `.pdf` you did not regenerate.
 - **Graph refresh:** run `scripts/refresh-graph.sh --changed` from the Developer workspace; it holds this project's full refresh command (the one home for it). Plain `graphify update .` is not enough: it skips `tools/graph-describe.py` (plain-English node notes) and `tools/graph-orb.py` (the home-page orb layout). `graph-orb.py` runs without `-I` on purpose, because it needs numpy from the user site-packages, which `-I` hides. Hand-written community names live in `graphify-out/.graphify_labels.json`; `graph-describe.py` lists any community still unnamed (STANDARDS.md, Graph).
 - **Browser checks:** the workspace smoke suite finds every page under `mei/`, `apdr/`, and `eei/` on disk; `page-check.sh` runs the probe for one page, and `npm run labs` in `BrowserTests` plays every lab (about 40 minutes; run after a lab change). Probe scripts and screenshots go in the session scratchpad, never in the repository.

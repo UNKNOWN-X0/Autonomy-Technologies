@@ -5,7 +5,6 @@
   var PREFIX = document.body.dataset.key || "lab",
     STORE = PREFIX + "-lab",
     CHECKS = PREFIX + "-checks",
-    LOG = PREFIX + "-log",
     GUIDE = document.body.dataset.guide || "",
     reduce = window.siteReduceMotion ? window.siteReduceMotion() : window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     results = read(STORE, {}),
@@ -17,21 +16,10 @@
     ];
 
   function read(key, fallback) {
-    try {
-      var v = JSON.parse(localStorage.getItem(key));
-      return v && typeof v === "object" ? v : fallback;
-    } catch (e) {
-      return fallback;
-    }
+    return window.siteProgress.read(window.siteProgress.local, key, fallback);
   }
   function write(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {}
-  }
-  function stamp() {
-    var d = new Date();
-    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    window.siteProgress.write(window.siteProgress.local, key, value);
   }
   function h(tag, cls, text) {
     var n = document.createElement(tag);
@@ -65,13 +53,10 @@
   }
 
   function complete(id) {
-    var checks = read(CHECKS, {}),
-      log = read(LOG, { days: [] });
+    var checks = read(CHECKS, {});
     checks["lab-" + id] = true;
     write(CHECKS, checks);
-    if (!Array.isArray(log.days)) log.days = [];
-    if (log.days.indexOf(stamp()) === -1) log.days.push(stamp());
-    write(LOG, log);
+    window.siteProgress.logDay(window.siteProgress.local, PREFIX);
   }
 
   // Each lab's setup must call c.stage() itself, in its own order; the engine only reports when it does not.

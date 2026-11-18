@@ -24,6 +24,8 @@ MIN_PROBLEMS, MIN_EXPLAIN, MIN_EXAM, MIN_COLD = 20, 6, 2, 4
 # Block order from GUIDE-STANDARD's page structure table; every sec-* topic section ranks as "topic".
 ORDER = ["cold-start", "plan", "route", "topic", "formula-map", "derivations", "explain", "practice", "exam", "slips", "checklist"]
 SLIPS_TITLE = "Slips in the notes"
+# A fresh checkout (GitHub sets CI) gives every file the same new date, so PDF-age checks only mean something locally.
+DATES = not os.environ.get("CI")
 
 
 def all_nodes(node, pred):
@@ -143,7 +145,7 @@ def check_files(root, html, path, page_dir, rep):
             rep.err("download link to %s.pdf missing" % base)
         if os.path.exists(stem + ".tex"):
             rep.err("%s.tex exists, but an exam sheet has no LaTeX source: delete it" % base)
-        if not os.path.exists(stem + ".pdf") or os.path.getmtime(stem + ".pdf") < os.path.getmtime(path) - 1:
+        if not os.path.exists(stem + ".pdf") or DATES and os.path.getmtime(stem + ".pdf") < os.path.getmtime(path) - 1:
             rep.err("%s.pdf is missing or older than the page: run node tools/print-sheet.cjs %s" % (base, os.path.relpath(path, ROOT)))
         return
     for ext in (".pdf", ".tex"):
@@ -156,7 +158,7 @@ def check_files(root, html, path, page_dir, rep):
             g2t.main(path, fresh)
             if open(fresh, encoding="utf-8").read() != open(tex, encoding="utf-8").read():
                 rep.err("%s is stale: regenerate it with tools/guide-to-tex.py" % os.path.relpath(tex, ROOT))
-    if os.path.exists(pdf) and os.path.exists(tex) and os.path.getmtime(pdf) < os.path.getmtime(tex) - 1:
+    if DATES and os.path.exists(pdf) and os.path.exists(tex) and os.path.getmtime(pdf) < os.path.getmtime(tex) - 1:
         rep.err("%s is older than its .tex: rebuild the PDF" % os.path.relpath(pdf, ROOT))
 
 
@@ -169,7 +171,7 @@ def check_exercise(path, rel, rep, kind="Exercise"):
     for need in ('<html lang="en">', 'name="viewport"', 'name="description"', "<title>"):
         if need not in html:
             rep.err("head is missing %s" % need)
-    for asset in ("../css/system.css", "../css/guide.css", "../js/settings.js", "../js/guide.js", "../js/tooltip.js", "../js/nav.js"):
+    for asset in ("../css/system.css", "../css/guide.css", "../js/settings.js", "../js/progress.js", "../js/guide.js", "../js/tooltip.js", "../js/nav.js"):
         if asset not in html:
             rep.err("page does not load %s" % asset)
     body = find(root, lambda n: n.tag == "body")
@@ -246,7 +248,7 @@ def check_appendix(path, rel, rep):
     for need in ('<html lang="en">', 'name="viewport"', 'name="description"', "<title>"):
         if need not in html:
             rep.err("head is missing %s" % need)
-    for asset in ("../css/system.css", "../css/guide.css", "../js/settings.js", "../js/guide.js", "../js/tooltip.js", "../js/nav.js"):
+    for asset in ("../css/system.css", "../css/guide.css", "../js/settings.js", "../js/progress.js", "../js/guide.js", "../js/tooltip.js", "../js/nav.js"):
         if asset not in html:
             rep.err("page does not load %s" % asset)
     body = find(root, lambda n: n.tag == "body")
@@ -321,7 +323,7 @@ def check(path):
     for need in ('<html lang="en">', 'name="viewport"', 'name="description"', "<title>"):
         if need not in html:
             rep.err("head is missing %s" % need)
-    for asset in ("../css/system.css", "../css/guide.css", "../js/guide.js", "../js/tooltip.js"):
+    for asset in ("../css/system.css", "../css/guide.css", "../js/progress.js", "../js/guide.js", "../js/tooltip.js"):
         if asset not in html:
             rep.err("page does not load %s" % asset)
     if re.search(r'<script[^>]+src="https?://', html) or "katex" in html.lower():
@@ -536,7 +538,7 @@ def check_lab(path, key, rep):
         rep.err("%s must share the guide's data-key %s" % (name, key))
     if body and body.attrs.get("data-guide") != os.path.basename(path).replace("-lab.html", ".html"):
         rep.err("%s needs data-guide pointing at its guide" % name)
-    for asset in ("../css/lab.css", "../js/lab.js", "../js/tooltip.js"):
+    for asset in ("../css/lab.css", "../js/progress.js", "../js/lab.js", "../js/tooltip.js"):
         if asset not in html:
             rep.err("%s does not load %s" % (name, asset))
     exps = all_nodes(t.root, lambda n: n.tag == "section" and "experiment" in n.cls)
