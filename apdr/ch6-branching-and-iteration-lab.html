@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04316A">
+<meta name="description" content="Predict-then-reveal lab for APDR Chapter 6: operators and types, string slicing, branching, loops, break and continue, traced line by line.">
+<title>Branching and Iteration Lab · APDR Chapter 6</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/system.css">
+<script src="../js/settings.js"></script>
+<link rel="stylesheet" href="../css/guide.css">
+<link rel="stylesheet" href="../css/lab.css">
+</head>
+<body class="s-apdr-1 lab" data-key="apdr1-ch6" data-guide="ch6-branching-and-iteration.html" data-skills="15">
+<div class="wrap">
+<nav class="toc" aria-label="Lab contents">
+<a class="brand" href="../index.html"><span>From Fundamentals to AI Apocalypse</span></a>
+<a class="home" href="../index.html">All semesters</a>
+<nav class="chapter-switch" aria-label="Chapter 6">
+<a href="ch6-branching-and-iteration.html">Guide</a>
+<a aria-current="page" href="ch6-branching-and-iteration-lab.html">Lab</a>
+</nav>
+<details class="mobile-toc">
+<summary>Jump to an experiment</summary>
+<ol>
+<li><a href="#how">How the lab works</a></li>
+<li class="toc-group" aria-hidden="true">Experiments</li>
+<li><a href="#exp-py-ops">6.2 Operators</a></li>
+<li><a href="#exp-py-slice">6.4 Strings</a></li>
+<li><a href="#exp-py-branch">6.7 Branching</a></li>
+<li><a href="#exp-py-loop">6.8 Loops</a></li>
+<li><a href="#exp-py-jump">6.9 break and continue</a></li>
+<li><a href="#results">Your results</a></li>
+</ol>
+</details>
+<ol>
+<li><a href="#how">How the lab works</a></li>
+<li class="toc-group" aria-hidden="true">Experiments</li>
+<li><a href="#exp-py-ops">6.2 Operators</a></li>
+<li><a href="#exp-py-slice">6.4 Strings</a></li>
+<li><a href="#exp-py-branch">6.7 Branching</a></li>
+<li><a href="#exp-py-loop">6.8 Loops</a></li>
+<li><a href="#exp-py-jump">6.9 break and continue</a></li>
+<li><a href="#results">Your results</a></li>
+</ol>
+</nav>
+<main>
+<header class="sign">
+<span class="code" aria-label="Algorithms, Programming, and Data Representation">APDR</span>
+<h1>Branching and Iteration Lab</h1>
+<p class="course">Algorithms, Programming, and Data Representation · Module 23131 · Chapter 6</p>
+<p class="meta" id="lab-meta"></p>
+</header>
+<p class="standfirst">Predict what Python does before it runs. Then watch it work one step at a time: an expression reduced operation by operation, a slice picking its characters, and a program’s running line, variables and output.</p>
+<noscript><p class="method">The experiments need JavaScript. The <a href="ch6-branching-and-iteration.html">Chapter 6 guide</a> covers the same ideas without it.</p></noscript>
+<section id="how" aria-labelledby="how-title">
+<h2 id="how-title">How the lab works</h2>
+<ol class="route">
+<li><strong>Predict.</strong> Commit to an answer before the program runs.</li>
+<li><strong>Rate your confidence.</strong> A sure but wrong answer marks an idea to revisit first.</li>
+<li><strong>Reveal.</strong> Watch Python carry out each step, and compare the result with your prediction.</li>
+<li><strong>Explore.</strong> Press Explore freely at any time, or finish the four challenges, to type your own expressions, strings and loops.</li>
+</ol>
+</section>
+
+<section id="exp-py-ops" class="experiment" data-experiment="py-ops" aria-labelledby="title-py-ops">
+<h2 id="title-py-ops">6.2 Operators: value, type and order</h2>
+<p>Python works out an expression one operation at a time, in precedence order, and each result has a type. Watch where a float appears and which operator goes first.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="An expression rewritten one operation at a time, ending in its value and type"></canvas><p class="stage-note">In the sandbox, type your own expression below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row wide">Expression<input data-f="expr" type="text" value="17 // 5 + 17 % 5 * 1.0" spellcheck="false" autocomplete="off"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Whole numbers and decimals with + - * / // % ** and brackets. A power with a decimal or negative exponent may differ from Python in its last digit.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-slice" class="experiment" data-experiment="py-slice" aria-labelledby="title-py-slice">
+<h2 id="title-py-slice">6.4 Strings: index and slice</h2>
+<p>Every character has an index from the left, starting at 0, and one from the right, starting at −1. A slice starts at its start, steps by its step and stops before its stop; watch it pick the characters in order.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="A string in boxes with both rows of indices; the characters a slice takes light up in order"></canvas><p class="stage-note">In the sandbox, slice your own string below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">String s<input data-f="text" type="text" value="abcdefgh" spellcheck="false" autocomplete="off"></label>
+<label class="field-row">start<input data-f="start" type="text" value="" placeholder="empty" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">stop<input data-f="stop" type="text" value="" placeholder="empty" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">step<input data-f="step" type="text" value="-1" placeholder="empty" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Leave a field empty to leave that part out, as in s[::-1].</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-branch" class="experiment" data-experiment="py-branch" aria-labelledby="title-py-branch">
+<h2 id="title-py-branch">6.7 Branching: which lines run</h2>
+<p>The lecture’s program compares two numbers with an if, a nested if, an elif and an else. Predict which lines run, then watch the highlight move through the code.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The program listing with the running line highlighted, its variables and its output"></canvas><p class="stage-note">In the sandbox, choose x and y below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">x<input data-f="x" type="text" value="4" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">y<input data-f="y" type="text" value="2" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Whole numbers; the program turns them into floats, as float(input(…)) would.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-loop" class="experiment" data-experiment="py-loop" aria-labelledby="title-py-loop">
+<h2 id="title-py-loop">6.8 Loops: count the rounds</h2>
+<p>A for loop takes one value of range per round; a while loop tests its condition before every round. Count the rounds and the final value, then watch the loop variable change.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="A loop listing with the running line highlighted, the loop variable and the running total"></canvas><p class="stage-note">In the sandbox, set up your own loop below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">Program<select data-f="prog"><option value="sum" selected>for loop: sum over range</option><option value="halve">while loop: halve n</option></select></label>
+<label class="field-row">start<input data-f="start" type="text" value="0" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">stop<input data-f="stop" type="text" value="10" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">step<input data-f="step" type="text" value="3" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">n (while loop)<input data-f="n" type="text" value="100" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">start, stop and step set the for loop’s range; n is the starting value of the while loop.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-jump" class="experiment" data-experiment="py-jump" aria-labelledby="title-py-jump">
+<h2 id="title-py-jump">6.9 break and continue: leave or skip</h2>
+<p>break leaves the innermost loop at once; continue skips the rest of one round. Watch which lines are skipped and where the loop goes next.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The lecture's loop with break or continue, its running line, variables and output"></canvas><p class="stage-note">In the sandbox, set up your own loop below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">Keyword<select data-f="jump"><option value="break">break</option><option value="continue" selected>continue</option></select></label>
+<label class="field-row">start<input data-f="start" type="text" value="5" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">stop<input data-f="stop" type="text" value="11" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">step<input data-f="step" type="text" value="2" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">jump when mysum ==<input data-f="target" type="text" value="13" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">The loop is the lecture’s: mysum += i, then the test, then mysum += 1.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="results" aria-labelledby="results-title">
+<h2 id="results-title">Your results</h2>
+<div id="lab-results"></div>
+</section>
+<p class="source-note">Personal study lab based on the Chapter 6 guide and the supplied “06_branching_and_iterations.pdf”, written in my own words; every result is computed with Python 3’s rules. Not an official FAU publication; check course details against the current notes. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>
+</main>
+</div>
+<script src="../js/apdr/ch6-physics.js"></script>
+<script src="../js/lab.js"></script>
+<script src="../js/apdr/ch6-lab.js"></script>
+<script src="../js/tooltip.js"></script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

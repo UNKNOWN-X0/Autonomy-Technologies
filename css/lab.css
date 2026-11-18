@@ -191,6 +191,20 @@
     gap: 0 24px;
   }
 }
+/* APDR 6 draws a code listing with its variables and output, which needs height more than width on a phone. */
+@container (max-width: 639px) {
+  .experiment[data-experiment^="py-"] .bench > .stage {
+    min-height: 470px;
+    aspect-ratio: auto;
+  }
+}
+/* APDR 7 adds frames and list objects under the listing on a phone, so its stages need more height there. */
+@container (max-width: 639px) {
+  body[data-key="apdr1-ch7"] .experiment .bench > .stage {
+    min-height: 640px;
+    aspect-ratio: auto;
+  }
+}
 @container (max-width: 639px) {
   .lab-ch2 .experiment[data-experiment] .bench > .stage {
     min-height: 340px;
@@ -835,6 +849,24 @@
 .controls input[type="text"],
 .controls input[type="number"] {
   font-variant-numeric: tabular-nums;
+}
+/* A short program typed into a sandbox (APDR 7): the same box as the other fields, in the code font. */
+.controls textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 9em;
+  padding: 8px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 0.9rem/1.45 var(--f-mono);
+  tab-size: 4;
+  resize: vertical;
+}
+.controls textarea:focus-visible {
+  outline: 3px solid var(--act);
+  outline-offset: 2px;
 }
 .controls select:focus-visible,
 .controls input:focus-visible,

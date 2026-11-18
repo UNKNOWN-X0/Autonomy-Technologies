@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04316A">
+<meta name="description" content="Predict-then-reveal lab for APDR Chapter 7: return and print, scope, tuples, list operations, aliasing and cloning, and changing a list while looping, stepped through frame by frame.">
+<title>Functions, Tuples, and Lists Lab · APDR Chapter 7</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/system.css">
+<script src="../js/settings.js"></script>
+<link rel="stylesheet" href="../css/guide.css">
+<link rel="stylesheet" href="../css/lab.css">
+</head>
+<body class="s-apdr-1 lab" data-key="apdr1-ch7" data-guide="ch7-functions-tuples-lists.html" data-skills="15">
+<div class="wrap">
+<nav class="toc" aria-label="Lab contents">
+<a class="brand" href="../index.html"><span>From Fundamentals to AI Apocalypse</span></a>
+<a class="home" href="../index.html">All semesters</a>
+<nav class="chapter-switch" aria-label="Chapter 7">
+<a href="ch7-functions-tuples-lists.html">Guide</a>
+<a aria-current="page" href="ch7-functions-tuples-lists-lab.html">Lab</a>
+</nav>
+<details class="mobile-toc">
+<summary>Jump to an experiment</summary>
+<ol>
+<li><a href="#how">How the lab works</a></li>
+<li class="toc-group" aria-hidden="true">Experiments</li>
+<li><a href="#exp-py-return">7.3 return and print</a></li>
+<li><a href="#exp-py-scope">7.4 Scope</a></li>
+<li><a href="#exp-py-tuple">7.6 Tuples</a></li>
+<li><a href="#exp-py-listops">7.8 List operations</a></li>
+<li><a href="#exp-py-alias">7.9 Aliasing</a></li>
+<li><a href="#exp-py-mutate">7.10 Looping and removing</a></li>
+<li><a href="#results">Your results</a></li>
+</ol>
+</details>
+<ol>
+<li><a href="#how">How the lab works</a></li>
+<li class="toc-group" aria-hidden="true">Experiments</li>
+<li><a href="#exp-py-return">7.3 return and print</a></li>
+<li><a href="#exp-py-scope">7.4 Scope</a></li>
+<li><a href="#exp-py-tuple">7.6 Tuples</a></li>
+<li><a href="#exp-py-listops">7.8 List operations</a></li>
+<li><a href="#exp-py-alias">7.9 Aliasing</a></li>
+<li><a href="#exp-py-mutate">7.10 Looping and removing</a></li>
+<li><a href="#results">Your results</a></li>
+</ol>
+</nav>
+<main>
+<header class="sign">
+<span class="code" aria-label="Algorithms, Programming, and Data Representation">APDR</span>
+<h1>Functions, Tuples, and Lists Lab</h1>
+<p class="course">Algorithms, Programming, and Data Representation · Module 23131 · Chapter 7</p>
+<p class="meta" id="lab-meta"></p>
+</header>
+<p class="standfirst">Predict what a short program prints, then step through it the way Python runs it: the running line, a frame of names for every call, the lists and tuples those names point at, and the output.</p>
+<noscript><p class="method">The experiments need JavaScript. The <a href="ch7-functions-tuples-lists.html">Chapter 7 guide</a> covers the same ideas without it.</p></noscript>
+<section id="how" aria-labelledby="how-title">
+<h2 id="how-title">How the lab works</h2>
+<ol class="route">
+<li><strong>Predict.</strong> Commit to an answer before the program runs.</li>
+<li><strong>Rate your confidence.</strong> A sure but wrong answer marks an idea to revisit first.</li>
+<li><strong>Reveal.</strong> Watch the program run line by line. Each name is drawn in its frame; an arrow means it points at a list or tuple on the right, and two arrows to one box mean one object with two names. Functions made with <code>def</code> are left out of the main program’s frame to save room.</li>
+<li><strong>Explore.</strong> Press Explore freely at any time, or finish the four challenges, to run your own values or your own short program.</li>
+</ol>
+</section>
+
+<section id="exp-py-return" class="experiment" data-experiment="py-return" aria-labelledby="title-py-return">
+<h2 id="title-py-return">7.3 return and print: what a call hands back</h2>
+<p>A call is worth what its <code>return</code> hands back, and <code>None</code> without one; printing inside a function gives the caller nothing. Watch the Return value appear in each call’s frame.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The program listing with the running line, each call's frame and its return value, and the output"></canvas><p class="stage-note">In the sandbox, pick a program and its number below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">Program<select data-f="prog"><option value="even" selected>is_even with return</option><option value="even-none">is_even without return</option><option value="funcs">func_a, func_b, func_c</option><option value="ret">f returns a * b</option><option value="prt">f prints a * b</option><option value="dead">f returns a, then prints b</option><option value="both">f prints a, then returns b</option></select></label>
+<label class="field-row">Number<input data-f="n" type="text" value="7" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">The number is i for is_even and a for f (b is 3); func_a, func_b and func_c are the lecture’s program.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-scope" class="experiment" data-experiment="py-scope" aria-labelledby="title-py-scope">
+<h2 id="title-py-scope">7.4 Scope: which x?</h2>
+<p>Every call opens its own frame. A name the function assigns lives there; a name it only reads comes from the main program. Watch which frame each <code>x</code> lands in.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The program listing, the main program's frame and the call's frame with their own x"></canvas><p class="stage-note">In the sandbox, choose a function and the value of x below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">Function<select data-f="variant"><option value="param" selected>f(x): x = x + 1, return x</option><option value="f">f(y): x = 1, x += 1</option><option value="g">g(y): print(x)</option><option value="h">h(y): x += 1</option></select></label>
+<label class="field-row">x in the main program<input data-f="x" type="text" value="3" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">These are the lecture’s scope examples; the main program sets x, calls the function, and prints.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-tuple" class="experiment" data-experiment="py-tuple" aria-labelledby="title-py-tuple">
+<h2 id="title-py-tuple">7.6 Tuples: pack, unpack, swap</h2>
+<p>A tuple bundles several values into one immutable object, which is how a function returns more than one value. Watch the right side being built before any name on the left is bound.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The program listing, its names, and the tuples they point at"></canvas><p class="stage-note">In the sandbox, choose a program and two numbers below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">Program<select data-f="prog"><option value="quotrem" selected>quotient_and_remainder(x, y)</option><option value="swap-wrong">swap: x = y, y = x</option><option value="swap-temp">swap with temp</option><option value="swap-tuple">swap: (x, y) = (y, x)</option><option value="getdata">get_data with x and y</option></select></label>
+<label class="field-row">x<input data-f="x" type="text" value="17" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<label class="field-row">y<input data-f="y" type="text" value="5" spellcheck="false" autocomplete="off" inputmode="numeric"></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">get_data runs on the pairs (x, 'a'), (y, 'b') and (x + y, 'a').</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-listops" class="experiment" data-experiment="py-listops" aria-labelledby="title-py-listops">
+<h2 id="title-py-listops">7.8 List operations: change it or copy it</h2>
+<p>Methods such as <code>append</code>, <code>remove</code> and <code>sort</code> change the list in place; <code>+</code>, slices and <code>sorted</code> build a new one. Watch whether a new box appears or the old one changes.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The program listing and the list as a row of boxes, changing line by line"></canvas><p class="stage-note">In the sandbox, edit the program below; it runs as you type.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row wide">Program<textarea data-f="code" rows="7" spellcheck="false" autocomplete="off" autocapitalize="off">L = [2, 1, 3, 6, 3, 7, 0]
+L.remove(2)
+L.remove(3)
+del(L[1])
+print(L.pop())
+print(L)</textarea></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Python with whole numbers, strings, lists, tuples, def, if, for and the list methods of the lecture; up to 16 lines.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-alias" class="experiment" data-experiment="py-alias" aria-labelledby="title-py-alias">
+<h2 id="title-py-alias">7.9 Aliasing and cloning: one list or two?</h2>
+<p>A name points at a list; it does not hold a copy. Two arrows to one box are aliases, and a change through either shows through both. A clone is a second box.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="Names as arrows to list objects, so aliases show as two arrows to one box"></canvas><p class="stage-note">In the sandbox, edit the program below; it runs as you type.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row wide">Program<textarea data-f="code" rows="7" spellcheck="false" autocomplete="off" autocapitalize="off">warm = ['yellow', 'orange']
+hot = ['red']
+brightcolors = [warm]
+brightcolors.append(hot)
+hot.append('pink')
+print(brightcolors)</textarea></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Try b = a against b = a[:], and a = a + [1] against a += [1].</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="exp-py-mutate" class="experiment" data-experiment="py-mutate" aria-labelledby="title-py-mutate">
+<h2 id="title-py-mutate">7.10 Looping and removing: the hidden index</h2>
+<p>A for loop over a list keeps a hidden index. Removing an element shifts the rest left while the index moves on, so one element is never checked. Watch the marker under the list.</p>
+<div class="bench">
+<div class="stage"><canvas role="img" aria-label="The remove_dups program, the lists L1 and L2, and a marker for the loop's hidden index"></canvas><p class="stage-note">In the sandbox, set L1 and L2 below.</p></div>
+<div class="side">
+<div class="challenge" aria-live="polite"></div>
+<form class="controls" onsubmit="return false">
+<fieldset class="own">
+<legend>Or try your own</legend>
+<label class="field-row">L1<input data-f="l1" type="text" value="1, 2, 3, 4" spellcheck="false" autocomplete="off"></label>
+<label class="field-row">L2<input data-f="l2" type="text" value="1, 2, 5, 6" spellcheck="false" autocomplete="off"></label>
+<label class="field-row">Loop over<select data-f="fix"><option value="list" selected>L1 itself (the bug)</option><option value="copy">L1_copy = L1[:] (the fix)</option></select></label>
+<p class="own-msg" data-own-msg aria-live="polite"></p>
+<p class="own-help">Whole numbers separated by commas, up to 8 each.</p>
+</fieldset>
+</form>
+</div>
+</div>
+</section>
+
+<section id="results" aria-labelledby="results-title">
+<h2 id="results-title">Your results</h2>
+<div id="lab-results"></div>
+</section>
+<p class="source-note">Personal study lab based on the Chapter 7 guide and the supplied “07_abstraction_functions_tupels_lists.pdf”, written in my own words; every program runs by Python 3’s rules in a small interpreter checked against Python itself. Not an official FAU publication; check course details against the current notes. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>
+</main>
+</div>
+<script src="../js/apdr/ch7-physics.js"></script>
+<script src="../js/lab.js"></script>
+<script src="../js/apdr/ch7-lab.js"></script>
+<script src="../js/tooltip.js"></script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

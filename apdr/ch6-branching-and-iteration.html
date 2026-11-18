@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#04316A"/>
+<meta name="description" content="APDR Chapter 6 study guide to Python basics: objects and types, operators, variables, strings, input and output, branching, and while and for loops."/>
+<title>Python Basics, Branching, and Iteration · APDR Chapter 6</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="stylesheet" href="../css/system.css"/>
+<script src="../js/settings.js"></script>
+<link rel="stylesheet" href="../css/guide.css"/>
+</head>
+<body class="s-apdr-1" data-key="apdr1-ch6">
+<div class="wrap">
+<nav class="toc" aria-label="Guide contents">
+<a class="brand" href="../index.html"><span>From Fundamentals to AI Apocalypse</span></a>
+<a class="home" href="../index.html">All semesters</a>
+<details class="mobile-toc">
+<summary>Jump to a section</summary>
+<ol>
+<li><a href="#plan">Study plan</a></li>
+<li><a href="#sec-61">6.1 Programs, Python, objects and types</a></li>
+<li><a href="#sec-62">6.2 Expressions and operators</a></li>
+<li><a href="#sec-63">6.3 Variables and assignment</a></li>
+<li><a href="#sec-64">6.4 Strings</a></li>
+<li><a href="#sec-65">6.5 Output and input</a></li>
+<li><a href="#sec-66">6.6 Comparison and logic</a></li>
+<li><a href="#sec-67">6.7 Branching and indentation</a></li>
+<li><a href="#sec-68">6.8 while and for loops</a></li>
+<li><a href="#sec-69">6.9 break and continue</a></li>
+<li><a href="#sec-610">6.10 Choosing a loop and iterating over strings</a></li>
+<li><a href="#formula-map">Formula map</a></li>
+<li><a href="#derivations">Derive it cold</a></li>
+<li><a href="#explain">Explain it</a></li>
+<li><a href="#practice">Mixed practice</a></li>
+<li><a href="#exam">Exam-style problems</a></li>
+<li><a href="#slips">Slips in the notes</a></li>
+<li><a href="#checklist">Self-check</a></li>
+</ol>
+</details>
+<ol>
+<li><a href="#plan">Study plan</a></li>
+<li class="toc-group" aria-hidden="true">Topics</li>
+<li><a href="#sec-61">6.1 Programs, Python, objects and types</a></li>
+<li><a href="#sec-62">6.2 Expressions and operators</a></li>
+<li><a href="#sec-63">6.3 Variables and assignment</a></li>
+<li><a href="#sec-64">6.4 Strings</a></li>
+<li><a href="#sec-65">6.5 Output and input</a></li>
+<li><a href="#sec-66">6.6 Comparison and logic</a></li>
+<li><a href="#sec-67">6.7 Branching and indentation</a></li>
+<li><a href="#sec-68">6.8 while and for loops</a></li>
+<li><a href="#sec-69">6.9 break and continue</a></li>
+<li><a href="#sec-610">6.10 Choosing a loop and iterating over strings</a></li>
+<li class="toc-group" aria-hidden="true">Practise</li>
+<li><a href="#formula-map">Formula map</a></li>
+<li><a href="#derivations">Derive it cold</a></li>
+<li><a href="#explain">Explain it</a></li>
+<li><a href="#practice">Mixed practice</a></li>
+<li><a href="#exam">Exam-style problems</a></li>
+<li><a href="#slips">Slips in the notes</a></li>
+<li><a href="#checklist">Self-check</a></li>
+</ol>
+</nav>
+<main>
+<header class="sign">
+<span class="code" aria-label="Algorithms, Programming, and Data Representation">APDR</span>
+<h1>Python Basics, Branching, and Iteration</h1>
+<p class="course">Algorithms, Programming, and Data Representation · Module 23131 · Chapter 6</p>
+<p class="meta" id="review-meta"></p>
+</header>
+<p class="standfirst">This chapter builds the first working Python: values and their types, operators, names bound to values, strings, printing and reading input, and the two control-flow tools every program needs, choosing a branch and repeating a block.</p>
+<div class="downloads" aria-label="Download study guide files">
+<p>Take the guide offline</p>
+<a class="btn primary" href="ch6-branching-and-iteration.pdf" download>Download clean PDF</a>
+<a class="btn" href="ch6-branching-and-iteration.tex" download>Download LaTeX source (.tex)</a>
+</div>
+
+<section class="cold-start" id="cold-start">
+<h2>Start from memory</h2>
+<p>Try each question first. Mark it sure, unsure, or guessed.</p>
+<ol>
+<li>What is the type of the value of <code>7 / 7</code> in Python?</li>
+<li>What does <code>"abc"[-1]</code> evaluate to?</li>
+<li>What is the difference between <code>=</code> and <code>==</code>?</li>
+<li>Which numbers does <code>range(5)</code> produce?</li>
+<li>What does <code>break</code> do inside two nested loops?</li>
+</ol>
+<details class="answers">
+<summary>Check the short answers</summary>
+<ol>
+<li><code>float</code>: <code>/</code> always gives a float, here <code>1.0</code>. <span class="sec-ref">§6.2</span></li>
+<li><code>"c"</code>, the last character. <span class="sec-ref">§6.4</span></li>
+<li><code>=</code> binds a name to a value; <code>==</code> tests two values for equality and gives a Boolean. <span class="sec-ref">§6.3, §6.6</span></li>
+<li>0, 1, 2, 3, 4: it starts at 0 and stops before 5. <span class="sec-ref">§6.8</span></li>
+<li>It leaves only the innermost loop; the outer loop carries on. <span class="sec-ref">§6.9</span></li>
+</ol>
+</details>
+</section>
+
+<section id="plan">
+<h2>How to use this guide</h2>
+<p>Read a section, close it, and type its examples into a Python shell from memory before you check them. The lecture’s own advice applies to every line here: if you are unsure what a command does, try it in the console.</p>
+<ol class="study-plan">
+<li><strong>Day 0:</strong> Try the cold start, then study §6.1–6.4; solve practice 1, 2, 3, 5, 12.</li>
+<li><strong>Day 1:</strong> Rebuild §6.1–6.4 from memory, then study §6.5–6.7; solve practice 6, 8, 9, 15, 18, 19.</li>
+<li><strong>Day 3:</strong> Rebuild §6.5–6.7 from memory, then study §6.8–6.10 and trace every loop on paper; solve practice 4, 7, 11, 13, 14, 17.</li>
+<li><strong>About day 7:</strong> Do the derivation list cold, then practice 10, 16, 20–24 without notes.</li>
+<li><strong>About day 14:</strong> Work both exam problems in 20 minutes each; answer the “Explain it” questions aloud.</li>
+<li><strong>Before the exam:</strong> Tick only the self-check skills you can show cold; revisit the sections named in the answers you missed.</li>
+</ol>
+<p class="method"><strong>When stuck:</strong> make a trace table. Write one column per variable and one row per line executed, and fill it in line by line. Most loop and branch questions are answered by the last row.</p>
+</section>
+
+<section id="route">
+<h2>How the chapter fits together</h2>
+<p>Values with types come first, because operators and comparisons depend on the type. Names hold values, strings are a sequence type, and input and output connect a program to its user. Branching and loops then decide which lines run and how often.</p>
+<div class="cmap" data-cmap>
+<div class="cm-col">
+<p class="cm-head"><strong>Measure</strong> · values and types</p>
+<ul>
+<li class="cm-node" data-id="types" data-deps="" data-sec="6.1">
+<p class="cm-title"><strong>Objects and types</strong> <span class="sec-ref">§6.1</span></p>
+<p class="cm-formula"><code>int · float · bool · NoneType</code></p>
+<p class="cm-why">Rests on: nothing earlier; every value in a program has a type that fixes what you can do with it.</p>
+</li>
+<li class="cm-node" data-id="ops" data-deps="types" data-sec="6.2">
+<p class="cm-title"><strong>Expressions and operators</strong> <span class="sec-ref">§6.2</span></p>
+<p class="cm-formula"><code>i // j · i % j · i ** j</code></p>
+<p class="cm-why">Rests on: types, because the operand types decide the result type.</p>
+</li>
+</ul>
+</div>
+<div class="cm-col">
+<p class="cm-head"><strong>Define</strong> · names, text and comparison</p>
+<ul>
+<li class="cm-node" data-id="vars" data-deps="ops" data-sec="6.3">
+<p class="cm-title"><strong>Assignment</strong> <span class="sec-ref">§6.3</span></p>
+<p class="cm-formula"><code>name = expression</code></p>
+<p class="cm-why">Rests on: expressions, because the right side is evaluated to a value before the name is bound.</p>
+</li>
+<li class="cm-node" data-id="strings" data-deps="types vars" data-sec="6.4">
+<p class="cm-title"><strong>Strings</strong> <span class="sec-ref">§6.4</span></p>
+<p class="cm-formula"><code>s[start:stop:step]</code></p>
+<p class="cm-why">Rests on: types and names; a string is an immutable sequence you reach through a name.</p>
+</li>
+<li class="cm-node" data-id="io" data-deps="strings" data-sec="6.5">
+<p class="cm-title"><strong>Output and input</strong> <span class="sec-ref">§6.5</span></p>
+<p class="cm-formula"><code>int(input(…))</code></p>
+<p class="cm-why">Rests on: strings and casting, because <code>input</code> always returns a string.</p>
+</li>
+<li class="cm-node" data-id="logic" data-deps="ops" data-sec="6.6">
+<p class="cm-title"><strong>Comparison and logic</strong> <span class="sec-ref">§6.6</span></p>
+<p class="cm-formula"><code>== != &lt; &gt; and or not</code></p>
+<p class="cm-why">Rests on: expressions; comparisons are expressions whose value is a Boolean.</p>
+</li>
+</ul>
+</div>
+<div class="cm-col">
+<p class="cm-head"><strong>Derive</strong> · control flow</p>
+<ul>
+<li class="cm-node" data-id="branch" data-deps="logic" data-sec="6.7">
+<p class="cm-title"><strong>Branching</strong> <span class="sec-ref">§6.7</span></p>
+<p class="cm-formula"><code>if · elif · else</code></p>
+<p class="cm-why">Rests on: comparisons, because each condition is a Boolean expression.</p>
+</li>
+<li class="cm-node" data-id="loops" data-deps="logic vars" data-sec="6.8">
+<p class="cm-title"><strong>while and for</strong> <span class="sec-ref">§6.8</span></p>
+<p class="cm-formula"><code>range(start, stop, step)</code></p>
+<p class="cm-why">Rests on: conditions and rebinding; a loop repeats while a condition holds or once per value.</p>
+</li>
+<li class="cm-node" data-id="jumps" data-deps="loops branch" data-sec="6.9">
+<p class="cm-title"><strong>break and continue</strong> <span class="sec-ref">§6.9</span></p>
+<p class="cm-formula"><code>break · continue</code></p>
+<p class="cm-why">Rests on: loops and branches; a jump is almost always inside an <code>if</code> inside a loop.</p>
+</li>
+<li class="cm-node" data-id="choose" data-deps="loops strings" data-sec="6.10">
+<p class="cm-title"><strong>Choosing a loop</strong> <span class="sec-ref">§6.10</span></p>
+<p class="cm-formula"><code>for char in s</code></p>
+<p class="cm-why">Rests on: both loop kinds and on strings as sequences.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="cm-detail" aria-live="polite" hidden></p>
+<div class="tw">
+<table>
+<thead><tr><th>Question</th><th>Tool</th></tr></thead>
+<tbody>
+<tr><td>What value and type does this expression have?</td><td>Operand types and precedence (§6.1–6.2)</td></tr>
+<tr><td>What does this name hold after these lines?</td><td>A trace table of assignments (§6.3)</td></tr>
+<tr><td>Which characters does this index or slice give?</td><td>Write the indices under the string (§6.4)</td></tr>
+<tr><td>Which lines run?</td><td>Evaluate each condition in order (§6.6–6.7)</td></tr>
+<tr><td>How often does the body run, and what is left?</td><td>Trace the loop variable row by row (§6.8–6.9)</td></tr>
+<tr><td>Which loop should I write?</td><td>Known count → <code>for</code>; stop on a condition → <code>while</code> (§6.10)</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="sec-61">
+<h2>6.1 Programs, Python, objects and types</h2>
+<p class="why">Before any branching or looping, you need to know what a program is made of and what kinds of values it handles.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>program</strong> is a list of definitions and commands written as text, the <strong>source code</strong>. The processor cannot read that text; it only runs its own machine instructions. A <strong>compiler</strong> translates the whole text into machine code first, while an <strong>interpreter</strong>, like Python’s, reads and runs it line by line. Every value the program touches is an <strong>object</strong> with a <strong>type</strong>, and the type decides what you may do with it, just as a car can drive but cannot swim.</p>
+<div class="eq">
+<strong>The scalar types</strong>
+<span class="formula"><code>int</code> · <code>float</code> · <code>bool</code> · <code>NoneType</code></span>
+<span class="formula"><code>type(5)</code> → <code>int</code></span>
+<span class="formula"><code>type(3.0)</code> → <code>float</code></span>
+<span class="eq-note"><span class="say">Read it as: “the type of 5 is int, the type of 3.0 is float”.</span> <code>int</code> holds whole numbers, <code>float</code> real numbers, <code>bool</code> the two values <code>True</code> and <code>False</code>, and <code>NoneType</code> the single value <code>None</code>.</span>
+</div>
+<div class="eq">
+<strong>Casting</strong>
+<span class="formula"><code>float(3)</code> → <code>3.0</code></span>
+<span class="formula"><code>int(3.9)</code> → <code>3</code></span>
+<span class="eq-note"><span class="say">Read it as: “float of 3 is 3.0; int of 3.9 is 3”.</span> Converting a value to another type is called casting. <code>int</code> of a float cuts off the fractional part; it does not round.</span>
+</div>
+<p>Python is an interpreted language: you can type commands into a shell one at a time, store them in a file that the interpreter reads, or run them in a notebook. The lecture uses Python as one example of an imperative language; the ideas in this chapter carry over to the others. Functional languages such as Haskell work differently and are not part of the course.</p>
+<p>The lecture separates two kinds of line. A <strong>definition</strong> is evaluated: Python works out what it means. A <strong>command</strong> (or statement) is executed: it tells the interpreter to do something.</p>
+<p>Objects are either <strong>scalar</strong>, meaning they cannot be split into parts (a number, a Boolean), or <strong>non-scalar</strong>, meaning they have an internal structure you can reach into. A string, met in §6.4, is the first non-scalar type.</p>
+<div class="worked">
+<p class="worked-title">Worked example · types and casts</p>
+<ol>
+<li><code>type(True)</code> is <code>bool</code>: <code>True</code> is a Boolean value, not a string.</li>
+<li><code>float(7)</code> is <code>7.0</code>: same number, now a float.</li>
+<li><code>int(-3.9)</code> is <code>-3</code>: the fractional part is cut off towards zero, so a negative number moves up, not down.</li>
+<li>Check: each result has the type named by the cast, and no value changed by more than its fractional part.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>int(3.9)</code> is 3, not 4. Casting truncates; use <code>round</code> when you mean rounding.</p>
+<p class="method"><strong>Near miss:</strong> <code>"5"</code> looks like the number 5, but the quotes make it a string; <code>type("5")</code> is <code>str</code>. Cast it with <code>int("5")</code> before doing arithmetic.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>Why does a computer need a compiler or an interpreter to run Python source code?</li>
+<li>Name the four scalar types and one value of each.</li>
+<li>What is <code>int(-2.5)</code>?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>The processor runs only its native machine instructions. Source code is human-readable text, so it must be translated (compiler) or read and run step by step (interpreter).</li>
+<li><code>int</code>: 5; <code>float</code>: 3.27; <code>bool</code>: <code>True</code>; <code>NoneType</code>: <code>None</code>.</li>
+<li><code>-2</code>: the fractional part is cut off.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-62">
+<h2>6.2 Expressions and operators</h2>
+<p class="why">Objects become useful when operators combine them into expressions; the operand types decide the type of the answer.</p>
+<p class="plain"><strong>In plain words:</strong> an <strong>expression</strong> joins objects with <strong>operators</strong>, like <code>3 + 2</code>, and Python works it out to a single <strong>value</strong>. That value has a type too. When several operators meet, <strong>precedence</strong> says which goes first, the way multiplication beats addition in arithmetic, and brackets override it.</p>
+<div class="eq">
+<strong>Arithmetic operators</strong>
+<span class="formula"><code>i + j</code> · <code>i - j</code> · <code>i * j</code>: int if both are int, else float</span>
+<span class="formula"><code>i / j</code>: always a float</span>
+<span class="formula"><code>i ** j</code> = <var>i</var><sup><var>j</var></sup></span>
+<span class="eq-note"><span class="say">Read it as: “sum, difference and product are int only when both operands are int; division always gives a float; i to the power j”.</span> <code>6 / 3</code> is <code>2.0</code>, not 2.</span>
+</div>
+<div class="eq">
+<strong>Floor division and remainder</strong>
+<span class="formula"><code>i // j</code> = ⌊<span class="frac"><span><var>i</var></span><span><var>j</var></span></span>⌋</span>
+<span class="formula"><code>i % j</code> = <var>i</var> − <var>j</var> · (<code>i // j</code>)</span>
+<span class="eq-note"><span class="say">Read it as: “i floor-divided by j is i over j rounded down; i mod j is what is left after taking j that many times”.</span> For two ints, <code>7 // 2</code> is 3 and <code>7 % 2</code> is 1. With a float operand the quotient is a float: <code>7.0 // 2</code> is <code>3.0</code>.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="ladder" data-levels="( ) brackets;**;*  /  //  %;+  −" data-top="evaluated first" data-bottom="evaluated last">
+<figcaption><strong>Precedence.</strong> A higher row is evaluated before a lower one; operators in the same row go left to right, except <code>**</code>.</figcaption>
+</figure>
+</div>
+<p>The interactive shell shows the value of a bare expression: typing <code>3+2</code> prints <code>Out[11]: 5</code> in the lecture’s IPython console. A program that should show something to a user calls <code>print</code> instead (§6.5).</p>
+<p>The general shape is <code>&lt;object&gt; &lt;operator&gt; &lt;object&gt;</code>. Without brackets Python applies <code>**</code> first, then the multiplicative operators, then <code>+</code> and <code>-</code>. The lecture lists <code>*</code> and <code>/</code> on separate rows; in Python they share one row with <code>//</code> and <code>%</code> and are evaluated left to right, so <code>8 / 2 * 4</code> is <code>16.0</code> (see the slips list). <code>+</code> and <code>-</code> also go left to right: <code>10 - 4 - 3</code> is 3.</p>
+<div class="worked">
+<p class="worked-title">Worked example · evaluate 2 + 3 * 4 ** 2 // 5</p>
+<ol>
+<li>Power first: <code>4 ** 2</code> is 16, giving <code>2 + 3 * 16 // 5</code>.</li>
+<li><code>*</code> and <code>//</code> share a row, so left to right: <code>3 * 16</code> is 48, then <code>48 // 5</code> is 9 (48 ÷ 5 = 9.6, rounded down).</li>
+<li>Last the addition: <code>2 + 9</code> is 11, an <code>int</code> because every operand was an int.</li>
+<li>Check: no <code>/</code> appeared, so no float can appear; 11 is an int.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>//</code> rounds down, not towards zero. <code>-7 // 2</code> is <code>-4</code>, and then <code>-7 % 2</code> is 1 so that the identity above still holds.</p>
+<p class="method"><strong>Near miss:</strong> <code>6 / 3</code> divides evenly, so it is tempting to expect the int 2, but <code>/</code> always returns a float: the value is <code>2.0</code>. Write <code>6 // 3</code> for the int.</p>
+<p class="lab-link"><a href="ch6-branching-and-iteration-lab.html#exp-py-ops">Watch expressions reduce step by step in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What are the value and type of <code>7 // 2</code> and of <code>7 / 2</code>?</li>
+<li>Evaluate <code>2 ** 3 ** 2</code> and say why.</li>
+<li>What is <code>17 % 5</code>?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>3</code> (int) and <code>3.5</code> (float).</li>
+<li>512: <code>**</code> groups from the right, so it is 2<sup>9</sup>, not 8<sup>2</sup> = 64.</li>
+<li>2, because 17 = 5 · 3 + 2.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-63">
+<h2>6.3 Variables and assignment</h2>
+<p class="why">Naming a value lets you reuse it and change the program in one place; the equals sign does this, but it does not mean what it means in maths.</p>
+<p class="plain"><strong>In plain words:</strong> an <strong>assignment</strong> sticks a name label on a value stored in memory, the way a <strong>variable</strong> name points at a number. Python first works out the expression on the right, then binds the name on the left to the result. You can move the label to a new value later (<strong>rebinding</strong>); anything worked out earlier from the old value stays as it was.</p>
+<div class="eq">
+<strong>Assignment</strong>
+<span class="formula"><code>name = expression</code></span>
+<span class="formula"><code>radius += 1</code> means <code>radius = radius + 1</code></span>
+<span class="eq-note"><span class="say">Read it as: “evaluate the expression, then bind the name to that value”.</span> The name is on the left, the expression on the right. <code>radius = radius + 1</code> is not an equation to solve: it reads the old value, adds 1, and rebinds.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="cells" data-cells="pi||3.14;radius||3.2;area||15.1976">
+<figcaption><strong>After the lecture’s four lines.</strong> <code>radius</code> now holds 3.2, but <code>area</code> still holds the value worked out from 2.2: nothing recalculates it.</figcaption>
+</figure>
+</div>
+<p>Retrieve a value by typing its name: after <code>pi = 3.14159</code>, the name <code>pi</code> evaluates to 3.14159. Names make code easier to read and to change: <code>area = pi*(radius**2)</code> says what it computes, and changing <code>radius</code> in one place changes every line that uses it when that line next runs.</p>
+<p>A name may contain letters, digits and underscores but may not start with a digit, may not contain a dot, and may not be a keyword such as <code>if</code> or <code>for</code>; the slide’s <code>pi_approx. = 22/7</code> is a syntax error for that reason (see the slips list). After a rebinding the old value may still sit in memory, but the program has lost its handle on it.</p>
+<div class="worked">
+<p class="worked-title">Worked example · trace the lecture’s lines</p>
+<ol>
+<li><code>pi = 3.14</code> binds <code>pi</code> to 3.14; <code>radius = 2.2</code> binds <code>radius</code> to 2.2.</li>
+<li><code>area = pi*(radius**2)</code> evaluates 3.14 · 4.84 = 15.1976 and binds <code>area</code> to it.</li>
+<li><code>radius = radius+1</code> reads 2.2, adds 1 and rebinds <code>radius</code> to 3.2.</li>
+<li>Check: <code>area</code> is still 15.1976. To update it you must run the area line again. (Python prints 15.197600000000003; the tail is float rounding, Chapter 4.)</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> a variable is not a formula. Changing <code>radius</code> does not change <code>area</code>; only re-running the assignment does.</p>
+<p class="method"><strong>Near miss:</strong> <code>x + 1 = 5</code> reads like an equation with the answer <code>x = 4</code>, but it is a syntax error: the left side of <code>=</code> must be a name, not an expression. Python never solves for <var>x</var>.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>In <code>count = count + 1</code>, which side is evaluated first, and what happens next?</li>
+<li>Give two reasons to name values instead of writing the numbers each time.</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>The right side is evaluated using the current value of <code>count</code>; then <code>count</code> is rebound to the result.</li>
+<li>The name can be reused instead of repeating the value, and the code is easier to change later, because the value is set in one place.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-64">
+<h2>6.4 Strings</h2>
+<p class="why">Text is the first non-scalar type: a string has parts you can index and slice, which loops in §6.10 will walk through.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>string</strong> is a row of characters (letters, digits, spaces, symbols) written in single or double quotes. Each character has a position number, its <strong>index</strong>, starting at 0 from the left and at −1 from the right. A <strong>slice</strong> cuts out a piece by giving where to start, where to stop and how big a step to take. Strings are <strong>immutable</strong>: you cannot change a character in place, only build a new string.</p>
+<div class="eq">
+<strong>String operations</strong>
+<span class="formula"><code>"ab" + "cd"</code> → <code>"abcd"</code></span>
+<span class="formula"><code>"ab" * 3</code> → <code>"ababab"</code></span>
+<span class="formula"><code>len("abc")</code> → <code>3</code></span>
+<span class="eq-note"><span class="say">Read it as: “plus joins strings, times repeats a string, len counts its characters”.</span> Joining is called concatenation. <code>+</code> does not insert a space: <code>"hello there" + "Joe"</code> is <code>"hello thereJoe"</code>. <code>*</code> binds before <code>+</code> here too: with <code>name = "Joe"</code>, <code>"hi " + name * 3</code> is <code>"hi JoeJoeJoe"</code>.</span>
+</div>
+<div class="eq">
+<strong>Indexing and slicing</strong>
+<span class="formula"><code>s[i]</code>: the character at index <var>i</var>, with 0 ≤ <var>i</var> ≤ <code>len(s)</code> − 1 or −<code>len(s)</code> ≤ <var>i</var> ≤ −1</span>
+<span class="formula"><code>s[start:stop:step]</code>: from <code>start</code>, in steps of <code>step</code>, stopping before <code>stop</code></span>
+<span class="eq-note"><span class="say">Read it as: “s at i is one character; s from start to stop by step is the piece that begins at start and ends just before stop”.</span> <code>step</code> defaults to 1; leaving out <code>start</code> or <code>stop</code> means “from the beginning” or “to the end” (from the end backwards when <code>step</code> is negative).</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="bits" data-cells="a|0|1|−8;b|1|1|−7;c|2|1|−6;*d|3|1|−5;e|4|1|−4;f|5|1|−3;g|6|1|−2;h|7|1|−1">
+<figcaption><strong><code>s = "abcdefgh"</code>.</strong> Index from the left below each box, from the right above it. <code>s[3]</code> and <code>s[-5]</code> name the same character.</figcaption>
+</figure>
+</div>
+<p>Strings compare with <code>==</code>, <code>&lt;</code>, <code>&gt;</code> like numbers (§6.6), and they are case sensitive: <code>"abc" == "ABC"</code> is <code>False</code>. Indexing past the end, as in <code>"abc"[3]</code>, raises an error.</p>
+<h3>Slicing in practice</h3>
+<p>With <code>s = "abcdefgh"</code>: <code>s[3:6]</code> is <code>"def"</code> (indices 3, 4, 5); <code>s[3:6:2]</code> is <code>"df"</code>; <code>s[::]</code> is the whole string; <code>s[::-1]</code> is <code>"hgfedcba"</code>, the string reversed; and <code>s[4:1:-2]</code> is <code>"ec"</code>. The lecture prints the reversed string as “hgfedbca”, which is a typo (see the slips list).</p>
+<h3>Immutability</h3>
+<p><code>s[0] = 'y'</code> fails with an error, because a string object cannot be modified. To get <code>"yello"</code> from <code>"hello"</code>, build a new string and rebind the name: <code>s = 'y' + s[1:len(s)]</code>.</p>
+<div class="worked">
+<p class="worked-title">Worked example · s[4:1:-2] with s = "abcdefgh"</p>
+<ol>
+<li>Start at index 4: <code>"e"</code>.</li>
+<li>Step −2 to index 2: <code>"c"</code>.</li>
+<li>The next index would be 0, which is not before <code>stop</code> = 1 in the backwards direction, so the slice ends.</li>
+<li>Result <code>"ec"</code>. Check: a negative step walks right to left, so the result must read backwards through the string.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> the <code>stop</code> index is never included. <code>s[3:6]</code> has three characters, 6 − 3, not four.</p>
+<p class="method"><strong>Near miss:</strong> <code>s[len(s)]</code> looks like “the last character”, but indices end at <code>len(s) - 1</code>, so it is out of bounds and raises an error. Use <code>s[-1]</code>.</p>
+<p class="lab-link"><a href="ch6-branching-and-iteration-lab.html#exp-py-slice">Slice strings and watch the indices in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>With <code>s = "python"</code>, give <code>s[0]</code>, <code>s[-1]</code> and <code>s[1:4]</code>.</li>
+<li>Why does <code>s[0] = "P"</code> fail, and what do you write instead?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>"p"</code>, <code>"n"</code>, <code>"yth"</code>.</li>
+<li>Strings are immutable. Build a new string and rebind: <code>s = "P" + s[1:]</code>.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-65">
+<h2>6.5 Output and input</h2>
+<p class="why">A program talks to its user through <code>print</code> and listens through <code>input</code>; the type that <code>input</code> returns is the usual source of errors.</p>
+<p class="plain"><strong>In plain words:</strong> <strong><code>print</code></strong> writes values to the console. Give it several values separated by commas and it puts a space between them. <strong><code>input</code></strong> shows a prompt, waits for the user to type something and press Enter, and hands back what was typed, always as a string, even if the user typed digits.</p>
+<div class="eq">
+<strong>Output and input</strong>
+<span class="formula"><code>print(a, b, c)</code>: the values with one space between each</span>
+<span class="formula"><code>text = input("prompt")</code>: <code>text</code> is a <code>str</code></span>
+<span class="formula"><code>num = int(input("prompt"))</code>: cast to use it as a number</span>
+<span class="eq-note"><span class="say">Read it as: “print shows the values separated by spaces; input returns a string, so cast it before arithmetic”.</span> Joining with <code>+</code> needs every part to be a string already: cast numbers with <code>str</code>.</span>
+</div>
+<p>The lecture prints the same sentence two ways. <code>print("my fav num is", x, ".", "x =", x)</code> passes five values and prints <code>my fav num is 1 . x = 1</code>, with a space before the full stop. <code>print("my fav num is " + x_str + ". " + "x = " + x_str)</code> builds one string from strings and prints <code>my fav num is 1. x = 1</code>, with exactly the spaces you typed.</p>
+<div class="worked">
+<p class="worked-title">Worked example · the user types 4</p>
+<ol>
+<li><code>text = input("Type anything... ")</code> binds <code>text</code> to the string <code>"4"</code>.</li>
+<li><code>print(5*text)</code> repeats the string: it prints <code>44444</code>.</li>
+<li><code>num = int(input("Type a number... "))</code> with input 4 binds <code>num</code> to the int 4; <code>print(5*num)</code> prints <code>20</code>.</li>
+<li>Check: the same keystrokes give a string unless you cast, and <code>*</code> on a string repeats it.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>print("total: " + 3)</code> raises a <code>TypeError</code>, because <code>+</code> cannot join a string and an int. Write <code>print("total:", 3)</code> or <code>"total: " + str(3)</code>.</p>
+<p class="method"><strong>Near miss:</strong> in the shell, typing <code>3+2</code> shows 5, so it looks as if the expression printed itself; in a script file that line shows nothing. Only <code>print</code> writes to the console from a program.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What type does <code>input</code> return, and what must you do before using the answer in arithmetic?</li>
+<li>What does <code>print("a", 1, "b")</code> show?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>Always a string; cast it, for example with <code>int(…)</code> or <code>float(…)</code>.</li>
+<li><code>a 1 b</code>: the values separated by single spaces.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-66">
+<h2>6.6 Comparison and logic</h2>
+<p class="why">Branches and loops are steered by conditions; a condition is an expression whose value is <code>True</code> or <code>False</code>.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>comparison</strong> asks a yes-or-no question about two values, such as “is <var>i</var> larger than <var>j</var>?”, and its answer is a Boolean. The <strong>logic operators</strong> <code>not</code>, <code>and</code> and <code>or</code> combine Booleans into bigger questions, exactly like NOT, AND and OR in Boolean algebra.</p>
+<div class="eq">
+<strong>Comparison operators</strong>
+<span class="formula"><code>i &gt; j</code> · <code>i &gt;= j</code> · <code>i &lt; j</code> · <code>i &lt;= j</code></span>
+<span class="formula"><code>i == j</code>: equal · <code>i != j</code>: not equal</span>
+<span class="eq-note"><span class="say">Read it as: “greater, greater or equal, less, less or equal, equal, not equal”.</span> They work on ints, floats and strings, and each gives a <code>bool</code>.</span>
+</div>
+<div class="eq">
+<strong>Logic operators</strong>
+<span class="formula"><code>not a</code>: <code>True</code> exactly when <code>a</code> is <code>False</code></span>
+<span class="formula"><code>a and b</code>: <code>True</code> only when both are <code>True</code></span>
+<span class="formula"><code>a or b</code>: <code>True</code> when at least one is <code>True</code></span>
+<span class="eq-note"><span class="say">Read it as: “not a flips a; a and b needs both; a or b needs one or both”.</span> Python applies <code>not</code> first, then <code>and</code>, then <code>or</code>, all after the comparisons.</span>
+</div>
+<p>The lecture’s example: with <code>set_time = 15</code> and <code>sleep_time = 8</code>, <code>print(sleep_time &gt; set_time)</code> prints <code>False</code>. In the second example <code>derive</code> is <code>True</code> and <code>drink</code> is <code>False</code>, so <code>both = drink and derive</code> gives <code>False</code>: one operand is <code>False</code>.</p>
+<p>Strings compare character by character, using the character codes from Chapter 3. (This follows from the codes; the slides only say strings can be compared.) Every capital letter has a smaller code than every small letter, so <code>"Zebra" &lt; "apple"</code> is <code>True</code>, and the digit strings <code>"10" &lt; "9"</code> is <code>True</code> because <code>"1"</code> comes before <code>"9"</code>.</p>
+<div class="worked">
+<p class="worked-title">Worked example · not 3 &gt; 2 or 4 &lt; 1</p>
+<ol>
+<li>Comparisons first: <code>3 &gt; 2</code> is <code>True</code>, <code>4 &lt; 1</code> is <code>False</code>.</li>
+<li><code>not</code> before <code>or</code>: <code>not True</code> is <code>False</code>.</li>
+<li><code>False or False</code> is <code>False</code>.</li>
+<li>Check: the only way to get <code>True</code> from <code>or</code> is a <code>True</code> operand, and none is left.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> comparing a number with a string of digits does not convert either side. <code>5 == "5"</code> is <code>False</code>; cast first.</p>
+<p class="method"><strong>Near miss:</strong> <code>"10" &lt; "9"</code> looks false, since 10 is bigger than 9, but these are strings: they compare character by character, and <code>"1"</code> is before <code>"9"</code>, so it is <code>True</code>. Compare <code>int("10") &lt; int("9")</code> for the numbers.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What is the type of the value of <code>3 &lt; 4</code>?</li>
+<li>For which values of <code>a</code> and <code>b</code> is <code>a or b</code> <code>False</code>?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>bool</code>; the value is <code>True</code>.</li>
+<li>Only when both are <code>False</code>.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-67">
+<h2>6.7 Branching and indentation</h2>
+<p class="why">With conditions in hand, a program can choose which block of lines to run.</p>
+<p class="plain"><strong>In plain words:</strong> an <strong><code>if</code></strong> statement is a fork in the road: if the condition is true, take this path; otherwise skip it. <strong><code>elif</code></strong> adds more forks, tried in order, and <strong><code>else</code></strong> catches everything left over. Python knows which lines belong to which path by their <strong>indentation</strong>: the lines of one block are pushed in by the same amount.</p>
+<div class="eq">
+<strong>The three forms</strong>
+<span class="formula"><code>if c:</code> block</span>
+<span class="formula"><code>if c:</code> block <code>else:</code> block</span>
+<span class="formula"><code>if c1:</code> block <code>elif c2:</code> block <code>else:</code> block</span>
+<span class="eq-note"><span class="say">Read it as: “if c holds, run the block; with elif, try each condition in order; else runs when none held”.</span> At most one block of an <code>if</code>/<code>elif</code>/<code>else</code> chain runs: the first whose condition is <code>True</code>.</span>
+</div>
+<pre class="code-sample"><code>x = float(input("Enter a number for x: "))
+y = float(input("Enter a number for y: "))
+if x == y:
+    print("x and y are equal")
+    if y != 0:
+        print("therefore, x / y is", x/y)
+elif x &lt; y:
+    print("x is smaller")
+else:
+    print("y is smaller")
+print("thanks!")</code></pre>
+<p>This is the lecture’s program. The two lines under <code>if x == y:</code> form one block; the inner <code>if</code> has its own, deeper block. The last line is not indented, so it runs whichever branch was taken. The condition uses <code>==</code>: writing <code>if x = y:</code> is a syntax error, because <code>=</code> is assignment, not comparison.</p>
+<div class="worked">
+<p class="worked-title">Worked example · run the program with x = 0 and y = 0</p>
+<ol>
+<li><code>x == y</code> is <code>True</code>, so the first block runs and prints <code>x and y are equal</code>.</li>
+<li>Inside it, <code>y != 0</code> is <code>False</code>, so the division line is skipped: no division by zero happens.</li>
+<li>The <code>elif</code> and <code>else</code> blocks are skipped because a branch was already taken.</li>
+<li>The unindented <code>print("thanks!")</code> runs. Output: two lines. Check: the inner <code>if</code> guards the division exactly in the case where it would fail.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> moving <code>print("thanks!")</code> four spaces to the right puts it inside the <code>else</code> block, so it would print only when <var>y</var> is smaller. In Python, indentation changes meaning.</p>
+<p class="method"><strong>Near miss:</strong> with <code>x = 7</code>, the chain <code>if x &gt; 5: … elif x &gt; 3: …</code> has two true conditions, so it seems both blocks should run, but only the first true one does. Separate <code>if</code> statements would run both.</p>
+<p class="lab-link"><a href="ch6-branching-and-iteration-lab.html#exp-py-branch">Trace which lines run in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>How does Python know where an <code>if</code> block ends?</li>
+<li>In an <code>if</code>/<code>elif</code>/<code>else</code> chain, how many blocks can run?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>By indentation: the block ends at the first following line that is indented less.</li>
+<li>Exactly one if there is an <code>else</code>; at most one without it.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-68">
+<h2>6.8 while and for loops</h2>
+<p class="why">Branching runs a block once or not at all; a loop runs it again and again.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong><code>while</code> loop</strong> keeps repeating its block as long as its condition stays true, checking before every round. A <strong><code>for</code> loop</strong> runs its block once for every value in a sequence, putting each value in turn into the <strong>loop variable</strong>. <strong><code>range</code></strong> makes a sequence of whole numbers to count with.</p>
+<div class="eq">
+<strong>while</strong>
+<span class="formula"><code>while c:</code> block</span>
+<span class="eq-note"><span class="say">Read it as: “while c is true, run the block, then check c again”.</span> If <code>c</code> is <code>False</code> at the first check, the block never runs. Something in the block must eventually make <code>c</code> false, or the loop never ends.</span>
+</div>
+<div class="eq">
+<strong>range</strong>
+<span class="formula"><code>range(stop)</code>: 0, 1, …, <code>stop</code> − 1</span>
+<span class="formula"><code>range(start, stop, step)</code>: <code>start</code>, <code>start</code> + <code>step</code>, … while still before <code>stop</code></span>
+<span class="eq-note"><span class="say">Read it as: “from start, counting up by step, stopping before stop”.</span> <code>start</code> defaults to 0 and <code>step</code> to 1. <code>stop</code> itself is never produced: <code>range(5, 11, 2)</code> gives 5, 7, 9. With a negative step it counts down and stops before reaching <code>stop</code> from above: <code>range(10, 0, -3)</code> gives 10, 7, 4, 1.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="flow" data-steps="Check / the condition|True / run the block|Back to / the check|False / leave the loop">
+<figcaption><strong>A while loop.</strong> The condition is tested before every round, so the last step is reached only when the test fails.</figcaption>
+</figure>
+</div>
+<pre class="code-sample"><code># with while: set up, test and update the counter yourself
+n = 0
+while n &lt; 5:
+    print(n)
+    n = n+1
+
+# with for: range does the counting
+for n in range(5):
+    print(n)</code></pre>
+<p>Both loops print 0 to 4. The <code>for</code> version is shorter because <code>range</code> sets the start, the step and the end. A <code>for</code> loop is not limited to numbers: it can walk through any sequence, such as the characters of a string (§6.10).</p>
+<div class="worked">
+<p class="worked-title">Worked example · the lecture’s two sums</p>
+<ol>
+<li><code>for i in range(7, 10): mysum += i</code> with <code>mysum = 0</code>: <var>i</var> takes 7, 8, 9, so <code>mysum</code> is 24.</li>
+<li><code>for i in range(5, 11, 2): mysum += i</code>: <var>i</var> takes 5, 7, 9 (11 is not produced, and neither is 10), so <code>mysum</code> is 21.</li>
+<li>Check by count: <code>range(7, 10)</code> has 10 − 7 = 3 values; <code>range(5, 11, 2)</code> has 3 values because the next value would be 11, which is not before <code>stop</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> a <code>while</code> loop whose body never changes the condition runs forever. Before you run one, name the line that moves it towards stopping.</p>
+<p class="method"><strong>Near miss:</strong> <code>range(1, 5)</code> looks as if it counts 1 to 5, but it stops before 5: 1, 2, 3, 4. To include 5 write <code>range(1, 6)</code>.</p>
+<p class="lab-link"><a href="ch6-branching-and-iteration-lab.html#exp-py-loop">Count loop rounds in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>List the values of <code>range(4, 6)</code> and of <code>range(10, 0, -3)</code>.</li>
+<li>When does the body of a <code>while</code> loop run zero times?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>4, 5; and 10, 7, 4, 1.</li>
+<li>When the condition is already <code>False</code> at the first check.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-69">
+<h2>6.9 break and continue</h2>
+<p class="why">Sometimes a loop should stop early or skip the rest of one round; two keywords do this.</p>
+<p class="plain"><strong>In plain words:</strong> <strong><code>break</code></strong> is an emergency exit: it leaves the loop at once and carries on after it. <strong><code>continue</code></strong> skips the rest of this round only and jumps back to the top of the loop for the next round. Both affect only the innermost loop they sit in.</p>
+<div class="eq">
+<strong>Jumps inside a loop</strong>
+<span class="formula"><code>break</code>: leave the innermost loop now</span>
+<span class="formula"><code>continue</code>: skip the rest of this round, start the next</span>
+<span class="eq-note"><span class="say">Read it as: “break exits the loop; continue skips to the next round”.</span> The lines after either keyword in the same block do not run in that round. A <code>break</code> in an inner loop leaves the outer loop running.</span>
+</div>
+<pre class="code-sample"><code>mysum = 0
+for i in range(5, 11, 2):
+    mysum += i
+    if mysum == 5:
+        break        # or: continue
+    mysum += 1
+print(mysum)</code></pre>
+<div class="worked">
+<p class="worked-title">Worked example · the lecture’s break and continue programs</p>
+<ol>
+<li>With <code>break</code>: <var>i</var> = 5 makes <code>mysum</code> 5, the test is true, and the loop ends. It prints <code>5</code>.</li>
+<li>With <code>continue</code>, round <var>i</var> = 5: <code>mysum</code> becomes 5, the test is true, and <code>mysum += 1</code> is skipped.</li>
+<li>Round <var>i</var> = 7: <code>mysum</code> is 12, the test is false, then 13. Round <var>i</var> = 9: 22, then 23.</li>
+<li>It prints <code>23</code>. Check: <code>continue</code> skipped exactly one <code>+= 1</code>, and 5 + 7 + 9 + 2 = 23.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>break</code> in a nested loop exits only the inner one. With <code>for i in range(3):</code> around <code>for j in range(4):</code> and <code>if j == 2: break</code> as the first line of the inner body, the rest of that body runs twice per outer round: 6 times in total.</p>
+<p class="method"><strong>Near miss:</strong> <code>continue</code> sounds like “keep going with the next line”, but it does the opposite: it skips the remaining lines of this round and starts the next round.</p>
+<p class="lab-link"><a href="ch6-branching-and-iteration-lab.html#exp-py-jump">Compare break and continue in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What is the difference between <code>break</code> and <code>continue</code>?</li>
+<li>After <code>for i in range(10):</code> with <code>if i * i &gt; 20: break</code> inside, what is <var>i</var>?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>break</code> leaves the loop entirely; <code>continue</code> ends only the current round and goes on with the next.</li>
+<li>5, the first value with 5 · 5 = 25 &gt; 20.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-610">
+<h2>6.10 Choosing a loop and iterating over strings</h2>
+<p class="why">Both loops can repeat a block; choosing the right one, and letting <code>for</code> walk a string directly, makes the code shorter and safer.</p>
+<p class="plain"><strong>In plain words:</strong> use <strong><code>for</code></strong> when you know in advance how many rounds you need, or you want one round per item; use <strong><code>while</code></strong> when you stop on a condition and cannot say beforehand how many rounds it will take. Any <code>for</code> loop can be rewritten as a <code>while</code> loop, but not always the other way round. Walking straight through the characters with <code>for char in s</code> is called the <strong>pythonic</strong> way.</p>
+<div class="eq">
+<strong>Two ways to walk a string</strong>
+<span class="formula"><code>for index in range(len(s)):</code> use <code>s[index]</code></span>
+<span class="formula"><code>for char in s:</code> use <code>char</code></span>
+<span class="eq-note"><span class="say">Read it as: “loop over the positions and look each one up, or loop over the characters themselves”.</span> Both visit every character once, in order. The second has no index to get wrong.</span>
+</div>
+<div class="tw">
+<table>
+<thead><tr><th></th><th><code>for</code> loop</th><th><code>while</code> loop</th></tr></thead>
+<tbody>
+<tr><td>Number of rounds</td><td>Known in advance</td><td>Unbounded: until the condition fails</td></tr>
+<tr><td>End early</td><td><code>break</code> / <code>continue</code></td><td><code>break</code> / <code>continue</code></td></tr>
+<tr><td>Counter</td><td>Provided by the loop</td><td>Initialise before, update inside</td></tr>
+<tr><td>Rewrite as the other</td><td>Always possible</td><td>Not always possible</td></tr>
+</tbody>
+</table>
+</div>
+<p>The lecture’s cheering program first walks the word with an index (<code>i = 0</code>, <code>while i &lt; len(word):</code>, <code>char = word[i]</code>, …, <code>i += 1</code>) and then replaces those three lines with <code>for char in word:</code>. Inside, <code>char in an_letters</code> tests whether a one-character string occurs in the string of letters that take “an”.</p>
+<div class="worked">
+<p class="worked-title">Worked example · rewrite a for loop as a while loop</p>
+<ol>
+<li>Start: <code>for n in range(3, 8): print(n)</code> prints 3 to 7.</li>
+<li>Initialise the counter before the loop: <code>n = 3</code>.</li>
+<li>Test it in the condition: <code>while n &lt; 8:</code>, because <code>range</code> stops before 8.</li>
+<li>Update it at the end of the body: <code>print(n)</code> then <code>n += 1</code>. Check: the last value printed is 7, and the loop stops when <var>n</var> reaches 8.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> forgetting the update line (<code>i += 1</code>) in a <code>while</code> version of a counting loop gives an endless loop; the lecture crosses out exactly these lines when it switches to <code>for</code>.</p>
+<p class="method"><strong>Near miss:</strong> “read numbers until the user types 0” has a clear end, so it seems a <code>for</code> loop could do it, but nobody knows the count in advance: that is a <code>while</code> loop.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>Give one task that needs a <code>while</code> loop and one that suits a <code>for</code> loop.</li>
+<li>What three pieces must you add when you turn a <code>for … in range(…)</code> loop into a <code>while</code> loop?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>while</code>: keep asking for a password until it is correct. <code>for</code>: print each character of a word, or sum the numbers 1 to 100.</li>
+<li>Initialise the counter before the loop, test it in the condition, and update it inside the body.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="formula-map">
+<h2>Formula map and units</h2>
+<div class="tw">
+<table>
+<thead><tr><th>Rule</th><th>Result type or meaning</th></tr></thead>
+<tbody>
+<tr><td><code>int</code> op <code>int</code> for <code>+ - * // % **</code></td><td><code>int</code> (a negative power gives a float)</td></tr>
+<tr><td>any <code>float</code> operand</td><td><code>float</code></td></tr>
+<tr><td><code>i / j</code></td><td>always <code>float</code></td></tr>
+<tr><td><code>i == j * (i // j) + i % j</code></td><td>always <code>True</code> for ints with <var>j</var> ≠ 0</td></tr>
+<tr><td><code>int(x)</code>, <code>float(x)</code>, <code>str(x)</code></td><td>casts; <code>int</code> of a float truncates towards zero</td></tr>
+<tr><td>comparisons, <code>not</code>, <code>and</code>, <code>or</code></td><td><code>bool</code></td></tr>
+<tr><td><code>input(…)</code></td><td>always <code>str</code></td></tr>
+<tr><td><code>len(s[a:b])</code> for 0 ≤ <var>a</var> ≤ <var>b</var> ≤ <code>len(s)</code></td><td><var>b</var> − <var>a</var> characters</td></tr>
+<tr><td><code>range(a, b)</code></td><td><var>b</var> − <var>a</var> values, from <var>a</var> to <var>b</var> − 1</td></tr>
+<tr><td>precedence</td><td><code>( )</code>, then <code>**</code>, then <code>* / // %</code>, then <code>+ -</code>, then comparisons, <code>not</code>, <code>and</code>, <code>or</code></td></tr>
+</tbody>
+</table>
+</div>
+<p class="method"><strong>Check every answer:</strong> state the type as well as the value (2 or 2.0? 5 or "5"?); check that a slice or range has the number of elements the stop rule predicts; and for a loop, check the first round, the last round and the value left in the loop variable afterwards.</p>
+</section>
+
+<section id="derivations">
+<h2>Derive it cold</h2>
+<ol>
+<li>Show that <code>i == j * (i // j) + i % j</code> for 7 and 2, and for −7 and 2. <span class="sec-ref">§6.2</span></li>
+<li>Evaluate <code>2 + 3 * 4 ** 2 // 5</code> step by step, naming the precedence rule at each step. <span class="sec-ref">§6.2</span></li>
+<li>Trace the four lines <code>pi</code>, <code>radius</code>, <code>area</code>, <code>radius = radius+1</code> and explain why <code>area</code> does not change. <span class="sec-ref">§6.3</span></li>
+<li>Work out <code>s[4:1:-2]</code> and <code>s[::-1]</code> for <code>s = "abcdefgh"</code> index by index. <span class="sec-ref">§6.4</span></li>
+<li>Trace the lecture’s <code>break</code> and <code>continue</code> programs to 5 and 23. <span class="sec-ref">§6.9</span></li>
+<li>Rewrite <code>for n in range(3, 8)</code> as a <code>while</code> loop and name the three pieces you added. <span class="sec-ref">§6.10</span></li>
+</ol>
+</section>
+
+<section id="explain">
+<h2>Explain it</h2>
+<ol>
+<li>Why does Python need an interpreter at all, when the processor already runs programs?</li>
+<li>Why is <code>radius = radius + 1</code> not a contradiction?</li>
+<li>Why does <code>input</code> return a string even when the user types digits?</li>
+<li>Why can an <code>if</code>/<code>elif</code> chain behave differently from the same conditions written as separate <code>if</code> statements?</li>
+<li>When must you use a <code>while</code> loop instead of a <code>for</code> loop?</li>
+<li>Why is <code>for char in s</code> safer than looping over <code>range(len(s))</code>?</li>
+</ol>
+<details class="answers">
+<summary>Show model answers</summary>
+<ol>
+<li>The processor runs only its own machine instructions. Python source code is text, so something has to read it and carry out each line; that is the interpreter. <span class="sec-ref">§6.1</span></li>
+<li><code>=</code> is assignment, not equality. The right side is evaluated with the old value, and then the name is rebound to the new one. <span class="sec-ref">§6.3</span></li>
+<li>The keyboard delivers characters, and Python cannot know whether you mean the text “42” or the number 42. It hands you the text and leaves the cast to you. <span class="sec-ref">§6.5</span></li>
+<li>A chain runs only the first block whose condition is true and skips the rest. Separate <code>if</code> statements test every condition, so several blocks can run. <span class="sec-ref">§6.7</span></li>
+<li>When the number of rounds is not known in advance, for example when you repeat until a user enters a valid value. A <code>for</code> loop needs its sequence up front. <span class="sec-ref">§6.10</span></li>
+<li>It hands you each character directly, so there is no index to start, update or push past the end. Fewer lines means fewer places for an off-by-one error. <span class="sec-ref">§6.10</span></li>
+</ol>
+</details>
+</section>
+
+<section id="practice">
+<h2>Mixed practice</h2>
+<p>Try all 24 problems before opening the answers. The order mixes every section on purpose, so you have to choose the method yourself. Predict each output on paper, then check it in a Python shell.</p>
+<ol class="problems">
+<li>Give the value and type of <code>9 / 3</code>.</li>
+<li>With <code>s = "python"</code>, evaluate <code>s[1]</code>, <code>s[-2]</code> and <code>s[1:4]</code>.</li>
+<li>What does this print? <code>x = 5</code>, then <code>x = x * 2 + 1</code>, then <code>print(x)</code>.</li>
+<li>List the values of <code>range(2, 11, 3)</code>.</li>
+<li>Give the value and type of <code>int(-2.7)</code>.</li>
+<li>Evaluate <code>not 1 &gt;= 2 and 5 != 5</code>.</li>
+<li>Starting from <code>n = 10</code>, the loop <code>while n &gt; 1: n = n // 2</code> runs. How many rounds does it make, and what is <var>n</var> at the end?</li>
+<li>A chain prints <code>"pos"</code> under <code>if x &gt; 0</code>, <code>"zero"</code> under <code>elif x == 0</code> and <code>"neg"</code> under <code>else</code>. What does it print for <var>x</var> = 0?</li>
+<li>The user types 4 at <code>num = input("n: ")</code>. What does <code>print(num * 3)</code> show?</li>
+<li>Evaluate <code>3 + 2 ** 3 * 4 // 6</code>, then <code>(3 + 2) ** 3 * 4 // 6</code>. What changes?</li>
+<li>After <code>for i in range(10):</code> with the body <code>if i * i * i &gt; 50: break</code>, what is the value of <var>i</var>?</li>
+<li>Why does <code>s[0] = "J"</code> fail for <code>s = "hello"</code>, and how do you make <code>"Jello"</code>?</li>
+<li>What is <code>total</code> after <code>total = 0</code> and <code>for k in range(1, 6): total += k</code>?</li>
+<li>A program should read numbers until the user types 0. Which loop do you use, and why?</li>
+<li>What do <code>print("total:", 3, "items")</code> and <code>print("total:" + 3)</code> do?</li>
+<li>Evaluate <code>7 % 3</code>, <code>-7 % 3</code> and <code>7 // 2.0</code>.</li>
+<li>What is <code>count</code> after <code>count = 0</code> and <code>for ch in "a-b-c":</code> with the body <code>if ch == "-": continue</code> then <code>count += 1</code>?</li>
+<li>In the lecture’s <code>x</code>/<code>y</code> program (§6.7), the user enters 3 and 3. List every line that is printed.</li>
+<li>Is <code>"apple" &lt; "Apple"</code> true or false? Explain.</li>
+<li>Rewrite <code>for n in range(2, 12, 3): print(n)</code> as a <code>while</code> loop.</li>
+<li>After <code>radius = 2</code>, <code>area = 3 * radius ** 2</code>, <code>radius = 5</code>, what is <code>area</code>?</li>
+<li>With <code>s = "abcdefgh"</code>, evaluate <code>s[::-1]</code> and <code>s[6:2:-2]</code>.</li>
+<li>You save three lines of Python in a file and run it. Is it compiled to machine code first, as a C program would be? What happens instead?</li>
+<li>Rewrite <code>i = 0</code> / <code>while i &lt; len(word):</code> / <code>char = word[i]</code> / … / <code>i += 1</code> in the pythonic form, and say how many times the body runs for <code>word = "loop"</code>.</li>
+</ol>
+<details class="answers">
+<summary>Show worked answers</summary>
+<ol>
+<li><code>3.0</code>, a <code>float</code>: <code>/</code> always returns a float, even for an exact division. <span class="sec-ref">§6.2</span></li>
+<li><code>"y"</code>, <code>"o"</code>, <code>"yth"</code> (indices 1, 2, 3; index 4 is excluded). <span class="sec-ref">§6.4</span></li>
+<li><code>11</code>: the right side uses the old value 5, so 5 · 2 + 1 = 11, then <var>x</var> is rebound. <span class="sec-ref">§6.3</span></li>
+<li>2, 5, 8; the next value, 11, is not before <code>stop</code> = 11. <span class="sec-ref">§6.8</span></li>
+<li><code>-2</code>, an <code>int</code>: casting cuts the fractional part off towards zero; it does not round down to −3. <span class="sec-ref">§6.1</span></li>
+<li><code>False</code>: <code>1 &gt;= 2</code> is <code>False</code>, <code>not False</code> is <code>True</code>, <code>5 != 5</code> is <code>False</code>, and <code>True and False</code> is <code>False</code>. <span class="sec-ref">§6.6</span></li>
+<li>Three rounds: 10 → 5 → 2 → 1. Then <code>1 &gt; 1</code> is <code>False</code> and the loop ends with <var>n</var> = 1. <span class="sec-ref">§6.8</span></li>
+<li><code>zero</code>: the first condition is false, the <code>elif</code> condition is true, and the <code>else</code> block is skipped. <span class="sec-ref">§6.7</span></li>
+<li><code>444</code>: <code>num</code> is the string <code>"4"</code>, and <code>*</code> repeats a string. <span class="sec-ref">§6.5</span></li>
+<li>8 for the first: 2<sup>3</sup> = 8, then 8 · 4 = 32, then 32 // 6 = 5, then 3 + 5 = 8. With brackets the addition goes first: 5<sup>3</sup> = 125, 125 · 4 = 500, 500 // 6 = 83. <span class="sec-ref">§6.2</span></li>
+<li>4: for <var>i</var> = 0 to 3 the cube is at most 27; at <var>i</var> = 4, 64 &gt; 50 and <code>break</code> leaves the loop with <var>i</var> still 4. <span class="sec-ref">§6.9</span></li>
+<li>Strings are immutable, so a character cannot be assigned. Build a new string: <code>s = "J" + s[1:]</code>. <span class="sec-ref">§6.4</span></li>
+<li>15: <var>k</var> takes 1, 2, 3, 4, 5, and 1 + 2 + 3 + 4 + 5 = 15. <span class="sec-ref">§6.8</span></li>
+<li>A <code>while</code> loop: the number of rounds is not known in advance; the loop stops on a condition (the value read is 0). <span class="sec-ref">§6.10</span></li>
+<li>The first prints <code>total: 3 items</code>, with spaces between the values. The second raises a <code>TypeError</code>: <code>+</code> cannot join a string and an int. <span class="sec-ref">§6.5</span></li>
+<li>1, 2 and 3.0. For −7: −7 // 3 is −3 (rounded down), and −7 − 3 · (−3) = 2. The float operand makes the last result a float. <span class="sec-ref">§6.2</span></li>
+<li>3: the two <code>"-"</code> characters hit <code>continue</code>, which skips <code>count += 1</code>; the three letters are counted. <span class="sec-ref">§6.9</span></li>
+<li><code>x and y are equal</code>, then <code>therefore, x / y is 1.0</code>, then <code>thanks!</code>. <span class="sec-ref">§6.7</span></li>
+<li>False. Strings compare by character codes, and every capital letter comes before every small letter, so <code>"Apple" &lt; "apple"</code> is the true one. <span class="sec-ref">§6.6</span></li>
+<li><code>n = 2</code>, then <code>while n &lt; 12:</code> with the body <code>print(n)</code> and <code>n += 3</code>; it prints 2, 5, 8, 11. Initialise, test, update by the step. <span class="sec-ref">§6.10</span></li>
+<li>12: <code>area</code> was computed with <code>radius</code> = 2, and rebinding <code>radius</code> later does not recompute it. <span class="sec-ref">§6.3</span></li>
+<li><code>"hgfedcba"</code> and <code>"ge"</code> (indices 6 and 4; index 2 is the stop and is excluded). <span class="sec-ref">§6.4</span></li>
+<li>No. Python is an interpreted language: the interpreter reads the file and carries out its commands, without producing a separate machine-code program you run afterwards. <span class="sec-ref">§6.1</span></li>
+<li><code>for char in word:</code> followed by the same body, without the index lines. The body runs 4 times, once per character of <code>"loop"</code>. <span class="sec-ref">§6.10</span></li>
+</ol>
+</details>
+</section>
+
+<section id="exam">
+<h2>Exam-style problems</h2>
+<h3>1 · A score averager · 20 minutes</h3>
+<pre class="code-sample"><code>total = 0
+count = 0
+while True:
+    entry = input("score (q to stop): ")
+    if entry == "q":
+        break
+    score = int(entry)
+    if score &lt; 0 or score &gt; 100:
+        continue
+    total += score
+    count += 1
+print(count, total / count)</code></pre>
+<ol>
+<li>Why does the program need <code>int(entry)</code>, and why must the test for <code>"q"</code> come before it?</li>
+<li>The user enters 80, 105, 70 and then q. Trace <code>total</code> and <code>count</code> and give the printed line.</li>
+<li>What happens if the user types q at the first prompt? Change the last line to avoid it.</li>
+<li>Why is this a <code>while</code> loop and not a <code>for</code> loop, and how does it ever end?</li>
+</ol>
+<details class="answers">
+<summary>Show the worked answer</summary>
+<ol>
+<li><code>input</code> returns a string, so the score must be cast before it is compared with numbers or added. <code>int("q")</code> would raise an error, so the stop test has to run on the raw string first. <span class="sec-ref">§6.5</span></li>
+<li>80: total 80, count 1. 105: the range test is true, <code>continue</code> skips the update. 70: total 150, count 2. q: <code>break</code>. The program prints <code>2 75.0</code> (a float, because of <code>/</code>). <span class="sec-ref">§6.9, §6.2</span></li>
+<li><code>count</code> is 0, so <code>total / count</code> divides by zero and the program stops with an error. Guard it: <code>if count &gt; 0: print(count, total / count)</code> and <code>else: print("no scores")</code>. <span class="sec-ref">§6.7</span></li>
+<li>Nobody knows in advance how many scores will be entered; the loop stops on a condition, the input q. <code>while True</code> never fails its test, so the only way out is the <code>break</code>. <span class="sec-ref">§6.10, §6.8</span></li>
+</ol>
+</details>
+<h3>2 · A palindrome check · 20 minutes</h3>
+<pre class="code-sample"><code>word = "racecar"
+i = 0
+same = True
+while i &lt; len(word) // 2:
+    if word[i] != word[-1 - i]:
+        same = False
+        break
+    i += 1
+print(same)</code></pre>
+<ol>
+<li>How many rounds can the loop make for <code>"racecar"</code>, and which pairs of characters does it compare?</li>
+<li>Trace the program for <code>word = "rocket"</code>: what are <var>i</var> and <code>same</code> at the end?</li>
+<li>Give a one-line expression with a slice that has the same value as <code>same</code>.</li>
+<li>Rewrite the loop as a <code>for</code> loop over <code>range</code>.</li>
+</ol>
+<details class="answers">
+<summary>Show the worked answer</summary>
+<ol>
+<li><code>len("racecar") // 2</code> is 7 // 2 = 3, so at most three rounds: <code>word[0]</code> with <code>word[-1]</code> (r, r), <code>word[1]</code> with <code>word[-2]</code> (a, a), <code>word[2]</code> with <code>word[-3]</code> (c, c). The middle e needs no partner. All match, so it prints <code>True</code>. <span class="sec-ref">§6.4, §6.8</span></li>
+<li>6 // 2 = 3 possible rounds. At <var>i</var> = 0, r and t differ: <code>same</code> becomes <code>False</code> and <code>break</code> leaves the loop before <code>i += 1</code>, so <var>i</var> = 0 and <code>same</code> = <code>False</code>. <span class="sec-ref">§6.9</span></li>
+<li><code>word == word[::-1]</code>: the word equals its reverse. <span class="sec-ref">§6.4</span></li>
+<li><code>same = True</code>, then <code>for i in range(len(word) // 2):</code> with the same <code>if</code> and <code>break</code>, and no <code>i = 0</code> or <code>i += 1</code>, because <code>range</code> does the counting. <span class="sec-ref">§6.10</span></li>
+</ol>
+</details>
+</section>
+
+<section id="slips">
+<h2>Slips in the notes</h2>
+<p>Each item was checked against the rendered slides and against Python 3. Slide numbers refer to “06_branching_and_iterations.pdf”.</p>
+<ul>
+<li><strong>Slide 9, floor division.</strong> <code>i//j</code> is described as returning the quotient as an integer. That holds only for two int operands; with a float operand the floor is a float, so <code>7.0 // 2</code> is <code>3.0</code> (§6.2).</li>
+<li><strong>Slide 10, precedence.</strong> The list shows <code>**</code>, then <code>*</code>, then <code>/</code> on separate rows, which reads as if <code>*</code> ranks above <code>/</code>. In Python, <code>*</code>, <code>/</code>, <code>//</code> and <code>%</code> share one level and are evaluated left to right, so <code>8 / 2 * 4</code> is <code>16.0</code>. This guide follows Python (§6.2).</li>
+<li><strong>Slide 11, variable name.</strong> <code>pi_approx. = 22/7</code> is a syntax error: a name cannot contain a dot. It probably means <code>pi_approx = 22/7</code> (§6.3).</li>
+<li><strong>Slide 16, quotation marks.</strong> The string examples are typeset with curly quotes (“Joe”). Typed into Python, curly quotes are a syntax error; use straight quotes, <code>"Joe"</code> or <code>'Joe'</code>, as this guide does (§6.4).</li>
+<li><strong>Slide 28, range.</strong> “Loop until value is stop − 1” is true only for step 1. With <code>range(5, 11, 2)</code> on the same slide, the last value is 9, not 10; the rule is “stop before reaching <code>stop</code>” (§6.8).</li>
+<li><strong>Slide 36, reversed string.</strong> The reversed string <code>s[::-1]</code> is printed as “hgfedbca”; for <code>"abcdefgh"</code> Python gives <code>"hgfedcba"</code>. The slide’s equivalent slice <code>s[-1:-(len(s)+1):-1]</code> is correct (§6.4).</li>
+</ul>
+</section>
+
+<section id="checklist">
+<h2>Self-check</h2>
+<p>These are the chapter’s learning goals. Tick a skill only in a later session, at least one day after studying, when you can show it without notes.</p>
+<ul>
+<li class="check"><label><input type="checkbox" data-k="interp" />Explain source code, compilers and interpreters, and how Python runs a file. (23)</label></li>
+<li class="check"><label><input type="checkbox" data-k="types" />Name the scalar types and cast between them, including truncation. (1, 5)</label></li>
+<li class="check"><label><input type="checkbox" data-k="operators" />Evaluate <code>/</code>, <code>//</code>, <code>%</code> and <code>**</code> with the right result type. (1, 10, 16)</label></li>
+<li class="check"><label><input type="checkbox" data-k="precedence" />Apply operator precedence and left-to-right evaluation. (6, 10)</label></li>
+<li class="check"><label><input type="checkbox" data-k="assign" />Trace assignment and rebinding with a trace table. (3, 21)</label></li>
+<li class="check"><label><input type="checkbox" data-k="index" />Index and slice strings, including negative indices and steps. (2, 22)</label></li>
+<li class="check"><label><input type="checkbox" data-k="immutable" />Explain string immutability and build a changed copy. (12)</label></li>
+<li class="check"><label><input type="checkbox" data-k="io" />Use <code>print</code> and <code>input</code>, and cast input before arithmetic. (9, 15)</label></li>
+<li class="check"><label><input type="checkbox" data-k="compare" />Evaluate comparisons and <code>not</code>, <code>and</code>, <code>or</code>, on numbers and strings. (6, 19)</label></li>
+<li class="check"><label><input type="checkbox" data-k="branch" />Trace <code>if</code>/<code>elif</code>/<code>else</code> chains and nested blocks by indentation. (8, 18)</label></li>
+<li class="check"><label><input type="checkbox" data-k="loops" />Trace <code>while</code> and <code>for</code> loops and list the values of <code>range</code>. (4, 7, 13)</label></li>
+<li class="check"><label><input type="checkbox" data-k="jumps" />Predict the effect of <code>break</code> and <code>continue</code>, also in nested loops. (11, 17)</label></li>
+<li class="check"><label><input type="checkbox" data-k="choose" />Choose between <code>for</code> and <code>while</code> and convert one into the other. (14, 20, 24)</label></li>
+<li class="check"><label><input type="checkbox" data-k="derive" />Rebuild every item in the derivation list on blank paper.</label></li>
+<li class="check"><label><input type="checkbox" data-k="exam" />Complete both exam-style problems in 20 minutes each.</label></li>
+</ul>
+</section>
+<p class="source-note">Personal study guide based on the supplied “06_branching_and_iterations.pdf” (40 slides, lecture dated 29 April 2024; the slides credit MIT OpenCourseWare 6.0001), written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>
+</main>
+</div>
+<script src="../js/concept-map.js" defer></script>
+<script src="../js/guide.js" defer></script>
+<script src="../js/tooltip.js" defer></script>
+<script src="../js/nav.js" defer></script>
+</body>
+</html>

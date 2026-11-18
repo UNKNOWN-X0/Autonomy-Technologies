@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#04316A"/>
+<meta name="description" content="APDR Chapter 7 study guide to functions, return and scope, functions as arguments, tuples, lists, list operations, aliasing, cloning, and mutation during iteration."/>
+<title>Functions, Tuples, and Lists · APDR Chapter 7</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="stylesheet" href="../css/system.css"/>
+<script src="../js/settings.js"></script>
+<link rel="stylesheet" href="../css/guide.css"/>
+</head>
+<body class="s-apdr-1" data-key="apdr1-ch7">
+<div class="wrap">
+<nav class="toc" aria-label="Guide contents">
+<a class="brand" href="../index.html"><span>From Fundamentals to AI Apocalypse</span></a>
+<a class="home" href="../index.html">All semesters</a>
+<details class="mobile-toc">
+<summary>Jump to a section</summary>
+<ol>
+<li><a href="#plan">Study plan</a></li>
+<li><a href="#sec-71">7.1 Decomposition and abstraction</a></li>
+<li><a href="#sec-72">7.2 Defining and calling functions</a></li>
+<li><a href="#sec-73">7.3 return versus print</a></li>
+<li><a href="#sec-74">7.4 Scope</a></li>
+<li><a href="#sec-75">7.5 Functions as arguments</a></li>
+<li><a href="#sec-76">7.6 Tuples</a></li>
+<li><a href="#sec-77">7.7 Lists</a></li>
+<li><a href="#sec-78">7.8 List operations</a></li>
+<li><a href="#sec-79">7.9 Aliasing and cloning</a></li>
+<li><a href="#sec-710">7.10 Mutation during iteration</a></li>
+<li><a href="#formula-map">Formula map</a></li>
+<li><a href="#derivations">Derive it cold</a></li>
+<li><a href="#explain">Explain it</a></li>
+<li><a href="#practice">Mixed practice</a></li>
+<li><a href="#exam">Exam-style problems</a></li>
+<li><a href="#slips">Slips in the notes</a></li>
+<li><a href="#checklist">Self-check</a></li>
+</ol>
+</details>
+<ol>
+<li><a href="#plan">Study plan</a></li>
+<li class="toc-group" aria-hidden="true">Topics</li>
+<li><a href="#sec-71">7.1 Decomposition and abstraction</a></li>
+<li><a href="#sec-72">7.2 Defining and calling functions</a></li>
+<li><a href="#sec-73">7.3 return versus print</a></li>
+<li><a href="#sec-74">7.4 Scope</a></li>
+<li><a href="#sec-75">7.5 Functions as arguments</a></li>
+<li><a href="#sec-76">7.6 Tuples</a></li>
+<li><a href="#sec-77">7.7 Lists</a></li>
+<li><a href="#sec-78">7.8 List operations</a></li>
+<li><a href="#sec-79">7.9 Aliasing and cloning</a></li>
+<li><a href="#sec-710">7.10 Mutation during iteration</a></li>
+<li class="toc-group" aria-hidden="true">Practise</li>
+<li><a href="#formula-map">Formula map</a></li>
+<li><a href="#derivations">Derive it cold</a></li>
+<li><a href="#explain">Explain it</a></li>
+<li><a href="#practice">Mixed practice</a></li>
+<li><a href="#exam">Exam-style problems</a></li>
+<li><a href="#slips">Slips in the notes</a></li>
+<li><a href="#checklist">Self-check</a></li>
+</ol>
+</nav>
+<main>
+<header class="sign">
+<span class="code" aria-label="Algorithms, Programming, and Data Representation">APDR</span>
+<h1>Functions, Tuples, and Lists</h1>
+<p class="course">Algorithms, Programming, and Data Representation · Module 23131 · Chapter 7</p>
+<p class="meta" id="review-meta"></p>
+</header>
+<p class="standfirst">This chapter gives programs structure. Functions package a piece of code under a name, take inputs, hand back a result and keep their own names apart from the rest of the program. Tuples and lists then hold many values under one name, and lists, because they can change, bring the chapter’s key idea: two names can point at the same object.</p>
+<div class="downloads" aria-label="Download study guide files">
+<p>Take the guide offline</p>
+<a class="btn primary" href="ch7-functions-tuples-lists.pdf" download>Download clean PDF</a>
+<a class="btn" href="ch7-functions-tuples-lists.tex" download>Download LaTeX source (.tex)</a>
+</div>
+
+<section class="cold-start" id="cold-start">
+<h2>Start from memory</h2>
+<p>Try each question first. Mark it sure, unsure, or guessed.</p>
+<ol>
+<li>What does a function return when its body has no <code>return</code> statement?</li>
+<li>What is the difference between <code>(5)</code> and <code>(5,)</code>?</li>
+<li>After <code>a = [1, 2]</code> and <code>b = a</code>, what does <code>b.append(3)</code> do to <code>a</code>?</li>
+<li>What is the value of <code>L.sort()</code>, as opposed to <code>sorted(L)</code>?</li>
+<li>Can a function read a variable defined outside it? Can it rebind one?</li>
+</ol>
+<details class="answers">
+<summary>Check the short answers</summary>
+<ol>
+<li><code>None</code>, the value that stands for “no value”. <span class="sec-ref">§7.3</span></li>
+<li><code>(5)</code> is just the int 5 in brackets; <code>(5,)</code> is a tuple with one element. <span class="sec-ref">§7.6</span></li>
+<li><code>a</code> becomes <code>[1, 2, 3]</code> too: both names point at the same list. <span class="sec-ref">§7.9</span></li>
+<li><code>L.sort()</code> sorts <code>L</code> in place and returns <code>None</code>; <code>sorted(L)</code> returns a new sorted list and leaves <code>L</code> alone. <span class="sec-ref">§7.8</span></li>
+<li>It can read it. Assigning to that name inside the function makes a new local name instead, unless the name is declared <code>global</code>. <span class="sec-ref">§7.4</span></li>
+</ol>
+</details>
+</section>
+
+<section id="plan">
+<h2>How to use this guide</h2>
+<p>Every example in this chapter is a short program. Read it, cover it, and write down what it prints before you run it; then trace it with one column per name. For lists, draw the list as a row of boxes and every name as an arrow to it: aliasing questions are answered by the arrows.</p>
+<ol class="study-plan">
+<li><strong>Day 0:</strong> Try the cold start, then study §7.1–7.5; solve practice 2, 5, 6, 9, 10, 13.</li>
+<li><strong>Day 1:</strong> Rebuild §7.1–7.5 from memory, then study §7.6–7.8; solve practice 1, 3, 7, 11, 12, 18.</li>
+<li><strong>Day 3:</strong> Rebuild §7.6–7.8, then study §7.9–7.10 and draw the arrows for every example; solve practice 4, 8, 14, 15, 16, 17.</li>
+<li><strong>About day 7:</strong> Do the derivation list cold, then practice 19–24 without notes.</li>
+<li><strong>About day 14:</strong> Work both exam problems in 20 minutes each; answer the “Explain it” questions aloud.</li>
+<li><strong>Before the exam:</strong> Tick only the self-check skills you can show cold; revisit the sections named in the answers you missed.</li>
+</ol>
+<p class="method"><strong>When stuck:</strong> draw frames and objects. Put each function call in its own box of names, put every list or tuple once on the right, and draw each name as an arrow to its object. A change through one arrow is seen through every arrow to the same object.</p>
+</section>
+
+<section id="route">
+<h2>How the chapter fits together</h2>
+<p>Functions come first: what they are for, how to define and call one, what it hands back, and which names it can see. Tuples and lists then hold several values; the immutable tuple is simple, and the mutable list brings aliasing, cloning and the danger of changing a list while a loop walks through it.</p>
+<div class="cmap" data-cmap>
+<div class="cm-col">
+<p class="cm-head"><strong>Measure</strong> · structure a program</p>
+<ul>
+<li class="cm-node" data-id="decomp" data-deps="" data-sec="7.1">
+<p class="cm-title"><strong>Decomposition and abstraction</strong> <span class="sec-ref">§7.1</span></p>
+<p class="cm-formula"><code>modules · black boxes</code></p>
+<p class="cm-why">Rests on: nothing earlier; it is the reason functions exist.</p>
+</li>
+<li class="cm-node" data-id="define" data-deps="decomp" data-sec="7.2">
+<p class="cm-title"><strong>Defining and calling</strong> <span class="sec-ref">§7.2</span></p>
+<p class="cm-formula"><code>def name(params):</code></p>
+<p class="cm-why">Rests on: decomposition; a function is the unit you break a program into.</p>
+</li>
+</ul>
+</div>
+<div class="cm-col">
+<p class="cm-head"><strong>Define</strong> · what a call does</p>
+<ul>
+<li class="cm-node" data-id="ret" data-deps="define" data-sec="7.3">
+<p class="cm-title"><strong>return versus print</strong> <span class="sec-ref">§7.3</span></p>
+<p class="cm-formula"><code>return value · None</code></p>
+<p class="cm-why">Rests on: calling; the value of a call is what its <code>return</code> hands back.</p>
+</li>
+<li class="cm-node" data-id="scope" data-deps="define" data-sec="7.4">
+<p class="cm-title"><strong>Scope</strong> <span class="sec-ref">§7.4</span></p>
+<p class="cm-formula"><code>one frame per call</code></p>
+<p class="cm-why">Rests on: calling; each call gets its own frame of names.</p>
+</li>
+<li class="cm-node" data-id="funarg" data-deps="ret" data-sec="7.5">
+<p class="cm-title"><strong>Functions as arguments</strong> <span class="sec-ref">§7.5</span></p>
+<p class="cm-formula"><code>f(g) · z()</code></p>
+<p class="cm-why">Rests on: return values; a function is an object you can pass and call later.</p>
+</li>
+</ul>
+</div>
+<div class="cm-col">
+<p class="cm-head"><strong>Derive</strong> · compound data</p>
+<ul>
+<li class="cm-node" data-id="tuple" data-deps="ret" data-sec="7.6">
+<p class="cm-title"><strong>Tuples</strong> <span class="sec-ref">§7.6</span></p>
+<p class="cm-formula"><code>(q, r) = f(x, y)</code></p>
+<p class="cm-why">Rests on: return; a tuple lets a function return several values.</p>
+</li>
+<li class="cm-node" data-id="lists" data-deps="tuple" data-sec="7.7">
+<p class="cm-title"><strong>Lists and list operations</strong> <span class="sec-ref">§7.7–7.8</span></p>
+<p class="cm-formula"><code>L.append(x) · L[i] = v</code></p>
+<p class="cm-why">Rests on: tuples; a list is an ordered sequence that can change.</p>
+</li>
+<li class="cm-node" data-id="alias" data-deps="lists scope" data-sec="7.9">
+<p class="cm-title"><strong>Aliasing and cloning</strong> <span class="sec-ref">§7.9</span></p>
+<p class="cm-formula"><code>b = a · b = a[:]</code></p>
+<p class="cm-why">Rests on: mutable lists and names that point at objects, also across calls.</p>
+</li>
+<li class="cm-node" data-id="mutiter" data-deps="alias" data-sec="7.10">
+<p class="cm-title"><strong>Mutation during iteration</strong> <span class="sec-ref">§7.10</span></p>
+<p class="cm-formula"><code>for e in L[:]:</code></p>
+<p class="cm-why">Rests on: aliasing and cloning; loop over a copy, change the original.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="cm-detail" aria-live="polite" hidden></p>
+<div class="tw">
+<table>
+<thead><tr><th>Question</th><th>Tool</th></tr></thead>
+<tbody>
+<tr><td>What does this call print, and what is its value?</td><td>Run the body; the value is what <code>return</code> gives, else <code>None</code> (§7.2–7.3)</td></tr>
+<tr><td>Which <code>x</code> does this line mean?</td><td>Is <code>x</code> assigned anywhere in the function? Then it is local (§7.4)</td></tr>
+<tr><td>What does this tuple or list expression give?</td><td>Index and slice as for strings (§7.6–7.7)</td></tr>
+<tr><td>Did this line change the list or make a new one?</td><td>Methods mutate; <code>+</code>, slices and <code>sorted</code> make new lists (§7.8)</td></tr>
+<tr><td>Does a change through one name show through another?</td><td>Draw the arrows: same object or a copy? (§7.9)</td></tr>
+<tr><td>Why did the loop skip an element?</td><td>Track the loop’s hidden index while the list shrinks (§7.10)</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="sec-71">
+<h2>7.1 Decomposition and abstraction</h2>
+<p class="why">Programs so far were one long sequence of instructions; that works for small tasks and becomes unmanageable for larger ones.</p>
+<p class="plain"><strong>In plain words:</strong> <strong>decomposition</strong> means splitting a program into self-contained pieces, <strong>modules</strong>, that each do one job and can be reused. <strong>Abstraction</strong> means using a piece as a <strong>black box</strong>: you know what goes in and what comes out, and you do not need, or want, to see how it works inside. A function provides both: its body is the module, and its name and description are all a caller needs.</p>
+<div class="eq">
+<strong>The two ideas</strong>
+<span class="formula">decomposition: break the code into self-contained, reusable modules</span>
+<span class="formula">abstraction: hide the details behind a specification</span>
+<span class="eq-note"><span class="say">Read it as: “split the work into pieces, and hide how each piece works”.</span> This chapter decomposes with functions; classes, a few lectures later, are the second tool.</span>
+</div>
+<p>The lecture measures good programmers by the amount of functionality, not by the amount of code. More code is not a good thing in itself: every line must be kept correct. A function written once can be used many times but only has to be debugged once.</p>
+<p>The specification of a function, its <strong>docstring</strong>, is what makes it a black box: it states what the input must be and what the function returns. Someone who calls <code>is_even(7)</code> reads “Returns True if i is even, otherwise False” and never needs to see the <code>%</code> inside.</p>
+<div class="worked">
+<p class="worked-title">Worked example · decompose a grade report</p>
+<ol>
+<li>Task: read scores, drop the invalid ones, and print the average. One block of code would mix all three jobs.</li>
+<li>Decompose: <code>read_scores()</code> returns a list, <code>valid(scores)</code> returns the valid ones, <code>average(scores)</code> returns a number.</li>
+<li>Abstract: each gets a docstring, so the main program reads <code>print(average(valid(read_scores())))</code> without any inner detail.</li>
+<li>Check: each piece can be tested on its own, and fixing <code>average</code> fixes every place that calls it.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> a function that also prints its result, or reads its own input, is harder to reuse. Let a function hand back a value and let the caller decide what to do with it (§7.3).</p>
+<p class="method"><strong>Near miss:</strong> copying a block of code to a second place looks like reuse, but now there are two copies to debug. Reuse means calling one function twice.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What is the difference between decomposition and abstraction?</li>
+<li>What does a docstring tell the caller of a function?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>Decomposition splits a program into self-contained modules; abstraction hides how each module works, so it can be used as a black box.</li>
+<li>What the inputs must be and what the function returns, so the caller can use it without reading the body.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-72">
+<h2>7.2 Defining and calling functions</h2>
+<p class="why">A function is the tool for decomposition; you need to know its parts and when its body actually runs.</p>
+<p class="plain"><strong>In plain words:</strong> <code>def</code> writes a function down under a <strong>name</strong>, with <strong>parameters</strong> (zero or more input names in brackets), an optional docstring, and an indented <strong>body</strong>. Writing it down does not run it. The body runs only when the function is <strong>called</strong> (or <strong>invoked</strong>): its name followed by brackets holding the <strong>arguments</strong>, the values for the parameters.</p>
+<div class="eq">
+<strong>Definition and call</strong>
+<span class="formula"><code>def name(p1, p2):</code> docstring, then the body</span>
+<span class="formula"><code>name(a1, a2)</code>: bind <code>p1</code> to <code>a1</code>, <code>p2</code> to <code>a2</code>, run the body</span>
+<span class="eq-note"><span class="say">Read it as: “define name with parameters p1 and p2; call name with arguments a1 and a2”.</span> The number of arguments must match the number of parameters, or the call raises a <code>TypeError</code>.</span>
+</div>
+<pre class="code-sample"><code>def is_even(i):
+    """
+    Input: i, a positive int
+    Returns True if i is even, otherwise False
+    """
+    print("We are inside is_even")
+    return i % 2 == 0
+
+is_even(3)</code></pre>
+<p>The lecture lists five characteristics: a function has a name, has parameters (0 or more), has a docstring (optional but recommended), has a body, and returns something. The docstring is a string in triple quotes as the first line of the body; Python ignores it when running, but it is the function’s specification.</p>
+<div class="worked">
+<p class="worked-title">Worked example · what runs when</p>
+<ol>
+<li>Python reads the <code>def</code> block and binds the name <code>is_even</code> to a function object. Nothing is printed yet.</li>
+<li><code>is_even(3)</code> calls it: the parameter <code>i</code> is bound to 3, and the body starts.</li>
+<li>The body prints <code>We are inside is_even</code>, then evaluates <code>3 % 2 == 0</code> to <code>False</code> and returns it.</li>
+<li>Check: in a script nothing else appears, because the returned <code>False</code> is not printed; only the shell would echo it.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> a file holding only a <code>def</code> block prints nothing when run. Defining is not calling.</p>
+<p class="method"><strong>Near miss:</strong> <code>is_even</code> without brackets looks like a call but is just the function object itself; only <code>is_even(3)</code> runs the body.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>Name the five characteristics of a function given in the lecture.</li>
+<li>What happens when you call <code>is_even()</code> with no argument?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>A name, parameters (0 or more), a docstring (optional), a body, and a return value.</li>
+<li>A <code>TypeError</code>: <code>is_even()</code> is missing 1 required positional argument, <code>i</code>.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-73">
+<h2>7.3 return versus print</h2>
+<p class="why">The value a call gives back and the text a function shows on the screen are different things, and confusing them is the most common function bug.</p>
+<p class="plain"><strong>In plain words:</strong> <strong><code>return</code></strong> ends the function and hands a value back to the caller, which can store it or compute with it. <strong><code>print</code></strong> only shows text on the console; the caller gets nothing from it. A function with no <code>return</code> hands back <strong><code>None</code></strong>, Python’s value for “no value”.</p>
+<div class="eq">
+<strong>The value of a call</strong>
+<span class="formula"><code>return expr</code>: the call’s value is <code>expr</code></span>
+<span class="formula">no <code>return</code> reached: the call’s value is <code>None</code></span>
+<span class="eq-note"><span class="say">Read it as: “a call is worth what its return statement hands back, and None if there is none”.</span> Only one <code>return</code> runs per call; lines after it in the same block never run.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="flow" data-steps="Call / pass values|Run / the body|return / a value|Caller / uses it">
+<figcaption><strong>A call.</strong> The caller waits while the body runs, then continues with the returned value; with no <code>return</code> that value is <code>None</code>.</figcaption>
+</figure>
+</div>
+<div class="tw">
+<table>
+<thead><tr><th><code>return</code></th><th><code>print</code></th></tr></thead>
+<tbody>
+<tr><td>Has meaning only inside a function</td><td>Can be used anywhere</td></tr>
+<tr><td>Only one runs per call</td><td>Can run many times in one call</td></tr>
+<tr><td>Code after it in the block never runs</td><td>Code after it runs as normal</td></tr>
+<tr><td>Its value goes to the caller</td><td>Its value goes to the console</td></tr>
+</tbody>
+</table>
+</div>
+<p>The lecture’s second <code>is_even</code> has the body <code>i%2 == 0</code> and no <code>return</code>. The comparison is worked out and thrown away, and the call returns <code>None</code>. So <code>print(is_even(4))</code> prints <code>None</code>, not <code>True</code>.</p>
+<div class="worked">
+<p class="worked-title">Worked example · print inside, print outside</p>
+<ol>
+<li><code>def sq(x): print(x * x)</code>, then <code>y = sq(3)</code>: the body prints <code>9</code>.</li>
+<li>The body ends without a <code>return</code>, so <code>sq(3)</code> is <code>None</code> and <code>y</code> is bound to <code>None</code>.</li>
+<li><code>print(y)</code> prints <code>None</code>. The output is <code>9</code>, then <code>None</code>.</li>
+<li>Check: replace the body by <code>return x * x</code> and the output becomes just <code>9</code>, from <code>print(y)</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>double(3) + 1</code> with <code>def double(x): print(2 * x)</code> prints 6 and then fails: <code>None + 1</code> raises a <code>TypeError</code>. Seeing the number on screen does not mean the caller got it.</p>
+<p class="method"><strong>Near miss:</strong> in the shell, a bare call such as <code>is_even(3)</code> shows <code>False</code>, which looks like printing. It is the shell echoing the returned value; in a script nothing appears.</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-return">Watch return values and None in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What does <code>print(is_even(4))</code> show when <code>is_even</code> has no <code>return</code>?</li>
+<li>A function body is <code>return 1</code> followed by <code>print("hi")</code>. What does a call print?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>None</code>: the comparison is computed but not returned.</li>
+<li>Nothing: <code>return</code> ends the call, so the <code>print</code> line never runs.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-74">
+<h2>7.4 Scope</h2>
+<p class="why">Functions use names too; you need to know which names a function sees and which ones it changes.</p>
+<p class="plain"><strong>In plain words:</strong> every call gets a fresh <strong>frame</strong> (also called a <strong>scope</strong> or <strong>environment</strong>): a table that maps names to objects. The <strong>formal parameter</strong>, the name in the <code>def</code> line, is bound in that frame to the value of the <strong>actual parameter</strong>, the argument in the call. Names assigned inside the function live only in its frame and vanish when the call ends. A function can <strong>read</strong> a name from the main program, but assigning to a name inside a function always means a local name.</p>
+<div class="eq">
+<strong>Which name is meant</strong>
+<span class="formula">assigned anywhere in the function → local name in the call’s frame</span>
+<span class="formula">only read in the function → looked up in the main program’s frame</span>
+<span class="eq-note"><span class="say">Read it as: “a name the function assigns is its own; a name it only reads comes from outside”.</span> Python decides this for the whole function before it runs, so reading a local name before its assignment raises an <code>UnboundLocalError</code>.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="cells" data-cells="x|global frame|3;z|global frame|4;x|frame of f|4">
+<figcaption><strong>After the lecture’s <code>z = f(x)</code>.</strong> The parameter <code>x</code> in <code>f</code>’s frame started as 3 and was rebound to 4; the main program’s <code>x</code> is still 3, and <code>z</code> holds the returned 4.</figcaption>
+</figure>
+</div>
+<pre class="code-sample"><code>def f(x):
+    x = x + 1
+    print('in f(x): x =', x)
+    return x
+
+x = 3
+z = f(x)</code></pre>
+<p>The lecture’s three scope examples each start with <code>x = 5</code> and call a function with <code>x</code> as the argument. In <code>f</code>, the body assigns <code>x = 1</code> and <code>x += 1</code>: that <code>x</code> is local, so <code>f</code> prints 2 and the main program’s <code>x</code> stays 5. In <code>g</code>, the body only reads <code>x</code>, so it picks up the main program’s 5. In <code>h</code>, the body is <code>x += 1</code>, which assigns, so <code>x</code> is local, but it is read before it has a value: <code>UnboundLocalError</code>.</p>
+<div class="worked">
+<p class="worked-title">Worked example · trace the lecture’s z = f(x)</p>
+<ol>
+<li>The main program binds <code>x</code> to 3, then calls <code>f(x)</code>: a new frame opens, and the formal parameter <code>x</code> is bound to 3.</li>
+<li>In <code>f</code>’s frame, <code>x = x + 1</code> rebinds the local <code>x</code> to 4; the line prints <code>in f(x): x = 4</code>.</li>
+<li><code>return x</code> hands back 4, the frame disappears, and the main program binds <code>z</code> to 4.</li>
+<li>Check: the main program’s <code>x</code> was never touched, so <code>print(x, z)</code> would show <code>3 4</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>x += 1</code> inside a function, with <code>x</code> defined only outside, does not change the outer <code>x</code>; it raises an <code>UnboundLocalError</code>, because the assignment makes <code>x</code> local for the whole function.</p>
+<p class="method"><strong>Near miss:</strong> naming the parameter <code>x</code>, like the outer variable, looks as if the function works on the outer <code>x</code>. It gets a copy of the outer <em>name binding</em>: rebinding the parameter never rebinds the caller’s name. (A list passed in is another story: §7.9.)</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-scope">Step through frames and scope in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>In the lecture’s <code>g</code>, where does the <code>x</code> in <code>print(x)</code> come from?</li>
+<li>Why does <code>h</code> fail, although <code>x = 5</code> was set before the call?</li>
+<li>What is the difference between a formal and an actual parameter?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>From the main program’s frame, because <code>g</code> never assigns <code>x</code>.</li>
+<li><code>x += 1</code> assigns <code>x</code>, so <code>x</code> is local in <code>h</code>; the local <code>x</code> has no value when <code>+=</code> reads it.</li>
+<li>The formal parameter is the name in the <code>def</code> line; the actual parameter is the value given in the call, which the formal one is bound to.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-75">
+<h2>7.5 Functions as arguments</h2>
+<p class="why">A function is an object like a number or a string, so it can be passed to another function and called there.</p>
+<p class="plain"><strong>In plain words:</strong> the name of a function, written without brackets, refers to the function object. Passing it as an argument hands over the function itself, not its result. The receiving function can then call it with brackets whenever it likes.</p>
+<div class="eq">
+<strong>Passing a function</strong>
+<span class="formula"><code>func_c(func_a)</code>: the parameter <code>z</code> is bound to the function <code>func_a</code></span>
+<span class="formula"><code>z()</code> inside <code>func_c</code>: calls <code>func_a</code></span>
+<span class="eq-note"><span class="say">Read it as: “give func_c the function func_a; func_c calls it as z()”.</span> <code>func_c(func_a())</code> would instead call <code>func_a</code> first and pass its result.</span>
+</div>
+<pre class="code-sample"><code>def func_a():
+    print('inside func_a')
+
+def func_b(y):
+    print('inside func_b')
+    return y
+
+def func_c(z):
+    print('inside func_c')
+    return z()
+
+print(func_a())
+print(5 + func_b(2))
+print(func_c(func_a))</code></pre>
+<p><code>func_a</code> takes no parameters, <code>func_b</code> takes one, and <code>func_c</code> takes one that is itself a function. The three <code>print</code> lines show the output of each call followed by its value.</p>
+<div class="worked">
+<p class="worked-title">Worked example · the lecture’s three prints</p>
+<ol>
+<li><code>print(func_a())</code>: the call prints <code>inside func_a</code> and returns <code>None</code>, so the next line is <code>None</code>.</li>
+<li><code>print(5 + func_b(2))</code>: the call prints <code>inside func_b</code> and returns 2; then 5 + 2 is printed: <code>7</code>.</li>
+<li><code>print(func_c(func_a))</code>: <code>func_c</code> prints <code>inside func_c</code>, then <code>z()</code> calls <code>func_a</code>, which prints <code>inside func_a</code> and returns <code>None</code>; <code>func_c</code> returns that <code>None</code>, which is printed.</li>
+<li>Check: seven lines in all, 2 + 2 + 3, in the order the calls start: inside func_a, None, inside func_b, 7, inside func_c, inside func_a, None.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>func_c(func_a())</code> calls <code>func_a</code> first and passes <code>None</code>; then <code>z()</code> tries to call <code>None</code> and raises a <code>TypeError</code>.</p>
+<p class="method"><strong>Near miss:</strong> <code>print(func_a)</code> looks like it calls <code>func_a</code>, but without brackets it prints the function object itself, something like <code>&lt;function func_a at 0x…&gt;</code>.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What is the difference between <code>func_c(func_a)</code> and <code>func_c(func_a())</code>?</li>
+<li>With <code>def twice(f, x): return f(f(x))</code> and <code>def inc(n): return n + 1</code>, what is <code>twice(inc, 0)</code>?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>The first passes the function so <code>func_c</code> can call it; the second calls <code>func_a</code> first and passes its result, <code>None</code>.</li>
+<li>2: <code>inc(0)</code> is 1, and <code>inc(1)</code> is 2.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-76">
+<h2>7.6 Tuples</h2>
+<p class="why">A function returns one value; a tuple bundles several values into one, so it can return them all.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>tuple</strong> is an ordered sequence of elements, which may have different types, written in round brackets: <code>(2, "fau", 3)</code>. It is <strong>immutable</strong>, like a string: you cannot change an element, only build a new tuple. Indexing, slicing, <code>len</code> and <code>+</code> work exactly as for strings.</p>
+<div class="eq">
+<strong>Tuple operations</strong>
+<span class="formula"><code>t = (2, "fau", 3)</code>: <code>t[0]</code> → <code>2</code>, <code>len(t)</code> → <code>3</code></span>
+<span class="formula"><code>t[1:2]</code> → <code>("fau",)</code>, <code>t[1:3]</code> → <code>("fau", 3)</code></span>
+<span class="formula"><code>(2, "fau", 3) + (5, 6)</code> → <code>(2, "fau", 3, 5, 6)</code></span>
+<span class="eq-note"><span class="say">Read it as: “index, slice, length and concatenation as for strings”.</span> A slice of a tuple is a tuple. <code>()</code> is the empty tuple, and <code>("fau",)</code> with its extra comma is a tuple with one element.</span>
+</div>
+<div class="eq">
+<strong>Packing and unpacking</strong>
+<span class="formula"><code>(x, y) = (y, x)</code>: swap two names</span>
+<span class="formula"><code>return (q, r)</code>, then <code>(quot, rem) = f(…)</code></span>
+<span class="eq-note"><span class="say">Read it as: “build a tuple on the right, then bind each name on the left to one element”.</span> The right side is worked out completely before any name is bound, which is why the swap works.</span>
+</div>
+<p><code>t[1] = 4</code> raises a <code>TypeError</code>: a tuple does not support item assignment. To “change” one, build a new tuple, for example <code>t = t[:1] + (4,) + t[2:]</code>.</p>
+<p>The lecture’s <code>get_data</code> iterates over a tuple of (int, string) pairs. It starts with two empty tuples and grows them with <code>nums = nums + (t[0],)</code>, adding a one-element tuple each round, and adds a word only if it is <code>not in words</code> yet. It returns <code>(min_n, max_n, unique_words)</code>: the smallest and largest number and the count of distinct words.</p>
+<div class="worked">
+<p class="worked-title">Worked example · return two values</p>
+<ol>
+<li><code>quotient_and_remainder(4, 5)</code> computes <code>q = 4 // 5</code>, which is 0, and <code>r = 4 % 5</code>, which is 4.</li>
+<li><code>return (q, r)</code> hands back the single tuple <code>(0, 4)</code>.</li>
+<li><code>(quot, rem) = (0, 4)</code> unpacks it: <code>quot</code> is 0, <code>rem</code> is 4.</li>
+<li>Check: 5 · 0 + 4 = 4, so quotient and remainder rebuild the dividend.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> the swap <code>x = y</code> then <code>y = x</code> loses a value: after the first line both names hold <code>y</code>’s value. Use a temporary name, or <code>(x, y) = (y, x)</code>.</p>
+<p class="method"><strong>Near miss:</strong> <code>(5)</code> looks like a one-element tuple, but brackets alone only group: it is the int 5. The comma makes the tuple: <code>(5,)</code>.</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-tuple">Try tuples, swaps and unpacking in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What are <code>t[1:2]</code> and <code>t[1:3]</code> for <code>t = (2, "fau", 3)</code>?</li>
+<li>Why does <code>(x, y) = (y, x)</code> swap correctly when <code>x = y; y = x</code> does not?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>("fau",)</code> and <code>("fau", 3)</code>, both tuples.</li>
+<li>The right side <code>(y, x)</code> is built from the old values before either name is rebound; the two-line version overwrites <code>x</code> before <code>y</code> reads it.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-77">
+<h2>7.7 Lists</h2>
+<p class="why">Many tasks need a sequence that grows, shrinks and changes; the list is that sequence.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>list</strong> is an ordered sequence written in square brackets, <code>[2, 1, 3]</code>, reached by index like a string or a tuple. Its elements are usually all of one type but may be mixed, and one element may itself be a list. Unlike a tuple, a list is <strong>mutable</strong>: <code>L[1] = 5</code> changes the list in place, and it stays the same object.</p>
+<div class="eq">
+<strong>Indexing a list</strong>
+<span class="formula"><code>L = [2, 'a', 4, [1, 2]]</code>: <code>len(L)</code> → <code>4</code></span>
+<span class="formula"><code>L[0]</code> → <code>2</code>, <code>L[2] + 1</code> → <code>5</code>, <code>L[3]</code> → <code>[1, 2]</code></span>
+<span class="eq-note"><span class="say">Read it as: “four elements, indexed 0 to 3; the last one is itself a list”.</span> <code>L[4]</code> raises an <code>IndexError</code>, and an index may be any expression: with <code>i = 2</code>, <code>L[i-1]</code> is <code>'a'</code>.</span>
+</div>
+<div class="eq">
+<strong>Changing an element</strong>
+<span class="formula"><code>L = [2, 1, 3]</code>, then <code>L[1] = 5</code>: <code>L</code> is <code>[2, 5, 3]</code></span>
+<span class="eq-note"><span class="say">Read it as: “bind position 1 of the list to 5”.</span> No new list is made; every name pointing at this list sees the change (§7.9).</span>
+</div>
+<pre class="code-sample"><code>total = 0
+for i in range(len(L)):
+    total += L[i]
+print(total)
+
+total = 0
+for i in L:
+    total += i
+print(total)</code></pre>
+<p>Both loops sum the elements. The first walks the indices 0 to <code>len(L) - 1</code>, because <code>range(n)</code> goes from 0 to <var>n</var> − 1; the second walks the elements directly, as <code>for char in s</code> does for a string. (The slide writes <code>print total</code>, which is Python 2; see the slips list.)</p>
+<div class="worked">
+<p class="worked-title">Worked example · reach into a nested list</p>
+<ol>
+<li>With <code>L = [2, 'a', 4, [1, 2]]</code>, <code>L[3]</code> is the inner list <code>[1, 2]</code>.</li>
+<li>Index that list again: <code>L[3][0]</code> is 1 and <code>L[3][1]</code> is 2.</li>
+<li><code>len(L[3])</code> is 2, while <code>len(L)</code> is 4: the inner list counts as one element of the outer one.</li>
+<li>Check: <code>L[3][2]</code> would raise an <code>IndexError</code>, because the inner list has only indices 0 and 1.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> in <code>for i in L</code>, the name <code>i</code> holds elements, not indices; writing <code>L[i]</code> inside that loop looks up the element’s value as a position.</p>
+<p class="method"><strong>Near miss:</strong> <code>L[1] = 5</code> on a list works, so <code>s[1] = "x"</code> on a string or <code>t[1] = 5</code> on a tuple looks fine too; both raise a <code>TypeError</code>, because strings and tuples are immutable.</p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>What is <code>len([1, [2, 3], 4])</code>?</li>
+<li>Name one thing a list can do that a tuple cannot.</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>3: the inner list is one element.</li>
+<li>Change in place, for example <code>L[0] = 9</code> or <code>L.append(9)</code>.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-78">
+<h2>7.8 List operations</h2>
+<p class="why">Lists come with methods to add, remove, convert and sort; the key question for each is whether it changes the list or makes a new one.</p>
+<p class="plain"><strong>In plain words:</strong> a <strong>method</strong> is a function that belongs to an object and is called with a dot: <code>L.append(5)</code>. Everything in Python is an object with data and methods. Most list methods <strong>mutate</strong> the list, changing it in place, and return <code>None</code>. The operator <code>+</code>, slicing and <code>sorted</code> leave the list alone and return a new one.</p>
+<div class="eq">
+<strong>Add</strong>
+<span class="formula"><code>L.append(x)</code>: add <code>x</code> at the end (mutates)</span>
+<span class="formula"><code>L.extend(M)</code>: add every element of <code>M</code> at the end (mutates)</span>
+<span class="formula"><code>L1 + L2</code>: a new list; <code>L1</code> and <code>L2</code> unchanged</span>
+<span class="eq-note"><span class="say">Read it as: “append one item; extend by a whole list; plus builds a new list”.</span> <code>L.append([0, 6])</code> adds one element, the list <code>[0, 6]</code>; <code>L.extend([0, 6])</code> adds two.</span>
+</div>
+<div class="eq">
+<strong>Remove</strong>
+<span class="formula"><code>del(L[i])</code>: delete the element at index <var>i</var></span>
+<span class="formula"><code>L.pop()</code>: remove the last element and return it</span>
+<span class="formula"><code>L.remove(x)</code>: remove the first occurrence of <code>x</code></span>
+<span class="eq-note"><span class="say">Read it as: “delete by position, pop from the end, remove by value”.</span> All three mutate. <code>remove</code> raises a <code>ValueError</code> when <code>x</code> is not in the list.</span>
+</div>
+<div class="eq">
+<strong>Convert and sort</strong>
+<span class="formula"><code>list(s)</code>: every character of <code>s</code> as an element</span>
+<span class="formula"><code>s.split(c)</code>: split <code>s</code> at each <code>c</code>; <code>c.join(L)</code>: glue the strings of <code>L</code> with <code>c</code></span>
+<span class="formula"><code>L.sort()</code>, <code>L.reverse()</code>: mutate, return <code>None</code> · <code>sorted(L)</code>: a new sorted list</span>
+<span class="eq-note"><span class="say">Read it as: “list of characters; split at c, join with c; sort in place or sorted copy”.</span> <code>s.split()</code> with no argument splits on spaces.</span>
+</div>
+<p>The lecture runs four removals in order on a list it does not show; its results fit <code>L = [2, 1, 3, 6, 3, 7, 0]</code>. <code>L.remove(2)</code> leaves <code>[1, 3, 6, 3, 7, 0]</code>; <code>L.remove(3)</code> takes only the first 3, leaving <code>[1, 6, 3, 7, 0]</code>; <code>del(L[1])</code> deletes the 6, leaving <code>[1, 3, 7, 0]</code>; <code>L.pop()</code> returns 0 and leaves <code>[1, 3, 7]</code>.</p>
+<p>With <code>s = "I&lt;3 cs"</code>, <code>list(s)</code> is <code>['I', '&lt;', '3', ' ', 'c', 's']</code> (the space is an element too) and <code>s.split('&lt;')</code> is <code>['I', '3 cs']</code>. With <code>L = ['a', 'b', 'c']</code>, <code>''.join(L)</code> is <code>"abc"</code> and <code>'_'.join(L)</code> is <code>"a_b_c"</code>.</p>
+<div class="worked">
+<p class="worked-title">Worked example · sort versus sorted</p>
+<ol>
+<li><code>L = [9, 6, 0, 3]</code>; <code>sorted(L)</code> returns the new list <code>[0, 3, 6, 9]</code> and <code>L</code> is still <code>[9, 6, 0, 3]</code>.</li>
+<li><code>L.sort()</code> changes <code>L</code> itself to <code>[0, 3, 6, 9]</code> and returns <code>None</code>.</li>
+<li><code>L.reverse()</code> then changes <code>L</code> to <code>[9, 6, 3, 0]</code>.</li>
+<li>Check: <code>M = L.sort()</code> would bind <code>M</code> to <code>None</code>, exactly the lecture’s <code>sortedwarm</code>; assign the result of <code>sorted</code>, never of <code>sort</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> <code>L = L.sort()</code> throws the list away: <code>L</code> is now <code>None</code>. Call <code>L.sort()</code> on its own line.</p>
+<p class="method"><strong>Near miss:</strong> <code>L.remove(3)</code> sounds like “remove the element at index 3”, but it removes the value 3. Deleting by index is <code>del(L[3])</code> or <code>L.pop(3)</code>.</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-listops">Run list operations step by step in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>After <code>L1 = [2, 1, 3]</code>, <code>L3 = L1 + [4]</code> and <code>L1.extend([0, 6])</code>, what are <code>L1</code> and <code>L3</code>?</li>
+<li>What does <code>"a b  c".split()</code> give?</li>
+<li>Which of <code>append</code>, <code>+</code>, <code>pop</code>, <code>sorted</code> and <code>reverse</code> mutate the list?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>L1</code> is <code>[2, 1, 3, 0, 6]</code>; <code>L3</code> is <code>[2, 1, 3, 4]</code>, a separate list made before the extend.</li>
+<li><code>['a', 'b', 'c']</code>: with no argument, runs of spaces count as one separator.</li>
+<li><code>append</code>, <code>pop</code> and <code>reverse</code>; <code>+</code> and <code>sorted</code> make new lists.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-79">
+<h2>7.9 Aliasing and cloning</h2>
+<p class="why">Because lists can change, it matters whether two names point at one list or at two; this is where list bugs come from.</p>
+<p class="plain"><strong>In plain words:</strong> a list is an object in memory, and a variable name only <strong>points</strong> at it. <code>hot = warm</code> does not copy the list; it makes a second name for the same list, an <strong>alias</strong>. Any change made through one name, such as <code>hot.append('pink')</code>, is a <strong>side effect</strong> visible through the other. To get an independent list, <strong>clone</strong> it: <code>chill = cool[:]</code> builds a new list with the same elements.</p>
+<div class="eq">
+<strong>Alias or clone</strong>
+<span class="formula"><code>b = a</code>: one list, two names</span>
+<span class="formula"><code>b = a[:]</code>: a new list holding the same elements</span>
+<span class="eq-note"><span class="say">Read it as: “b is another name for a; b is a copy of a”.</span> After an alias, <code>b.append(…)</code> changes <code>a</code> too; after a clone it does not.</span>
+</div>
+<div class="figs">
+<figure class="viz" data-kind="cells" data-cells="warm||→;hot||→;0|list|red;1||yellow;2||orange;3||pink" data-arrows="warm>0;hot>0">
+<figcaption><strong>The lecture’s alias.</strong> <code>warm</code> and <code>hot</code> point at one list, so <code>hot.append('pink')</code> added the last box for both names.</figcaption>
+</figure>
+<figure class="viz" data-kind="cells" data-cells="cool||→;0|list|blue;1||green;2||grey;chill||→;0 |list|blue;1 ||green;2 ||grey;3 ||black" data-arrows="cool>0;chill>0 ">
+<figcaption><strong>The lecture’s clone.</strong> <code>chill = cool[:]</code> made a second list; <code>chill.append('black')</code> changed only that one.</figcaption>
+</figure>
+</div>
+<p>Rebinding is different from mutating. <code>a = a + [3]</code> builds a new list and moves the name <code>a</code> to it; an alias <code>b</code> made earlier still points at the old list. <code>a.append(3)</code>, and also <code>a += [3]</code>, change the list itself, so <code>b</code> sees the change.</p>
+<p>Lists can hold lists. In the lecture, <code>brightcolors = [warm]</code> and <code>brightcolors.append(hot)</code> put the two lists themselves, not copies, inside <code>brightcolors</code>. After <code>hot.append('pink')</code>, printing <code>brightcolors</code> shows <code>[['yellow', 'orange'], ['red', 'pink']]</code>: side effects reach through nesting too. A list passed to a function is aliased in the same way: the parameter points at the caller’s list.</p>
+<div class="worked">
+<p class="worked-title">Worked example · the lecture’s alias and clone</p>
+<ol>
+<li><code>warm = ['red', 'yellow', 'orange']</code>, then <code>hot = warm</code>: one list, two arrows.</li>
+<li><code>hot.append('pink')</code> mutates that list, so <code>print(hot)</code> and <code>print(warm)</code> both show <code>['red', 'yellow', 'orange', 'pink']</code>.</li>
+<li><code>cool = ['blue', 'green', 'grey']</code>, then <code>chill = cool[:]</code>: a second list; <code>chill.append('black')</code> changes only it.</li>
+<li>Check: <code>print(chill)</code> shows four colours, <code>print(cool)</code> still three; <code>chill is cool</code> is <code>False</code> while <code>hot is warm</code> is <code>True</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> a function that appends to its list parameter changes the caller’s list. If the caller needs its list unchanged, pass a clone, <code>f(L[:])</code>, or clone inside the function.</p>
+<p class="method"><strong>Near miss:</strong> after <code>a = 1</code>, <code>b = a</code>, <code>b = 2</code>, the lecture shows <code>a</code> is still 1, which looks like the opposite of aliasing. It is not: <code>b = 2</code> rebinds <code>b</code>; it does not change the object. Ints cannot be changed at all, so only rebinding is possible.</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-alias">Draw names and objects for aliasing in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>After <code>a = [1, 2]</code>, <code>b = a</code>, <code>a = a + [3]</code>, what is <code>b</code>?</li>
+<li>Give two ways to clone a list.</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li><code>[1, 2]</code>: <code>a + [3]</code> is a new list, and only <code>a</code> moved to it.</li>
+<li><code>b = a[:]</code>, as in the lecture, or <code>b = list(a)</code>.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="sec-710">
+<h2>7.10 Mutation during iteration</h2>
+<p class="why">Changing a list while a <code>for</code> loop walks through it silently skips elements; the fix is to loop over a clone.</p>
+<p class="plain"><strong>In plain words:</strong> a <code>for</code> loop over a list keeps a hidden <strong>counter</strong>: the index of the next element to visit. Removing an element shifts everything after it one place left, but the counter still moves on by one, so the element that slid into the current position is never visited.</p>
+<div class="eq">
+<strong>Loop over a copy, change the original</strong>
+<span class="formula"><code>for e in L1[:]:</code> … <code>L1.remove(e)</code></span>
+<span class="eq-note"><span class="say">Read it as: “walk a snapshot of L1, and remove from the real L1”.</span> The clone’s length never changes, so every element is visited once.</span>
+</div>
+<pre class="code-sample"><code>def remove_dups(L1, L2):
+    for e in L1:
+        if e in L2:
+            L1.remove(e)
+
+L1 = [1, 2, 3, 4]
+L2 = [1, 2, 5, 6]
+remove_dups(L1, L2)</code></pre>
+<div class="figs">
+<figure class="viz" data-kind="flow" data-steps="Counter 0 / e = 1, removed|List / [2, 3, 4]|Counter 1 / e = 3, kept|2 / never visited">
+<figcaption><strong>The skipped element.</strong> Removing 1 shifts 2 into index 0, but the counter moves on to index 1 and finds 3.</figcaption>
+</figure>
+</div>
+<p>The intended result is <code>[3, 4]</code>; the buggy loop leaves <code>[2, 3, 4]</code>. The lecture’s fix adds <code>L1_copy = L1[:]</code> and loops <code>for e in L1_copy:</code> while still removing from <code>L1</code>. Note that <code>L1</code> inside the function is an alias of the caller’s <code>L1</code> (§7.9), which is why the caller sees the removal at all.</p>
+<div class="worked">
+<p class="worked-title">Worked example · trace the hidden counter</p>
+<ol>
+<li>Counter 0: <code>e</code> is 1, which is in <code>L2</code>; <code>L1.remove(1)</code> leaves <code>[2, 3, 4]</code>, and 2 now sits at index 0.</li>
+<li>Counter 1: <code>e</code> is 3, not in <code>L2</code>. Counter 2: <code>e</code> is 4, not in <code>L2</code>.</li>
+<li>Counter 3 equals the new length 3, so the loop ends after three rounds; 2 was never visited.</li>
+<li>Check with the copy: the loop visits 1, 2, 3, 4 from the unchanged clone, removes 1 and 2 from <code>L1</code>, and leaves <code>[3, 4]</code>.</li>
+</ol>
+</div>
+<p class="method"><strong>Trap:</strong> the bug does not always show. Removing even numbers from <code>[1, 2, 3, 4]</code> happens to give the right <code>[1, 3]</code>, but from <code>[2, 4, 5]</code> it gives <code>[4, 5]</code>. Test with neighbouring elements that both match.</p>
+<p class="method"><strong>Near miss:</strong> <code>L1_copy = L1</code> looks like a copy, but it is an alias (§7.9): the loop still walks the list that shrinks. The copy needs the slice, <code>L1[:]</code>.</p>
+<p class="lab-link"><a href="ch7-functions-tuples-lists-lab.html#exp-py-mutate">Watch the loop counter skip an element in the lab</a></p>
+<div class="recall">
+<p class="recall-title">Recall check · answer without looking</p>
+<ol>
+<li>Why does the buggy <code>remove_dups</code> never see the element 2?</li>
+<li>Why does <code>L1_copy = L1</code> not fix the bug?</li>
+</ol>
+<details class="answers">
+<summary>Check these answers</summary>
+<ol>
+<li>Removing 1 shifts 2 to index 0, but the loop’s counter moves on to index 1.</li>
+<li>It makes an alias, not a clone; the loop still walks the same list that is being shortened.</li>
+</ol>
+</details>
+</div>
+</section>
+
+<section id="formula-map">
+<h2>Formula map and units</h2>
+<div class="tw">
+<table>
+<thead><tr><th>Rule</th><th>Result or meaning</th></tr></thead>
+<tbody>
+<tr><td><code>def f(p):</code> … <code>f(a)</code></td><td><code>p</code> bound to <code>a</code> in a new frame; the body runs only at the call</td></tr>
+<tr><td>value of a call</td><td>the <code>return</code> value, else <code>None</code></td></tr>
+<tr><td>name assigned in a function</td><td>local to each call; only read → taken from the main program</td></tr>
+<tr><td><code>()</code>, <code>(x,)</code>, <code>(x, y)</code></td><td>tuples with 0, 1 and 2 elements; immutable</td></tr>
+<tr><td><code>(a, b) = expr</code></td><td>unpack; the right side is evaluated first</td></tr>
+<tr><td><code>append</code>, <code>extend</code>, <code>remove</code>, <code>pop</code>, <code>del</code>, <code>sort</code>, <code>reverse</code>, <code>L[i] = v</code>, <code>L += M</code></td><td>mutate the list; all but <code>pop</code> return <code>None</code></td></tr>
+<tr><td><code>L1 + L2</code>, <code>L[:]</code>, <code>sorted(L)</code>, <code>list(L)</code></td><td>new lists; the original is unchanged</td></tr>
+<tr><td><code>b = a</code> · <code>b = a[:]</code></td><td>alias (same object) · clone (new object)</td></tr>
+<tr><td><code>for e in L:</code></td><td>hidden counter 0, 1, 2, … checked against the current length</td></tr>
+</tbody>
+</table>
+</div>
+<p class="method"><strong>Check every answer:</strong> for a call, write down both what it prints and what it returns; for a list, ask whether each line mutated the object or rebound a name, and redraw the arrows; for a loop over a list that changes, track the counter and the current length together.</p>
+</section>
+
+<section id="derivations">
+<h2>Derive it cold</h2>
+<ol>
+<li>Trace <code>x = 3</code>, <code>z = f(x)</code> with the lecture’s <code>f</code>, drawing both frames, and state <code>x</code> and <code>z</code> at the end. <span class="sec-ref">§7.4</span></li>
+<li>Predict the output of the lecture’s <code>f</code>, <code>g</code> and <code>h</code> scope examples and explain each from the local-name rule. <span class="sec-ref">§7.4</span></li>
+<li>Write all output lines of the lecture’s three <code>print</code> calls with <code>func_a</code>, <code>func_b</code> and <code>func_c</code>. <span class="sec-ref">§7.3, §7.5</span></li>
+<li>Apply <code>remove(2)</code>, <code>remove(3)</code>, <code>del(L[1])</code> and <code>pop()</code> in order to <code>[2, 1, 3, 6, 3, 7, 0]</code>. <span class="sec-ref">§7.8</span></li>
+<li>Draw names and objects for the lecture’s <code>warm</code>/<code>hot</code>, <code>cool</code>/<code>chill</code> and <code>brightcolors</code> programs. <span class="sec-ref">§7.9</span></li>
+<li>Trace the buggy and the fixed <code>remove_dups</code> with the loop counter, and explain the difference. <span class="sec-ref">§7.10</span></li>
+</ol>
+</section>
+
+<section id="explain">
+<h2>Explain it</h2>
+<ol>
+<li>Why is code split into functions easier to debug than one long sequence of instructions?</li>
+<li>Why does a function that prints its result instead of returning it cause errors in the caller?</li>
+<li>Why does <code>x += 1</code> inside a function fail when <code>x</code> exists only outside, while <code>print(x)</code> works?</li>
+<li>Why can a function return several values, if <code>return</code> hands back only one object?</li>
+<li>Why does <code>hot.append('pink')</code> change <code>warm</code>, while <code>b = 2</code> after <code>b = a</code> does not change <code>a</code>?</li>
+<li>When must you loop over a clone of a list instead of the list itself?</li>
+</ol>
+<details class="answers">
+<summary>Show model answers</summary>
+<ol>
+<li>Each function is small, has a stated input and output, and can be tested alone; once it works, every call to it works, so a bug is found in one place. <span class="sec-ref">§7.1</span></li>
+<li>The caller receives <code>None</code>, not the number on screen, so any further use, such as <code>result + 1</code>, fails or computes with <code>None</code>. <span class="sec-ref">§7.3</span></li>
+<li>An assignment anywhere in the function makes the name local for the whole function, so <code>x += 1</code> reads a local <code>x</code> that has no value yet. A name that is only read is looked up in the main program. <span class="sec-ref">§7.4</span></li>
+<li>It returns one tuple that holds them all, and the caller unpacks it into several names. <span class="sec-ref">§7.6</span></li>
+<li><code>append</code> mutates the one list that both names point at. <code>b = 2</code> only moves the name <code>b</code> to another object; nothing is mutated. <span class="sec-ref">§7.9</span></li>
+<li>When the loop body adds or removes elements of that list: the hidden counter does not adjust to the new positions, so elements are skipped or visited twice. <span class="sec-ref">§7.10</span></li>
+</ol>
+</details>
+</section>
+
+<section id="practice">
+<h2>Mixed practice</h2>
+<p>Try all 24 problems before opening the answers. The order mixes every section on purpose, so you have to choose the method yourself. Predict each output on paper, then check it in a Python shell.</p>
+<ol class="problems">
+<li>With <code>t = (4, "ab", 7)</code>, evaluate <code>t[1:3]</code> and <code>t[2:3]</code>.</li>
+<li><code>def sq(x): print(x * x)</code>. What do <code>y = sq(5)</code> and then <code>print(y)</code> show?</li>
+<li><code>L = [3, 1, 2]</code>, then <code>L.append(4)</code> and <code>L.extend([5])</code>. What does <code>print(L, len(L))</code> show?</li>
+<li><code>a = [1, 2]</code>, <code>b = a</code>, <code>b[0] = 9</code>. What is <code>a</code>?</li>
+<li><code>def f(): print(n)</code>, then <code>n = 7</code> and <code>f()</code>. What is printed, and why is it not an error?</li>
+<li>Give two benefits of splitting a program into functions.</li>
+<li>With <code>L = [2, 'a', 4, [1, 2]]</code>, evaluate <code>L[3][0]</code> and <code>len(L[3])</code>.</li>
+<li><code>L = [1, 2, 3]</code>, then <code>for e in L: L.remove(e)</code>. What is <code>L</code> afterwards?</li>
+<li>A file contains only <code>def greet(): print("hi")</code>. What does running the file print?</li>
+<li><code>def twice(f, x): return f(f(x))</code> and <code>def inc(n): return n + 1</code>. What is <code>twice(inc, 5)</code>?</li>
+<li><code>L = [5, 3, 5, 1]</code>, then <code>L.remove(5)</code>. What does <code>print(L.pop(), L)</code> show?</li>
+<li>With <code>x = 1</code> and <code>y = 2</code>, what do <code>x = y</code>, <code>y = x</code>, <code>print(x, y)</code> show? Write a correct swap in one line.</li>
+<li><code>def f(x):</code> with the body <code>return x + 1</code> and then <code>print("done")</code>. What does <code>f(1)</code> print, and what is its value?</li>
+<li><code>c = [1, 2]</code>, <code>d = c[:]</code>, <code>d.append(3)</code>. What does <code>print(c, d)</code> show?</li>
+<li><code>x = 3</code> and <code>def h(): x = x * 2</code>. What happens when <code>h()</code> is called?</li>
+<li>With <code>L = [4, 1, 3]</code> and <code>total = 0</code>, the loop <code>for i in range(len(L)): total += L[i] * i</code> runs. What is <code>total</code>?</li>
+<li><code>L1 = [2, 4, 5]</code>, then <code>for e in L1:</code> with the body <code>if e % 2 == 0: L1.remove(e)</code>. What is <code>L1</code>?</li>
+<li>Evaluate <code>"a-b-c".split("-")</code> and <code>"+".join(["a", "b", "c"])</code>.</li>
+<li>Write a function <code>cube(n)</code> with a docstring, and name each of the lecture’s five parts in it.</li>
+<li>What does <code>(q, r) = quotient_and_remainder(17, 5)</code> bind <code>q</code> and <code>r</code> to?</li>
+<li><code>warm = ["red"]</code>, <code>bright = [warm]</code>, <code>warm.append("pink")</code>. What does <code>print(bright)</code> show?</li>
+<li><code>def double(x): print(2 * x)</code>. What happens on <code>double(3) + 1</code>?</li>
+<li>The function <code>say</code> returns the string <code>"hi"</code>; the function <code>run(g)</code> calls <code>g</code> and returns the result with <code>"!"</code> added. What are <code>run(say)</code> and <code>run(say())</code>?</li>
+<li><code>L = [9, 6, 0, 3]</code>, <code>M = sorted(L)</code>, <code>L.reverse()</code>. What does <code>print(L, M)</code> show?</li>
+</ol>
+<details class="answers">
+<summary>Show worked answers</summary>
+<ol>
+<li><code>('ab', 7)</code> and <code>(7,)</code>: slices of a tuple are tuples, and a one-element tuple prints with its comma. <span class="sec-ref">§7.6</span></li>
+<li><code>25</code>, then <code>None</code>: the body prints, but without a <code>return</code> the call’s value is <code>None</code>. <span class="sec-ref">§7.3</span></li>
+<li><code>[3, 1, 2, 4, 5] 5</code>: <code>append</code> adds one element and <code>extend</code> adds each element of <code>[5]</code>. <span class="sec-ref">§7.8</span></li>
+<li><code>[9, 2]</code>: <code>b</code> is an alias, so changing an element through <code>b</code> changes the one list. <span class="sec-ref">§7.9</span></li>
+<li><code>7</code>: <code>f</code> only reads <code>n</code>, so it looks it up in the main program, where <code>n</code> is bound by the time <code>f</code> is called. <span class="sec-ref">§7.4</span></li>
+<li>Code is written and debugged once and reused by calling it; the program stays organised, and each piece can be used as a black box through its docstring. <span class="sec-ref">§7.1</span></li>
+<li>1 and 2: <code>L[3]</code> is the inner list <code>[1, 2]</code>. <span class="sec-ref">§7.7</span></li>
+<li><code>[2]</code>: counter 0 removes 1 (list <code>[2, 3]</code>), counter 1 finds 3 and removes it (list <code>[2]</code>), counter 2 is past the end. <span class="sec-ref">§7.10</span></li>
+<li>Nothing: the file only defines the function and never calls it. <span class="sec-ref">§7.2</span></li>
+<li>7: <code>inc(5)</code> is 6, then <code>inc(6)</code> is 7. <span class="sec-ref">§7.5</span></li>
+<li><code>1 [3, 5]</code>: <code>remove(5)</code> takes the first 5 only, leaving <code>[3, 5, 1]</code>; <code>pop()</code> returns 1 and removes it. <span class="sec-ref">§7.8</span></li>
+<li><code>2 2</code>: <code>x = y</code> overwrites 1 before it is saved. Correct: <code>(x, y) = (y, x)</code>. <span class="sec-ref">§7.6</span></li>
+<li>Nothing, and its value is 2: <code>return</code> ends the call before the <code>print</code> line. <span class="sec-ref">§7.3</span></li>
+<li><code>[1, 2] [1, 2, 3]</code>: <code>c[:]</code> is a clone, so <code>append</code> changes only <code>d</code>. <span class="sec-ref">§7.9</span></li>
+<li>An <code>UnboundLocalError</code>: the assignment makes <code>x</code> local in <code>h</code>, and the right side reads it before it has a value. <span class="sec-ref">§7.4</span></li>
+<li>7: 4 · 0 + 1 · 1 + 3 · 2 = 0 + 1 + 6. <span class="sec-ref">§7.7</span></li>
+<li><code>[4, 5]</code>: counter 0 removes 2, shifting 4 to index 0; counter 1 finds 5, which stays. The 4 is never checked. <span class="sec-ref">§7.10</span></li>
+<li><code>['a', 'b', 'c']</code> and <code>"a+b+c"</code>. <span class="sec-ref">§7.8</span></li>
+<li><code>def cube(n):</code> gives the name <code>cube</code> and one parameter <code>n</code>; next, <code>"""Input: n, an int. Returns n cubed."""</code> is the docstring; <code>return n ** 3</code> is the body and what it returns. <span class="sec-ref">§7.2</span></li>
+<li><code>q</code> is 3 and <code>r</code> is 2, because 17 = 5 · 3 + 2. <span class="sec-ref">§7.6</span></li>
+<li><code>[['red', 'pink']]</code>: <code>bright</code> holds the list <code>warm</code> itself, not a copy. <span class="sec-ref">§7.9</span></li>
+<li>It prints 6, then raises a <code>TypeError</code>: <code>double(3)</code> is <code>None</code>, and <code>None + 1</code> is not defined. <span class="sec-ref">§7.3</span></li>
+<li><code>"hi!"</code>; and a <code>TypeError</code>, because <code>say()</code> passes the string <code>"hi"</code>, and <code>g()</code> tries to call a string. <span class="sec-ref">§7.5</span></li>
+<li><code>[3, 0, 6, 9] [0, 3, 6, 9]</code>: <code>sorted</code> made a separate list before <code>reverse</code> mutated <code>L</code>. <span class="sec-ref">§7.8</span></li>
+</ol>
+</details>
+</section>
+
+<section id="exam">
+<h2>Exam-style problems</h2>
+<h3>1 · A bonus that leaks · 20 minutes</h3>
+<pre class="code-sample"><code>def add_bonus(scores, bonus):
+    for i in range(len(scores)):
+        scores[i] += bonus
+    return scores
+
+base = [50, 70, 90]
+new = add_bonus(base, 5)
+new.append(100)
+print(base, len(base))</code></pre>
+<ol>
+<li>What does the program print? Trace the list after each line of the main program.</li>
+<li>Explain with names and objects why <code>base</code> changed although the main program never assigns to it.</li>
+<li>Change <code>add_bonus</code> so that <code>base</code> stays <code>[50, 70, 90]</code> and <code>new</code> gets the bonus.</li>
+<li>Suppose the <code>return</code> line is deleted. What happens on <code>new.append(100)</code>, and why?</li>
+</ol>
+<details class="answers">
+<summary>Show the worked answer</summary>
+<ol>
+<li>The loop adds 5 to each element: <code>[55, 75, 95]</code>. <code>new</code> then gets 100 appended to the same list, so the program prints <code>[55, 75, 95, 100] 4</code>. <span class="sec-ref">§7.7, §7.8</span></li>
+<li>The parameter <code>scores</code> points at the caller’s list, so <code>scores[i] += bonus</code> mutates it. The function returns that same list, so <code>new</code> is a third name for it, and <code>new.append(100)</code> changes it again. Only one list exists. <span class="sec-ref">§7.4, §7.9</span></li>
+<li>Clone first: <code>result = scores[:]</code>, then add the bonus to <code>result[i]</code> in the loop and <code>return result</code>. Now <code>new</code> is a different list, and <code>base</code> is untouched. <span class="sec-ref">§7.9</span></li>
+<li>The call returns <code>None</code>, so <code>new</code> is <code>None</code> and <code>new.append(100)</code> raises an <code>AttributeError</code>: <code>None</code> has no method <code>append</code>. (The bonus was still added to <code>base</code>.) <span class="sec-ref">§7.3</span></li>
+</ol>
+</details>
+<h3>2 · Counting with tuples · 20 minutes</h3>
+<pre class="code-sample"><code>def split_counts(pairs):
+    names = []
+    total = 0
+    for p in pairs:
+        if p[1] == 0:
+            pairs.remove(p)
+        else:
+            names.append(p[0])
+            total += p[1]
+    return (names, total)
+
+data = [("ann", 2), ("bob", 0), ("cy", 0), ("dee", 3)]
+(n, t) = split_counts(data)
+print(n, t, len(data))</code></pre>
+<ol>
+<li>Trace the loop’s hidden counter and the list <code>pairs</code>, round by round. What is printed?</li>
+<li>The intention was to remove every pair with a count of 0. Which pair survives, and why?</li>
+<li>Fix the function with one change, and give the new output.</li>
+<li>Why is <code>p[1] = 1</code> inside the loop an error, while <code>pairs.remove(p)</code> is allowed?</li>
+</ol>
+<details class="answers">
+<summary>Show the worked answer</summary>
+<ol>
+<li>Counter 0: ann, count 2, so <code>names</code> is <code>['ann']</code> and <code>total</code> 2. Counter 1: bob, count 0, removed; the list is now ann, cy, dee. Counter 2: dee, count 3, so <code>names</code> is <code>['ann', 'dee']</code> and <code>total</code> 5. Counter 3 equals the length 3: done. It prints <code>['ann', 'dee'] 5 3</code>. <span class="sec-ref">§7.10, §7.6</span></li>
+<li><code>("cy", 0)</code> survives. Removing bob shifted cy into index 1, and the counter moved on to index 2, so cy was never tested. <span class="sec-ref">§7.10</span></li>
+<li>Loop over a clone: <code>for p in pairs[:]:</code>. Every pair is visited, both zero pairs are removed from <code>data</code>, and it prints <code>['ann', 'dee'] 5 2</code>. <span class="sec-ref">§7.10, §7.9</span></li>
+<li><code>p</code> is a tuple, which is immutable, so assigning to <code>p[1]</code> raises a <code>TypeError</code>. <code>pairs</code> is a list, which is mutable, so removing one of its elements is allowed. <span class="sec-ref">§7.6, §7.7</span></li>
+</ol>
+</details>
+</section>
+
+<section id="slips">
+<h2>Slips in the notes</h2>
+<p>Each item was checked against the rendered slides and against Python 3. Slide numbers refer to “07_abstraction_functions_tupels_lists.pdf”.</p>
+<ul>
+<li><strong>Slide 12, docstring.</strong> The docstring of the version without <code>return</code> says “Does not return anything”. The function still returns a value, <code>None</code>, as the same slide then says; read it as “returns nothing useful” (§7.3).</li>
+<li><strong>Slide 15, error message.</strong> The <code>h</code> example is labelled “UnboundLocalError: local variable 'x' referenced before assignment”. That is the wording of Python up to 3.10; Python 3.11 and later say “cannot access local variable 'x' where it is not associated with a value”. The error type is the same (§7.4).</li>
+<li><strong>Slide 21, floor division.</strong> <code>x // y</code> is annotated “integer division”. It is floor division: it rounds down, so <code>-7 // 2</code> is −4, and with a float operand the result is a float (Chapter 6, §6.2).</li>
+<li><strong>Slide 26, print.</strong> Both loops end with <code>print total</code>, which is Python 2 syntax; Python 3 raises a <code>SyntaxError</code> and needs <code>print(total)</code> (§7.7).</li>
+<li><strong>Slide 29, missing list.</strong> The four removals run “in order” on a list <code>L</code> that is never shown. The stated results fit <code>L = [2, 1, 3, 6, 3, 7, 0]</code>, which this guide uses (§7.8).</li>
+</ul>
+</section>
+
+<section id="checklist">
+<h2>Self-check</h2>
+<p>These are the chapter’s learning goals. Tick a skill only in a later session, at least one day after studying, when you can show it without notes.</p>
+<ul>
+<li class="check"><label><input type="checkbox" data-k="decompose" />Explain decomposition and abstraction, and what a docstring is for. (6)</label></li>
+<li class="check"><label><input type="checkbox" data-k="define" />Write a function with parameters and a docstring, and say when its body runs. (9, 19)</label></li>
+<li class="check"><label><input type="checkbox" data-k="return" />Tell what a call prints from what it returns, including <code>None</code>. (2, 13, 22)</label></li>
+<li class="check"><label><input type="checkbox" data-k="scope" />Trace frames and decide which names are local, including <code>UnboundLocalError</code>. (5, 15)</label></li>
+<li class="check"><label><input type="checkbox" data-k="funarg" />Pass a function as an argument and call it inside another function. (10, 23)</label></li>
+<li class="check"><label><input type="checkbox" data-k="tuple" />Index, slice and concatenate tuples, including one-element tuples. (1)</label></li>
+<li class="check"><label><input type="checkbox" data-k="unpack" />Swap names and return several values with tuple unpacking. (12, 20)</label></li>
+<li class="check"><label><input type="checkbox" data-k="listindex" />Index nested lists and change list elements in place. (7, 16)</label></li>
+<li class="check"><label><input type="checkbox" data-k="listops" />Apply <code>append</code>, <code>extend</code>, <code>+</code>, <code>del</code>, <code>pop</code> and <code>remove</code> and give the resulting list. (3, 11)</label></li>
+<li class="check"><label><input type="checkbox" data-k="convert" />Convert with <code>list</code>, <code>split</code> and <code>join</code>, and use <code>sort</code> versus <code>sorted</code>. (18, 24)</label></li>
+<li class="check"><label><input type="checkbox" data-k="alias" />Draw names and objects and predict side effects of aliasing, also in nested lists. (4, 21)</label></li>
+<li class="check"><label><input type="checkbox" data-k="clone" />Clone a list and tell rebinding from mutation. (14)</label></li>
+<li class="check"><label><input type="checkbox" data-k="iterate" />Trace a loop that mutates its list and fix it with a clone. (8, 17)</label></li>
+<li class="check"><label><input type="checkbox" data-k="derive" />Rebuild every item in the derivation list on blank paper.</label></li>
+<li class="check"><label><input type="checkbox" data-k="exam" />Complete both exam-style problems in 20 minutes each.</label></li>
+</ul>
+</section>
+<p class="source-note">Personal study guide based on the supplied “07_abstraction_functions_tupels_lists.pdf” (39 slides, lecture dated 3 May 2024; the slides credit MIT OpenCourseWare 6.0001), written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>
+</main>
+</div>
+<script src="../js/concept-map.js" defer></script>
+<script src="../js/guide.js" defer></script>
+<script src="../js/tooltip.js" defer></script>
+<script src="../js/nav.js" defer></script>
+</body>
+</html>
