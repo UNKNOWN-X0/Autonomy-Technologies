@@ -1,0 +1,770 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 10}
+\fancyhead[R]{\small\sffamily Object-Oriented Programming}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Object-Oriented Programming}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 23131 \ensuremath{\cdot} Chapter 10\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{8\baselineskip}
+{\large Build a type by joining a data representation to a clear interface. Practise creating instances, defining methods, and giving objects meaningful behaviour.}
+
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Start from memory}
+
+\Needspace{10\baselineskip}
+Answer before reading.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item What two things does an object abstraction combine?
+\item What is the difference between a class and an instance?
+\item Why does an instance method take \texttt{self}?
+\item What must \texttt{\_\_str\_\_} return?
+\item How does \texttt{c.distance(o)} relate to the class method?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{How to use this guide}
+
+\Needspace{12\baselineskip}
+For each example, trace which object owns each value and which method receives it.
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} §10.1–10.3; practice 1, 4, 7, 10, 13.
+\item \textbf{Day 1:} §10.4–10.5; practice 2, 5, 8, 11, 14.
+\item \textbf{Day 3:} §10.6–10.7; practice 3, 6, 9, 12, 15.
+\item \textbf{About day 7:} Rebuild the derivations and solve 16–20.
+\item \textbf{About day 14:} Solve both exam problems without notes.
+\item \textbf{Before the exam:} Tick only skills you can demonstrate from memory.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} draw the instance, its attributes, and the method call’s argument list.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{13\baselineskip}
+Abstraction hides representation behind an interface. Classes define the common structure; instances hold their own data. Methods operate on instances, while special methods connect a class to Python syntax.
+
+\Needspace{7\baselineskip}
+\textbf{Represent}
+
+\Needspace{5\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Abstraction} \hfill{\small\color{FAUblue}§10.1}
+
+\Needspace{4\baselineskip}
+\texttt{representation + interface}
+
+Rests on: data and operations with a shared purpose.
+\item \Needspace{4\baselineskip}
+\textbf{Class} \hfill{\small\color{FAUblue}§10.2}
+
+\Needspace{4\baselineskip}
+\texttt{type definition}
+
+Rests on: a reusable object design.
+\end{itemize}
+
+\Needspace{6\baselineskip}
+\textbf{Operate}
+
+\Needspace{4\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Instance} \hfill{\small\color{FAUblue}§10.3}
+
+\Needspace{4\baselineskip}
+\texttt{self.x = x}
+
+Rests on: per-object attribute values.
+\item \Needspace{4\baselineskip}
+\textbf{Method} \hfill{\small\color{FAUblue}§10.4}
+
+\Needspace{4\baselineskip}
+\texttt{obj.method(arg)}
+
+Rests on: an instance and its interface.
+\end{itemize}
+
+\Needspace{6\baselineskip}
+\textbf{Integrate}
+
+\Needspace{4\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Special method} \hfill{\small\color{FAUblue}§10.6}
+
+\Needspace{4\baselineskip}
+\texttt{obj + other \ensuremath{\to} \_\_add\_\_}
+
+Rests on: a defined meaning for an operation.
+\item \Needspace{4\baselineskip}
+\textbf{Fraction} \hfill{\small\color{FAUblue}§10.7}
+
+\Needspace{4\baselineskip}
+\texttt{numerator / denominator}
+
+Rests on: representation plus arithmetic interface.
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.1 Objects and abstraction}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} an \textbf{object} keeps related data together and offers operations for using it.\end{plainbox}
+
+\begin{equationcard}{Object abstraction}
+\[ \begin{gathered} \texttt{representation + interface} \end{gathered} \]
+{\small The interface defines behaviour while hiding implementation.}
+\end{equationcard}
+
+\Needspace{12\baselineskip}
+Every Python value is an object with a type. Its representation may be simple or composite; its interface says how other code can interact with it. A list exposes indexing and methods such as \texttt{append}, while its internal storage should remain hidden behind those operations. Use \texttt{del} to remove a name or reference; Python reclaims objects that are no longer accessible through garbage collection.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} list abstraction}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Need an ordered collection: choose a list object.
+\item Read an item through \texttt{L[i]} and add one with \texttt{L.append(x)}.
+\item Use the interface instead of relying on how the list is stored internally.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} An object’s visible behaviour does not reveal its internal representation.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Directly changing assumed list storage nearly works, but can violate the list’s invariants; use its methods.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What parts form an object abstraction?
+\item Why hide representation?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.1 Objects and abstraction” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{10.2 Classes and instances}
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{class} describes a kind of object; an \textbf{instance} is one object made from that description.\end{plainbox}
+
+\begin{equationcard}{Class and instance}
+\[ \begin{gathered} \texttt{instance = Class(arguments)} \end{gathered} \]
+{\small The call creates one object of the class.}
+\end{equationcard}
+
+\Needspace{13\baselineskip}
+Define a class with \texttt{class}. A class can have data attributes and methods. For example, \texttt{Coordinate} is a class, while \texttt{c = Coordinate(3, 4)} creates an instance. The class is the shared design; each instance is a distinct object. Grouping data with its methods makes a unit easier to test and reuse. A subclass can later extend or redefine selected behaviour from a superclass; inheritance is developed in the next chapter.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} two coordinates}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item \texttt{c = Coordinate(3, 4)} and \texttt{origin = Coordinate(0, 0)} create two instances.
+\item Both have the Coordinate type, but their coordinates differ.
+\item \texttt{isinstance(c, Coordinate)} checks membership in that type.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} Defining a class does not itself create all its instances.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Two variables assigned the same instance are aliases, not two separately constructed objects.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does a class define?
+\item What does \texttt{isinstance} check?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.2 Classes and instances” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.3 Initialisation and attributes}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{initialisation} gives a new instance the data it needs.\end{plainbox}
+
+\begin{equationcard}{Instance assignment}
+\[ \begin{gathered} \texttt{self.attribute = value} \end{gathered} \]
+{\small Stores a value on this instance.}
+\end{equationcard}
+
+\Needspace{10\baselineskip}
+Define \texttt{\_\_init\_\_(self, x, y)} to assign instance variables such as \texttt{self.x = x}. Python creates the instance and passes it as \texttt{self}; callers supply the other arguments. Do not pass \texttt{self} yourself.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} initialise a coordinate}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Call \texttt{Coordinate(3, 4)}.
+\item Python makes a new Coordinate instance and calls its initialiser.
+\item The initialiser stores \texttt{x} and \texttt{y} on that instance.
+\item Read them later as \texttt{c.x} and \texttt{c.y}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} \texttt{\_\_init\_\_} initialises an already-created instance; it is not called with an explicit \texttt{self}.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} Assigning \texttt{x = x} changes only a local name; \texttt{self.x = x} stores an instance attribute.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does \texttt{self.x = x} do?
+\item Which arguments does the caller provide?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.3 Initialisation and attributes” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.4 Methods and self}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{method} is a function defined by a class that works with an instance.\end{plainbox}
+
+\begin{equationcard}{Bound method call}
+\[ \begin{gathered} \texttt{obj.method(arg) = Class.method(obj, arg)} \end{gathered} \]
+{\small Python supplies the instance as the first argument.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+By convention, the first parameter is named \texttt{self}. Dot notation calls a method on an object. Python supplies that object as the first argument. Thus \texttt{c.distance(origin)} is equivalent to \texttt{Coordinate.distance} called with \texttt{c} and \texttt{origin}.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} distance between coordinates}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Let \texttt{c = Coordinate(3, 4)} and \texttt{origin = Coordinate(0, 0)}.
+\item The method receives \texttt{self = c} and \texttt{other = origin}.
+\item It computes \texttt{(3 \ensuremath{-} 0)² + (4 \ensuremath{-} 0)² = 25}, then takes the square root.
+\item The distance is 5.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} The first argument is present even when it is omitted from the dot call.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} \texttt{c.distance()} lacks the required other coordinate; pass it as the second argument.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.4}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does Python bind to \texttt{self}?
+\item Rewrite a dot method call using the class name.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.4 Methods and self” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.5 String representations}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a custom \textbf{string representation} makes an object’s printed form informative.\end{plainbox}
+
+\begin{equationcard}{String representation}
+\[ \begin{gathered} \texttt{\_\_str\_\_(self) \ensuremath{\to} str} \end{gathered} \]
+{\small Return the text for the object.}
+\end{equationcard}
+
+\Needspace{10\baselineskip}
+Without \texttt{\_\_str\_\_}, printing an instance usually gives a technical default representation. Define \texttt{\_\_str\_\_} to return a string. Python calls it when \texttt{print} needs the object’s text. For a coordinate, it could return \texttt{\ensuremath{<}3,4\ensuremath{>}}.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} coordinate text}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item For x=3 and y=4, build the text \texttt{\ensuremath{<}3,4\ensuremath{>}}.
+\item Return that string from \texttt{\_\_str\_\_}.
+\item \texttt{print(c)} displays the returned string.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} \texttt{\_\_str\_\_} returns a string; printing inside it is not a substitute.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Returning the pair \texttt{(x, y)} is useful data but not the required string; convert it to text.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.5}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When does Python call \texttt{\_\_str\_\_}?
+\item What type must it return?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.5 String representations” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.6 Types and special methods}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{special methods} let your class define how familiar Python operations behave.\end{plainbox}
+
+\begin{equationcard}{Operator method}
+\[ \begin{gathered} \texttt{a + b \ensuremath{\to} a.\_\_add\_\_(b)} \end{gathered} \]
+{\small Implement an operation only when it has a clear meaning for the type.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+\texttt{type(c)} reports the class of an instance; \texttt{isinstance(c, Coordinate)} checks its class relationship. Double-underscore methods connect syntax to behaviour: \texttt{\_\_add\_\_} for \texttt{+}, \texttt{\_\_sub\_\_} for \texttt{\ensuremath{-}}, \texttt{\_\_eq\_\_} for \texttt{==}, \texttt{\_\_lt\_\_} for \texttt{\ensuremath{<}}, and \texttt{\_\_len\_\_} for \texttt{len}. Define only operations with a sensible meaning for the type.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} addition protocol}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Suppose \texttt{a + b} is meaningful for a class.
+\item Python looks for the class’s addition behaviour, commonly \texttt{a.\_\_add\_\_(b)}.
+\item That method should return the defined result, not merely print it.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} A special method should preserve the expected meaning of its operator.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Defining \texttt{\_\_add\_\_} to concatenate unrelated objects may run, but gives the operator a confusing contract; choose an operation that fits the type.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.6}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Which method supports \texttt{==}?
+\item What is checked by \texttt{isinstance}?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.6 Types and special methods” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{10.7 Fraction objects}
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{fraction object} stores a numerator and denominator, then offers meaningful fraction operations.\end{plainbox}
+
+\begin{equationcard}{Fraction representation}
+\[ \begin{gathered} \texttt{value = numerator / denominator} \end{gathered} \]
+{\small The denominator must be non-zero.}
+\end{equationcard}
+
+\Needspace{12\baselineskip}
+The lecture uses fractions as a design exercise: decide the internal representation, then define an interface such as addition, subtraction, inversion, float conversion and printing. The representation should preserve the denominator rule; arithmetic should return a fraction object or another clearly specified type.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} add two fractions}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Represent \textsuperscript{1}⁄\textsubscript{2} as numerator 1 and denominator 2, and \textsuperscript{1}⁄\textsubscript{3} as 1 and 3.
+\item Use the common denominator: 1\ensuremath{\cdot}3 + 1\ensuremath{\cdot}2 over 2\ensuremath{\cdot}3.
+\item The result is {\small\ensuremath{\dfrac{5}{6}}}, represented by numerator 5 and denominator 6.
+\item Check: {\small\ensuremath{\dfrac{5}{6}}} is between {\small\ensuremath{\dfrac{1}{2}}} and 1, as expected.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+For a robust class, also decide how to reject a zero denominator and whether to reduce fractions. Those are design choices to state explicitly; the lecture’s slides do not specify them.
+
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A class is not complete merely because it stores two numbers; its operations need defined behaviour.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Inverting a fraction with zero numerator would put zero in the denominator; reject that operation or define a clear exception.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.7}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Name two data attributes for a fraction.
+\item Name two operations its interface can offer.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.7 Fraction objects” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{4\baselineskip}
+\section{Decision map}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{Derive it cold}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Trace creation of a Coordinate instance and its stored attributes. \hfill{\small\color{FAUblue}§10.3}
+\item Expand a dot method call into its class method call. \hfill{\small\color{FAUblue}§10.4}
+\item Build the string returned for a coordinate. \hfill{\small\color{FAUblue}§10.5}
+\item Map Python operators to special methods. \hfill{\small\color{FAUblue}§10.6}
+\item Derive fraction addition from numerator and denominator data. \hfill{\small\color{FAUblue}§10.7}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Explain it}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Why keep an object’s representation behind an interface?
+\item Why distinguish a class from an instance?
+\item Why does Python pass an instance to a method?
+\item Why should \texttt{\_\_str\_\_} return rather than print?
+\item When is a special operator method a good fit?
+\item Why should a fraction define a zero-denominator policy?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{Mixed practice}
+
+\Needspace{6\baselineskip}
+20 problems. Try each before opening its worked answer.
+
+\begin{enumerate}
+\item List the two parts of an object abstraction.
+\item Is \texttt{Coordinate} a class or instance?
+\item Which method connects to \texttt{+}?
+\item What does \texttt{self.x = x} store?
+\item Who supplies \texttt{self}?
+\item Rewrite \texttt{c.distance(o)} without dot notation.
+\item What must \texttt{\_\_str\_\_} return?
+\item Name the representation for a fraction.
+\item Why use \texttt{L.append(x)} rather than access list internals?
+\item What does \texttt{type(c)} report?
+\item For c=(3,4), what is its distance to (0,0)?
+\item If \texttt{\_\_str\_\_} returns a tuple, what is wrong?
+\item What argument does \texttt{obj.\_\_eq\_\_(other)} receive explicitly?
+\item Which method connects to \texttt{len(obj)}?
+\item Compute {\small\ensuremath{\dfrac{1}{4}}} + {\small\ensuremath{\dfrac{1}{2}}}.
+\item How do class attributes differ from instance attributes?
+\item What is the inverse of {\small\ensuremath{\dfrac{3}{5}}}?
+\item What policy is needed for denominator zero?
+\item Why not define every special method automatically?
+\item What does \texttt{isinstance(c, Coordinate)} answer?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exam-style problems}
+
+Allow about 20 minutes per problem.
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\subsection{Problem 1 \ensuremath{\cdot} Coordinate interface}
+
+\Needspace{9\baselineskip}
+Design a Coordinate class with two values, a distance method and a printable representation.
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Write the initialiser signature and assignments.
+\item Trace the arguments for \texttt{c.distance(origin)}.
+\item Calculate the distance from (3,4) to (0,0).
+\item Describe the result of \texttt{print(c)} with a suitable \texttt{\_\_str\_\_}.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\subsection{Problem 2 \ensuremath{\cdot} Fraction abstraction}
+
+\Needspace{10\baselineskip}
+Plan a Fraction class storing numerator and denominator, supporting addition, inversion and display.
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item State its representation.
+\item Compute {\small\ensuremath{\dfrac{1}{2}}} + {\small\ensuremath{\dfrac{1}{3}}}.
+\item Identify the special method for addition.
+\item Choose behaviour for a zero denominator and explain why.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{7\baselineskip}
+\begin{itemize}
+\item Slides 14 and 17 omit underscores in extracted code (for example, \texttt{definit} and \texttt{def \_\_str\_\_}); Python syntax requires \texttt{def \_\_init\_\_} and a colon after the definition. This guide uses valid Python syntax.
+\item Slide 19’s operator names are missing their double underscores in the extracted text; the standard special-method spellings are shown in this guide.
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\section{Self-check}
+
+\begin{enumerate}
+\item $\mdlgwhtsquare$\  I explain representation, interface and object lifetime (1, 11, 20).
+\item $\mdlgwhtsquare$\  I distinguish class, type and instance (2, 3, 10).
+\item $\mdlgwhtsquare$\  I trace initialisation and instance attributes (4, 5).
+\item $\mdlgwhtsquare$\  I expand method calls and bind self (5, 6).
+\item $\mdlgwhtsquare$\  I calculate a coordinate distance (12).
+\item $\mdlgwhtsquare$\  I define a valid string representation (7, 13).
+\item $\mdlgwhtsquare$\  I map operators to special methods (8, 9, 14).
+\item $\mdlgwhtsquare$\  I design a fraction representation and policy (15–18).
+\item $\mdlgwhtsquare$\  I select operations with meaningful contracts (19).
+\item $\mdlgwhtsquare$\  I rebuild the five derivations.
+\item $\mdlgwhtsquare$\  I solve both exam problems.
+\end{enumerate}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Internal data representation and an interface of operations. \hfill{\small\color{FAUblue}§10.1}
+\item A class defines a type; an instance is one object of that type. \hfill{\small\color{FAUblue}§10.2}
+\item Python supplies the instance as the first argument. \hfill{\small\color{FAUblue}§10.4}
+\item A string describing the object. \hfill{\small\color{FAUblue}§10.5}
+\item It is equivalent to \texttt{Coordinate.distance(c, o)}. \hfill{\small\color{FAUblue}§10.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.1 Objects and abstraction}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Data representation and an interaction interface. \hfill{\small\color{FAUblue}§10.1}
+\item Users can rely on behaviour without depending on implementation details. \hfill{\small\color{FAUblue}§10.1}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.2 Classes and instances}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item A type’s attributes and behaviour. \hfill{\small\color{FAUblue}§10.2}
+\item Whether an object is an instance of a given class or compatible subclass. \hfill{\small\color{FAUblue}§10.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.3 Initialisation and attributes}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Stores the supplied value on the current instance. \hfill{\small\color{FAUblue}§10.3}
+\item The arguments other than \texttt{self}; Python supplies the instance. \hfill{\small\color{FAUblue}§10.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.4 Methods and self}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The instance before the dot. \hfill{\small\color{FAUblue}§10.4}
+\item \texttt{obj.method(arg)} becomes \texttt{Class.method(obj, arg)}. \hfill{\small\color{FAUblue}§10.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.5 String representations}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When a string form is needed, including \texttt{print}. \hfill{\small\color{FAUblue}§10.5}
+\item \texttt{str}. \hfill{\small\color{FAUblue}§10.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.6 Types and special methods}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item \texttt{\_\_eq\_\_}. \hfill{\small\color{FAUblue}§10.6}
+\item Whether the object belongs to the requested class relationship. \hfill{\small\color{FAUblue}§10.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.7 Fraction objects}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Numerator and denominator. \hfill{\small\color{FAUblue}§10.7}
+\item For example, addition and inversion, or float conversion and printing. \hfill{\small\color{FAUblue}§10.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item It lets the implementation change while users rely on stable behaviour. \hfill{\small\color{FAUblue}§10.1}
+\item The class is the reusable type definition; each instance holds its own state. \hfill{\small\color{FAUblue}§10.2}
+\item So the method can read or change that object’s attributes. \hfill{\small\color{FAUblue}§10.4}
+\item Because callers such as \texttt{print} need the value to use as text. \hfill{\small\color{FAUblue}§10.5}
+\item When the operator has a clear, conventional meaning for that type. \hfill{\small\color{FAUblue}§10.6}
+\item Division by zero is undefined; callers need predictable behaviour. \hfill{\small\color{FAUblue}§10.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item Internal representation and interaction interface. \hfill{\small\color{FAUblue}§10.1}
+\item A class. \hfill{\small\color{FAUblue}§10.2}
+\item \texttt{\_\_add\_\_}. \hfill{\small\color{FAUblue}§10.6}
+\item It assigns the parameter’s value to this instance’s x attribute. \hfill{\small\color{FAUblue}§10.3}
+\item Python supplies the instance in a method call. \hfill{\small\color{FAUblue}§10.4}
+\item \texttt{Coordinate.distance(c, o)}. \hfill{\small\color{FAUblue}§10.4}
+\item A string. \hfill{\small\color{FAUblue}§10.5}
+\item Two integers: numerator and denominator. \hfill{\small\color{FAUblue}§10.7}
+\item The interface protects implementation details and invariants. \hfill{\small\color{FAUblue}§10.1}
+\item The class/type of the instance, e.g. Coordinate. \hfill{\small\color{FAUblue}§10.6}
+\item 5, from \ensuremath{\sqrt{3^{2}\, +\, 4^{2}}}. \hfill{\small\color{FAUblue}§10.4}
+\item It must return a string, not a tuple. \hfill{\small\color{FAUblue}§10.5}
+\item The other operand; self is bound by the call. \hfill{\small\color{FAUblue}§10.6}
+\item \texttt{\_\_len\_\_}. \hfill{\small\color{FAUblue}§10.6}
+\item {\small\ensuremath{\dfrac{3}{4}}}. \hfill{\small\color{FAUblue}§10.7}
+\item The garbage collector reclaims objects that can no longer be reached. \hfill{\small\color{FAUblue}§10.1}
+\item {\small\ensuremath{\dfrac{5}{3}}}. \hfill{\small\color{FAUblue}§10.7}
+\item Reject it or define a documented error response. \hfill{\small\color{FAUblue}§10.7}
+\item Only provide operations with a meaningful contract for the class. \hfill{\small\color{FAUblue}§10.6}
+\item Whether c is an instance of Coordinate (or a subclass). \hfill{\small\color{FAUblue}§10.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item \texttt{def \_\_init\_\_(self, x, y): self.x = x; self.y = y}. \hfill{\small\color{FAUblue}§10.3}
+\item \texttt{self} is c and \texttt{other} is origin. \hfill{\small\color{FAUblue}§10.4}
+\item \ensuremath{\sqrt{3^{2}\, +\, 4^{2}}} = 5. \hfill{\small\color{FAUblue}§10.4}
+\item It displays the string returned by \texttt{\_\_str\_\_}, for example \texttt{\ensuremath{<}3,4\ensuremath{>}}. \hfill{\small\color{FAUblue}§10.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Two integer instance attributes: numerator and denominator. \hfill{\small\color{FAUblue}§10.7}
+\item 3⁄6 + 2⁄6 = {\small\ensuremath{\dfrac{5}{6}}}. \hfill{\small\color{FAUblue}§10.7}
+\item \texttt{\_\_add\_\_(self, other)} defines the addition behaviour. \hfill{\small\color{FAUblue}§10.6}
+\item Reject construction with denominator zero (for example, raise ValueError), because the represented quotient is undefined. \hfill{\small\color{FAUblue}§10.7}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Based on the supplied “10\_Object\_Oriented\_Programming.pdf”, rewritten in my own words. Python special-method behaviour follows the Python data model reference. Not an official FAU publication; check course details against current notes. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
