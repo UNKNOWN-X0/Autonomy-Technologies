@@ -47,3 +47,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch12a-boolean-algebra.html | 5a852c79bbab | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
 | js/apdr/ch12-lab.js | ea2623f1040f | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
 | apdr/ch12a-boolean-algebra-lab.html | 745f928d5340 | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
+| eei/ch1-electrostatic-fields.html | 7970d8196aef | 2026-11-18 | Pass; all 38 practice and both exam answers recomputed; fixed: uniqueness theorem was called the reason field lines cannot cross (the reason is that E has one direction at each point) |
+| js/eei/ch1-lab.js | fa04095b9acb | 2026-11-18 | Pass, no errors found |
+| eei/ch1-electrostatic-fields-lab.html | c5f857947918 | 2026-11-18 | Pass, no errors found |
