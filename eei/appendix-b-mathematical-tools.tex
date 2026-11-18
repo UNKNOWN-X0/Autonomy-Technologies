@@ -250,7 +250,7 @@ Check perpendicularity: (6, \ensuremath{-}3, 1) \ensuremath{\cdot} (1, 2, 0) = 6
 
 \begin{keepsection}
 \Needspace{17\baselineskip}
-\section{B.6 Angles in the plane: atan(x, y), not arctan(y/x)}
+\section{B.6 Angles in the plane: atan(x, y), not arctan of the ratio}
 
 \Needspace{14\baselineskip}
 Cartesian, cylindrical and spherical coordinates, their unit vectors and their path, area and volume elements are collected in Appendix A. One point from the notes deserves its own card, because it causes most sign errors: the polar angle of a point needs both coordinates, not just their ratio.
@@ -310,7 +310,7 @@ Check: 3 + 4 = 7 and 1 \ensuremath{-} 2 = \ensuremath{-}1.
 
 \begin{equationcard}{Too many or too few equations}
 \[ \begin{gathered} {x}_{\text{opt}}\, =\, ({A}^{\mathrm{T}}{A})^{-1}\, {A}^{\mathrm{T}}\, {b} \end{gathered} \]
-{\small \textbf{Overdetermined} (\textit{M} \ensuremath{>} \textit{N} equations, rank \textit{N}): the equations usually contradict each other, and the best compromise \textit{x}\textsubscript{opt} minimises the sum of the squared errors. Note: the notes print (\textit{A} \textit{A}\textsuperscript{T})\textsuperscript{\ensuremath{-}1}; for an \textit{M} \ensuremath{\times} \textit{N} matrix with \textit{M} \ensuremath{>} \textit{N} that product is \textit{M} \ensuremath{\times} \textit{M} and never invertible, so the least-squares formula must use \textit{A}\textsuperscript{T}\textit{A}, which is \textit{N} \ensuremath{\times} \textit{N} and invertible exactly when rank \textit{A} = \textit{N}. \textbf{Underdetermined} (rank \textit{A} \ensuremath{<} \textit{N}): the solutions form a family with \textit{N} \ensuremath{-} rank \textit{A} free parameters.}
+{\small \textbf{Overdetermined} (\textit{M} \ensuremath{>} \textit{N} equations, rank \textit{N}): the equations usually contradict each other, and the best compromise \textit{x}\textsubscript{opt} minimises the sum of the squared errors. Note: the notes print (\textit{A} \textit{A}\textsuperscript{T})\textsuperscript{\ensuremath{-}1}; for an \textit{M} \ensuremath{\times} \textit{N} matrix with \textit{M} \ensuremath{>} \textit{N} that product is \textit{M} \ensuremath{\times} \textit{M} and never invertible, so the least-squares formula must use \textit{A}\textsuperscript{T}\textit{A}, which is \textit{N} \ensuremath{\times} \textit{N} and invertible exactly when rank \textit{A} = \textit{N}. \textbf{Underdetermined} (rank \textit{A} \ensuremath{<} \textit{N}): if any solution exists (rank [\textit{A} | \textit{b}] = rank \textit{A}), the solutions form a family with \textit{N} \ensuremath{-} rank \textit{A} free parameters.}
 \end{equationcard}
 \end{keepsection}
 
@@ -319,30 +319,30 @@ Check: 3 + 4 = 7 and 1 \ensuremath{-} 2 = \ensuremath{-}1.
 \section{B.8 Complex numbers in the course's notation}
 
 \Needspace{13\baselineskip}
-Alternating-current analysis (Chapter 6) runs on complex numbers. Electrical engineering writes the imaginary unit as \textit{j}, because \textit{i} already means a current, and marks a complex quantity with an underline, \textit{x}. The full treatment is in the MEI Chapter 4 guide; this section collects the rules in the EEI notation.
+Alternating-current analysis (Chapter 6) runs on complex numbers. Electrical engineering writes the imaginary unit as j, because \textit{i} already means a current, and marks a complex quantity with an underline, \underline{\textit{x}}. The full treatment is in the MEI Chapter 4 guide; this section collects the rules in the EEI notation.
 
 \begin{equationcard}{Cartesian and exponential form}
-\[ \begin{gathered} {x}\, =\, {x}_{\text{Re}}\, +\, {j}\, {x}_{\text{Im}},\, {j}^{2}\, =\, -1 \\ {x}\, =\, |{x}|\, \mathrm{e}^{\mathrm{j}{φ}}\, =\, |{x}|(\cos \, {φ}\, +\, {j}\, \sin \, {φ}) \end{gathered} \]
-{\small \emph{Read it as: “x is its real part plus j times its imaginary part, or its magnitude times e to the j phi”.}\par \textit{x}\textsubscript{Re} = Re\{\textit{x}\} and \textit{x}\textsubscript{Im} = Im\{\textit{x}\} are real. The magnitude is |\textit{x}| = \ensuremath{\sqrt{{x}_{\text{Re}}^{2}\, +\, {x}_{\text{Im}}^{2}}} (the notes put a hat over the letter) and the phase is \textit{φ} = atan(\textit{x}\textsubscript{Re}, \textit{x}\textsubscript{Im}) from B.6, not arctan of the ratio. The second line is Euler's formula.}
+\[ \begin{gathered} \underline{{x}}\, =\, {x}_{\text{Re}}\, +\, \mathrm{j}\, {x}_{\text{Im}},\, \mathrm{j}^{2}\, =\, -1 \\ \underline{{x}}\, =\, |\underline{{x}}|\, \mathrm{e}^{\mathrm{j}{φ}}\, =\, |\underline{{x}}|(\cos \, {φ}\, +\, \mathrm{j}\, \sin \, {φ}) \end{gathered} \]
+{\small \emph{Read it as: “x is its real part plus j times its imaginary part, or its magnitude times e to the j phi”.}\par \textit{x}\textsubscript{Re} = Re\{\underline{\textit{x}}\} and \textit{x}\textsubscript{Im} = Im\{\underline{\textit{x}}\} are real. The magnitude is |\underline{\textit{x}}| = \ensuremath{\sqrt{{x}_{\text{Re}}^{2}\, +\, {x}_{\text{Im}}^{2}}} (the notes put a hat over the letter) and the phase is \textit{φ} = atan(\textit{x}\textsubscript{Re}, \textit{x}\textsubscript{Im}) from B.6, not arctan of the ratio. The second line is Euler's formula.}
 \end{equationcard}
 
 \begin{equationcard}{Conjugate}
-\[ \begin{gathered} {x}^{*}\, =\, {x}_{\text{Re}}\, -\, {j}\, {x}_{\text{Im}}\, =\, |{x}|\, \mathrm{e}^{-\mathrm{j}{φ}} \\ {x}\, {x}^{*}\, =\, |{x}|^{2} \\ \text{Re}\{{x}\}\, =\, \tfrac{1}{2}({x}\, +\, {x}^{*}),\, \text{Im}\{{x}\}\, =\, \dfrac{1}{2{j}}({x}\, -\, {x}^{*}) \end{gathered} \]
+\[ \begin{gathered} \underline{{x}}^{*}\, =\, {x}_{\text{Re}}\, -\, \mathrm{j}\, {x}_{\text{Im}}\, =\, |\underline{{x}}|\, \mathrm{e}^{-\mathrm{j}{φ}} \\ \underline{{x}}\, \underline{{x}}^{*}\, =\, |\underline{{x}}|^{2} \\ \text{Re}\{\underline{{x}}\}\, =\, \dfrac{1}{2}(\underline{{x}}\, +\, \underline{{x}}^{*}) \\ \text{Im}\{\underline{{x}}\}\, =\, \dfrac{1}{2\mathrm{j}}(\underline{{x}}\, -\, \underline{{x}}^{*}) \end{gathered} \]
 {\small The asterisk reflects the point in the real axis: same magnitude, opposite phase.}
 \end{equationcard}
 
 \begin{equationcard}{Arithmetic}
-\[ \begin{gathered} {x}_{1}\, \pm \, {x}_{2}\, =\, ({x}_{\text{Re}1}\, \pm \, {x}_{\text{Re}2})\, +\, {j}({x}_{\text{Im}1}\, \pm \, {x}_{\text{Im}2}) \\ {x}_{1}\, {x}_{2}\, =\, |{x}_{1}|\, |{x}_{2}|\, \mathrm{e}^{\mathrm{j}(φ_{1}\, +\, φ_{2})} \\ \dfrac{{x}_{1}}{{x}_{2}}\, =\, \dfrac{|{x}_{1}|}{|{x}_{2}|}\, \mathrm{e}^{\mathrm{j}(φ_{1}\, -\, φ_{2})} \end{gathered} \]
+\[ \begin{gathered} \underline{{x}}_{1}\, \pm \, \underline{{x}}_{2}\, =\, ({x}_{\text{Re}1}\, \pm \, {x}_{\text{Re}2})\, +\, \mathrm{j}({x}_{\text{Im}1}\, \pm \, {x}_{\text{Im}2}) \\ \underline{{x}}_{1}\, \underline{{x}}_{2}\, =\, |\underline{{x}}_{1}|\, |\underline{{x}}_{2}|\, \mathrm{e}^{\mathrm{j}(φ_{1}\, +\, φ_{2})} \\ \dfrac{\underline{{x}}_{1}}{\underline{{x}}_{2}}\, =\, \dfrac{|\underline{{x}}_{1}|}{|\underline{{x}}_{2}|}\, \mathrm{e}^{\mathrm{j}(φ_{1}\, -\, φ_{2})} \end{gathered} \]
 {\small Add in Cartesian form, like vectors. Multiply and divide in exponential form: magnitudes multiply or divide, phases add or subtract. In Cartesian form a quotient is expanded with the conjugate of the denominator.}
 \end{equationcard}
 
 \begin{equationcard}{Multiplying by j}
-\[ \begin{gathered} {j}\, {x}\, =\, \mathrm{e}^{\mathrm{j}π/2}\, {x}\, =\, -{x}_{\text{Im}}\, +\, {j}\, {x}_{\text{Re}} \\ \dfrac{{x}}{{j}}\, =\, -{j}\, {x}\, =\, {x}_{\text{Im}}\, -\, {j}\, {x}_{\text{Re}} \end{gathered} \]
-{\small Multiplying by \textit{j} turns a phasor a quarter turn counterclockwise (+{\small\ensuremath{\dfrac{π}{2}}}); dividing by \textit{j} turns it a quarter turn clockwise (\ensuremath{-}{\small\ensuremath{\dfrac{π}{2}}}). This is the source of the \ensuremath{\pm}90° phase shifts of ideal coils and capacitors.}
+\[ \begin{gathered} \mathrm{j}\, \underline{{x}}\, =\, \mathrm{e}^{\mathrm{j}π/2}\, \underline{{x}}\, =\, -{x}_{\text{Im}}\, +\, \mathrm{j}\, {x}_{\text{Re}} \\ \dfrac{\underline{{x}}}{\mathrm{j}}\, =\, -\mathrm{j}\, \underline{{x}}\, =\, {x}_{\text{Im}}\, -\, \mathrm{j}\, {x}_{\text{Re}} \end{gathered} \]
+{\small Multiplying by j turns a phasor a quarter turn counterclockwise (+{\small\ensuremath{\dfrac{π}{2}}}); dividing by j turns it a quarter turn clockwise (\ensuremath{-}{\small\ensuremath{\dfrac{π}{2}}}). This is the source of the \ensuremath{\pm}90° phase shifts of ideal coils and capacitors.}
 \end{equationcard}
 
 \begin{equationcard}{Powers and roots}
-\[ \begin{gathered} {x}^{{N}}\, =\, |{x}|^{{N}}\, \mathrm{e}^{\mathrm{j}{φ}{N}} \\ {w}_{{n}}\, =\, |{x}|^{1/{N}}\, \mathrm{e}^{\mathrm{j}(φ\, +\, 2π{n})/{N}},\, {n}\, =\, 0,\, 1,\, …,\, {N}\, -\, 1 \end{gathered} \]
+\[ \begin{gathered} \underline{{x}}^{{N}}\, =\, |\underline{{x}}|^{{N}}\, \mathrm{e}^{\mathrm{j}{φ}{N}} \\ {w}_{{n}}\, =\, |\underline{{x}}|^{1/{N}}\, \mathrm{e}^{\mathrm{j}(φ\, +\, 2π{n})/{N}},\, {n}\, =\, 0,\, 1,\, …,\, {N}\, -\, 1 \end{gathered} \]
 {\small An \textit{N}-th root has \textit{N} different values, spread evenly round a circle. In particular \textit{x}\textsuperscript{\textit{N}} = 1 is solved by e\textsuperscript{j2π\textit{n}/\textit{N}}.}
 \end{equationcard}
 
@@ -363,23 +363,23 @@ Alternating-current analysis (Chapter 6) runs on complex numbers. Electrical eng
 \node[anchor=west,fill=white,fill opacity=0.85,text opacity=1,inner sep=1pt,font=\footnotesize] at (1.779,-3.281) {x\textsubscript{2} = 1 \ensuremath{-} j};
 \fill[FAUblue] (4.705,-2.263) circle (0.063);
 \node[fill=white,fill opacity=0.85,text opacity=1,inner sep=1pt,font=\footnotesize] at (4.705,-2.065) {x\textsubscript{1} x\textsubscript{2} = 7 + j};
-\end{tikzpicture}\par\smallskip{\small\raggedright \textbf{A product in the complex plane.} \textit{x}\textsubscript{1} = 3 + \textit{j}4 and \textit{x}\textsubscript{2} = 1 \ensuremath{-} \textit{j}. Their product 7 + \textit{j} has magnitude 5 \ensuremath{\cdot} \ensuremath{\sqrt{2}} and phase 53.1° \ensuremath{-} 45°.\par}\end{minipage}
+\end{tikzpicture}\par\smallskip{\small\raggedright \textbf{A product in the complex plane.} \underline{\textit{x}}\textsubscript{1} = 3 + j4 and \underline{\textit{x}}\textsubscript{2} = 1 \ensuremath{-} j. Their product 7 + j has magnitude 5 \ensuremath{\cdot} \ensuremath{\sqrt{2}} and phase 53.1° \ensuremath{-} 45°.\par}\end{minipage}
 \end{center}
 
 \begin{workedbox}{Example \ensuremath{\cdot} multiply, divide, take roots}
 \Needspace{7\baselineskip}
 \begin{enumerate}
-\item \textit{x}\textsubscript{1} = 3 + \textit{j}4, \textit{x}\textsubscript{2} = 1 \ensuremath{-} \textit{j}. Product: (3 + \textit{j}4)(1 \ensuremath{-} \textit{j}) = 3 \ensuremath{-} \textit{j}3 + \textit{j}4 \ensuremath{-} \textit{j}\textsuperscript{2}4 = 7 + \textit{j}.
-\item Quotient: multiply top and bottom by 1 + \textit{j}: {\small\ensuremath{\dfrac{(3\, +\, \mathrm{j}4)(1\, +\, \mathrm{j})}{2}}} = {\small\ensuremath{\dfrac{-1\, +\, \mathrm{j}7}{2}}} = \ensuremath{-}0.5 + \textit{j}3.5.
-\item Phase of \textit{x}\textsubscript{1}: atan(3, 4) = arctan {\small\ensuremath{\dfrac{4}{3}}} \ensuremath{\approx} 0.927 rad \ensuremath{\approx} 53.1° (quadrant I), magnitude 5.
-\item Cube roots of 8\textit{j} = 8e\textsuperscript{jπ/2}: magnitude 2, phases {\small\ensuremath{\dfrac{π}{6}}}, {\small\ensuremath{\dfrac{5π}{6}}}, {\small\ensuremath{\dfrac{3π}{2}}}, giving \ensuremath{\sqrt{3}} + \textit{j}, \ensuremath{-}\ensuremath{\sqrt{3}} + \textit{j} and \ensuremath{-}2\textit{j}.
+\item \underline{\textit{x}}\textsubscript{1} = 3 + j4, \underline{\textit{x}}\textsubscript{2} = 1 \ensuremath{-} j. Product: (3 + j4)(1 \ensuremath{-} j) = 3 \ensuremath{-} j3 + j4 \ensuremath{-} j\textsuperscript{2}4 = 7 + j.
+\item Quotient: multiply top and bottom by 1 + j: {\small\ensuremath{\dfrac{(3\, +\, \mathrm{j}4)(1\, +\, \mathrm{j})}{2}}} = {\small\ensuremath{\dfrac{-1\, +\, \mathrm{j}7}{2}}} = \ensuremath{-}0.5 + j3.5.
+\item Phase of \underline{\textit{x}}\textsubscript{1}: atan(3, 4) = arctan {\small\ensuremath{\dfrac{4}{3}}} \ensuremath{\approx} 0.927 rad \ensuremath{\approx} 53.1° (quadrant I), magnitude 5.
+\item Cube roots of 8j = 8e\textsuperscript{jπ/2}: magnitude 2, phases {\small\ensuremath{\dfrac{π}{6}}}, {\small\ensuremath{\dfrac{5π}{6}}}, {\small\ensuremath{\dfrac{3π}{2}}}, giving \ensuremath{\sqrt{3}} + j, \ensuremath{-}\ensuremath{\sqrt{3}} + j and \ensuremath{-}2j.
 \end{enumerate}
 
-Check: |7 + \textit{j}| = \ensuremath{\sqrt{50}} = 5\ensuremath{\sqrt{2}} = |\textit{x}\textsubscript{1}| |\textit{x}\textsubscript{2}|, and (\ensuremath{-}2\textit{j})\textsuperscript{3} = \ensuremath{-}8\textit{j}\textsuperscript{3} = 8\textit{j}.
+Check: |7 + j| = \ensuremath{\sqrt{50}} = 5\ensuremath{\sqrt{2}} = |\underline{\textit{x}}\textsubscript{1}| |\underline{\textit{x}}\textsubscript{2}|, and (\ensuremath{-}2j)\textsuperscript{3} = \ensuremath{-}8j\textsuperscript{3} = 8j.
 \end{workedbox}
 \end{keepsection}
 
 
-\vfill{\small Personal reference sheet based on the Electrical Engineering 1 lecture notes, Chapter 7 “Mathematical Appendix” (printed pages 531–597), rearranged and explained in my own words with my own examples; the original figures and tables are not reproduced. Not an official FAU publication; check details against the current course material. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+\vfill{\small Personal reference sheet based on the Electrical Engineering 1 lecture notes, Chapter 7 “Mathematical Appendix” (printed pages 531–597), rearranged and explained in my own words, mostly with my own examples (the B.1 semicircle is the notes’ example, worked in my own words); the original figures and tables are not reproduced. Not an official FAU publication; check details against the current course material. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
 
 \end{document}

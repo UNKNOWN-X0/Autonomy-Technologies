@@ -63,6 +63,8 @@ Every sign has one way to be written. The page and the PDF then draw it the same
 | Prime ′ (complement, derivative) | U+2032, as in <var>x</var>′ and (<var>A</var> · <var>B</var>)′ | ′ in text, `'` in PDF maths | a straight apostrophe `'` | yes, in formulas |
 | Index, power | `<sub>`, `<sup>`; in figure data and drawn labels, `x_{12}` or `e_ρ` | real sub- and superscripts | Unicode subscript digits ₀–₉ (the PDF font has none) or ⁴–⁹ | yes, subscript digits |
 | Unit vector | `<var>e</var><sub>ρ</sub>`; `e_ρ` in figure labels | italic e with an upright index | `e_ρ` typed into text | — |
+| Complex quantity (EEI notation) | `<u><var>x</var></u>`; the imaginary unit j upright, without `<var>` | an underlined italic letter; `\underline{…}` in the PDF | a combining underline character | — |
+| Parallel ∥, much greater ≫ | the Unicode sign: <var>R</var><sub>1</sub> ∥ <var>R</var><sub>2</sub>, <var>R</var><sub>L</sub> ≫ <var>R</var><sub>i</sub> | `\parallel`, `\gg` in the PDF | `\|\|` or `>>` | — |
 | Absolute value, length | `\|<var>x</var>\|`, `\|<var>r</var>\|` (vertical bars) | — | `abs(x)` | — |
 | Infinity ∞, partial ∂, degree ° | the Unicode sign | — | `inf`, `d/dx` for a partial | — |
 | Sets ∈ ∉ ⊆ ⊂ ∪ ∩ ∅ ℕ ℤ ℚ ℝ; logic ∧ ∨ ¬ ⊕ | the Unicode sign | — | `in`, `&&`, `!` outside code | — |

@@ -69,7 +69,7 @@ TEXT_MATH = {"′": r"{}^{\prime}", "∑": r"\textstyle\sum", "∏": r"\textstyl
              "≈": r"\approx", "∝": r"\propto", "≪": r"\ll", "≤": r"\leq", "≥": r"\geq",
              "→": r"\to", "≠": r"\neq", "±": r"\pm", "∓": r"\mp", "·": r"\cdot",
              "×": r"\times", "−": "-", "√": r"\surd", "∞": r"\infty", "Σ": r"\Sigma",
-             "½": r"\tfrac12", "⅓": r"\tfrac13", "ℓ": r"\ell", "¬": r"\neg", "∧": r"\land", "∨": r"\lor",
+             "½": r"\tfrac12", "⅓": r"\tfrac13", "ℓ": r"\ell", "∥": r"\parallel", "≫": r"\gg", "¬": r"\neg", "∧": r"\land", "∨": r"\lor",
              "⇒": r"\Rightarrow", "⇔": r"\Leftrightarrow", "∀": r"\forall", "∃": r"\exists",
              "∈": r"\in", "∉": r"\notin", "⊂": r"\subset", "⊆": r"\subseteq", "⊊": r"\subsetneq",
              "∪": r"\cup", "∩": r"\cap", "∅": r"\emptyset", "ℕ": r"\mathbb{N}",
@@ -107,6 +107,8 @@ def inline(node):
             out.append(r"\textbf{%s}" % inline(k))
         elif t == "em":
             out.append(r"\emph{%s}" % inline(k))
+        elif t == "u":  # an underlined symbol: the EEI mark for a complex quantity
+            out.append(r"\underline{%s}" % inline(k))
         elif t == "code":  # a name or expression from a program, inside prose
             out.append(r"\texttt{%s}" % inline(k))
         elif t == "span" and "sqrt" in c:
@@ -129,7 +131,7 @@ def inline(node):
 
 
 # ---------- math mode (formula spans) ----------
-MATH_MAP = {"′": "'", "−": "-", "∘": r"\circ ", "↦": r"\mapsto ", "·": r"\cdot ", "×": r"\times ", "≈": r"\approx ", "½": r"\tfrac{1}{2}", "⅓": r"\tfrac{1}{3}", "ℓ": r"\ell ",
+MATH_MAP = {"′": "'", "−": "-", "∘": r"\circ ", "↦": r"\mapsto ", "·": r"\cdot ", "×": r"\times ", "≈": r"\approx ", "½": r"\tfrac{1}{2}", "⅓": r"\tfrac{1}{3}", "ℓ": r"\ell ", "∥": r"\parallel ", "≫": r"\gg ",
             "Σ": r"\sum", "→": r"\to ", "∝": r"\propto ", "≪": r"\ll ", "√": r"\sqrt",
             "∞": r"\infty ", "≥": r"\geq ", "≤": r"\leq ", "±": r"\pm ", "∓": r"\mp ",
             "¬": r"\neg ", "∧": r"\land ", "∨": r"\lor ", "⇒": r"\Rightarrow ", "⇔": r"\Leftrightarrow ",
@@ -191,6 +193,10 @@ def math(node):
             out.append("_{%s}" % math(k))
         elif t == "sup":
             out.append("^{%s}" % math(k))
+        elif t == "u":
+            out.append(r"\underline{%s}" % math(k))
+        elif t == "code":  # program text in a formula card keeps its spelling and spacing
+            out.append(r"\texttt{%s}" % tex_text(k.text()))
         elif t == "span" and "sqrt" in c:
             out.append(sqrt_tex(k))
         elif t == "span" and "op" in c:
@@ -534,7 +540,7 @@ def scene_tikz(spec):
             "ne": (5, -5, "anchor=west"), "nw": (-5, -5, "anchor=east"), "se": (5, 14, "anchor=west"), "sw": (-5, 14, "anchor=east")}
     LINE = {"ink": "black!80", "thick": "black!85,line width=1pt", "dash": "black!55,dashed", "seg": "FAUblue,line width=1.6pt"}
     BOX = {"fill": "draw=black!70,fill=FAUblue!25", "light": "draw=black!40,fill=Paperblue", "bg": "draw=black!70,fill=white",
-           "line": "draw=black!80", "dash": "draw=black!55,dashed", "dark": "draw=FAUblue,fill=FAUblue"}
+           "line": "draw=black!80", "dash": "draw=black!55,dashed,fill=none", "dark": "draw=FAUblue,fill=FAUblue"}
     out = []
 
     def label(x, y, text, side="c", flags=""):

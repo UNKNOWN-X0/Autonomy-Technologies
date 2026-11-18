@@ -1,15 +1,17 @@
 # Graph Report - AutonomyTechnologies  (2026-11-18)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 80 files · ~370,895 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 7 file(s) not represented in the graph (top: .css 4, (none) 2, .ico 1)
 
 ## Summary
-- 1296 nodes · 2532 edges · 64 communities (53 shown, 11 thin omitted)
+- 1296 nodes · 2533 edges · 64 communities (53 shown, 11 thin omitted)
 - Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 289 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b5274440`
+- Built from commit: `41339ce6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -90,12 +92,12 @@
 10. `tok()` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Challenges` --references--> `reveal()`  [INFERRED]
-  docs/LAB-STANDARD.md → js/nav.js
 - `Formulas` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Markup` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
+- `Challenges` --references--> `reveal()`  [INFERRED]
+  docs/LAB-STANDARD.md → js/nav.js
 - `Experiments` --references--> `generate()`  [INFERRED]
   docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Code` --references--> `route()`  [INFERRED]
@@ -332,7 +334,7 @@ Nodes (5): context(), defsOf(), fake(), labs, ROOT
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.142) - this node is a cross-community bridge._
+  _High betweenness centrality (0.162) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

@@ -152,7 +152,7 @@
         function () { return P.near(P.pow(I, 7), [0, -1]) ? "-i" : "i"; }),
       ch("powers-length", "4.2", "Length of a power", "How long is (1 + 2i)³ (its magnitude)?",
         [option("125", "125"), option("5r5", "5√5 ≈ 11.2"), option("15", "15")], "5r5",
-        "The length is raised to the power: |1 + 2i|³ = (√5)³ = 5√5 ≈ 11.2. Cubing |1 + 2i|² = 5 gives 125, and 15 adds instead of multiplying.",
+        "The length is raised to the power: |1 + 2i|³ = (√5)³ = 5√5 ≈ 11.2. Cubing |1 + 2i|² = 5 gives 125, and 15 multiplies |1 + 2i|² by 3 instead of raising |1 + 2i| to the 3rd power.",
         function () { var out = []; for (var k = 1; k <= 3; k++) out.push([P.pow([1, 2], k), k === 3 ? "(1 + 2i)³" : ""]); return { given: pts([[[1, 2], "1 + 2i"]]), result: pts(out), spiral: true, note: "|z³| = |z|³ = 5√5", scale: 13 }; },
         function () { return Math.abs(P.abs(P.pow([1, 2], 3)) - 5 * Math.sqrt(5)) < 1e-9 ? "5r5" : "125"; }),
       ch("powers-cycle", "4.2", "Back to 1", "For z = e^(iπ/3), what is the smallest k ≥ 1 with zᵏ = 1?",
@@ -216,6 +216,7 @@
     wrongs.forEach(function (w) { if (w != null && !seen[w] && out.length < 3) { seen[w] = true; out.push(option(w, w)); } });
     return shuffle(out);
   }
+  function br(v) { return v < 0 ? "(" + num(v) + ")" : num(v); } // a negative factor in brackets: 2·(−3), not 2·−3
   function nz() { var v = pick(7) - 3; return v; }
   var generators = {
     arith: function () {
@@ -224,14 +225,16 @@
       var z = [a, b], w = [c, d], r = P.mul(z, w), right = cfmt(r);
       return ch("gen-arith", "4.1", "Product in normal form", "What is (" + cfmt(z) + ")(" + cfmt(w) + ")?",
         mix(right, [cfmt([a * c + b * d, a * d + b * c]), cfmt([a * c, b * d]), cfmt([a * c - b * d, -(a * d + b * c)])]), right,
-        "Multiply out and replace i² by −1: real part " + num(a) + "·" + num(c) + " − " + num(b) + "·" + num(d) + " = " + num(r[0]) + ", imaginary part " + num(a) + "·" + num(d) + " + " + num(b) + "·" + num(c) + " = " + num(r[1]) + ". So the product is " + right + ".",
+        "Multiply out and replace i² by −1: real part " + br(a) + "·" + br(c) + " − " + br(b) + "·" + br(d) + " = " + num(r[0]) + ", imaginary part " + br(a) + "·" + br(d) + " + " + br(b) + "·" + br(c) + " = " + num(r[1]) + ". So the product is " + right + ".",
         { given: pts([[z, cfmt(z)], [w, cfmt(w)]]), result: pts([[r, right]]), note: "lengths multiply, angles add", scale: Math.max(8, Math.min(48, 130 / Math.max(P.abs(z), P.abs(w), P.abs(r)))) });
     },
     polar: function () {
       var step = pick(2) ? PI / 4 : PI / 6, k, phi;
       do { k = pick(Math.round(2 * PI / step)); phi = k * step; } while (Math.abs(Math.cos(phi)) < 1e-9);
       var r = 1 + pick(3), z = P.fromPolar(r, phi), right = ang(phi), raw = Math.atan(z[1] / z[0]);
-      var shown = cfmt(z).replace(/1\.73/g, "√3").replace(/0\.87/g, "√3/2").replace(/1\.41/g, "√2").replace(/2\.12/g, "3√2/2").replace(/2\.6/g, "3√3/2");
+      // exact radicals, and the i before its coefficient so "√3/2i" cannot be misread as a quotient with i below
+      var exact = function (v) { var s = num(Math.abs(v)); return ({ "1.73": "√3", "0.87": "√3/2", "1.41": "√2", "0.71": "√2/2", "2.12": "3√2/2", "2.6": "3√3/2", "1.5": "3/2", "0.5": "1/2" })[s] || s; };
+      var shown = (Math.abs(z[0]) < 1e-9 ? "" : (z[0] < 0 ? "−" : "") + exact(z[0])) + (Math.abs(z[1]) < 1e-9 ? "" : (z[1] < 0 ? (Math.abs(z[0]) < 1e-9 ? "−" : " − ") : (Math.abs(z[0]) < 1e-9 ? "" : " + ")) + "i" + (exact(z[1]) === "1" ? "" : (/^\d/.test(exact(z[1])) ? "·" : "") + exact(z[1])));
       return ch("gen-polar", "4.1", "Argument with quadrant", "What is the argument φ of z = " + shown + ", with 0 ≤ φ < 2π?",
         mix(right, [ang(raw), ang(P.wrap(phi + PI)), ang(P.wrap(2 * PI - phi))]), right,
         "Start from arctan(b/a) = " + ang(raw) + ", then use the quadrant from the signs of a and b: " + (z[0] < 0 ? "a < 0, so add π" : z[1] < 0 ? "a > 0 and b < 0, so add 2π" : "both are non-negative, so keep it") + ". φ = " + right + ".",
@@ -262,7 +265,7 @@
       return ch("gen-functions", "4.3", "Complex logarithm", "With 0 ≤ φ < 2π, what is ln(" + d[1] + ")?",
         mix(right, wrongs), right,
         d[1] + " = " + r + "e^(i" + ang(d[0]) + "), so ln(" + d[1] + ") = ln " + r + " + i" + ang(d[0]) + (d[0] === 0 ? " = ln " + r + "." : ". A negative angle lies outside the notes’ range, and negative numbers do have logarithms in ℂ."),
-        { given: pts([[z.map(function (v) { return v / r * 2; }), d[1] + " (scaled)"]]), result: pts([[[Math.log(r) / 1.2, d[0] / 1.2], "ln(" + d[1] + ")"]]), note: "real part ln " + r + ", imaginary part the angle", scale: 44 });
+        { given: pts([[z.map(function (v) { return v / r * 2; }), d[1] + " (scaled)"]]), result: pts([[[Math.log(r) / 1.6, d[0] / 1.6], "ln(" + d[1] + ")"]]), note: "real part ln " + r + ", imaginary part the angle", scale: 44 });
     },
   };
 

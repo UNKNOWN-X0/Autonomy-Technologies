@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794965365.8456063,
-    "seen": 1794965527.242505,
-    "ast_hash": "759485581af77286285f6566e4cf3be5",
+    "mtime": 1794966159.1339023,
+    "seen": 1794966279.455541,
+    "ast_hash": "f07e5789a41f73ca74f88c1ab2579363",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "tools/guide-to-tex.py": {
-    "mtime": 1794964982.3030422,
-    "seen": 1794965527.2424588,
-    "ast_hash": "67245cb8f1c5a0f68577516a96f022b2",
+    "mtime": 1794965843.1553457,
+    "seen": 1794966279.455488,
+    "ast_hash": "5a3bdcb128bf56a54cd982b71563b704",
     "semantic_hash": ""
   },
   "eei/ch1-electrostatic-fields.html": {
@@ -492,9 +492,9 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1794964488.3788688,
-    "seen": 1794965527.2424068,
-    "ast_hash": "02757e11ef0f6c3f1490a413fbf7bc2f",
+    "mtime": 1794965699.1023226,
+    "seen": 1794966279.455434,
+    "ast_hash": "13486c722aa94fa214bc9ae8c185e7ca",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -813,6 +813,12 @@
     "mtime": 1794965285.6430922,
     "seen": 1794965527.242518,
     "ast_hash": "d006a840d3915312657c60b245fdd187",
+    "semantic_hash": ""
+  },
+  "apdr/ch6-branching-and-iteration.html": {
+    "mtime": 1794966222.123548,
+    "seen": 1794966279.4555142,
+    "ast_hash": "24dee15d118957dd3c690f35cfba4cb8",
     "semantic_hash": ""
   }
 }

@@ -70,10 +70,22 @@
         "rule": "cramped-padding",
         "value": "*",
         "files": [
-          "*/*-lab.html"
+          "apdr/ch12a-boolean-algebra-lab.html",
+          "apdr/ch2-computers-lab.html",
+          "apdr/ch3-data-representation-lab.html",
+          "apdr/ch34a-integer-and-floating-point-lab.html",
+          "apdr/ch4-floating-point-numbers-lab.html",
+          "apdr/ch5-memory-organisation-lab.html",
+          "eei/ch1-electrostatic-fields-lab.html",
+          "eei/ch2-stationary-currents-lab.html",
+          "eei/ch3-dc-networks-lab.html",
+          "mei/ch1-statements-logic-sets-lab.html",
+          "mei/ch2-real-numbers-lab.html",
+          "mei/ch3-mappings-lab.html",
+          "mei/ch4-complex-numbers-lab.html"
         ],
         "createdAt": "2026-11-17T13:46:37.523Z",
-        "reason": "Claude: lab .stage frames hold a full-bleed canvas with no text; .seg and .analogy centre their labels in 40-44px boxes; checked css/lab.css"
+        "reason": "Claude: lab .stage frames hold a full-bleed canvas with no text; .seg and .analogy centre their labels in 40-44px boxes; checked css/lab.css (listed per lab so a new lab is checked before it inherits this)"
       },
       {
         "rule": "cramped-padding",
@@ -137,6 +149,15 @@
         ],
         "createdAt": "2026-11-17T13:46:37.712Z",
         "reason": "Claude: DESIGN.md Weight Signs Rule: weight, not size, separates headings from text on the hub"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "eei/ch3-dc-networks.html"
+        ],
+        "createdAt": "2026-11-18T01:19:02.348Z",
+        "reason": "Claude: every finding is a stacked-fraction denominator whose border-top is the fraction line, which must sit close to its denominator (css/guide.css .frac > span:last-child, padding 0.08em); this page has no square roots or bordered text boxes"
       }
     ]
   }
