@@ -73,8 +73,20 @@ def check_smoke(path, rep):
 WORKED_PAGE = re.compile(r"([a-z]+)/(blackboard-exercise|exercise|tutorial)-(\d+)-worked-solutions\.html")
 
 
+ICONS = ('href="../assets/favicon.svg"', 'href="../assets/favicon-32.png"', 'href="../assets/apple-touch-icon.png"')
+
+
+def check_icons(html, name, rep):
+    """Every page names the site icon as an SVG, a 32px PNG (Safari's tab) and an Apple touch icon; a page without them
+    shows the browser's blank globe, because a GitHub Pages project site has no /favicon.ico at the domain root."""
+    missing = [i.split('"')[1].split("/")[-1] for i in ICONS if i not in html]
+    if missing:
+        rep.err("%s does not link the site icon (%s): copy the three icon links from any page's <head>" % (name, ", ".join(missing)))
+
+
 def check_files(root, html, path, page_dir, rep):
     """Shared by guides and exercises: local links resolve, downloads exist, the .tex is fresh and the PDF newer."""
+    check_icons(html, os.path.relpath(path, ROOT), rep)
     for a in all_nodes(root, lambda n: n.tag in ("a", "link", "script")):
         ref = a.attrs.get("href") or a.attrs.get("src")
         if not ref or re.match(r"(https?:|data:|#|mailto:)", ref):
@@ -510,6 +522,7 @@ def check_lab(path, key, rep):
     t.feed(html)
     body = find(t.root, lambda n: n.tag == "body")
     name = os.path.relpath(path, ROOT)
+    check_icons(html, name, rep)
     if not body or body.attrs.get("data-key") != key:
         rep.err("%s must share the guide's data-key %s" % (name, key))
     if body and body.attrs.get("data-guide") != os.path.basename(path).replace("-lab.html", ".html"):

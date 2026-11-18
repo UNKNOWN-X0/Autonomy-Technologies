@@ -20,6 +20,7 @@ When two files disagree, the owner above wins and the other is fixed. The worksp
 - **The HTML is the single source.** Every `.tex` and `.pdf` is generated from its page by `tools/guide-to-tex.py` and `latexmk`; never edit them by hand, and never commit one you did not regenerate.
 - **Static and dependency-free.** Plain HTML, CSS, and classic JavaScript served as files; no build step or package install. Tests run on Node's own runner.
 - **Progress stays in the browser.** Checklist progress and settings live in `localStorage` under the page's `data-key`; nothing is sent anywhere.
+- **Every page links the site icon** in its `<head>`: `assets/favicon.svg` (SVG), `assets/favicon-32.png` (32px PNG, which Safari uses for the tab) and `assets/apple-touch-icon.png`, with `../` from a subject or `about/` folder. A GitHub Pages project site has no `/favicon.ico` at the domain root, so a page without them shows the browser's blank globe; `tools/check-guide.py` fails a guide, lab, appendix or worked page that misses one. Redraw the icon by editing `assets/favicon.svg` and rendering the PNGs and `favicon.ico` from it.
 - **Every student-facing page has a smoke row** in the workspace `BrowserTests/tests/smoke.spec.js` (study pages under `mei/`, `apdr/`, `eei/` are found on disk; anything elsewhere is listed by hand).
 
 ## Code
