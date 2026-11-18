@@ -1,0 +1,914 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 8}
+\fancyhead[R]{\small\sffamily Recursion and Dictionaries}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Recursion and Dictionaries}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 23131 \ensuremath{\cdot} Chapter 8\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Recursion solves a problem by asking the same function to solve a smaller version, then uses the returned answer. Dictionaries pair keys with values, giving recursive programs a way to remember earlier work and organize data for lookup.}
+
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Start from memory}
+
+\Needspace{10\baselineskip}
+Try each question first. Mark it sure, unsure, or guessed.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item What two parts must a recursive function have to avoid calling itself forever?
+\item For \texttt{fact(4)}, what calls are made before the first return?
+\item Why does naive recursive Fibonacci repeat work?
+\item What does \texttt{d[key]} do when the key is absent?
+\item Why can a list be a dictionary value but not a dictionary key?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{19\baselineskip}
+\section{How to use this guide}
+
+\Needspace{16\baselineskip}
+For each function, cover the code and trace the calls on paper. Write the argument beside each call, mark the base case, and then unwind the returns. For a dictionary, draw one row per key–value pair and update it after every statement.
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} Try the cold start; study §8.1–8.3 and solve practice 1, 4, 7, 10, 13.
+\item \textbf{Day 1:} Rebuild the call traces from memory; study §8.4–8.5 and solve practice 2, 5, 8, 11, 14.
+\item \textbf{Day 3:} Study §8.6–8.8; solve practice 3, 6, 9, 12, 15, 18.
+\item \textbf{About day 7:} Rebuild the derivations and solve practice 16–20 without notes.
+\item \textbf{About day 14:} Work both exam problems in 20 minutes each; answer the “Explain it” questions aloud.
+\item \textbf{Before the exam:} Tick only skills you can demonstrate cold; use missed answer references to choose what to revisit.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} for recursion, draw the calls going down and the returned values coming back up. For dictionaries, write the exact contents after each update or deletion; do not rely on a vague idea of what the dictionary “remembers”.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{20\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{17\baselineskip}
+Recursion needs a smaller subproblem and a base case. Tracing makes its control flow visible; induction gives a matching correctness argument. Fibonacci shows repeated work and how a dictionary can cache results. The same recursive pattern applies to strings and nested structures, while dictionaries also support frequency analysis.
+
+\Needspace{8\baselineskip}
+\textbf{Measure} \ensuremath{\cdot} reduce the problem
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Base case + smaller call} \hfill{\small\color{FAUblue}§8.1}
+
+\Needspace{4\baselineskip}
+\texttt{f(n) \ensuremath{\to} simpler f(…)}
+
+Rests on: the problem statement; the call must solve the same kind of problem.
+\item \Needspace{4\baselineskip}
+\textbf{Call stack and progress} \hfill{\small\color{FAUblue}§8.2}
+
+\Needspace{4\baselineskip}
+\texttt{calls down \ensuremath{\cdot} returns up}
+
+Rests on: the base case and the changing argument.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Define} \ensuremath{\cdot} establish correctness
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Induction} \hfill{\small\color{FAUblue}§8.3}
+
+\Needspace{4\baselineskip}
+\texttt{base \ensuremath{\cdot} step}
+
+Rests on: each recursive call has a smaller input covered by the induction hypothesis.
+\item \Needspace{4\baselineskip}
+\textbf{Fibonacci and memoization} \hfill{\small\color{FAUblue}§8.4}
+
+\Needspace{4\baselineskip}
+\texttt{fib(n\ensuremath{-}1) + fib(n\ensuremath{-}2)}
+
+Rests on: multiple recursive branches; a dictionary stores completed answers.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Derive} \ensuremath{\cdot} apply and store
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Recursive strings} \hfill{\small\color{FAUblue}§8.5}
+
+\Needspace{4\baselineskip}
+\texttt{first + inner + last}
+
+Rests on: a string can be reduced by removing its outside characters.
+\item \Needspace{4\baselineskip}
+\textbf{Dictionaries} \hfill{\small\color{FAUblue}§8.6–8.7}
+
+\Needspace{4\baselineskip}
+\texttt{key \ensuremath{\to} value \ensuremath{\cdot} count[word] += 1}
+
+Rests on: key-based lookup; values can hold counts or cached results.
+\end{itemize}
+
+\Needspace{15\baselineskip}
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Question} & \textbf{Tool} \\ \midrule
+What must a recursive call change? & Move a well-founded measure toward a base case (§8.1). \\
+Is the recursion correct? & Check the base case, then show a correct smaller result yields a correct larger one (§8.3). \\
+Why is Fibonacci slow? & Draw the call tree and mark repeated arguments; cache them (§8.4). \\
+How do I retrieve or update a record? & Choose a key, then look up, assign, test membership, or delete (§8.6). \\
+How often does each word occur? & Increment its count in a frequency dictionary (§8.7). \\
+\bottomrule\end{tabularx}\end{center}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.1 The recursive pattern}
+
+\Needspace{7\baselineskip}
+A loop repeats a block while its condition holds; recursion expresses repetition as a function calling itself on a smaller problem.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{recursion} is a way to solve a problem by reducing it to a simpler instance of the same problem. A \textbf{base case} is small enough to answer directly. A \textbf{recursive case} makes progress toward that base case and combines its answer with the smaller answer.\end{plainbox}
+
+\begin{equationcard}{Multiplication by repeated addition}
+\[ \begin{gathered} \texttt{mult(a, 1) = a} \\ \texttt{mult(a, b) = a + mult(a, b \ensuremath{-} 1)}\, \text{for}\, \texttt{b \ensuremath{>} 1} \end{gathered} \]
+{\small \emph{Read it as: “multiply a by b by adding a to the product of a and one fewer than b”.}\par  This version assumes a positive integer \texttt{b}.}
+\end{equationcard}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def mult(a, b):}\par
+\noindent\hspace*{1em}\texttt{if b == 1:}\par
+\noindent\hspace*{3em}\texttt{return a}\par
+\noindent\hspace*{1em}\texttt{return a + mult(a, b - 1)}\par
+\end{tcolorbox}
+
+\Needspace{9\baselineskip}
+For \texttt{mult(5, 4)}, the recursive calls ask for \texttt{mult(5, 3)}, then \texttt{mult(5, 2)}, then the base \texttt{mult(5, 1)}. The result returns as \texttt{5}, \texttt{10}, \texttt{15}, then \texttt{20}.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} factorial}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item We need \texttt{4!}. Use \texttt{n! = n \ensuremath{\times} (n \ensuremath{-} 1)!}.
+\item Reduce: \texttt{4! = 4 \ensuremath{\times} 3!}, \texttt{3! = 3 \ensuremath{\times} 2!}, \texttt{2! = 2 \ensuremath{\times} 1!}.
+\item Base: \texttt{1! = 1}, so return to the waiting calls: \texttt{2 \ensuremath{\times} 1 = 2}, \texttt{3 \ensuremath{\times} 2 = 6}, \texttt{4 \ensuremath{\times} 6 = 24}.
+\item Check: \texttt{4! = 4 \ensuremath{\times} 3 \ensuremath{\times} 2 \ensuremath{\times} 1 = 24}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} having a base case is not enough if some inputs never reach it. For every recursive call, name the quantity that gets smaller.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} \texttt{return n * f(n)} is recursive syntax, but the input never gets smaller, so it does not reach a base case. Change the call to \texttt{f(n - 1)} for positive \texttt{n}.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What are the two jobs of a recursive case?
+\item Why does the multiplication example state that \texttt{b} is positive?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.1 The recursive pattern” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.2 Tracing calls and proving progress}
+
+\Needspace{7\baselineskip}
+The function does not finish when it calls itself; each earlier call waits for its smaller call to return.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Each call gets its own \textbf{scope}, or environment, for its parameter values. Calls stack up while the function goes deeper. When a base case returns, control moves back through the waiting calls, each completing its own calculation.\end{plainbox}
+
+\begin{equationcard}{Factorial recurrence}
+\[ \begin{gathered} \texttt{fact(1) = 1} \\ \texttt{fact(n) = n \ensuremath{\times} fact(n \ensuremath{-} 1)}\, \text{for}\, \texttt{n \ensuremath{>} 1} \end{gathered} \]
+{\small \emph{Read it as: “the factorial of n is n times the factorial of n minus one”.}\par  The call stack stores the unfinished multiplications.}
+\end{equationcard}
+
+\begin{workedbox}{Worked trace \ensuremath{\cdot} \texttt{fact(4)}}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Calls descend: \texttt{fact(4) \ensuremath{\to} fact(3) \ensuremath{\to} fact(2) \ensuremath{\to} fact(1)}.
+\item \texttt{fact(1)} returns \texttt{1}.
+\item \texttt{fact(2)} returns \texttt{2 \ensuremath{\times} 1 = 2}.
+\item \texttt{fact(3)} returns \texttt{3 \ensuremath{\times} 2 = 6}.
+\item \texttt{fact(4)} returns \texttt{4 \ensuremath{\times} 6 = 24}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{7\baselineskip}
+One variable name such as \texttt{n} can appear in every call. These are separate bindings: \texttt{n} is 4 in the first frame, 3 in the next, and so on. A returned value travels back; the local name does not.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Sign check:} state whether you are tracing the descent (calls) or the return (answers). Reversing them is a common source of wrong traces.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} writing only \texttt{fact(1) = 1} and \texttt{fact(4) = 24} skips the calls that justify the result. Include each intermediate input and return.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item In \texttt{fact(4)}, which call returns first, and which last?
+\item Do recursive calls share one local \texttt{n}?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.2 Tracing calls and proving progress” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{8.3 Induction and correctness}
+
+\Needspace{8\baselineskip}
+A trace shows one run. To reason that the recursive pattern works for every allowed input, match the program to an inductive argument.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{Mathematical induction} proves a claim over a sequence of integer inputs. First prove the smallest case. Then assume the claim for a smaller input and use that assumption to prove it for the next input. Recursive correctness follows the same shape because each call relies on a smaller case.\end{plainbox}
+
+\begin{equationcard}{Induction structure}
+\[ \begin{gathered} \text{Base}:\, \text{prove}\, \mathrm{P}(\mathrm{n}0). \\ \text{Step}:\, \text{assume}\, \mathrm{P}(\mathrm{k}),\, \text{prove}\, \mathrm{P}(\mathrm{k}\, +\, 1). \end{gathered} \]
+{\small \emph{Read it as: “establish the first case, then show each true case makes the next one true”.}\par  The base value n0 must match the problem’s domain.}
+\end{equationcard}
+
+\begin{workedbox}{Worked proof \ensuremath{\cdot} sum from zero to n}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Claim: 0 + 1 + … + \textit{n} = {\small\ensuremath{\dfrac{{n}({n}\, +\, 1)}{2}}}.
+\item Base \texttt{n = 0}: both sides are 0.
+\item Assume the formula holds for \texttt{k}. Then the sum through \texttt{k + 1} is {\small\ensuremath{\dfrac{{k}({k}\, +\, 1)}{2}}} + (\textit{k} + 1).
+\item Factor \texttt{(k + 1)}: {\small\ensuremath{\dfrac{{k}({k}\, +\, 1)}{2}}} + (\textit{k} + 1) = {\small\ensuremath{\dfrac{({k}\, +\, 1)({k}\, +\, 2)}{2}}}, which is the formula for \texttt{k + 1}.
+\item Therefore it holds for every integer \texttt{n \ensuremath{\geq} 0}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{7\baselineskip}
+For recursive code, say what the function promises to return. Verify that promise at the base case. Then assume the smaller call returns its promised answer and show the current step transforms it into the right answer.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} the induction hypothesis is for the smaller case \texttt{k}; do not assume the very statement for \texttt{k + 1} that you are trying to prove.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} a proof that checks several values such as 0, 1 and 2 is evidence, not a proof for all n. The induction step covers the general next case.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What are the two parts of an induction proof?
+\item How does this support a recursive function’s correctness?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.3 Induction and correctness” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{8.4 Fibonacci and memoization}
+
+\Needspace{8\baselineskip}
+Some recursive definitions branch into more than one smaller call, so the same subproblem can be solved repeatedly.
+
+\Needspace{12\baselineskip}
+\begin{plainbox}\textbf{In plain words:} In the lecture’s rabbit model, the number at month \texttt{n} is the total from the previous month plus the new pairs produced from the count two months earlier. The naive recursive function rebuilds the same earlier counts in many branches. \textbf{Memoization} stores a result after calculating it so later calls can reuse it.\end{plainbox}
+
+\begin{equationcard}{Fibonacci sequence used in the lecture}
+\[ \begin{gathered} \texttt{fib(0) = 1}\, \text{and}\, \texttt{fib(1) = 1} \\ \texttt{fib(n) = fib(n \ensuremath{-} 1) + fib(n \ensuremath{-} 2)}\, \text{for}\, \texttt{n \ensuremath{\geq} 2} \end{gathered} \]
+{\small \emph{Read it as: “each later value is the sum of the previous two values”.}\par  This lecture indexes the first two values at 0 and 1, both equal to 1.}
+\end{equationcard}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def fib(n, cache):}\par
+\noindent\hspace*{1em}\texttt{if n in cache:}\par
+\noindent\hspace*{3em}\texttt{return cache[n]}\par
+\noindent\hspace*{1em}\texttt{answer = fib(n - 1, cache) + fib(n - 2, cache)}\par
+\noindent\hspace*{1em}\texttt{cache[n] = answer}\par
+\noindent\hspace*{1em}\texttt{return answer}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{0em}\texttt{cache = \{0: 1, 1: 1\}}\par
+\noindent\hspace*{0em}\texttt{print(fib(6, cache)) \# 13}\par
+\end{tcolorbox}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} cache Fibonacci values}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Start with \texttt{\{0: 1, 1: 1\}}; these are the base cases.
+\item To find \texttt{fib(4)}, compute \texttt{fib(3)} and \texttt{fib(2)}. The first needs \texttt{fib(2)} again.
+\item The first completed \texttt{fib(2)} stores \texttt{2}. The later call finds it in the dictionary instead of expanding it again.
+\item Then \texttt{fib(3) = 3} and \texttt{fib(4) = 5}. Check the sequence: 1, 1, 2, 3, 5.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{8\baselineskip}
+Slides 40–43 report 11,405,773 recursive calls for naive \texttt{fib(34)} and 65 for the cached version, using the slides’ \texttt{fib(1)=1}, \texttt{fib(2)=2} indexing. This guide uses a 0-based shift, so its call totals differ; compare algorithms only under the same convention. The important lesson is that caching avoids recalculating completed subproblems.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} caching works only if a result depends on the function’s input, not on hidden changing state or side effects. The same key must mean the same answer.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} calculating \texttt{answer} but never assigning \texttt{cache[n]} leaves every future call to repeat the work. Store before returning.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.4}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Why is naive recursive Fibonacci expensive?
+\item What two actions make the cached version reuse a result?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.4 Fibonacci and memoization” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.5 Recursion on strings}
+
+\Needspace{7\baselineskip}
+A recursive input need not be a number. A string can become a smaller string by removing one or more characters.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A \textbf{palindrome} reads the same forwards and backwards. After normalizing a phrase by removing punctuation and changing letters to lowercase, strings of length zero or one are palindromes. Otherwise, compare the first and last characters; if they match, check the inside.\end{plainbox}
+
+\begin{equationcard}{Recursive palindrome test}
+\[ \begin{gathered} \texttt{is\_palindrome(s) = True}\, \text{when}\, \texttt{len(s) \ensuremath{\leq} 1} \\ \texttt{is\_palindrome(s) = s[0] == s[\ensuremath{-}1] and is\_palindrome(s[1:\ensuremath{-}1])} \end{gathered} \]
+{\small \emph{Read it as: “the ends match and the inner string is a palindrome”.}\par  This rule is applied after normalization.}
+\end{equationcard}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} “Able was I, ere I saw Elba”}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Normalize to \texttt{ablewasiereisawelba}.
+\item Compare outside characters: \texttt{a == a}. Recurse on \texttt{blewasiereisawelb}.
+\item Continue comparing pairs toward the centre; each pair matches.
+\item The remaining middle is length zero or one, so return \texttt{True}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{6\baselineskip}
+A phrase with a mismatched pair returns \texttt{False} immediately; there is no need to inspect the inside. This is a short-circuit \texttt{and}.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} normalize once before the recursive helper. If punctuation is not removed, the comparison may stop at a comma or space.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} checking only the first and last characters accepts \texttt{abca}. The inside must also pass the recursive test.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.5}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What are the base cases for the normalized palindrome helper?
+\item What must be true before checking the inner substring?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.5 Recursion on strings” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.6 Dictionaries}
+
+\Needspace{7\baselineskip}
+Parallel lists can store related fields, but every list must stay aligned and every lookup needs an index. A dictionary connects a key directly to its value.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A \textbf{dictionary} stores key–value pairs. A key identifies one entry; a value holds its associated information. Keys are unique and must be hashable. Values may repeat and may be mutable, including lists or other dictionaries.\end{plainbox}
+
+\begin{equationcard}{Core operations}
+\[ \begin{gathered} \texttt{d[key]}\, \text{gets}\, \text{the}\, \text{value}\, \text{or}\, \text{raises}\, \texttt{KeyError} \\ \texttt{d[key] = value}\, \text{adds}\, \text{or}\, \text{replaces}\, \text{an}\, \text{entry} \\ \texttt{key in d}\, \text{tests}\, \text{keys}\, \cdot \, \texttt{del d[key]}\, \text{removes}\, \text{an}\, \text{entry} \\ \texttt{d.keys()}\, \text{and}\, \texttt{d.values()}\, \text{give}\, \text{iterable}\, \text{views} \end{gathered} \]
+{\small \emph{Read it as: “look up the value attached to this key”.}\par  Membership checks keys, not values.}
+\end{equationcard}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} replace parallel lists}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Parallel form: \texttt{names[i]}, \texttt{grades[i]}, \texttt{courses[i]} must use matching indices.
+\item Dictionary form: \texttt{grades = \{'Joe': 'B', 'John': 'A+'\}}.
+\item \texttt{grades['John']} evaluates to \texttt{'A+'}; \texttt{'John' in grades} is \texttt{True}.
+\item \texttt{grades['Katy'] = 'A'} adds an entry. \texttt{del grades['Joe']} removes one.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{10\baselineskip}
+Keys need to be \textbf{hashable}: their hash must remain stable while they are in the dictionary. Integers, strings and booleans are common keys; a tuple is usable if all its contents are hashable. A list is not hashable and cannot be a key. A float can technically be a key, but exact floating-point equality can make it a poor choice.
+
+\Needspace{7\baselineskip}
+Python 3 dictionaries preserve insertion order. Updating an existing key keeps its position; deleting and re-adding it places it at the end. The lecture slide saying there is “no order” describes older Python behavior. Do not rely on order when the task is about key lookup unless the course explicitly asks about iteration order.
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} \texttt{'A+'} in \texttt{grades} asks whether it is a key; use \texttt{'A+'} in \texttt{grades.values()} to test values.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} \texttt{grades['Sylvan']} does not mean “look up if present”; it raises \texttt{KeyError}. Test membership first when absence is expected.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.6}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does a dictionary’s \texttt{in} operator test?
+\item Can a tuple containing a list be a key?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.6 Dictionaries” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{8.7 Frequency analysis}
+
+\Needspace{6\baselineskip}
+Once a word can be used as a key, its value can record how many times it has appeared.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A \textbf{frequency dictionary} maps each distinct word to its count. Read one word at a time: increment its old count if it exists, otherwise create it with count one. To find the most common words, first find the largest count, then collect every key with that value.\end{plainbox}
+
+\begin{equationcard}{Frequency update}
+\[ \begin{gathered} \texttt{counts[word] = counts[word] + 1}\, \text{when}\, \text{the}\, \text{key}\, \text{exists} \\ \texttt{counts[word] = 1}\, \text{when}\, \text{it}\, \text{does}\, \text{not} \end{gathered} \]
+{\small \emph{Read it as: “increment the count for a repeated word; start a new word at one”.}\par }
+\end{equationcard}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def lyrics\_to\_frequencies(words):}\par
+\noindent\hspace*{1em}\texttt{counts = \{\}}\par
+\noindent\hspace*{1em}\texttt{for word in words:}\par
+\noindent\hspace*{3em}\texttt{if word in counts:}\par
+\noindent\hspace*{5em}\texttt{counts[word] += 1}\par
+\noindent\hspace*{3em}\texttt{else:}\par
+\noindent\hspace*{5em}\texttt{counts[word] = 1}\par
+\noindent\hspace*{1em}\texttt{return counts}\par
+\end{tcolorbox}
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} count and find a tie}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Input: \texttt{['sun', 'rain', 'sun', 'wind', 'rain']}.
+\item After the loop: \texttt{\{'sun': 2, 'rain': 2, 'wind': 1\}}.
+\item The maximum value is 2.
+\item Collect every key whose value is 2: \texttt{(['sun', 'rain'], 2)}. Both words tie.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{7\baselineskip}
+The lecture’s \texttt{words\_often} repeatedly finds the current most common words, records them if their count is at least the threshold, and deletes them from the dictionary. Deletion changes the dictionary passed in. If the caller must keep the original counts, make a copy first.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} when several words share the maximum, return all of them. Stopping at the first key loses valid answers.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} testing \texttt{if word in counts.values()} checks whether the word equals a count; the membership test belongs on dictionary keys.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.7}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item How does the count change when a word appears for the third time?
+\item Why might \texttt{words\_often} surprise its caller?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.7 Frequency analysis” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{8.8 Choosing recursion}
+
+\Needspace{8\baselineskip}
+Recursion is not automatically the best implementation; it is especially useful when the input naturally contains nested levels.
+
+\Needspace{12\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A list may contain another list, which contains another list, with no fixed depth. Recursion can process one level and call itself on each nested level. This is harder to express with a fixed number of loops. For a simple known sequence, iteration may be clearer and use less call-stack space.\end{plainbox}
+
+\begin{equationcard}{Divide and conquer}
+\[ \begin{gathered} \text{Break}\, \mathrm{a}\, \text{problem}\, \text{into}\, \text{smaller}\, \text{problems}\, \text{of}\, \text{the}\, \text{same}\, \text{kind}. \\ \text{Solve}\, \text{each}\, \text{smaller}\, \text{problem},\, \text{then}\, \text{combine}\, \text{their}\, \text{answers}. \end{gathered} \]
+{\small \emph{Read it as: “reduce, solve, combine”.}\par  A recursive call must still make progress and have a base case.}
+\end{equationcard}
+
+\begin{workedbox}{Worked plan \ensuremath{\cdot} flatten a nested list}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Input: \texttt{[1, [2, [3]], 4]}.
+\item Base case: an item that is not a list is already one output element.
+\item Recursive case: for each item, append the item itself if it is simple; otherwise append the flattened result of that nested list.
+\item Combine in order to obtain \texttt{[1, 2, 3, 4]}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{7\baselineskip}
+The lecture’s learning tasks practise this pattern with reverse, sum, product, count, palindrome, maximum, flatten, Fibonacci, merge of sorted lists, and subsets. Each problem needs its own input domain and base case; do not assume one recursive template solves all of them unchanged.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} a recursive algorithm may be intuitive but costly if it solves the same subproblem repeatedly. Draw the call tree or cache shared results.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} flattening one level of \texttt{[1, [2, 3]]} gives \texttt{[1, 2, 3]}, but it fails on \texttt{[1, [2, [3]]]}. The recursive case must handle a nested list at any depth.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §8.8}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What makes a nested list a natural recursive input?
+\item When can iteration be the simpler choice?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.8 Choosing recursion” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\section{Formula map and units}
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Rule} & \textbf{Meaning} \\ \midrule
+recursive function & base case + smaller call + combination step \\
+\texttt{fact(1) = 1}; \texttt{fact(n) = n \ensuremath{\times} fact(n \ensuremath{-} 1)} & factorial recurrence for positive integer n \\
+\texttt{fib(0) = fib(1) = 1}; \texttt{fib(n) = fib(n \ensuremath{-} 1) + fib(n \ensuremath{-} 2)} & lecture’s Fibonacci indexing, n \ensuremath{\geq} 2 \\
+induction & base case, then arbitrary step to its successor \\
+\texttt{d[k]}, \texttt{d[k] = v}, \texttt{del d[k]} & lookup, set, delete by key \\
+\texttt{if word in counts: counts[word] += 1} & increment an existing frequency \\
+\bottomrule\end{tabularx}\end{center}
+
+\begin{notebox}\textbf{Check every answer:} verify that every recursive path reaches a base case; unwind returns in reverse call order; check an induction base and a general step; for dictionaries, track all key–value changes and note whether a function mutates its input.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\section{Derive it cold}
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item Expand \texttt{mult(5, 4)} to its base case and unwind the result. \hfill{\small\color{FAUblue}§8.1–8.2}
+\item Trace \texttt{fact(5)} with one argument per call frame. \hfill{\small\color{FAUblue}§8.2}
+\item Prove the sum formula from 0 through n by induction. \hfill{\small\color{FAUblue}§8.3}
+\item Draw the repeated-call tree for naive \texttt{fib(5)}, then show which values a cache stores. \hfill{\small\color{FAUblue}§8.4}
+\item Reduce “Able was I, ere I saw Elba” to its normalized string and compare matching ends. \hfill{\small\color{FAUblue}§8.5}
+\item Build a frequency table for \texttt{['a', 'b', 'a', 'c', 'b', 'a']} and report all maximum words. \hfill{\small\color{FAUblue}§8.7}
+\item Write the base and recursive cases for flattening one nested list. \hfill{\small\color{FAUblue}§8.8}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\section{Explain it}
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item Why must a recursive call solve a smaller instance of the same problem?
+\item Why does each recursive call get its own scope?
+\item Why is the base case necessary even if the recursive step looks correct?
+\item Why does memoization reduce repeated work in Fibonacci?
+\item Why must dictionary keys be hashable while values may be lists?
+\item When should a frequency function return all words tied for the maximum?
+\item When is recursion more natural than iteration?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Mixed practice}
+
+\Needspace{7\baselineskip}
+Try all 20 problems before opening the answers. The problems mix traces, correctness, and dictionary updates; write intermediate states rather than guessing.
+
+\begin{enumerate}
+\item For the lecture’s \texttt{mult(a, b)}, expand \texttt{mult(3, 4)}. How many calls are made, including the base call?
+\item Trace \texttt{fact(5)} in call order and give its result.
+\item Starting from \texttt{d = \{'x': 2\}}, apply \texttt{d['y'] = 4}, \texttt{d['x'] += 1}, then \texttt{del d['y']}. What remains?
+\item A recursive function has base case \texttt{n == 0} but calls \texttt{f(n)} when \texttt{n \ensuremath{>} 0}. What is wrong?
+\item For the lecture’s sequence with \texttt{fib(0)=fib(1)=1}, calculate \texttt{fib(5)}.
+\item After \texttt{d = \{'a': [1]\}}, is \texttt{d['a'].append(2)} valid? What is the value afterward?
+\item Complete the induction step for \texttt{0+…+k+(k+1)}, assuming 0 + … + \textit{k} = {\small\ensuremath{\dfrac{{k}({k}\, +\, 1)}{2}}}.
+\item Is \texttt{\{[1, 2]: 'pair'\}} a valid dictionary? Explain.
+\item Normalize \texttt{“A man, a plan, a canal: Panama!”} using only lowercase letters. What string remains?
+\item What does \texttt{d['missing']} do for \texttt{d = \{\}}? How can code check first?
+\item For normalized \texttt{'abca'}, at what comparison does the recursive palindrome test stop?
+\item Count \texttt{['red', 'blue', 'red', 'green', 'blue']}. Which words are most common?
+\item If \texttt{fib(6)} is already stored as 13, what should a memoized call do before making recursive calls?
+\item Can a dictionary have two different keys with the same value? Give a valid example.
+\item What does \texttt{word in d} check: keys or values? Write a check for a value of 3.
+\item Why is flattening an arbitrarily nested list difficult with a fixed number of loops?
+\item In \texttt{words\_often(freqs, 2)}, the dictionary is \texttt{\{'a': 4, 'b': 2, 'c': 2\}}. If it removes every current maximum before repeating, what does it return and what remains?
+\item Why can a tuple be a dictionary key only sometimes?
+\item A memoized function reads a changing global variable as well as its argument. Why might its cache give a wrong result?
+\item Write the base case and recursive rule for summing a list using head and tail. State the empty-list answer.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\section{Exam-style problems}
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\subsection{1 \ensuremath{\cdot} Memoized sequence \ensuremath{\cdot} 20 minutes}
+
+\Needspace{11\baselineskip}
+Use the lecture’s indexing: \texttt{fib(0)=fib(1)=1}, and \texttt{fib(n)=fib(n\ensuremath{-}1)+fib(n\ensuremath{-}2)} for \texttt{n\ensuremath{\geq}2}.
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Write the base and recursive cases. (3 marks)
+\item Trace the uncached calls for \texttt{fib(4)}, showing the repeated argument. (4 marks)
+\item Write a memoized function using a dictionary and explain when it reads and writes the cache. (5 marks)
+\item Give the value of \texttt{fib(6)} and list the cache entries produced when starting with keys 0 and 1. (4 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\subsection{2 \ensuremath{\cdot} Word report \ensuremath{\cdot} 20 minutes}
+
+\Needspace{9\baselineskip}
+Given \texttt{words = ['oak', 'elm', 'oak', 'ash', 'elm', 'oak', 'ash']} and threshold 2:
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Build the frequency dictionary. (3 marks)
+\item Write a function that returns every word tied for most common and its count. (4 marks)
+\item Describe how repeatedly removing the current maximum changes the input dictionary. (4 marks)
+\item Explain why the dictionary can store a list as a value but not use a list as a key. (4 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{21\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{18\baselineskip}
+These corrections preserve the lecture’s intended lesson while making the examples accurate for Python 3. Each is checked against the slide text and current language behavior.
+
+\Needspace{15\baselineskip}
+\begin{itemize}
+\item \textbf{Slide 34, dictionary order.} The slide says there is “no order to keys or values.” Python 3.7 and later guarantee insertion order for dictionaries. The lesson here is key-based lookup, not sorting; the guide states the modern rule explicitly. \hfill{\small\color{FAUblue}§8.6}
+\item \textbf{Slide 34, keys.} It says “immutable type” and lists floats and tuples. The exact requirement is hashability: a tuple is valid only if all its elements are hashable, while custom immutable objects may be hashable or not. \hfill{\small\color{FAUblue}§8.6}
+\item \textbf{Slides 16–19 and 40–42, Fibonacci indexing.} The rabbit table and slide 19 use \texttt{fib(0)=fib(1)=1}, while slides 40 and 42 use \texttt{fib(1)=1}, \texttt{fib(2)=2}. These are the same sequence with indices shifted by one. This guide follows the rabbit table’s 0-based convention. \hfill{\small\color{FAUblue}§8.4}
+\item \textbf{Slide 43, call counts.} The exact stated recursive-call totals depend on counting conventions. The guide preserves them as lecture-reported figures and focuses on the reliable comparison: naive recursion repeats subproblems; memoization avoids recalculating them. \hfill{\small\color{FAUblue}§8.4}
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Self-check}
+
+\Needspace{7\baselineskip}
+Tick a skill only in a later session, at least one day after studying, when you can demonstrate it without notes.
+
+\begin{itemize}
+\item $\mdlgwhtsquare$\ Identify the base case, recursive case, and progress measure. (1, 4, 20)
+\item $\mdlgwhtsquare$\ Trace calls downward and return values upward. (2, 10)
+\item $\mdlgwhtsquare$\ Explain why each call has its own scope. (derivation 2)
+\item $\mdlgwhtsquare$\ Prove a formula by induction. (7, derivation 3)
+\item $\mdlgwhtsquare$\ Compute Fibonacci values under the stated indexing. (5, 13, 16)
+\item $\mdlgwhtsquare$\ Write and explain dictionary-based memoization. (13, 19, exam 1)
+\item $\mdlgwhtsquare$\ Trace the recursive palindrome check. (9, 11)
+\item $\mdlgwhtsquare$\ Look up, add, update, test, and delete dictionary entries. (3, 6, 8, 10, 14, 15)
+\item $\mdlgwhtsquare$\ Distinguish hashable keys from unrestricted values. (8, 18, exam 2)
+\item $\mdlgwhtsquare$\ Build counts and handle ties for the maximum. (12, 17, exam 2)
+\item $\mdlgwhtsquare$\ Describe recursive processing of nested lists. (16, 20)
+\item $\mdlgwhtsquare$\ Rebuild each derivation in the list from memory.
+\item $\mdlgwhtsquare$\ Complete both exam-style problems in 20 minutes each.
+\end{itemize}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item A base case that returns directly, and a recursive case that moves toward it. \hfill{\small\color{FAUblue}§8.1}
+\item \texttt{fact(4) \ensuremath{\to} fact(3) \ensuremath{\to} fact(2) \ensuremath{\to} fact(1)}; the base call returns first. \hfill{\small\color{FAUblue}§8.2}
+\item The same smaller Fibonacci values are calculated in many branches. \hfill{\small\color{FAUblue}§8.4}
+\item It raises \texttt{KeyError}. \hfill{\small\color{FAUblue}§8.6}
+\item A key must be hashable with a stable hash; a mutable list is not. Values have no such restriction. \hfill{\small\color{FAUblue}§8.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.1 The recursive pattern}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Make progress toward the base case and combine the smaller answer into the current answer.
+\item Its base case is \texttt{b == 1} and each step subtracts one; the stated domain guarantees it reaches that case.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.2 Tracing calls and proving progress}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item \texttt{fact(1)} returns first; the original \texttt{fact(4)} finishes last.
+\item No. Each call has its own scope and binding for \texttt{n}.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.3 Induction and correctness}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item A base case and a step from an arbitrary smaller case to its successor.
+\item The base call is correct; if the smaller recursive call is correct, the current combination step returns the correct answer.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.4 Fibonacci and memoization}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item It recalculates shared subproblems such as \texttt{fib(2)} in several branches.
+\item Look up the argument before calculating; store the result under that argument after calculating.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.5 Recursion on strings}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Strings of length zero or one return \texttt{True}.
+\item The first and last characters must match.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.6 Dictionaries}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Whether the object is one of its keys.
+\item No. The tuple is hashable only if every element is hashable.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.7 Frequency analysis}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Its existing value is incremented from 2 to 3.
+\item It deletes entries from the dictionary it receives, mutating the caller’s object.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.8 Choosing recursion}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Each list can contain smaller inputs of the same kind, at an arbitrary depth.
+\item When the repeated steps follow a simple sequence with an obvious loop and no naturally nested structure.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{15\baselineskip}
+\begin{enumerate}
+\item Progress toward a directly solvable case ensures the process can stop and makes the subproblem simpler. \hfill{\small\color{FAUblue}§8.1}
+\item Each call has its own parameter bindings and local variables, even when the names are the same. \hfill{\small\color{FAUblue}§8.2}
+\item Without a directly solved case, calls have no point at which to stop and return a result. \hfill{\small\color{FAUblue}§8.1}
+\item It records a completed result by input, so later branches reuse it rather than expanding the same subtree again. \hfill{\small\color{FAUblue}§8.4}
+\item Dictionary lookup relies on a key’s stable hash; mutable values can change because they are stored data, not lookup addresses. \hfill{\small\color{FAUblue}§8.6}
+\item Whenever two or more keys share the greatest count; they are all most common. \hfill{\small\color{FAUblue}§8.7}
+\item When the input naturally contains nested instances of itself, such as lists inside lists. \hfill{\small\color{FAUblue}§8.8}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item \texttt{mult(3,4) \ensuremath{\to} mult(3,3) \ensuremath{\to} mult(3,2) \ensuremath{\to} mult(3,1)}; the base returns 3, then 6, 9, 12. Four calls. \hfill{\small\color{FAUblue}§8.1–8.2}
+\item Calls: 5, 4, 3, 2, 1. Returns: 1, 2, 6, 24, 120. \hfill{\small\color{FAUblue}§8.2}
+\item \texttt{\{'x': 3\}}. \hfill{\small\color{FAUblue}§8.6}
+\item The recursive argument never changes, so it never reaches the base case. It must reduce n, for example to \texttt{n - 1} for non-negative n. \hfill{\small\color{FAUblue}§8.1}
+\item Values are 1, 1, 2, 3, 5, 8; therefore \texttt{fib(5)=8}. \hfill{\small\color{FAUblue}§8.4}
+\item Yes. Lists are allowed as values. The value becomes \texttt{[1, 2]}. \hfill{\small\color{FAUblue}§8.6}
+\item {\small\ensuremath{\dfrac{{k}({k}\, +\, 1)}{2}}} + (\textit{k} + 1) = {\small\ensuremath{\dfrac{({k}\, +\, 1)({k}\, +\, 2)}{2}}}, the proposed formula at \texttt{k+1}. \hfill{\small\color{FAUblue}§8.3}
+\item No. A list is mutable and unhashable, so Python raises \texttt{TypeError} when it is used as a key. \hfill{\small\color{FAUblue}§8.6}
+\item \texttt{amanaplanacanalpanama}. \hfill{\small\color{FAUblue}§8.5}
+\item It raises \texttt{KeyError}. Use \texttt{if 'missing' in d:} before lookup. \hfill{\small\color{FAUblue}§8.6}
+\item The outer pair \texttt{a == a} matches, then the inner pair \texttt{b == c} fails, so the result is \texttt{False}. \hfill{\small\color{FAUblue}§8.5}
+\item Counts: red 2, blue 2, green 1. Both red and blue tie at 2. \hfill{\small\color{FAUblue}§8.7}
+\item Return \texttt{cache[6]} immediately. \hfill{\small\color{FAUblue}§8.4}
+\item Yes: \texttt{\{'Mina': 'A', 'Noah': 'A'\}}. Keys are unique; values may repeat. \hfill{\small\color{FAUblue}§8.6}
+\item It checks keys. Use \texttt{3 in d.values()} to check values. \hfill{\small\color{FAUblue}§8.6}
+\item The nesting depth is not fixed; another nested list may appear at any level. Recursion repeats the same operation at each depth. \hfill{\small\color{FAUblue}§8.8}
+\item It returns \texttt{(['a'], 4)}; after deleting \texttt{a}, it returns \texttt{(['b', 'c'], 2)}. The dictionary ends empty because all remaining counts meet the threshold. \hfill{\small\color{FAUblue}§8.7}
+\item A tuple is hashable only when each element is hashable; a tuple containing a list is not. \hfill{\small\color{FAUblue}§8.6}
+\item The same key could produce different answers as the global changes, so the cached result may no longer match the current state. Cache only when the key captures all relevant inputs and there are no interfering side effects. \hfill{\small\color{FAUblue}§8.4}
+\item Base: sum of an empty list is 0. Recursive: sum of a non-empty list is its first element plus the sum of the remaining list. \hfill{\small\color{FAUblue}§8.8}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Base: return 1 for n=0 or n=1. Otherwise return \texttt{fib(n\ensuremath{-}1)+fib(n\ensuremath{-}2)}. \hfill{\small\color{FAUblue}§8.4}
+\item \texttt{fib(4)} calls \texttt{fib(3)} and \texttt{fib(2)}; \texttt{fib(3)} calls \texttt{fib(2)} and \texttt{fib(1)}, so \texttt{fib(2)} repeats. \hfill{\small\color{FAUblue}§8.4}
+\item Check \texttt{if n in cache} and return \texttt{cache[n]}; otherwise compute both smaller values, assign their sum to \texttt{cache[n]}, then return it. \hfill{\small\color{FAUblue}§8.1, §8.4, §8.6}
+\item Sequence: 1, 1, 2, 3, 5, 8, 13; \texttt{fib(6)=13}. Newly stored keys are 2, 3, 4, 5, 6 with those values. \hfill{\small\color{FAUblue}§8.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item \texttt{\{'oak': 3, 'elm': 2, 'ash': 2\}}. \hfill{\small\color{FAUblue}§8.7}
+\item Set \texttt{best = max(freqs.values())}, then collect each key \texttt{k} with \texttt{freqs[k] == best}; return \texttt{(words, best)}. Here result is \texttt{(['oak'], 3)}. \hfill{\small\color{FAUblue}§8.7}
+\item It deletes the selected key or keys from the same object passed by the caller, so after removing oak it contains elm and ash; both then qualify for threshold 2. Make a copy if the original must remain. \hfill{\small\color{FAUblue}§8.7}
+\item Values are stored data and may be mutable. Keys must be hashable and stable for lookup; lists are mutable and unhashable. \hfill{\small\color{FAUblue}§8.6}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Personal study guide based on the supplied “08\_recursion\_and\_dictionaries.pdf” (46 slides, lecture dated 15–16 November 2025; the slides credit MIT OpenCourseWare 6.0001), written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
