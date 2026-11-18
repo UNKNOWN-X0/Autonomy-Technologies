@@ -101,7 +101,7 @@ elif echo "$cg" | grep -q 'written with "/"'; then fail "check-guide: quotients 
 else pass "check-guide: $(echo "$cg" | head -1 | sed 's/^[^:]*: //')"; fi
 
 if [ $probe = 1 ]; then
-  if (cd ../../BrowserTests && CLAUDE_SCRATCHPAD="${CLAUDE_SCRATCHPAD:-${TMPDIR:-/tmp}}" npm run probe --silent -- "/Education/AutonomyTechnologies/$page" >"$out/probe.log" 2>&1); then
+  if (cd ../../BrowserTests && CLAUDE_SCRATCHPAD="${CLAUDE_SCRATCHPAD:-${TMPDIR:-/tmp}}" npm run probe --silent -- "/Education/Autonomy-Technologies/$page" >"$out/probe.log" 2>&1); then
     pass "probe: all 12 engine/theme/width combinations clean ($(grep '^screenshots:' "$out/probe.log" | sed 's/screenshots: //'))"
   else fail "probe: $(grep -E 'combinations|^FAIL' "$out/probe.log" | head -3 | tr '\n' ' ')(see $out/probe.log)"; fi
 else skip "probe: --no-probe"; fi
