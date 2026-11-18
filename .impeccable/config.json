@@ -13,7 +13,7 @@
         "rule": "design-system-font",
         "value": "math\",\"stix two math\",\"times new roman\",serif",
         "createdAt": "2026-11-17T13:06:48.391Z",
-        "reason": "Claude: DESIGN.md Formula typography names this math fallback stack"
+        "reason": "The mathematical serif fallback is explicitly documented in DESIGN.md Formula typography; this page uses the shared guide.css stack."
       },
       {
         "rule": "design-system-color",
@@ -194,6 +194,15 @@
         ],
         "createdAt": "2026-11-18T13:25:36.603Z",
         "reason": "Claude: IBM Plex Sans Condensed is the exam-sheet print face documented in docs/APPENDIX-STANDARD.md (Exam sheets); it fits about a fifth more per line at 7pt"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "apdr/ch11-classes-inheritance.html"
+        ],
+        "createdAt": "2026-11-18T23:38:18.523Z",
+        "reason": "The only glow is the documented shared active-navigation/progress signal in css/guide.css; this new page adds no shadow styling."
       }
     ]
   }

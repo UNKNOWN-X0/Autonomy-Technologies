@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795044229.108751,
-    "seen": 1795044379.143113,
-    "ast_hash": "0be300febb9dbc62dab7cd7ab75a7114",
+    "mtime": 1795045388.3485117,
+    "seen": 1795045464.223969,
+    "ast_hash": "5bded310e4ec1181d3dd0f3c741a81ce",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795043538.9654636,
-    "seen": 1795044090.880668,
-    "ast_hash": "4392a1a59e8db754db41fc28214e12b2",
+    "mtime": 1795045209.243396,
+    "seen": 1795045464.223916,
+    "ast_hash": "d549d72f96de3ce090a47bafdbf91421",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -480,14 +480,14 @@
     "semantic_hash": ""
   },
   "tools/graph-describe.py": {
-    "mtime": 1795044363.2318528,
-    "seen": 1795044379.143048,
-    "ast_hash": "cc3d8c7cc6fe937be46c6cc8028b7667",
+    "mtime": 1795045459.4450774,
+    "seen": 1795045464.2238998,
+    "ast_hash": "cd65538a782c4b0957d1ce9382359595",
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795044256.9094484,
-    "seen": 1795044379.1429849,
+    "mtime": 1795044572.9313402,
+    "seen": 1795045464.223833,
     "ast_hash": "18c17e3861290f08a2433683c1d71fd4",
     "semantic_hash": ""
   },
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795008336.6040022,
-    "seen": 1795008689.887038,
-    "ast_hash": "70be51ac1590c7937f8725b172678b09",
+    "mtime": 1795045098.5250108,
+    "seen": 1795045464.223829,
+    "ast_hash": "0c9220762a69851b6733363725f8c29b",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -969,6 +969,24 @@
     "mtime": 1795043825.786412,
     "seen": 1795044090.880672,
     "ast_hash": "87d495353f5f7431fb36e6415533d6ef",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch11-lab.js": {
+    "mtime": 1795045174.985064,
+    "seen": 1795045464.223837,
+    "ast_hash": "9d4fe926f05be6af6f5581bb11fe31e6",
+    "semantic_hash": ""
+  },
+  "apdr/ch11-classes-inheritance-lab.html": {
+    "mtime": 1795045388.3480563,
+    "seen": 1795045464.2239208,
+    "ast_hash": "31bb332a2926479689725808fcf2bd4e",
+    "semantic_hash": ""
+  },
+  "apdr/ch11-classes-inheritance.html": {
+    "mtime": 1795045388.3475938,
+    "seen": 1795045464.223922,
+    "ast_hash": "cf099da7db3aefe1b367a98cd9790d3f",
     "semantic_hash": ""
   }
 }
