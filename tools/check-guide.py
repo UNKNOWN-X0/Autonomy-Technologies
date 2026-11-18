@@ -137,6 +137,15 @@ def check_files(root, html, path, page_dir, rep):
         rep.warn("%d ASCII relation(s) or arrow(s) in formulas (<=, >=, !=, ->, =>): use ≤ ≥ ≠ → ⇒" % ascii_rel)
     stem = os.path.splitext(path)[0]
     base = os.path.basename(stem)
+    if 'data-print="sheet"' in html:
+        # an exam sheet is printed by Chromium (tools/print-sheet.cjs), not converted to LaTeX: a PDF, no .tex
+        if 'href="%s.pdf"' % base not in html:
+            rep.err("download link to %s.pdf missing" % base)
+        if os.path.exists(stem + ".tex"):
+            rep.err("%s.tex exists, but an exam sheet has no LaTeX source: delete it" % base)
+        if not os.path.exists(stem + ".pdf") or os.path.getmtime(stem + ".pdf") < os.path.getmtime(path) - 1:
+            rep.err("%s.pdf is missing or older than the page: run node tools/print-sheet.cjs %s" % (base, os.path.relpath(path, ROOT)))
+        return
     for ext in (".pdf", ".tex"):
         if 'href="%s%s"' % (base, ext) not in html:
             rep.err("download link to %s%s missing" % (base, ext))

@@ -158,6 +158,42 @@
         ],
         "createdAt": "2026-11-18T01:19:02.348Z",
         "reason": "Claude: every finding is a stacked-fraction denominator whose border-top is the fraction line, which must sit close to its denominator (css/guide.css .frac > span:last-child, padding 0.08em); this page has no square roots or bordered text boxes"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "mei/appendix-b-exam-sheet-i.html"
+        ],
+        "createdAt": "2026-11-18T13:25:36.554Z",
+        "reason": "Claude: measured in Chromium (light, dark, print): every text run is 7.6:1 or better; the static scan pairs print colours with the dark screen background, and the 1.0:1 runs are sqrt root glyphs drawn as a currentColor mask"
+      },
+      {
+        "rule": "tight-leading",
+        "value": "*",
+        "files": [
+          "mei/appendix-b-exam-sheet-i.html"
+        ],
+        "createdAt": "2026-11-18T13:25:36.571Z",
+        "reason": "Claude: an exam sheet is a deliberate density exception (docs/APPENDIX-STANDARD.md, Exam sheets): 1.2 line height in print so each A4 side holds the whole syllabus"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "mei/appendix-b-exam-sheet-i.html"
+        ],
+        "createdAt": "2026-11-18T13:25:36.588Z",
+        "reason": "Claude: the sheet cards have no box: the title bar sits flush on top of its own text by design, and nothing borders the card text (css/sheet.css)"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          "mei/appendix-b-exam-sheet-i.html"
+        ],
+        "createdAt": "2026-11-18T13:25:36.603Z",
+        "reason": "Claude: IBM Plex Sans Condensed is the exam-sheet print face documented in docs/APPENDIX-STANDARD.md (Exam sheets); it fits about a fifth more per line at 7pt"
       }
     ]
   }

@@ -10,12 +10,13 @@ Reference material that belongs to no chapter, such as a formula collection, goe
 
 ## Exam sheets
 
-An exam sheet is an appendix built for an exam that allows one sheet of notes: <main data-print="sheet"> makes `tools/guide-to-tex.py` set the PDF as two dense A4 sides instead of the guide layout (5 mm margins, ruled columns, no title page, contents or running header; the watermark stays). Each `section.sheet-side` (`#sec-b1`, `#sec-b2`, …) is one side, with its type size in `data-pt` and its columns in `data-cols` (default 4); each `div.eq` in it is one card: a bold title, then formula lines, short paragraphs, lists or small tables. The source note becomes one small line under the last side's rule.
+An exam sheet is an appendix built for an exam that allows one sheet of notes, named in order: Exam Sheet I, II, …, at `<subject>/appendix-<letter>-exam-sheet-<roman>.html`. Its PDF is printed from the page by Chromium, not converted to LaTeX, because a dense sheet needs flexible packing and real tables: `node tools/print-sheet.cjs <page> --fit`.
 
-- **Fill each side.** Raise `data-pt` until one more step pushes a side onto an extra page, then keep the largest size that fits: the PDF must stay exactly as many pages as there are sides.
-- **One formula per line.** Two relations on one `span.formula` wrap mid-formula in a narrow column; give each its own line.
-- **Simplest true wording.** Every rule in the fewest words that still say it correctly, with the condition that makes it true (a ≠ 0, x ≥ −1, both sides ≥ 0).
-- **Check by printing.** Look at both sides at 100 % zoom: no stranded card titles (the converter keeps a title with its first lines), no clipped tables, every fraction legible.
+- **Markup.** `<main data-print="sheet">`; one `section.sheet-side` per printed side (`#sec-b1`, `#sec-b2`, …) with an `h2`, an optional `p.sheet-meta` line and a `div.sheet-cards` of cards; each card is a `div.eq.sheet-card` with a bold title first, then formula lines, short paragraphs, lists or ruled tables (`div.tw > table`). The source note sits inside the last side, under its heading. The page loads `../css/sheet.css` after `guide.css`, and the condensed print face (IBM Plex Sans Condensed) from Google Fonts. The only download is the PDF; there is no `.tex`.
+- **Layout.** `css/sheet.css` flows the cards in responsive columns on screen; in print every side is one A4 page in four ruled columns with 4 mm margins, and its type size is the `--pt` value in the side's `style` attribute.
+- **Fill each side.** `--fit` finds, for each side, the largest size in 0.05 pt steps at which its cards still fit, and writes it into the HTML; without `--fit` the tool fails when a side overflows. The PDF must have exactly one page per side. Content decides the size: if a side drops below about 6.5 pt, cut or move material rather than print smaller.
+- **Content.** Side 1 is the rules, side 2 the worked examples. Every rule in the fewest words that still say it correctly, with the condition that makes it true (a ≠ 0, x ≥ −1, both sides ≥ 0); one formula per formula line.
+- **Check by looking.** `tools/page-check.sh` prints the PDF, renders a contact sheet and runs the checker and probe; then read both sides at 100 % zoom: no stranded card titles, no clipped tables, every fraction legible.
 
 ## Acceptance
 

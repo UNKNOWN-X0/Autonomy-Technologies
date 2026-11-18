@@ -36,6 +36,7 @@ FILES = {
     "js/eei/ch1-physics.js": "the EEI Chapter 1 formulas (fields, potential, capacitors)",
     "js/eei/ch2-lab.js": "the EEI Chapter 2 lab page (stationary currents)",
     "js/eei/ch2-physics.js": "the EEI Chapter 2 formulas (current density, Ohm's law, resistance, power)",
+    "tools/print-sheet.cjs": "the exam-sheet printer (Chromium PDF, fits each side's type size)",
     "js/eei/ch3-lab.js": "the EEI Chapter 3 lab page (DC networks)",
     "js/eei/ch3-physics.js": "the EEI Chapter 3 formulas (real sources, Kirchhoff, dividers, maximum power, superposition)",
     "docs/EXERCISE-SOLUTIONS-STANDARD.md": "the worked-exercise standard",

@@ -1,0 +1,287 @@
+/* Exam sheets (docs/APPENDIX-STANDARD.md, Exam sheets): one page per allowed sheet side.
+   On screen the cards flow in responsive columns; in print every section.sheet-side is one A4 side in four ruled
+   columns, its type size set by the --pt custom property in its style attribute (tools/print-sheet.cjs --fit). */
+
+.sheet-side {
+  margin-block: 2.5rem;
+}
+.sheet-side > .sheet-meta {
+  margin: 0.25rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.sheet-cards {
+  columns: 17rem;
+  column-gap: 1.75rem;
+  column-rule: 1px solid var(--line);
+}
+.sheet-card.eq {
+  display: block;
+  break-inside: avoid;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: visible;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.sheet-card > strong:first-child {
+  display: block;
+  margin-bottom: 0.3rem;
+  padding: 0.12rem 0.5rem;
+  /* fixed FAU blue with white in both themes: the dark theme's lighter --fau-mark would leave dark text at 3:1 */
+  color: #fff;
+  background: var(--fau);
+  font: 700 0.85rem/1.35 var(--f-display);
+}
+.sheet-card .formula {
+  display: block;
+  width: auto;
+  min-width: 0;
+  padding: 0.05em 0 0.05em 0.6em;
+  text-align: left;
+  white-space: normal;
+  font-size: 1.05em;
+  line-height: 1.5;
+}
+.sheet-card p,
+.sheet-card ul,
+.sheet-card ol {
+  margin: 0.15rem 0;
+}
+.sheet-card ul,
+.sheet-card ol {
+  padding-left: 1.15em;
+}
+.sheet-card li {
+  margin: 0.05rem 0;
+}
+.sheet-card .eq-note {
+  display: block;
+  margin-top: 0.15rem;
+  padding: 0;
+  font-size: 0.92em;
+  line-height: inherit;
+}
+/* a topic label groups the cards that follow it (side 2: worked examples in side 1's topic order) */
+.sheet-topic {
+  margin: 0.4rem 0 0.35rem;
+  padding-bottom: 0.1rem;
+  border-bottom: 2px solid var(--fau-mark);
+  color: var(--fau-mark);
+  font: 800 0.8rem/1.2 var(--f-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  break-after: avoid;
+}
+/* real ruled tables: a border on every cell, a tinted header row */
+.sheet-card .tw {
+  margin: 0.25rem 0;
+  overflow-x: auto;
+}
+/* the guides' tables are page-wide (min-width 560px, rem sizes); a sheet table scales with its card */
+.sheet-card .tw table {
+  min-width: 0;
+}
+.sheet-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.sheet-card th,
+.sheet-card td {
+  padding: 0.12em 0.35em;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.sheet-card th {
+  color: var(--ink);
+  background: var(--paper-2);
+  font: 700 1em/1.3 var(--f-display);
+  letter-spacing: 0;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .wrap {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  nav.toc,
+  .toc-bar,
+  .whats-new,
+  main > header.sign,
+  main > .standfirst,
+  main > .downloads,
+  main > noscript,
+  .chapter-pager {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .sheet-side {
+    --pt: 7pt;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 4mm 4.5mm 4mm;
+    overflow: hidden;
+    break-after: page;
+    /* a condensed face fits about a fifth more per line and stays legible at 7pt (loaded by the sheet page) */
+    --f-sheet: "IBM Plex Sans Condensed", "Arial Narrow", var(--f-body);
+    font: 400 var(--pt) / 1.2 var(--f-sheet);
+    color: #000;
+  }
+  .sheet-side h2,
+  .sheet-card > strong:first-child,
+  .sheet-card th {
+    font-family: var(--f-sheet) !important;
+  }
+  .sheet-side:last-of-type {
+    break-after: auto;
+  }
+  .sheet-side > h2 {
+    margin: 0;
+    padding: 0.1em 0.4em;
+    color: #fff;
+    background: #04316a;
+    font: 700 1.3em/1.25 var(--f-display);
+  }
+  .sheet-side > .sheet-meta,
+  .sheet-side > .source-note {
+    margin: 0.15em 0 0.35em;
+    padding: 0;
+    background: none;
+    color: #444;
+    font-size: 0.8em;
+    line-height: 1.2;
+  }
+  .sheet-cards {
+    flex: 1;
+    min-height: 0;
+    columns: 4;
+    column-gap: 2.4mm;
+    column-rule: 0.4pt solid #9aa6b5;
+    column-fill: auto;
+  }
+  .sheet-card.eq {
+    break-inside: auto;
+    margin: 0 0 0.38em;
+    font-size: 1em;
+    line-height: 1.2;
+  }
+  .sheet-card > strong:first-child {
+    margin-bottom: 0.15em;
+    padding: 0.05em 0.35em;
+    color: #fff;
+    background: #04316a;
+    font: 700 1em/1.25 var(--f-display);
+    break-after: avoid;
+  }
+  .sheet-card .formula {
+    padding: 0 0 0 0.5em;
+    font-size: 1.04em;
+    line-height: 1.22;
+    color: #000;
+    break-inside: avoid;
+  }
+  .sheet-card p,
+  .sheet-card ul,
+  .sheet-card ol {
+    margin: 0.05em 0;
+  }
+  .sheet-card ul,
+  .sheet-card ol {
+    padding-left: 0.95em;
+  }
+  .sheet-card li {
+    margin: 0;
+    break-inside: avoid;
+  }
+  .sheet-card .eq-note {
+    margin-top: 0.05em;
+    color: #222;
+    font-size: 0.96em;
+  }
+  /* formula lines in the sheet's own face, so they sit in the line instead of shouting over it */
+  .sheet-card .formula {
+    font-family: var(--f-sheet);
+    font-weight: 400;
+  }
+  /* sums and products with their limits beside the sign, one above the other (TeX's inline style): one line high */
+  .sheet-card .op-sum {
+    grid-template-areas: "sym hi" "sym lo";
+    justify-items: start;
+    align-items: center;
+    column-gap: 0.06em;
+    line-height: 1;
+  }
+  .sheet-card .op-sum > .op-sym {
+    font-size: 1.12em;
+  }
+  .sheet-card .op-sum > sub,
+  .sheet-card .op-sum > sup {
+    font-size: 0.7em;
+    line-height: 1;
+  }
+  /* a stacked fraction in a line stays close to the line height: tight rows, a hair line */
+  .sheet-card .frac {
+    line-height: 1;
+    vertical-align: middle;
+  }
+  .sheet-card .frac > span:last-child {
+    padding-top: 0.04em;
+  }
+  .sheet-topic {
+    margin: 0.25em 0 0.2em;
+    padding-bottom: 0.05em;
+    border-bottom: 1pt solid #04316a;
+    color: #04316a;
+    font: 700 0.95em/1.15 var(--f-sheet);
+    letter-spacing: 0.05em;
+  }
+  .sheet-card .tw {
+    margin: 0.12em 0;
+    overflow: visible;
+    break-inside: avoid;
+  }
+  .sheet-card table {
+    font-size: 0.96em;
+  }
+  .sheet-card th,
+  .sheet-card td {
+    padding: 0.04em 0.25em;
+    border: 0.5pt solid #45556d; /* the light theme's --muted: print stays light whatever the screen theme */
+  }
+  .sheet-card th {
+    background: #e3e9f2;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .sheet-side > h2,
+  .sheet-card > strong:first-child {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

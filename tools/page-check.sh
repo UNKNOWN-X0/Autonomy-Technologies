@@ -37,7 +37,24 @@ case "$page" in
     checked=$guide ;;
   *)
     checked=$page
-    if [ $pdf = 1 ]; then
+    if [ $pdf = 1 ] && grep -q 'data-print="sheet"' "$page"; then
+      # an exam sheet prints from the browser (tools/print-sheet.cjs): one A4 page per side, no LaTeX
+      if node tools/print-sheet.cjs "$page" >"$out/print.log" 2>&1; then
+        pass "pdf: printed ${page%.html}.pdf ($(tail -1 "$out/print.log"))"
+      else fail "pdf: $(grep FAIL "$out/print.log" | head -2 | tr '\n' ' ')(see $out/print.log)"; fi
+      if command -v gs >/dev/null; then
+        rm -f "$out"/page-*.png
+        gs -q -dNOPAUSE -dBATCH -sDEVICE=png16m -r60 -sOutputFile="$out/page-%03d.png" "${page%.html}.pdf" 2>/dev/null
+        python3 -c "
+import glob,sys
+from PIL import Image
+ims=[Image.open(p) for p in sorted(glob.glob('$out/page-*.png'))]
+w=sum(i.width for i in ims)+8*(len(ims)+1); h=max(i.height for i in ims)+16
+s=Image.new('RGB',(w,h),'#888'); x=8
+for i in ims: s.paste(i,(x,8)); x+=i.width+8
+s.save('$out/contact-sheet.png')" && rm -f "$out"/page-*.png && pass "pdf: contact sheet at $out/contact-sheet.png"
+      fi
+    elif [ $pdf = 1 ]; then
       dir=$(dirname "$page"); stem=$(basename "${page%.html}")
       if python3 -I tools/guide-to-tex.py "$page" "${page%.html}.tex" >"$out/convert.log" 2>&1; then
         pass "tex: regenerated ${page%.html}.tex"
