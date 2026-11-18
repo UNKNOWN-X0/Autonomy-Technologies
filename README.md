@@ -1,5 +1,8 @@
 # From Fundamentals to AI Apocalypse
 
+[![Live site](https://img.shields.io/badge/live%20site-GitHub%20Pages-2ea44f?logo=github)](https://unknown-x0.github.io/Autonomy-Technologies/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
 Study guides and interactive labs for the Autonomy Technologies programme at FAU Erlangen-Nürnberg, built up semester by semester for the whole degree.
 
 **[Open the site →](https://unknown-x0.github.io/Autonomy-Technologies/)**
@@ -21,6 +24,14 @@ The home page has one section per semester. Each subject shows its module number
 
 What exists for each subject is listed on the home page; every guide also has a printable PDF.
 
+## Getting started
+
+Open the [site](https://unknown-x0.github.io/Autonomy-Technologies/). To work on it locally, serve the folder and open it through the server:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
 ## How to study with it
 
 1. Read one section of a guide, then cover its formulas and write them out from memory.
@@ -31,24 +42,6 @@ What exists for each subject is listed on the home page; every guide also has a 
 
 Every page works on phone and desktop, follows your system's light or dark mode (or your choice under Settings, the gear beside **All semesters**), and prints cleanly.
 
-## Repository layout
-
-```text
-index.html        Home page: review schedule, semesters, subjects
-apdr/ mei/ eei/   One folder per subject: each chapter's guide (the HTML is the single source),
-                  its generated .tex and .pdf, its lab, and the subject's worked exercises,
-                  tutorials, and appendices
-about/            How to use the site, and the version log
-css/  js/         Shared by every page of a kind; chapter scripts live in js/<subject>/
-tests/            Physics, lab-challenge, and generator tests (node --test)
-tools/            Offline helpers, not loaded by the site: page-check.sh, check-guide.py,
-                  guide-to-tex.py, stack-fractions.py, graph-describe.py, graph-orb.py
-docs/             The standards: MARKUP, GUIDE, LAB, APPENDIX, EXERCISE-SOLUTIONS, TOOLING
-assets/           preview.png (the screenshot above), graph-orb.json (written by graph-orb.py)
-```
-
-No build step: plain HTML, CSS, and JavaScript, with fonts from Google Fonts and formulas as plain HTML. The rules every change meets are in [STANDARDS.md](STANDARDS.md); what each kind of page contains is in [docs/](docs/).
-
 ## Working on a page
 
 The HTML is the single source. After editing a page, one command regenerates its print copy and checks everything a script can check:
@@ -57,7 +50,7 @@ The HTML is the single source. After editing a page, one command regenerates its
 tools/page-check.sh eei/ch1-electrostatic-fields.html
 ```
 
-It writes the `.tex` with `tools/guide-to-tex.py`, builds the `.pdf` with `latexmk -xelatex` (TeX Live with the New Computer Modern fonts, `environ`, and `tcolorbox`), scans the LaTeX log, renders a contact sheet of every page, runs `tools/check-guide.py` against the page's standard, and probes the page in Chromium and WebKit at three widths in light and dark. Then look at the contact sheet and the screenshots. `node --test tests/*.test.js` runs the physics, challenge, and generator tests.
+It writes the `.tex` with `tools/guide-to-tex.py`, builds the `.pdf` with `latexmk -xelatex` (TeX Live with the New Computer Modern fonts, `environ`, and `tcolorbox`), scans the LaTeX log, renders a contact sheet of every page, runs `tools/check-guide.py` against the page's standard, and probes the page in Chromium and WebKit at three widths in light and dark. Then look at the contact sheet and the screenshots.
 
 Every PDF carries a faint "Made by Thanate Amornjiraporn (Focus)" watermark, and every answer block moves to an Answers section at the end so the questions can be tried first.
 
@@ -74,3 +67,40 @@ One sign system, modelled on German systematic signage: FAU blue sign fields, sq
 ## Hosting
 
 Published by **GitHub Pages** from the `main` branch, root folder; every commit to `main` publishes within a minute or two. `.nojekyll` makes Pages serve the files exactly as uploaded, with no Jekyll build. `.github/workflows/checks.yml` runs the unit tests and `tools/check-guide.py` on every page for each push and pull request (PDF-age checks are skipped there, because a fresh checkout dates every file the same). The repository must stay public for free Pages hosting. Upload the HTML **and** its `css/` and `js/` folders together; the pages are not self-contained.
+
+## Tests
+
+```sh
+node --test tests/*.test.js
+```
+
+The unit tests cover each lab's physics, the lab challenges and generators, and the shared progress rules. `tools/page-check.sh` (above) runs the per-page checks.
+
+## Project structure
+
+```text
+index.html        Home page: review schedule, semesters, subjects
+apdr/ mei/ eei/   One folder per subject: each chapter's guide (the HTML is the single source),
+                  its generated .tex and .pdf, its lab, and the subject's worked exercises,
+                  tutorials, and appendices
+about/            How to use the site, and the version log
+css/  js/         Shared by every page of a kind; chapter scripts live in js/<subject>/
+tests/            Physics, lab-challenge, generator, and progress tests (node --test)
+tools/            Offline helpers, not loaded by the site: page-check.sh, check-guide.py,
+                  guide-to-tex.py, print-sheet.cjs, stack-fractions.py, graph-describe.py,
+                  graph-orb.py
+docs/             The standards: MARKUP, GUIDE, LAB, APPENDIX, EXERCISE-SOLUTIONS, TOOLING
+assets/           preview.png (the screenshot above), graph-orb.json (written by graph-orb.py)
+```
+
+No build step: plain HTML, CSS, and JavaScript, with fonts from Google Fonts and formulas as plain HTML.
+
+## Project documents
+
+| File | What it covers |
+| --- | --- |
+| [PRODUCT.md](PRODUCT.md) | What the site is for and what it must never claim |
+| [DESIGN.md](DESIGN.md) | The sign system: tokens, type, components, motion |
+| [STANDARDS.md](STANDARDS.md) | The rules every change meets |
+| [docs/](docs/) | What each kind of page contains: markup, guide, lab, appendix, worked solutions, tooling |
+| [about/version-log.html](about/version-log.html) | Release history |
