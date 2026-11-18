@@ -203,6 +203,16 @@
         ],
         "createdAt": "2026-11-18T23:38:18.523Z",
         "reason": "The only glow is the documented shared active-navigation/progress signal in css/guide.css; this new page adds no shadow styling."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch10-object-oriented-programming-lab.html",
+          "apdr/ch11-classes-inheritance-lab.html"
+        ],
+        "createdAt": "2026-11-18T23:51:12.226Z",
+        "reason": "The detector reads the lab stage canvas as flush content; its only text, .stage-note, has a paper fill, 6px horizontal padding and an 8px total bottom inset. css/lab.css confirms this is the deliberate full-bleed drawing stage."
       }
     ]
   }
