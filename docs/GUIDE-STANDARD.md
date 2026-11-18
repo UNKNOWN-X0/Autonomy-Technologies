@@ -107,7 +107,7 @@ A guide is done when all of the following hold:
 2. Look at the contact sheet: no split boxes, no stranded headings, no page holding only a line or two.
 3. Look at the probe screenshots at 390 px in both themes: the recall, worked and answer blocks read well, tables scroll inside their frame, and nothing is cut off. The BrowserTests diagram-label check passes (it runs in `scripts/verify.sh`).
 4. Every picture diagram is looked at in the browser and, zoomed in, in the PDF: no label on a line or cut off at an edge, arrowheads sharp, curves smooth.
-5. `scripts/verify.sh Education/AutonomyTechnologies` passes from the workspace (tests, scaffold, graph, the smoke tests for this project).
+5. `scripts/verify.sh Education/Autonomy-Technologies` passes from the workspace (tests, scaffold, graph, the smoke tests for this project).
 6. Every practice answer, worked example and exam answer has been re-derived independently, and every slip claim has been checked against the rendered notes.
 
 ## Updating a guide

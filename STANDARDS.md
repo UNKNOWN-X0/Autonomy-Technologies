@@ -54,7 +54,7 @@ How the hub, the rail, and the labs are built, and what a change must respect.
 In this order, for the parts a change touches:
 
 1. **Page:** `tools/page-check.sh <page>` for every guide, lab, appendix, exercise, or tutorial page changed. It regenerates the `.tex` and `.pdf`, scans the LaTeX log, renders a contact sheet, runs `tools/check-guide.py` (errors and a quotient written with "/" fail; review the warnings), and probes the page in both engines at three widths and two themes. Then look at the contact sheet and the screenshots.
-2. **Project:** `scripts/verify.sh Education/AutonomyTechnologies` from the workspace: the tests, scaffold drift, graph freshness, and the smoke tests for this project.
+2. **Project:** `scripts/verify.sh Education/Autonomy-Technologies` from the workspace: the tests, scaffold drift, graph freshness, and the smoke tests for this project.
 3. **Labs:** after a lab change, the lab player from the workspace `BrowserTests`: `npm run labs` (about 40 minutes for every lab in both engines; `npx playwright test --project labs-chromium --grep <lab file>` for one lab in one engine). Not part of verify.sh.
 4. **Graph:** `scripts/refresh-graph.sh --changed` from the workspace after code changes; then the Graph section above.
 5. **Hub or shared code** (`js/`, `css/`): probe `index.html` and one guide, one lab and one worked page, because every page shares them.

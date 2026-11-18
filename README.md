@@ -2,7 +2,7 @@
 
 Study guides and interactive labs for the Autonomy Technologies programme at FAU Erlangen-Nürnberg, built up semester by semester for the whole degree.
 
-**[Open the site →](https://unknown-x0.github.io/AutonomyTechnologies/)**
+**[Open the site →](https://unknown-x0.github.io/Autonomy-Technologies/)**
 
 ![From Fundamentals to AI Apocalypse hub](assets/preview.png)
 
