@@ -1,17 +1,17 @@
 # Graph Report - Autonomy-Technologies  (2026-11-18)
 
 ## Corpus Check
-- 93 files · ~424,484 words
+- 94 files · ~428,917 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 9 file(s) not represented in the graph (top: .css 5, (none) 3, .ico 1)
 
 ## Summary
-- 1518 nodes · 3003 edges · 81 communities (67 shown, 14 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 337 edges (avg confidence: 0.85)
+- 1522 nodes · 3007 edges · 78 communities (64 shown, 14 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 339 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `62d59d95`
+- Built from commit: `bf6c75b0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -81,19 +81,16 @@
 - APDR 6 lab: Python step-by-step experiments
 - APDR 7 lab: frames, lists and aliasing
 - lab-generators.test.js
-- .block
+- Tree
 - Lab challenge tests
-- math
-- eei-ch2-physics.test.js
+- graph-orb.py
+- mount
 - steps
 - ch8-lab.js
 - progress.js
 - ch8-physics.js
 - apdr-ch7-physics.test.js
 - apdr-ch6-physics.test.js
-- progress.test.js
-- coord_pieces
-- Markup and notation standard
 - FACT-CHECK-LOG.md
 
 ## God Nodes (most connected - your core abstractions)
@@ -109,12 +106,12 @@
 10. `queue()` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `Challenges` --references--> `reveal()`  [INFERRED]
+  docs/LAB-STANDARD.md → js/nav.js
 - `Formulas` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Markup` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
-- `Challenges` --references--> `reveal()`  [INFERRED]
-  docs/LAB-STANDARD.md → js/nav.js
 - `Experiments` --references--> `generate()`  [INFERRED]
   docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Generated challenges (New challenge)` --references--> `generate()`  [INFERRED]
@@ -123,7 +120,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (81 total, 14 thin omitted)
+## Communities (78 total, 14 thin omitted)
 
 ### Community 0 - "EEI 1 lab: fields and capacitors"
 Cohesion: 0.05
@@ -222,8 +219,8 @@ Cohesion: 0.26
 Nodes (10): columnSubtract(), convert(), decodeInteger(), decodeTwos(), negatePattern(), parseBase(), parseBits(), toBase() (+2 more)
 
 ### Community 28 - "re"
-Cohesion: 0.19
-Nodes (10): comment_above(), describe(), file_phrase(), find_parents(), from_name(), main(), patch_html(), words() (+2 more)
+Cohesion: 0.31
+Nodes (8): comment_above(), describe(), file_phrase(), find_parents(), from_name(), main(), patch_html(), words()
 
 ### Community 29 - "MEI 2 lab: real numbers"
 Cohesion: 0.16
@@ -282,8 +279,8 @@ Cohesion: 0.36
 Nodes (4): nand(), nandAnd(), nandCircuit(), nandOr()
 
 ### Community 47 - "guide-to-tex.py"
-Cohesion: 0.18
-Nodes (13): amap_data(), amap_label(), amap_tikz(), arrow_t(), coord_tikz(), dipole_lines(), P(), scene_tikz() (+5 more)
+Cohesion: 0.06
+Nodes (38): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs, amap_data() (+30 more)
 
 ### Community 48 - "Page check script"
 Cohesion: 0.48
@@ -314,8 +311,8 @@ Cohesion: 0.38
 Nodes (9): age(), read(), remember(), seen(), show(), dismiss(), esc(), start() (+1 more)
 
 ### Community 55 - "ref_node_assert"
-Cohesion: 0.19
-Nodes (4): row(), rows(), assert, test
+Cohesion: 0.15
+Nodes (6): row(), rows(), assert, test, assert, test
 
 ### Community 56 - "Appendix rules"
 Cohesion: 0.50
@@ -326,12 +323,12 @@ Cohesion: 0.17
 Nodes (32): arrow(), dot(), drawDivider(), drawKirchhoff(), drawPower(), drawSource(), drawSuper(), flow() (+24 more)
 
 ### Community 58 - "mei-ch4-physics.test.js"
-Cohesion: 0.25
-Nodes (5): assert, fs, path, test, vm
+Cohesion: 0.17
+Nodes (7): definitions(), fake(), assert, fs, path, test, vm
 
 ### Community 59 - "Tooling: guide checker"
-Cohesion: 0.10
-Nodes (15): all_nodes(), answers_of(), check(), check_appendix(), check_exercise(), check_files(), check_icons(), check_lab() (+7 more)
+Cohesion: 0.14
+Nodes (13): all_nodes(), answers_of(), check(), check_appendix(), check_exercise(), check_files(), check_icons(), check_lab() (+5 more)
 
 ### Community 60 - "APDR 7 physics: a small Python interpreter"
 Cohesion: 0.12
@@ -357,17 +354,13 @@ Nodes (28): applyOps(), arrow(), clip(), colours(), draw(), field(), fitSize(), 
 Cohesion: 0.38
 Nodes (5): context(), defsOf(), fake(), labs, ROOT
 
-### Community 66 - ".block"
-Cohesion: 0.18
-Nodes (7): Conv, est(), find(), grow_delims(), inline(), main(), tex_text()
-
 ### Community 67 - "Lab challenge tests"
 Cohesion: 0.21
 Nodes (10): assert, context(), fake(), fs, loadExperiments(), path, ROOT, runEngine() (+2 more)
 
-### Community 68 - "math"
-Cohesion: 0.25
-Nodes (6): big_op(), math(), math_text(), math_wrap(), sqrt_tex(), var_math()
+### Community 69 - "mount"
+Cohesion: 0.67
+Nodes (3): mount(), make(), paint()
 
 ### Community 70 - "steps"
 Cohesion: 0.12
@@ -385,17 +378,9 @@ Nodes (8): exportData(), importData(), logDay(), read(), review(), stamp(), utcD
 Cohesion: 0.24
 Nodes (5): mostCommon(), naiveCalls(), normalize(), palindromeTrace(), wordsOften()
 
-### Community 78 - "coord_pieces"
-Cohesion: 0.32
-Nodes (5): coord_pieces(), axis(), fit(), tip_label(), vec()
-
-### Community 79 - "Markup and notation standard"
-Cohesion: 0.29
-Nodes (7): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs
-
 ## Knowledge Gaps
 - **11 isolated node(s):** `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow`, `Jekyll site CI`, `LaTeX, Pandoc, and KaTeX publishing pipeline` (+6 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 452 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 453 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Work-memory lessons
@@ -407,7 +392,7 @@ Nodes (7): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.144) - this node is a cross-community bridge._
+  _High betweenness centrality (0.152) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

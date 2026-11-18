@@ -1,0 +1,812 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 9}
+\fancyhead[R]{\small\sffamily Testing and Debugging}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Testing and Debugging}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 23131 \ensuremath{\cdot} Chapter 9\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Specify what a program promises, design tests that challenge that promise, and investigate failures with evidence. Exceptions make runtime errors explicit; assertions check internal assumptions.}
+
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Start from memory}
+
+\Needspace{10\baselineskip}
+Answer these before reading.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item How do testing and debugging differ?
+\item Why test boundary values?
+\item Does branch coverage prove correctness?
+\item What does int("cat") raise?
+\item Should assert validate user input?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\section{How to use this guide}
+
+\Needspace{13\baselineskip}
+For every test, write its input, expected result, and reason. Keep the smallest failing case when debugging.
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} §9.1–9.3; practice 1, 4, 7, 10, 13.
+\item \textbf{Day 1:} §9.4–9.5; practice 2, 5, 8, 11, 14.
+\item \textbf{Day 3:} §9.6–9.8; practice 3, 6, 9, 12, 15, 18.
+\item \textbf{About day 7:} Rebuild the derivations; solve 16–20.
+\item \textbf{About day 14:} Work both exam problems in about 20 minutes each.
+\item \textbf{Before the exam:} Tick only skills you can demonstrate without notes.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} reproduce the failure, observe values, test one hypothesis at a time.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{12\baselineskip}
+Specifications define expected behavior. Black-box tests choose representative inputs from the contract; glass-box tests inspect code paths. Debugging explains mismatches. Exceptions signal failures; assertions check internal invariants.
+
+\Needspace{6\baselineskip}
+\textbf{Specify}
+
+\Needspace{4\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Contract} \hfill{\small\color{FAUblue}§9.1}
+
+\Needspace{4\baselineskip}
+\texttt{input \ensuremath{\to} promised output}
+
+Rests on: assumptions and guarantees.
+\item \Needspace{4\baselineskip}
+\textbf{Partitions} \hfill{\small\color{FAUblue}§9.3}
+
+\Needspace{4\baselineskip}
+\texttt{classes + boundaries}
+
+Rests on: expected behavior.
+\end{itemize}
+
+\Needspace{6\baselineskip}
+\textbf{Inspect}
+
+\Needspace{4\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Paths} \hfill{\small\color{FAUblue}§9.4}
+
+\Needspace{4\baselineskip}
+\texttt{each decision outcome}
+
+Rests on: visible control flow.
+\item \Needspace{4\baselineskip}
+\textbf{Debug} \hfill{\small\color{FAUblue}§9.5}
+
+\Needspace{4\baselineskip}
+\texttt{observe \ensuremath{\to} hypothesize \ensuremath{\to} test}
+
+Rests on: repeatable evidence.
+\end{itemize}
+
+\Needspace{6\baselineskip}
+\textbf{Respond}
+
+\Needspace{4\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Exceptions} \hfill{\small\color{FAUblue}§9.6}
+
+\Needspace{4\baselineskip}
+\texttt{raise \ensuremath{\to} handler}
+
+Rests on: a deliberate recovery policy.
+\item \Needspace{4\baselineskip}
+\textbf{Assertions} \hfill{\small\color{FAUblue}§9.8}
+
+\Needspace{4\baselineskip}
+\texttt{assert condition}
+
+Rests on: an internal assumption.
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.1 Defensive programming}
+
+\Needspace{6\baselineskip}
+\begin{plainbox}\textbf{In plain words:} make assumptions visible and each program part small enough to test.\end{plainbox}
+
+\Needspace{10\baselineskip}
+A function contract states acceptable inputs and promised output. Modularity makes parts testable in isolation. Remove syntax and static errors first, then compare chosen input/output pairs with the specification.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} absolute value contract}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Assume x is an integer.
+\item Return x if x \ensuremath{\geq} 0 and \ensuremath{-}x otherwise.
+\item Expected cases: 4\ensuremath{\to}4, \ensuremath{-}4\ensuremath{\to}4, 0\ensuremath{\to}0.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} A function running once does not prove it meets its contract.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} Testing only x=4 misses a faulty zero boundary; add x=0.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does a contract state?
+\item Why modularize?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.1 Defensive programming” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.2 Test levels}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} test one unit, keep tests for old bugs, and check components together.\end{plainbox}
+
+\Needspace{5\baselineskip}
+\begin{itemize}
+\item \textbf{Unit:} one function.
+\item \textbf{Regression:} prevent a fixed bug from returning.
+\item \textbf{Integration:} check the combined program.
+\end{itemize}
+
+\Needspace{5\baselineskip}
+For each input, record an expected result before execution. Integration-only testing makes failures harder to localize.
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} A passing unit test does not prove the integrated report is correct.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} Two functions pass alone but use mismatched record shapes; integration exposes it.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does a regression test protect?
+\item What does integration testing check?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.2 Test levels” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{8\baselineskip}
+\section{9.3 Black-box testing}
+
+\Needspace{5\baselineskip}
+\begin{plainbox}\textbf{In plain words:} choose cases from the specification without looking at implementation.\end{plainbox}
+
+\Needspace{10\baselineskip}
+Partition inputs into natural classes and test boundaries: empty/singleton, small/large, and either side of a decision. A square-root function might promise x\ensuremath{\geq}0, ε\ensuremath{>}0 and x\ensuremath{-}ε\ensuremath{\leq}r²\ensuremath{\leq}x+ε.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} square-root cases}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item (0, 0.0001) checks zero.
+\item (25, 0.0001) checks a perfect square.
+\item (0.05, 0.0001) checks values below one.
+\item (2, 0.0001) checks an irrational root against tolerance.
+\item Very small and large values probe extremes.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} Many typical values can still miss a boundary.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} Testing \ensuremath{-}2 and 2 covers branches in the faulty abs example but misses \ensuremath{-}1.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Why test boundaries?
+\item Why can another person design tests?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.3 Black-box testing” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{9.4 Glass-box testing}
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} inspect decisions in code and exercise their outcomes.\end{plainbox}
+
+\begin{equationcard}{Coverage and correctness}
+\[ \begin{gathered} \texttt{executed paths \ensuremath{\neq} correct behavior} \end{gathered} \]
+{\small Pair path checks with boundary cases from the specification.}
+\end{equationcard}
+
+\Needspace{10\baselineskip}
+Path-complete testing attempts every path, but loops have many lengths and coverage does not prove correctness. For faulty code \texttt{if x \ensuremath{<} -1: return -x}, tests 2 and \ensuremath{-}2 cover both branches, yet \ensuremath{-}1 returns \ensuremath{-}1, contrary to the absolute-value contract.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} coverage blind spot}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item 2 takes the false branch and returns 2.
+\item \ensuremath{-}2 takes the true branch and returns 2.
+\item \ensuremath{-}1 takes the false branch and wrongly returns \ensuremath{-}1.
+\item The boundary test finds what branch coverage missed.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} Path coverage is evidence of execution, not proof of correctness.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} A branch test with \ensuremath{-}2 nearly checks abs, but \ensuremath{-}1 reveals the wrong condition.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.4}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does path-complete mean?
+\item What does coverage not guarantee?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.4 Glass-box testing” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.5 Debug systematically}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} find how the unexpected value arose; do not guess at a fix.\end{plainbox}
+
+\begin{equationcard}{Debugging loop}
+\[ \begin{gathered} \texttt{observe \ensuremath{\to} hypothesis \ensuremath{\to} repeatable test} \end{gathered} \]
+{\small Change one cause at a time.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+Observe evidence, form a hypothesis, and repeat a small experiment. Use a simple failing input. Print function entry, parameters and results. With bisection, inspect midway through a long calculation, then focus on the half containing the first divergence.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} find a wrong total}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Save the smallest failing input.
+\item Inspect an intermediate value halfway through.
+\item If wrong, inspect the earlier half; otherwise inspect the later half.
+\item Repeat to locate the first faulty operation.
+\item Change one thing and rerun this case and regression tests.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} Changing several lines before rerunning the case destroys useful evidence.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} A print at the final result shows failure but not where it began; inspect intermediate values.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.5}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Why ask how the result arose?
+\item What makes a debugging experiment useful?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.5 Debug systematically” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.6 Exceptions and handlers}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Python raises an exception when an operation cannot proceed.\end{plainbox}
+
+\begin{equationcard}{Handler match}
+\[ \begin{gathered} \texttt{raised type \ensuremath{\in} handled types} \end{gathered} \]
+{\small Otherwise the exception propagates.}
+\end{equationcard}
+
+\Needspace{8\baselineskip}
+\begin{itemize}
+\item \texttt{IndexError}: index outside a sequence.
+\item \texttt{NameError}: a name is not defined.
+\item \texttt{TypeError}: an operation received an inappropriate type.
+\item \texttt{ValueError}: a suitable type carries an invalid value.
+\item \texttt{AttributeError}: an attribute lookup failed.
+\end{itemize}
+
+\Needspace{9\baselineskip}
+A \texttt{try} body runs until an exception; a matching specific \texttt{except} handles it. Unmatched exceptions propagate.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} safe conversion}
+\texttt{try: int(text)} may raise \texttt{ValueError}; \texttt{except ValueError} can report a correction, and \texttt{else} runs only after success. Keep try narrow so unrelated errors remain visible.
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} A bare except can hide a TypeError while handling a conversion error.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Catching ValueError around the whole report almost works, but can mislabel a later ValueError; keep try narrow.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.6}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item How do TypeError and ValueError differ?
+\item Why avoid bare except?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.6 Exceptions and handlers” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.7 Raise or recover deliberately}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} catch an error only when there is a sensible next action.\end{plainbox}
+
+\begin{equationcard}{Error policy}
+\[ \begin{gathered} \texttt{recover only when the next action is defined} \end{gathered} \]
+{\small Otherwise raise or re-raise a descriptive exception.}
+\end{equationcard}
+
+\Needspace{12\baselineskip}
+Raise a descriptive exception if a function cannot meet its contract. Avoid magic error values that resemble valid results. A handler may notify, stop, apply a documented default, or re-raise. For empty grades, choose whether to reject or define a default average. Finally runs after success or failure, making it suitable for cleanup.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} empty grades}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item sum(grades)/len(grades) raises ZeroDivisionError for an empty list.
+\item One policy rejects the list; another defines an average of 0.0.
+\item Document the choice so callers do not treat a default as measured data.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{4\baselineskip}
+\begin{notebox}\textbf{Trap:} Returning a special number for failure can make it look like a valid result.\end{notebox}
+
+\Needspace{8\baselineskip}
+\begin{notebox}\textbf{Near miss:} Returning 0.0 for no grades is only valid if that policy is explicit.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.7}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When re-raise?
+\item What is finally for?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.7 Raise or recover deliberately” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.8 Assertions and invariants}
+
+\Needspace{7\baselineskip}
+\begin{plainbox}\textbf{In plain words:} assert says an internal condition should always hold here.\end{plainbox}
+
+\begin{equationcard}{Assertion}
+\[ \begin{gathered} \texttt{assert condition} \end{gathered} \]
+{\small Checks an internal assumption during development.}
+\end{equationcard}
+
+\Needspace{6\baselineskip}
+\texttt{assert len(grades) \ensuremath{>} 0} raises AssertionError when false in a normal run. Assertions can check invariants and expected internal results during development. They supplement testing.
+
+\Needspace{10\baselineskip}
+Python may omit assertions under optimization (\texttt{-O}). Do not use them for required behavior or user-input validation; validate external data explicitly.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} internal versus external}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Assert an internal count remains non-negative after an algorithm step.
+\item Explicitly reject invalid user input and display an error.
+\item The first checks a programmer assumption; the second is required behavior.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} An assertion is not a substitute for checking user data.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} assert age \ensuremath{>}= 18 looks like validation, but -O can remove it; use an explicit check.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §9.8}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What is an invariant?
+\item Why not assert external input?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.8 Assertions and invariants” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{4\baselineskip}
+\section{Decision map}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{Derive it cold}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Design square-root test partitions. \hfill{\small\color{FAUblue}§9.3}
+\item Trace the abs(-1) boundary defect. \hfill{\small\color{FAUblue}§9.4}
+\item Write a specific try/except/else. \hfill{\small\color{FAUblue}§9.6}
+\item Choose an empty-grade policy. \hfill{\small\color{FAUblue}§9.7}
+\item Separate an invariant assertion from input validation. \hfill{\small\color{FAUblue}§9.8}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Explain it}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Why write expected results before testing?
+\item Why retain a regression test after fixing a defect?
+\item Why doesn’t path coverage prove correctness?
+\item Why use a small failing input?
+\item Why keep try narrow?
+\item Why avoid magic error values?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{Mixed practice}
+
+\Needspace{6\baselineskip}
+20 problems. Try each before opening the matching worked answer.
+
+\begin{enumerate}
+\item State a contract for is\_bigger(x,y).
+\item Which test level checks one function?
+\item Name input classes for a first-item function on lists.
+\item For n\ensuremath{<}10, give boundary values on both sides.
+\item Why can branch coverage miss the abs(-1) defect?
+\item Describe bisection debugging.
+\item Why preserve the smallest failing input?
+\item What does int('3.5') raise?
+\item What does [1,2][4] raise?
+\item When raise instead of return -1?
+\item Why avoid a bare except?
+\item When does try/else execute else?
+\item What belongs in finally?
+\item What does a false assert do in a normal run?
+\item Why not assert an access rule?
+\item For eps\ensuremath{>}0, name an invalid boundary and a nearby valid value.
+\item Why retain a regression test?
+\item An empty grade list causes division by zero. Name a policy.
+\item Should abs test -1 if 2 and -2 already ran?
+\item What makes debugging systematic?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exam-style problems}
+
+Allow about 20 minutes for each problem.
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\subsection{Problem 1 \ensuremath{\cdot} Test a square-root function}
+
+\Needspace{10\baselineskip}
+Given x\ensuremath{\geq}0, eps\ensuremath{>}0, and the promise x\ensuremath{-}eps\ensuremath{\leq}r²\ensuremath{\leq}x+eps, design a test set, explain coverage limits, and describe debugging a failure.
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Partition the inputs.
+\item State a boundary and extreme-value check.
+\item Explain the path-coverage limitation.
+\item Describe a debugging strategy.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\subsection{Problem 2 \ensuremath{\cdot} Grade report and errors}
+
+\Needspace{10\baselineskip}
+A class report computes each student's average. Choose behavior for empty grade lists, describe tests, and separate exception handling from assertions.
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item State a policy for empty grades.
+\item Name unit and regression tests.
+\item Name an integration test.
+\item Explain which checks should be assertions.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{7\baselineskip}
+\begin{itemize}
+\item Slides 21–22 use bare except before recommending specific handlers. This guide uses the specific form to keep unrelated failures visible.
+\item Slide 33 shows assert as input validation. Python may remove assert with \texttt{-O}; explicitly validate user input.
+\item Slide 24 lists silent failure but warns against it; an unexplained default can hide an error.
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\section{Self-check}
+
+\begin{enumerate}
+\item $\mdlgwhtsquare$\  I state assumptions and promises (1, 2).
+\item $\mdlgwhtsquare$\  I distinguish unit, regression and integration (2, 18).
+\item $\mdlgwhtsquare$\  I choose input classes and boundaries (3, 4, 16).
+\item $\mdlgwhtsquare$\  I explain coverage limits (5, 19).
+\item $\mdlgwhtsquare$\  I debug with repeatable evidence (6, 7, 20).
+\item $\mdlgwhtsquare$\  I identify exception types (8, 9).
+\item $\mdlgwhtsquare$\  I use specific handlers, else and finally (10, 11, 12).
+\item $\mdlgwhtsquare$\  I choose an error policy (17).
+\item $\mdlgwhtsquare$\  I separate assertions from validation (13, 14).
+\item $\mdlgwhtsquare$\  I distinguish exceptions from assertions (10, 14, 15).
+\item $\mdlgwhtsquare$\  I derive the five cold problems.
+\item $\mdlgwhtsquare$\  I solve both exam problems.
+\end{enumerate}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Testing compares actual behavior with a specification; debugging investigates a mismatch’s cause. \hfill{\small\color{FAUblue}§9.1}
+\item Boundaries expose off-by-one and special-size errors. \hfill{\small\color{FAUblue}§9.3}
+\item No; a path may run but compute the wrong result. \hfill{\small\color{FAUblue}§9.4}
+\item ValueError: the type is suitable but the value is not an integer literal. \hfill{\small\color{FAUblue}§9.6}
+\item No. Assertions may be removed under optimization. \hfill{\small\color{FAUblue}§9.8}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.1 Defensive programming}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Input assumptions and the promised result. \hfill{\small\color{FAUblue}§9.1}
+\item To test and debug pieces independently. \hfill{\small\color{FAUblue}§9.1}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.2 Test levels}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item A previously fixed defect. \hfill{\small\color{FAUblue}§9.2}
+\item Whether components work together. \hfill{\small\color{FAUblue}§9.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.3 Black-box testing}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Boundary defects can be missed by ordinary examples. \hfill{\small\color{FAUblue}§9.3}
+\item They can follow the specification without implementer bias. \hfill{\small\color{FAUblue}§9.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.4 Glass-box testing}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Every potential path was tested at least once. \hfill{\small\color{FAUblue}§9.4}
+\item That every boundary or specification case is correct. \hfill{\small\color{FAUblue}§9.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.5 Debug systematically}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item It focuses on the sequence of events and values. \hfill{\small\color{FAUblue}§9.5}
+\item It is small, repeatable, and tests one hypothesis. \hfill{\small\color{FAUblue}§9.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.6 Exceptions and handlers}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Wrong operand type versus invalid value. \hfill{\small\color{FAUblue}§9.6}
+\item It can hide unrelated programming errors. \hfill{\small\color{FAUblue}§9.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.7 Raise or recover deliberately}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When the function cannot safely recover. \hfill{\small\color{FAUblue}§9.7}
+\item Cleanup regardless of success or failure. \hfill{\small\color{FAUblue}§9.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.8 Assertions and invariants}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item A condition expected to remain true. \hfill{\small\color{FAUblue}§9.8}
+\item Optimization can remove assertions. \hfill{\small\color{FAUblue}§9.8}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Keeps expectation separate from observed behavior. \hfill{\small\color{FAUblue}§9.2}
+\item Prevents a fixed defect returning. \hfill{\small\color{FAUblue}§9.2}
+\item Coverage measures execution, not correctness. \hfill{\small\color{FAUblue}§9.4}
+\item Removes irrelevant behavior. \hfill{\small\color{FAUblue}§9.5}
+\item Prevents swallowing unrelated errors. \hfill{\small\color{FAUblue}§9.6}
+\item A caller may confuse one with a valid result. \hfill{\small\color{FAUblue}§9.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item Assume integer inputs. Return True exactly when x\ensuremath{>}y; otherwise return False. \hfill{\small\color{FAUblue}§9.1}
+\item Unit testing checks an isolated function or component. \hfill{\small\color{FAUblue}§9.2}
+\item Test a singleton, a longer list, and the empty list if its behavior is specified. \hfill{\small\color{FAUblue}§9.3}
+\item Use 9 and 10; they lie immediately on opposite sides of the decision. \hfill{\small\color{FAUblue}§9.3}
+\item The tests may take both branches at other values while missing the incorrect boundary. \hfill{\small\color{FAUblue}§9.4}
+\item Inspect a midpoint, then focus on the half where the first value diverges. \hfill{\small\color{FAUblue}§9.5}
+\item It makes the defect reproducible and removes unrelated behavior. \hfill{\small\color{FAUblue}§9.5}
+\item ValueError: the text is not an integer literal. \hfill{\small\color{FAUblue}§9.6}
+\item IndexError: index 4 is outside the list. \hfill{\small\color{FAUblue}§9.6}
+\item When no valid result can be produced or -1 may be mistaken for a valid result. \hfill{\small\color{FAUblue}§9.7}
+\item It can hide unrelated errors; catch the expected exception specifically. \hfill{\small\color{FAUblue}§9.6}
+\item Only when the try body completes without raising an exception. \hfill{\small\color{FAUblue}§9.7}
+\item Cleanup that must run whether the operation succeeds or fails. \hfill{\small\color{FAUblue}§9.7}
+\item It raises AssertionError. \hfill{\small\color{FAUblue}§9.8}
+\item Python can omit assertions under optimization, so required checks must be explicit. \hfill{\small\color{FAUblue}§9.8}
+\item eps=0 is excluded; a small positive epsilon is valid. \hfill{\small\color{FAUblue}§9.3}
+\item It catches the fixed defect if a later change reintroduces it. \hfill{\small\color{FAUblue}§9.2}
+\item Reject with ValueError, or document an intentional default such as 0.0. \hfill{\small\color{FAUblue}§9.7}
+\item Yes. -1 is the boundary that exposes the faulty condition. \hfill{\small\color{FAUblue}§9.4}
+\item Use evidence, form one hypothesis, and repeat a controlled test. \hfill{\small\color{FAUblue}§9.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Test zero, perfect squares, sub-unit values, irrational roots, and very small and large values. \hfill{\small\color{FAUblue}§9.3}
+\item Check zero and extremes; evaluate the promised inequality instead of requiring one exact approximation. \hfill{\small\color{FAUblue}§9.3}
+\item Exercise branches and loop exits, but keep boundary tests because execution coverage does not prove correctness. \hfill{\small\color{FAUblue}§9.4}
+\item Keep the failing input and bisect intermediate values to find the first divergence. \hfill{\small\color{FAUblue}§9.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Choose and document rejection or a defined default. \hfill{\small\color{FAUblue}§9.7}
+\item Test ordinary and empty inputs; preserve the divide-by-zero case as a regression test. \hfill{\small\color{FAUblue}§9.2, §9.7}
+\item Test a full class report with ordinary and empty records. \hfill{\small\color{FAUblue}§9.2}
+\item Validate outside input explicitly; use assertions for internal invariants. \hfill{\small\color{FAUblue}§9.8}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Based on the supplied “09\_testing\_debugging.pdf”, rewritten in my own words. See the Python exception tutorial and assert reference. Not an official FAU publication. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}

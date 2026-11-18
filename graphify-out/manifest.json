@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795039626.139697,
-    "seen": 1795040020.890711,
-    "ast_hash": "98fc1f6b0bb8d799ebf98cebae24cf26",
+    "mtime": 1795042682.6358721,
+    "seen": 1795042751.6721249,
+    "ast_hash": "de0c3f7037292b5261e12078768c2680",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795040615.2986484,
-    "seen": 1795040818.875869,
-    "ast_hash": "624f0fc4b5abacce55a870eea0b7b950",
+    "mtime": 1795042468.8527246,
+    "seen": 1795042751.672075,
+    "ast_hash": "3a97af6a2bd2c4368349421bcac2e1d4",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795040993.223795,
-    "seen": 1795041533.209931,
+    "mtime": 1795041560.9850194,
+    "seen": 1795042751.671995,
     "ast_hash": "828c2f802a4d096443f20c2002006fb6",
     "semantic_hash": ""
   },
@@ -933,6 +933,24 @@
     "mtime": 1795041384.310863,
     "seen": 1795041533.210036,
     "ast_hash": "1e4562e0b2d62a03e076697cdf20ff66",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch9-lab.js": {
+    "mtime": 1795042428.474143,
+    "seen": 1795042751.672014,
+    "ast_hash": "fdef8550ef294b7a3470288c2b3c9a53",
+    "semantic_hash": ""
+  },
+  "apdr/ch9-testing-debugging-lab.html": {
+    "mtime": 1795042682.635434,
+    "seen": 1795042751.672095,
+    "ast_hash": "5e47ff058f0f536b86d50159ee852165",
+    "semantic_hash": ""
+  },
+  "apdr/ch9-testing-debugging.html": {
+    "mtime": 1795042682.6350753,
+    "seen": 1795042751.672096,
+    "ast_hash": "dcb676e7927aa7b52fc2d971eb4042f5",
     "semantic_hash": ""
   }
 }
