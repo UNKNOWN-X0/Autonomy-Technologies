@@ -720,18 +720,21 @@ Given \texttt{words = ['oak', 'elm', 'oak', 'ash', 'elm', 'oak', 'ash']} and thr
 \end{keepsection}
 
 \begin{keepsection}
-\Needspace{21\baselineskip}
+\Needspace{30\baselineskip}
 \section{Slips in the notes}
 
-\Needspace{18\baselineskip}
+\Needspace{27\baselineskip}
 These corrections preserve the lecture’s intended lesson while making the examples accurate for Python 3. Each is checked against the slide text and current language behavior.
 
-\Needspace{15\baselineskip}
+\Needspace{24\baselineskip}
 \begin{itemize}
+\item \textbf{Slide 13, induction step.} The first instruction in the induction-step bullets says to assume the statement for \texttt{n+1}, but the next bullet correctly says to use the assumption for \texttt{n}. The hypothesis must be for \texttt{n}, which is then used to prove \texttt{n+1}. \hfill{\small\color{FAUblue}§8.3}
+\item \textbf{Slide 19, Fibonacci docstring.} The closing quotes in the displayed function are malformed, so the code does not parse as written. The guide uses a valid function definition. \hfill{\small\color{FAUblue}§8.4}
+\item \textbf{Slide 32, dictionary views.} The examples show \texttt{keys()} and \texttt{values()} as lists. In Python 3 they return dynamic view objects, not lists; convert a view with \texttt{list(...)} when a list is needed. \hfill{\small\color{FAUblue}§8.6}
 \item \textbf{Slide 34, dictionary order.} The slide says there is “no order to keys or values.” Python 3.7 and later guarantee insertion order for dictionaries. The lesson here is key-based lookup, not sorting; the guide states the modern rule explicitly. \hfill{\small\color{FAUblue}§8.6}
 \item \textbf{Slide 34, keys.} It says “immutable type” and lists floats and tuples. The exact requirement is hashability: a tuple is valid only if all its elements are hashable, while custom immutable objects may be hashable or not. \hfill{\small\color{FAUblue}§8.6}
 \item \textbf{Slides 16–19 and 40–42, Fibonacci indexing.} The rabbit table and slide 19 use \texttt{fib(0)=fib(1)=1}, while slides 40 and 42 use \texttt{fib(1)=1}, \texttt{fib(2)=2}. These are the same sequence with indices shifted by one. This guide follows the rabbit table’s 0-based convention. \hfill{\small\color{FAUblue}§8.4}
-\item \textbf{Slide 43, call counts.} The exact stated recursive-call totals depend on counting conventions. The guide preserves them as lecture-reported figures and focuses on the reliable comparison: naive recursion repeats subproblems; memoization avoids recalculating them. \hfill{\small\color{FAUblue}§8.4}
+\item \textbf{Slide 43, call counts.} The slide’s \texttt{fib(34)} totals use the later one-based indexing. With the guide’s 0-based indexing, the totals for the same argument differ; the reliable comparison is that naive recursion repeats subproblems while memoization reuses them. \hfill{\small\color{FAUblue}§8.4}
 \end{itemize}
 \end{keepsection}
 

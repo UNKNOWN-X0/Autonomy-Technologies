@@ -27,3 +27,17 @@ test("frequency counts preserve ties and threshold groups", () => {
   assert.deepEqual(C.wordsOften(counts, 2), { groups: [{ words: ["oak"], count: 3 }, { words: ["elm", "ash"], count: 2 }], remaining: {} });
   assert.deepEqual(counts, { oak: 3, elm: 2, ash: 2 }); // caller's dictionary is not mutated
 });
+
+test("nested-list flattening returns depth-first values and records calls", () => {
+  const trace = C.flattenTrace([1, [2, [3]], 4]);
+  assert.deepEqual(trace.values, [1, 2, 3, 4]);
+  assert.deepEqual(trace.rows, [
+    "Call flatten([1,[2,[3]],4])", "Keep 1", "Call flatten([2,[3]])", "Keep 2",
+    "Call flatten([3])", "Keep 3", "Return [3]", "Return [2,3]", "Keep 4", "Return [1,2,3,4]",
+  ]);
+  assert.deepEqual(C.flattenTrace([]).values, []);
+  assert.throws(() => C.flattenTrace([1, [2, "three"]]), /whole numbers/);
+  let tooDeep = 1;
+  for (let i = 0; i < 10; i++) tooDeep = [tooDeep];
+  assert.throws(() => C.flattenTrace(tooDeep), /8 levels/);
+});

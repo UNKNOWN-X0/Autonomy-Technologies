@@ -34,11 +34,13 @@ function labPages() {
   );
 }
 
-function defsOf(page) {
+function defsOf(page, random = Math.random) {
   const html = fs.readFileSync(path.join(ROOT, page), "utf8");
   const scripts = [...html.matchAll(/<script src="\.\.\/(js\/[^"]+)"/g)].map((m) => m[1]).filter((s) => s !== "js/lab.js" && s !== "js/tooltip.js");
   const defs = [];
-  const ctx = context({ Lab: { experiment: (d) => (defs.push(d), {}), tween: () => Promise.resolve(), reduce: true } });
+  const math = Object.create(Math);
+  math.random = random;
+  const ctx = context({ Math: math, Lab: { experiment: (d) => (defs.push(d), {}), tween: () => Promise.resolve(), reduce: true } });
   for (const s of scripts) vm.runInContext(fs.readFileSync(path.join(ROOT, s), "utf8"), ctx);
   return defs;
 }
@@ -86,4 +88,12 @@ test("APDR 3 practice answers are computed correctly", () => {
     const [p, q] = [...c.prompt.matchAll(/([01]{4})/g)].map((m) => parseInt(m[1], 2)).map((u) => (u >= 8 ? u - 16 : u));
     assert.strictEqual(c.answer, p + q < -8 || p + q > 7 ? "yes" : "no", c.prompt);
   }
+});
+
+test("APDR 8 generated dictionary assignment asks for the stored value", () => {
+  const d = defsOf("apdr/ch8-recursion-dictionaries-lab.html", () => 0.5).find((x) => x.id === "dictionary");
+  const c = d.generate();
+  assert.match(c.prompt, /After d\['Katy'\] = 'A', what value is stored under that key\?/);
+  assert.strictEqual(c.answer, "A");
+  assert.strictEqual(c.options.filter((o) => o[0] === "A").length, 1);
 });

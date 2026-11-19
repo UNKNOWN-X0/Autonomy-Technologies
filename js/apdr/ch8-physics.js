@@ -56,6 +56,30 @@
     return { groups: groups, remaining: remaining };
   }
 
-  root.APDR8 = { traceMultiply: traceMultiply, fibonacci: fibonacci, naiveCalls: naiveCalls, memoCalls: memoCalls, normalize: normalize, palindromeTrace: palindromeTrace, frequencies: frequencies, mostCommon: mostCommon, wordsOften: wordsOften };
+  function flattenTrace(list) {
+    if (!Array.isArray(list)) throw new TypeError("input must be a nested list");
+    var rows = [], items = 0;
+    function visit(xs, depth) {
+      if (depth > 8) throw new RangeError("nesting must be at most 8 levels");
+      items += xs.length;
+      if (items > 24) throw new RangeError("use at most 24 list items");
+      rows.push("Call flatten(" + JSON.stringify(xs) + ")");
+      var result = [];
+      xs.forEach(function (item) {
+        if (Array.isArray(item)) result.push.apply(result, visit(item, depth + 1));
+        else {
+          if (!Number.isSafeInteger(item) || item < 0 || item > 99) throw new TypeError("items must be whole numbers from 0 to 99");
+          rows.push("Keep " + item);
+          result.push(item);
+        }
+      });
+      rows.push("Return " + JSON.stringify(result));
+      return result;
+    }
+    var values = visit(list, 0);
+    return { rows: rows, values: values };
+  }
+
+  root.APDR8 = { traceMultiply: traceMultiply, fibonacci: fibonacci, naiveCalls: naiveCalls, memoCalls: memoCalls, normalize: normalize, palindromeTrace: palindromeTrace, frequencies: frequencies, mostCommon: mostCommon, wordsOften: wordsOften, flattenTrace: flattenTrace };
   if (typeof module !== "undefined" && module.exports) module.exports = root.APDR8;
 })(typeof globalThis !== "undefined" ? globalThis : this);

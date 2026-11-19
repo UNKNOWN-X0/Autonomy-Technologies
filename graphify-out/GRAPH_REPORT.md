@@ -4,12 +4,12 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 1530 nodes · 3015 edges · 82 communities (66 shown, 16 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 343 edges (avg confidence: 0.85)
+- 1537 nodes · 3023 edges · 79 communities (69 shown, 10 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 344 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5a503489`
+- Built from commit: `5eaa52a1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,10 +57,10 @@
 - Study guide rules
 - EEI 2 lab: currents and resistance
 - APDR 5 formulas
-- Graph orb generator
+- Guide-to-LaTeX formula rendering
 - Product truth
 - APDR 2 lab: NAND gate models
-- Guide PDF content and diagrams
+- Guide diagram rendering
 - Page check script
 - Home page orb
 - Tooling rules
@@ -68,10 +68,10 @@
 - EEI 2 formulas
 - MEI 4 formulas: complex arithmetic
 - Recently added notice
-- Reusable physics-test helpers
+- Node.js test helpers
 - Appendix rules
 - EEI 3 lab: DC network experiments
-- MEI Chapter 4 physics tests
+- Physics test suites
 - Tooling: guide checker
 - APDR 7 physics: a small Python interpreter
 - EEI 3 physics: DC network formulas
@@ -81,19 +81,16 @@
 - Generated lab challenge tests
 - HTML parse tree for PDF conversion
 - Lab challenge tests
-- EEI 1 formula tests
+- LaTeX HTML conversion tree
 - APDR Chapter 9 lab
 - GitHub Actions checks
 - APDR Chapter 8 lab
 - Saved progress and review schedule
 - APDR Chapter 8 recursion and dictionaries
-- EEI 2 formula tests
-- APDR 7 formula tests
+- Coordinate diagram geometry
 - APDR 11 inheritance lab
 - APDR Chapter 10 lab
-- APDR 6 formula tests
 - Fact-check log
-- Study-progress persistence tests
 
 ## God Nodes (most connected - your core abstractions)
 1. `fieldPlayground()` - 30 edges
@@ -122,7 +119,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (82 total, 16 thin omitted)
+## Communities (79 total, 10 thin omitted)
 
 ### Community 0 - "EEI 1 lab: fields and capacitors"
 Cohesion: 0.05
@@ -221,8 +218,8 @@ Cohesion: 0.26
 Nodes (10): columnSubtract(), convert(), decodeInteger(), decodeTwos(), negatePattern(), parseBase(), parseBits(), toBase() (+2 more)
 
 ### Community 28 - "Graph description and orb tools"
-Cohesion: 0.31
-Nodes (8): comment_above(), describe(), file_phrase(), find_parents(), from_name(), main(), patch_html(), words()
+Cohesion: 0.20
+Nodes (10): comment_above(), describe(), file_phrase(), find_parents(), from_name(), main(), patch_html(), words() (+2 more)
 
 ### Community 29 - "MEI 2 lab: real numbers"
 Cohesion: 0.16
@@ -272,6 +269,10 @@ Nodes (11): Acceptance, Content rules, Decisions, Files, Labs, Page structure, P
 Cohesion: 0.18
 Nodes (18): angle(), challenge(), draw(), marker(), text(), fmt(), getControls(), mount() (+10 more)
 
+### Community 43 - "Guide-to-LaTeX formula rendering"
+Cohesion: 0.16
+Nodes (10): amap_data(), amap_label(), amap_tikz(), big_op(), grow_delims(), math(), math_text(), math_wrap() (+2 more)
+
 ### Community 45 - "Product truth"
 Cohesion: 0.20
 Nodes (10): Accessibility & Inclusion, Brand Commitments, Capabilities and Constraints, Evidence on Hand, Operating Context, Platform, Product, Product Principles (+2 more)
@@ -280,9 +281,9 @@ Nodes (10): Accessibility & Inclusion, Brand Commitments, Capabilities and Const
 Cohesion: 0.36
 Nodes (4): nand(), nandAnd(), nandCircuit(), nandOr()
 
-### Community 47 - "Guide PDF content and diagrams"
-Cohesion: 0.06
-Nodes (38): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs, amap_data() (+30 more)
+### Community 47 - "Guide diagram rendering"
+Cohesion: 0.14
+Nodes (17): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs, arrow_t() (+9 more)
 
 ### Community 48 - "Page check script"
 Cohesion: 0.48
@@ -312,9 +313,9 @@ Nodes (11): add(), arg(), conj(), div(), exp(), fromPolar(), log(), mul() (+3 mo
 Cohesion: 0.38
 Nodes (9): age(), read(), remember(), seen(), show(), dismiss(), esc(), start() (+1 more)
 
-### Community 55 - "Reusable physics-test helpers"
-Cohesion: 0.19
-Nodes (4): row(), rows(), assert, test
+### Community 55 - "Node.js test helpers"
+Cohesion: 0.08
+Nodes (11): row(), rows(), assert, test, assert, test, assert, test (+3 more)
 
 ### Community 56 - "Appendix rules"
 Cohesion: 0.50
@@ -324,9 +325,9 @@ Nodes (4): Acceptance, Appendix standard, Exam sheets, Page
 Cohesion: 0.17
 Nodes (32): arrow(), dot(), drawDivider(), drawKirchhoff(), drawPower(), drawSource(), drawSuper(), flow() (+24 more)
 
-### Community 58 - "MEI Chapter 4 physics tests"
-Cohesion: 0.25
-Nodes (5): assert, fs, path, test, vm
+### Community 58 - "Physics test suites"
+Cohesion: 0.15
+Nodes (7): definitions(), fake(), assert, fs, path, test, vm
 
 ### Community 59 - "Tooling: guide checker"
 Cohesion: 0.14
@@ -353,12 +354,16 @@ Cohesion: 0.18
 Nodes (28): applyOps(), arrow(), clip(), colours(), draw(), field(), fitSize(), fmtList() (+20 more)
 
 ### Community 65 - "Generated lab challenge tests"
-Cohesion: 0.38
-Nodes (5): context(), defsOf(), fake(), labs, ROOT
+Cohesion: 0.20
+Nodes (10): assert, context(), defsOf(), fake(), fs, labs, path, ROOT (+2 more)
 
 ### Community 67 - "Lab challenge tests"
 Cohesion: 0.21
 Nodes (10): assert, context(), fake(), fs, loadExperiments(), path, ROOT, runEngine() (+2 more)
+
+### Community 68 - "LaTeX HTML conversion tree"
+Cohesion: 0.22
+Nodes (6): Conv, est(), find(), inline(), main(), tex_text()
 
 ### Community 69 - "APDR Chapter 9 lab"
 Cohesion: 0.67
@@ -377,8 +382,12 @@ Cohesion: 0.26
 Nodes (8): exportData(), importData(), logDay(), read(), review(), stamp(), utcDay(), write()
 
 ### Community 74 - "APDR Chapter 8 recursion and dictionaries"
-Cohesion: 0.24
-Nodes (5): mostCommon(), naiveCalls(), normalize(), palindromeTrace(), wordsOften()
+Cohesion: 0.20
+Nodes (7): flattenTrace(), visit(), mostCommon(), naiveCalls(), normalize(), palindromeTrace(), wordsOften()
+
+### Community 75 - "Coordinate diagram geometry"
+Cohesion: 0.32
+Nodes (5): coord_pieces(), axis(), fit(), tip_label(), vec()
 
 ### Community 77 - "APDR 11 inheritance lab"
 Cohesion: 0.67
@@ -390,8 +399,8 @@ Nodes (3): mount(), challenge(), paint()
 
 ## Knowledge Gaps
 - **11 isolated node(s):** `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow`, `Jekyll site CI`, `LaTeX, Pandoc, and KaTeX publishing pipeline` (+6 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 455 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 460 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Work-memory lessons
 
@@ -402,7 +411,7 @@ Nodes (3): mount(), challenge(), paint()
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.152) - this node is a cross-community bridge._
+  _High betweenness centrality (0.143) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

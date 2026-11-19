@@ -211,6 +211,11 @@
     aspect-ratio: auto;
   }
 }
+@container (max-width: 639px) {
+  body[data-key="apdr1-ch8"] .experiment:is([data-experiment="palindrome"], [data-experiment="nested"]) .bench > .stage {
+    aspect-ratio: 1 / 1;
+  }
+}
 
 .stage {
   position: relative;

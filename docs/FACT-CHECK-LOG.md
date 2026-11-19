@@ -47,6 +47,10 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch12a-boolean-algebra.html | 5a852c79bbab | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
 | js/apdr/ch12-lab.js | ea2623f1040f | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
 | apdr/ch12a-boolean-algebra-lab.html | 745f928d5340 | 2026-11-18 | Pass; OBDD sizes, Post-class counts and K-map covers recomputed |
+| apdr/ch8-recursion-dictionaries.html | c0f3a3c2c72a | 2026-11-19 | Pass; source and answers checked against all 46 slides; documented corrections for slides 13, 19, 32, 34 and 40–43 |
+| js/apdr/ch8-physics.js | 7fc5afd9cd54 | 2026-11-19 | Pass; multiplication, Fibonacci, palindrome, frequency and nested-list models checked |
+| js/apdr/ch8-lab.js | 68d72ac235bf | 2026-11-19 | Pass; fixed and generated challenge answers, explanations and input limits checked |
+| apdr/ch8-recursion-dictionaries-lab.html | b37c20dd43d3 | 2026-11-19 | Pass; six experiment links, script wiring, hub counts and rendered layout checked |
 | eei/ch1-electrostatic-fields.html | 7970d8196aef | 2026-11-18 | Pass; all 38 practice and both exam answers recomputed; fixed: uniqueness theorem was called the reason field lines cannot cross (the reason is that E has one direction at each point) |
 | js/eei/ch1-lab.js | fa04095b9acb | 2026-11-18 | Pass, no errors found |
 | eei/ch1-electrostatic-fields-lab.html | c5f857947918 | 2026-11-18 | Pass, no errors found |

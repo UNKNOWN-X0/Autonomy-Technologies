@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795045388.3485117,
-    "seen": 1795045464.223969,
-    "ast_hash": "5bded310e4ec1181d3dd0f3c741a81ce",
+    "mtime": 1795046391.3478665,
+    "seen": 1795047472.348908,
+    "ast_hash": "174c2ac5ec6dbc669c332217aeadf2fa",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795045209.243396,
-    "seen": 1795045464.223916,
-    "ast_hash": "d549d72f96de3ce090a47bafdbf91421",
+    "mtime": 1795046969.346128,
+    "seen": 1795047472.3488529,
+    "ast_hash": "6bd02526820178c57125631f6f1756cb",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "tests/lab-generators.test.js": {
-    "mtime": 1793829217.0661952,
-    "seen": 1793829779.600775,
-    "ast_hash": "c09fd94f781c14a4063a7021026a9777",
+    "mtime": 1795047085.8423064,
+    "seen": 1795047472.34883,
+    "ast_hash": "cfe752c38fcdfb2e612dcf762d26e740",
     "semantic_hash": ""
   },
   "tools/graph-describe.py": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795044572.9313402,
-    "seen": 1795045464.223833,
-    "ast_hash": "18c17e3861290f08a2433683c1d71fd4",
+    "mtime": 1795045549.3088913,
+    "seen": 1795047472.348768,
+    "ast_hash": "406d639e27e5577e59e6a9b547be16e7",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795045098.5250108,
-    "seen": 1795045464.223829,
-    "ast_hash": "0c9220762a69851b6733363725f8c29b",
+    "mtime": 1795045872.2292309,
+    "seen": 1795047472.348764,
+    "ast_hash": "d0c4d407af667f847ce229779014aefa",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -888,15 +888,15 @@
     "semantic_hash": ""
   },
   "js/apdr/ch8-lab.js": {
-    "mtime": 1795040116.2027483,
-    "seen": 1795040818.874846,
-    "ast_hash": "c313a098b5a708870ecaafcb61c9c76e",
+    "mtime": 1795047100.2938023,
+    "seen": 1795047472.3487911,
+    "ast_hash": "34cf0daf646bc21e72d2eeec5732a91a",
     "semantic_hash": ""
   },
   "js/apdr/ch8-physics.js": {
-    "mtime": 1795040081.9512427,
-    "seen": 1795040818.874848,
-    "ast_hash": "b85388d4e7b6b9485db136401424bbca",
+    "mtime": 1795046227.3225212,
+    "seen": 1795047472.3487911,
+    "ast_hash": "ccc4453a8e077105bc81ac14293162ce",
     "semantic_hash": ""
   },
   "js/progress.js": {
@@ -906,9 +906,9 @@
     "semantic_hash": ""
   },
   "tests/apdr-ch8-physics.test.js": {
-    "mtime": 1795039970.8005958,
-    "seen": 1795040020.89063,
-    "ast_hash": "0ed13604d28fb8532d75fdd35c7114ad",
+    "mtime": 1795046325.5384858,
+    "seen": 1795047472.3488262,
+    "ast_hash": "00f8af5381ec16a5ed41a5776b14398e",
     "semantic_hash": ""
   },
   "tests/progress.test.js": {
@@ -918,21 +918,21 @@
     "semantic_hash": ""
   },
   "apdr/ch8-recursion-dictionaries-lab.html": {
-    "mtime": 1795039625.0878782,
-    "seen": 1795040020.89068,
-    "ast_hash": "8cb8b48167c5faaef95f7709fa82058f",
+    "mtime": 1795046273.5644555,
+    "seen": 1795047472.348875,
+    "ast_hash": "a346e143121dbbafc1a83a679d7887ca",
     "semantic_hash": ""
   },
   "apdr/ch8-recursion-dictionaries.html": {
-    "mtime": 1795040141.9790494,
-    "seen": 1795040818.8758998,
-    "ast_hash": "a82d86c1e73600ec89b85bdef75e3d46",
+    "mtime": 1795047142.3794334,
+    "seen": 1795047472.348876,
+    "ast_hash": "3d8a6ef5305810f2519b5ccaf2bf4151",
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795041384.310863,
-    "seen": 1795041533.210036,
-    "ast_hash": "1e4562e0b2d62a03e076697cdf20ff66",
+    "mtime": 1795047461.4821427,
+    "seen": 1795047472.3488839,
+    "ast_hash": "20ff5eff2c2805b1c309dabc99a0c03d",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
