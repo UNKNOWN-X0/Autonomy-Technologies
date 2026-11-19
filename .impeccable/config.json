@@ -231,6 +231,15 @@
         ],
         "createdAt": "2026-11-19T01:26:53.565Z",
         "reason": "user confirmed 2026-11-19; DESIGN.md owner decision 2026-11-04 allows the one shared soft --glow (0 0 6px rgb(128 236 241 / 0.55)) on signal lines and marks"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch9-testing-debugging-lab.html"
+        ],
+        "createdAt": "2026-11-19T01:27:40.534Z",
+        "reason": "Agent: same as the Chapter 8 lab exception: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has its inset in css/lab.css"
       }
     ]
   }
