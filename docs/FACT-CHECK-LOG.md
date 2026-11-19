@@ -101,3 +101,5 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | mei/exercise-3-worked-solutions.html | a141e91fd634 | 2026-11-19 | Pass; numeric answers and code recomputed |
 | mei/exercise-4-worked-solutions.html | 0220b7d0a87f | 2026-11-19 | Pass after fix: 4b(i) said 4 − (t − 3)² falls without bound as t → 0⁺; it tends to −5 there (range unchanged) |
 | mei/exercise-5-worked-solutions.html | 75efbc270eae | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/appendix-a-coordinate-systems.html | 9861f4c00c16 | 2026-11-19 | Pass; every example recomputed |
+| eei/appendix-b-mathematical-tools.html | af2dd40cf06a | 2026-11-19 | Pass; every example recomputed |
