@@ -1,22 +1,22 @@
-# Graph Report - Autonomy-Technologies  (2026-11-19)
+# Graph Report - autonomy-apdr-56a  (2026-11-19)
 
 ## Corpus Check
-- 97 files · ~440,543 words
+- 103 files · ~470,555 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 9 file(s) not represented in the graph (top: .css 5, (none) 3, .ico 1)
+- Unclassified: 10 file(s) not represented in the graph (top: .css 5, (none) 4, .ico 1)
 
 ## Summary
-- 1544 nodes · 3029 edges · 80 communities (67 shown, 13 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 344 edges (avg confidence: 0.85)
+- 1595 nodes · 3098 edges · 91 communities (74 shown, 17 thin omitted)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 359 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a27ffaa2`
+- Built from commit: `a94c7c04`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- EEI 1 lab: fields and capacitors
+- EEI Chapter 1 lab drawing helpers
 - Site look: design rules
 - Tooling: stacked fractions
 - APDR 3 lab: number formats
@@ -47,7 +47,7 @@
 - Graph description and orb tools
 - MEI 2 lab: real numbers
 - Agent instructions
-- mei-ch4-physics.test.js
+- MEI Chapter 4 physics tests
 - APDR 5 lab: memory
 - MEI 4 lab: complex numbers
 - MEI 1 formulas
@@ -59,10 +59,10 @@
 - Study guide rules
 - EEI 2 lab: currents and resistance
 - APDR 5 formulas
-- Roadmap
+- Project roadmap
 - Product truth
 - APDR 2 lab: NAND gate models
-- guide-to-tex.py
+- Guide to LaTeX and PDF converter
 - Page check script
 - Home page orb
 - Tooling rules
@@ -70,10 +70,10 @@
 - EEI 2 formulas
 - MEI 4 formulas: complex arithmetic
 - Recently added notice
-- Node.js test helpers
+- Physics and formula test cases
 - Appendix rules
 - EEI 3 lab: DC network experiments
-- Physics test suites
+- EEI Chapter 3 physics tests
 - Tooling: guide checker
 - APDR 7 physics: a small Python interpreter
 - EEI 3 physics: DC network formulas
@@ -83,21 +83,32 @@
 - Generated lab challenge tests
 - HTML parse tree for PDF conversion
 - Lab challenge tests
-- graph-orb.py
+- Graph orb layout tool
 - APDR Chapter 9 lab
 - GitHub Actions checks
 - APDR Chapter 8 lab
 - Saved progress and review schedule
 - APDR Chapter 8 recursion and dictionaries
-- eei-ch1-physics.test.js
-- apdr-ch7-physics.test.js
+- EEI Chapter 1 physics tests
+- APDR Chapter 7 physics tests
 - APDR 11 inheritance lab
 - APDR Chapter 10 lab
+- APDR Chapter 56 lab implementation
 - Fact-check log
+- EEI Chapter 1 field playground
+- EEI Chapter 1 capacitor bench
+- Guide and field diagram rendering helpers
+- APDR Chapter 7a runtime concept models and tests
+- EEI Chapter 1 lab drawing routines
+- EEI Chapter 1 visual rendering rules
+- APDR Chapter 56 physics models and tests
+- APDR Chapter 7a lab engine
+- APDR Chapter 6 physics tests
+- Study progress tests
 
 ## God Nodes (most connected - your core abstractions)
-1. `fieldPlayground()` - 30 edges
-2. `run()` - 30 edges
+1. `run()` - 30 edges
+2. `fieldPlayground()` - 30 edges
 3. `Components` - 26 edges
 4. `capacitorBench()` - 22 edges
 5. `paint()` - 21 edges
@@ -122,11 +133,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (80 total, 13 thin omitted)
+## Communities (91 total, 17 thin omitted)
 
-### Community 0 - "EEI 1 lab: fields and capacitors"
-Cohesion: 0.05
-Nodes (78): capacitorBench(), charged(), circuit(), draw(), grow(), guessOn(), nice(), paint() (+70 more)
+### Community 0 - "EEI Chapter 1 lab drawing helpers"
+Cohesion: 0.14
+Nodes (22): guessOn(), resize(), endDrag(), resize(), gaussCylinder(), at(), draw(), fixScale() (+14 more)
 
 ### Community 1 - "Site look: design rules"
 Cohesion: 0.04
@@ -201,8 +212,8 @@ Cohesion: 0.40
 Nodes (4): Answer, Outcome, Q: Does the graph cover the learner journey from the course home through the electrostatics and mathematics guides and labs, including local progress state and external assets?, Source Nodes
 
 ### Community 19 - "Guide diagrams"
-Cohesion: 0.09
-Nodes (31): arrow(), charge(), COORD(), add(), arc(), axis(), dot(), fit() (+23 more)
+Cohesion: 0.17
+Nodes (18): COORD(), add(), arc(), axis(), dot(), fit(), midLabel(), pr() (+10 more)
 
 ### Community 22 - "Concept map"
 Cohesion: 0.46
@@ -232,7 +243,7 @@ Nodes (26): binaryDraw(), bindSlider(), boundsDraw(), box(), distanceDraw(), dis
 Cohesion: 0.67
 Nodes (3): Local workflow, Project data, Project instructions
 
-### Community 31 - "mei-ch4-physics.test.js"
+### Community 31 - "MEI Chapter 4 physics tests"
 Cohesion: 0.25
 Nodes (5): assert, fs, path, test, vm
 
@@ -272,7 +283,7 @@ Nodes (11): Acceptance, Content rules, Decisions, Files, Labs, Page structure, P
 Cohesion: 0.18
 Nodes (18): angle(), challenge(), draw(), marker(), text(), fmt(), getControls(), mount() (+10 more)
 
-### Community 43 - "Roadmap"
+### Community 43 - "Project roadmap"
 Cohesion: 0.29
 Nodes (6): Direction, Later, Next, Not planned, Now, Roadmap
 
@@ -284,7 +295,7 @@ Nodes (10): Accessibility & Inclusion, Brand Commitments, Capabilities and Const
 Cohesion: 0.36
 Nodes (4): nand(), nandAnd(), nandCircuit(), nandOr()
 
-### Community 47 - "guide-to-tex.py"
+### Community 47 - "Guide to LaTeX and PDF converter"
 Cohesion: 0.06
 Nodes (38): Decisions, Diagrams, Formulas, Markup, Markup and notation standard, PDF, Signs, amap_data() (+30 more)
 
@@ -316,9 +327,9 @@ Nodes (11): add(), arg(), conj(), div(), exp(), fromPolar(), log(), mul() (+3 mo
 Cohesion: 0.38
 Nodes (9): age(), read(), remember(), seen(), show(), dismiss(), esc(), start() (+1 more)
 
-### Community 55 - "Node.js test helpers"
-Cohesion: 0.13
-Nodes (8): row(), rows(), assert, test, assert, test, assert, test
+### Community 55 - "Physics and formula test cases"
+Cohesion: 0.15
+Nodes (6): row(), rows(), assert, test, definitions(), fake()
 
 ### Community 56 - "Appendix rules"
 Cohesion: 0.50
@@ -328,9 +339,9 @@ Nodes (4): Acceptance, Appendix standard, Exam sheets, Page
 Cohesion: 0.17
 Nodes (32): arrow(), dot(), drawDivider(), drawKirchhoff(), drawPower(), drawSource(), drawSuper(), flow() (+24 more)
 
-### Community 58 - "Physics test suites"
-Cohesion: 0.15
-Nodes (7): definitions(), fake(), assert, fs, path, test, vm
+### Community 58 - "EEI Chapter 3 physics tests"
+Cohesion: 0.25
+Nodes (5): assert, fs, path, test, vm
 
 ### Community 59 - "Tooling: guide checker"
 Cohesion: 0.14
@@ -392,29 +403,52 @@ Nodes (3): mount(), challenge(), paint()
 Cohesion: 0.67
 Nodes (3): mount(), challenge(), paint()
 
+### Community 79 - "APDR Chapter 56 lab implementation"
+Cohesion: 0.13
+Nodes (15): challenge(), colors(), draw(), drawColumns(), drawFields(), drawLine(), mix(), mount() (+7 more)
+
+### Community 81 - "EEI Chapter 1 field playground"
+Cohesion: 0.17
+Nodes (21): fieldPlayground(), arrowHead(), clamp(), cm(), equipotentials(), fieldLines(), focusAfter(), grab() (+13 more)
+
+### Community 82 - "EEI Chapter 1 capacitor bench"
+Cohesion: 0.18
+Nodes (16): capacitorBench(), charged(), circuit(), grow(), nice(), paint(), signs(), tick() (+8 more)
+
+### Community 83 - "Guide and field diagram rendering helpers"
+Cohesion: 0.18
+Nodes (14): svg(), arrow(), charge(), curve(), el(), head(), label(), logToday() (+6 more)
+
+### Community 85 - "EEI Chapter 1 lab drawing routines"
+Cohesion: 0.28
+Nodes (9): draw(), draw(), line(), run(), paint(), curve(), X(), Y() (+1 more)
+
+### Community 86 - "EEI Chapter 1 visual rendering rules"
+Cohesion: 0.39
+Nodes (9): css(), text(), arrowTo(), paint(), comp(), text(), cap(), label() (+1 more)
+
+### Community 88 - "APDR Chapter 7a lab engine"
+Cohesion: 0.38
+Nodes (4): mount(), build(), live(), paint()
+
 ## Knowledge Gaps
 - **11 isolated node(s):** `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow`, `Jekyll site CI`, `LaTeX, Pandoc, and KaTeX publishing pipeline` (+6 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 466 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
-
-## Work-memory lessons
-
-**Preferred sources** — corroborated by past sessions; start here.
-- `GitHub Pages hosting` (2× useful, score=1.999999899) _(code changed — re-verify)_
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 492 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.151) - this node is a cross-community bridge._
-- **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
-  _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**
-  _11 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `EEI 1 lab: fields and capacitors` be split into smaller, more focused modules?**
-  _Cohesion score 0.05303030303030303 - nodes in this community are weakly interconnected._
+  _High betweenness centrality (0.136) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `run()` (e.g. with `ch7-physics.js` and `str()`) actually correct?**
   _`run()` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**
+  _11 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `EEI Chapter 1 lab drawing helpers` be split into smaller, more focused modules?**
+  _Cohesion score 0.14153846153846153 - nodes in this community are weakly interconnected._
+- **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
+  _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **Should `Site look: design rules` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
 - **Are the 2 inferred relationships involving `capacitorBench()` (e.g. with `eei/ch1-lab.js` and `resize()`) actually correct?**
