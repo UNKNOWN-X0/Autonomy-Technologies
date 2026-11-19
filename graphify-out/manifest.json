@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795047495.8155293,
-    "seen": 1795047892.716592,
+    "mtime": 1795047926.3008618,
+    "seen": 1795048200.267545,
     "ast_hash": "f22fff2e946ed70ee94e02e5a0b15b86",
     "semantic_hash": ""
   },
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795047855.776144,
-    "seen": 1795047892.716706,
-    "ast_hash": "1c9b77bb977cefbb3fb05a039fb0c084",
+    "mtime": 1795048185.644206,
+    "seen": 1795048200.2676659,
+    "ast_hash": "b1a9cce7a6fdb216b61a7d330fe9a794",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
