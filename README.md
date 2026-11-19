@@ -7,7 +7,7 @@ Study guides and interactive labs for the Autonomy Technologies programme at FAU
 
 **[Open From Fundamentals to AI Apocalypse →](https://unknown-x0.github.io/Autonomy-Technologies/)**
 
-![From Fundamentals to AI Apocalypse hub](assets/preview.png)
+![From Fundamentals to AI Apocalypse](assets/preview.png)
 
 ## Features
 
@@ -75,7 +75,7 @@ tools/page-check.sh eei/ch1-electrostatic-fields.html
 
 It writes the `.tex` with `tools/guide-to-tex.py`, builds the `.pdf` with `latexmk -xelatex` (TeX Live with the New Computer Modern fonts, `environ`, and `tcolorbox`), scans the LaTeX log, renders a contact sheet of every page, runs `tools/check-guide.py` against the page's standard, and probes the page in Chromium and WebKit at three widths in light and dark. Then look at the contact sheet and the screenshots.
 
-Every PDF carries a faint "Made by Thanate Amornjiraporn (Focus)" watermark, and every answer block moves to an Answers section at the end so the questions can be tried first.
+Every PDF carries a faint author watermark, and every answer block moves to an Answers section at the end so the questions can be tried first.
 
 ### Adding pages
 
