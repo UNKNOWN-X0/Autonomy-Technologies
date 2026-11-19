@@ -1,8 +1,8 @@
 {
   "README.md": {
-    "mtime": 1795040387.169232,
-    "seen": 1795040818.875865,
-    "ast_hash": "6fdc423214c6dbf5a20178523385f428",
+    "mtime": 1795050492.8908932,
+    "seen": 1795050678.701421,
+    "ast_hash": "a121677b43a4b1f4215be4073eea07ba",
     "semantic_hash": ""
   },
   "index.html": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   ".impeccable/design.json": {
-    "mtime": 1794920384.2555609,
-    "seen": 1794920559.859006,
-    "ast_hash": "efdff4106b271ad890c36ffa67a6fa4e",
+    "mtime": 1795050242.234226,
+    "seen": 1795050678.7013388,
+    "ast_hash": "6df6f886d3a6a7ece51151fd2d211400",
     "semantic_hash": ""
   },
   "js/index.js": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795046969.346128,
-    "seen": 1795047472.3488529,
-    "ast_hash": "6bd02526820178c57125631f6f1756cb",
+    "mtime": 1795050677.1824422,
+    "seen": 1795050678.7014241,
+    "ast_hash": "75a4198ec4c8a061e33a6c3863b0f2ad",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795048410.247695,
-    "seen": 1795048907.826166,
+    "mtime": 1795048934.2024865,
+    "seen": 1795050678.701341,
     "ast_hash": "f22fff2e946ed70ee94e02e5a0b15b86",
     "semantic_hash": ""
   },
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795045872.2292309,
-    "seen": 1795047472.348764,
-    "ast_hash": "d0c4d407af667f847ce229779014aefa",
+    "mtime": 1795049293.8630815,
+    "seen": 1795050678.701337,
+    "ast_hash": "f2f582df5f2461de3aea9a897d868c01",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -924,21 +924,21 @@
     "semantic_hash": ""
   },
   "apdr/ch8-recursion-dictionaries.html": {
-    "mtime": 1795047142.3794334,
-    "seen": 1795047472.348876,
-    "ast_hash": "3d8a6ef5305810f2519b5ccaf2bf4151",
+    "mtime": 1795050297.4943066,
+    "seen": 1795050678.701447,
+    "ast_hash": "6e44cf40b836b6786978be7885c07258",
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795048884.3186061,
-    "seen": 1795048907.826277,
-    "ast_hash": "6f5ca404e28b42c220e5b236ef437e17",
+    "mtime": 1795050666.7641604,
+    "seen": 1795050678.701455,
+    "ast_hash": "96618da643e614807019344e5d854f16",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
-    "mtime": 1795042428.474143,
-    "seen": 1795042751.672014,
-    "ast_hash": "fdef8550ef294b7a3470288c2b3c9a53",
+    "mtime": 1795050513.3181994,
+    "seen": 1795050678.7013628,
+    "ast_hash": "b5878bfd52f52b2e3858f1539f9be7e3",
     "semantic_hash": ""
   },
   "apdr/ch9-testing-debugging-lab.html": {
@@ -948,15 +948,15 @@
     "semantic_hash": ""
   },
   "apdr/ch9-testing-debugging.html": {
-    "mtime": 1795042682.6350753,
-    "seen": 1795042751.672096,
-    "ast_hash": "dcb676e7927aa7b52fc2d971eb4042f5",
+    "mtime": 1795050393.6073103,
+    "seen": 1795050678.701449,
+    "ast_hash": "0834a25ebe6316032eeb73c1cd7a94f2",
     "semantic_hash": ""
   },
   "js/apdr/ch10-lab.js": {
-    "mtime": 1795043498.0344963,
-    "seen": 1795044090.880588,
-    "ast_hash": "7be90766d6fc95de8e426d3d838a6702",
+    "mtime": 1795050617.5488887,
+    "seen": 1795050678.701343,
+    "ast_hash": "590bc972bee7de71ff521722b483a28a",
     "semantic_hash": ""
   },
   "apdr/ch10-object-oriented-programming-lab.html": {
@@ -966,15 +966,15 @@
     "semantic_hash": ""
   },
   "apdr/ch10-object-oriented-programming.html": {
-    "mtime": 1795043825.786412,
-    "seen": 1795044090.880672,
-    "ast_hash": "87d495353f5f7431fb36e6415533d6ef",
+    "mtime": 1795050555.2388618,
+    "seen": 1795050678.701428,
+    "ast_hash": "bea560fb143bb985724062874e77f39b",
     "semantic_hash": ""
   },
   "js/apdr/ch11-lab.js": {
-    "mtime": 1795045174.985064,
-    "seen": 1795045464.223837,
-    "ast_hash": "9d4fe926f05be6af6f5581bb11fe31e6",
+    "mtime": 1795050617.9865746,
+    "seen": 1795050678.701344,
+    "ast_hash": "98d765db0db936557e39f55b34a46479",
     "semantic_hash": ""
   },
   "apdr/ch11-classes-inheritance-lab.html": {
