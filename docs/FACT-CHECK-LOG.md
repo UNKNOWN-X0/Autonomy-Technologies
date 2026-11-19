@@ -78,3 +78,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch10-object-oriented-programming.html | 8529bf3c8fea | 2026-11-19 | Pass after fixes: practice 16 asked about class vs instance attributes but its answer was about garbage collection (question now matches); self-check citations corrected |
 | js/apdr/ch10-lab.js | e948aaf5ee77 | 2026-11-19 | Pass; explanations now escaped |
 | apdr/ch10-object-oriented-programming-lab.html | 6ee8fdd3e2f4 | 2026-11-19 | Pass, no errors found |
+| apdr/ch11-classes-inheritance.html | 5051b524fada | 2026-11-19 | Pass, no errors found |
+| js/apdr/ch11-lab.js | a4efe9a36327 | 2026-11-19 | Pass; explanations now escaped |
+| apdr/ch11-classes-inheritance-lab.html | a9ba8ee1091d | 2026-11-19 | Pass, no errors found |
