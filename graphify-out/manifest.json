@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795047926.3008618,
-    "seen": 1795048200.267545,
+    "mtime": 1795048410.247695,
+    "seen": 1795048907.826166,
     "ast_hash": "f22fff2e946ed70ee94e02e5a0b15b86",
     "semantic_hash": ""
   },
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795048185.644206,
-    "seen": 1795048200.2676659,
-    "ast_hash": "b1a9cce7a6fdb216b61a7d330fe9a794",
+    "mtime": 1795048884.3186061,
+    "seen": 1795048907.826277,
+    "ast_hash": "6f5ca404e28b42c220e5b236ef437e17",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
@@ -978,9 +978,9 @@
     "semantic_hash": ""
   },
   "apdr/ch11-classes-inheritance-lab.html": {
-    "mtime": 1795045388.3480563,
-    "seen": 1795045464.2239208,
-    "ast_hash": "31bb332a2926479689725808fcf2bd4e",
+    "mtime": 1795048819.386196,
+    "seen": 1795048907.826252,
+    "ast_hash": "8ae500fe71ae54186e0470c59d15ada5",
     "semantic_hash": ""
   },
   "apdr/ch11-classes-inheritance.html": {
