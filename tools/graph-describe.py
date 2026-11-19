@@ -72,6 +72,8 @@ FILES = {
     "js/apdr/ch8-lab.js": "the APDR Chapter 8 lab experiments (recursion and dictionaries)",
     "js/apdr/ch8-physics.js": "the APDR Chapter 8 rules (recursion, Fibonacci and dictionary operations)",
     "js/apdr/ch9-lab.js": "the APDR Chapter 9 lab experiments (testing and debugging)",
+    "js/apdr/ch89a-lab.js": "the APDR Chapter 89a lab challenges and canvas traces (concurrency, metaprogramming, debugging)",
+    "js/apdr/ch89a-physics.js": "the APDR Chapter 89a deterministic concept traces (threads, asyncio, workload routing, dynamic code, testing)",
     "js/apdr/ch10-lab.js": "the APDR Chapter 10 lab experiments (objects and methods)",
     "js/apdr/ch11-lab.js": "the APDR Chapter 11 lab experiments (inheritance and Rabbit operators)",
     "apdr/ch11-classes-inheritance.html": "the APDR Chapter 11 study guide (classes, inheritance and custom operators)",
