@@ -40,10 +40,10 @@ The home page has one section per semester. Each subject shows its module number
 
 | Semester | Code | Subject | Module | Course parts |
 | --- | --- | --- | --- | --- |
-| 1 | APDR | Algorithms, programming, and data representation | 23131 | Lecture, blackboard exercise, computer exercise |
-| 1 | MEI | Mathematics for Engineers I | 27651 | Lecture, exercise |
-| 1 | EEI | Electrical Engineering I | 23151 | Lecture, exercise, tutorial |
-| 1 | MATLAB | Introduction to MATLAB | 23171 | Course (not started yet) |
+| 1 | APDR | Algorithms, programming, and data representation | 92313 | Lecture, blackboard exercise, computer exercise |
+| 1 | MEI | Mathematics for Engineers I | 62765 | Lecture, exercise |
+| 1 | EEI | Electrical Engineering I | 92315 | Lecture, exercise, tutorial |
+| 1 | MATLAB | Introduction to MATLAB | 92317 | Course (not started yet) |
 
 What exists for each subject is listed on the home page; every guide also has a printable PDF.
 

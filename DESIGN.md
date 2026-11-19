@@ -350,7 +350,7 @@ The masthead's right-hand column: one link per semester, each a 52px paper tile 
 A ruled heading (1.35rem 800 with a 2px ink rule beneath) led by a 2.5rem blue number square, then a list of subject rows.
 
 ### Subject row
-One row per subject: the code square in the subject's colour family, then the name (h3, 700 1.25rem) with the module number under it in muted tabular type ("Module 27651 · no material yet"), then the course-part switch. The open part's panel follows under the row (Lecture: the chapter list, hidden while empty); each chapter row carries its number, title, one-line description, tick bar and Guide and Lab buttons.
+One row per subject: the code square in the subject's colour family, then the name (h3, 700 1.25rem) with the module number under it in muted tabular type ("Module 62765 · no material yet"), then the course-part switch. The open part's panel follows under the row (Lecture: the chapter list, hidden while empty); each chapter row carries its number, title, one-line description, tick bar and Guide and Lab buttons.
 
 ### Course-part switch
 A subject with more than one course part (Lecture, Exercise, Tutorial) shows them as one switch in the shape of the guides' Guide | Lab switch: a 2px action-colour frame split by 2px action-colour dividers, each part a 36px tab in 700 0.9rem type with 16px side padding. The open tab is solid action colour with white text; a part with material has action-colour text; a part with nothing posted is muted. No colour squares (the owner removed them). Under 760px the tabs share the full width. Tabs follow the ARIA tab pattern (arrows, Home, End) and each subject remembers its open tab (`localStorage` `hub-tabs`).
