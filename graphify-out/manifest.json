@@ -1,20 +1,20 @@
 {
   "README.md": {
-    "mtime": 1795050492.8908932,
-    "seen": 1795050678.701421,
-    "ast_hash": "a121677b43a4b1f4215be4073eea07ba",
+    "mtime": 1795051674.4936686,
+    "seen": 1795076458.80427,
+    "ast_hash": "4a957ee6903f58a6386be69ba4674bd6",
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795046391.3478665,
-    "seen": 1795047472.348908,
-    "ast_hash": "174c2ac5ec6dbc669c332217aeadf2fa",
+    "mtime": 1795052668.196694,
+    "seen": 1795076458.804331,
+    "ast_hash": "4a56024531c07cf043a7b79f7b8883e7",
     "semantic_hash": ""
   },
   "assets/preview.png": {
-    "mtime": 1793875768.6807728,
-    "seen": 1793877610.481355,
-    "ast_hash": "7886a231216f006247654f049339b859",
+    "mtime": 1795051214.4550447,
+    "seen": 1795076458.804349,
+    "ast_hash": "2f82d15f319c815bf42cbb086eacac6b",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "PRODUCT.md": {
-    "mtime": 1794920384.2259443,
-    "seen": 1794920559.859073,
-    "ast_hash": "b5e98197a299b56a593f4e75ecdb4a14",
+    "mtime": 1795052668.197109,
+    "seen": 1795076458.80427,
+    "ast_hash": "1dd390c35a305b46978171d9ceef40f5",
     "semantic_hash": ""
   },
   "js/guide.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795048934.2024865,
-    "seen": 1795050678.701341,
+    "mtime": 1795050865.9372933,
+    "seen": 1795076458.80419,
     "ast_hash": "f22fff2e946ed70ee94e02e5a0b15b86",
     "semantic_hash": ""
   },
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795049293.8630815,
-    "seen": 1795050678.701337,
-    "ast_hash": "f2f582df5f2461de3aea9a897d868c01",
+    "mtime": 1795051660.5361736,
+    "seen": 1795076458.804186,
+    "ast_hash": "fb66a48caf409b8a9b30217cea3ca80e",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -987,6 +987,12 @@
     "mtime": 1795045388.3475938,
     "seen": 1795045464.223922,
     "ast_hash": "cf099da7db3aefe1b367a98cd9790d3f",
+    "semantic_hash": ""
+  },
+  "ROADMAP.md": {
+    "mtime": 1795051674.3859904,
+    "seen": 1795076458.8042722,
+    "ast_hash": "e8195cad7f2c65e7c7a56f1aaf6a420e",
     "semantic_hash": ""
   }
 }
