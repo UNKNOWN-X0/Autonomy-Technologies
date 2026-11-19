@@ -3,15 +3,38 @@
 [![Live site](https://img.shields.io/badge/live%20site-GitHub%20Pages-2ea44f?logo=github)](https://unknown-x0.github.io/Autonomy-Technologies/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-Study guides and interactive labs for the Autonomy Technologies programme at FAU Erlangen-Nürnberg, built up semester by semester for the whole degree.
+Study guides and interactive labs for the Autonomy Technologies programme at FAU Erlangen-Nürnberg, built up semester by semester for the whole degree. Personal study material written from the lecture notes, not an official FAU publication.
 
-**[Open the site →](https://unknown-x0.github.io/Autonomy-Technologies/)**
+**[Open From Fundamentals to AI Apocalypse →](https://unknown-x0.github.io/Autonomy-Technologies/)**
 
 ![From Fundamentals to AI Apocalypse hub](assets/preview.png)
 
-> Personal study material written from the lecture notes. Not an official FAU publication; check anything exam-relevant against your course materials.
+## Features
 
-## What's inside
+- **Study guides:** one per chapter, each with practice problems, an exam checklist, and a printable PDF whose answers move to the end so the questions can be tried first.
+- **Interactive labs:** predict, say how sure you are, then reveal; after four fixed challenges, **New challenge** keeps generating fresh ones in most experiments, and **Explore freely** opens the sandbox.
+- **Worked solutions:** exercises, tutorials, and appendices for each subject.
+- **Spaced review:** **Review today** on the home page lists every chapter you have started, most overdue first; the gap grows from 1 day to 1 week to 1 month.
+- **Progress you keep:** checklist ticks and review days are saved in your browser, and Settings exports or imports them as a file.
+- **Every screen:** phone and desktop, light or dark (from your system or Settings), and clean printing.
+
+## Getting started
+
+### Use it online
+
+Open the [site](https://unknown-x0.github.io/Autonomy-Technologies/) and start on the home page.
+
+### Run it yourself
+
+Serve the folder and open it through the server:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+## Usage
+
+### Subjects
 
 The home page has one section per semester. Each subject shows its module number, its course parts and, once they exist, its chapters with a study guide and a lab, plus worked exercises, tutorials, and appendices.
 
@@ -24,15 +47,7 @@ The home page has one section per semester. Each subject shows its module number
 
 What exists for each subject is listed on the home page; every guide also has a printable PDF.
 
-## Getting started
-
-Open the [site](https://unknown-x0.github.io/Autonomy-Technologies/). To work on it locally, serve the folder and open it through the server:
-
-```sh
-python3 -m http.server 8000 --bind 127.0.0.1
-```
-
-## How to study with it
+### How to study with it
 
 1. Read one section of a guide, then cover its formulas and write them out from memory.
 2. Do the matching practice problems, then open **Show answer key** to check.
@@ -42,7 +57,15 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 Every page works on phone and desktop, follows your system's light or dark mode (or your choice under Settings, the gear beside **All semesters**), and prints cleanly.
 
-## Working on a page
+Check anything exam-relevant against your course materials.
+
+## Privacy
+
+Checklist ticks, review days, and display choices (theme, folded panels, open tabs) are kept in your browser's local storage; **Settings** exports them to a file and imports them back. Nothing is sent anywhere: there are no accounts and no analytics. The pages load their fonts from Google Fonts.
+
+## Development
+
+### Working on a page
 
 The HTML is the single source. After editing a page, one command regenerates its print copy and checks everything a script can check:
 
@@ -54,17 +77,17 @@ It writes the `.tex` with `tools/guide-to-tex.py`, builds the `.pdf` with `latex
 
 Every PDF carries a faint "Made by Thanate Amornjiraporn (Focus)" watermark, and every answer block moves to an Answers section at the end so the questions can be tried first.
 
-## Adding pages
+### Adding pages
 
 - **A study guide, lab, appendix, or worked-solutions page:** follow its standard in [docs/](docs/). Each names the reference page to copy and the check to pass. Its hub entry carries `data-added` with the day it goes online, so it shows in the "Recently added" notice for two weeks; the [markup standard](docs/MARKUP-STANDARD.md) says how maths, signs, and diagrams are written.
 - **A new semester or subject:** in `index.html`, copy the `<section class="semester">` or `<li class="subject">` block (the templates are in comments there); a new subject also needs its colour family in `css/system.css`. A course part with material gets the class `has`.
 - **A release:** add an entry at the top of [about/version-log.html](about/version-log.html) and update [about/how-to-use.html](about/how-to-use.html) if a feature works differently. Commit; GitHub Pages updates the site within a minute or two.
 
-## Design
+### Design
 
 One sign system, modelled on German systematic signage: FAU blue sign fields, square subject code signs in one colour family per subject, a strict grid, no rounded corners or shadows, and motion only where something changed. [DESIGN.md](DESIGN.md) is the full system; `css/system.css` implements it and every page loads it first. The FAU logo is not used; it is a protected trademark.
 
-## Hosting
+### Hosting
 
 Published by **GitHub Pages** from the `main` branch, root folder; every commit to `main` publishes within a minute or two. `.nojekyll` makes Pages serve the files exactly as uploaded, with no Jekyll build. `.github/workflows/checks.yml` runs the unit tests and `tools/check-guide.py` on every page for each push and pull request (PDF-age checks are skipped there, because a fresh checkout dates every file the same). The repository must stay public for free Pages hosting. Upload the HTML **and** its `css/` and `js/` folders together; the pages are not self-contained.
 
