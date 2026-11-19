@@ -72,3 +72,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch8-recursion-dictionaries.html | e9bec796a010 | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3; fixed two self-check problem citations |
 | js/apdr/ch8-lab.js | 68d72ac235bf | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3 |
 | apdr/ch8-recursion-dictionaries-lab.html | b37c20dd43d3 | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3 |
+| apdr/ch9-testing-debugging.html | ca891621d308 | 2026-11-19 | Pass after fixes: unescaped n<10 broke problem 4 for parsers; self-check citations and one section ref corrected |
+| js/apdr/ch9-lab.js | 5e24846571d0 | 2026-11-19 | Pass after fixes: every question now has two real wrong options (was an explanation sentence plus 'No tests needed'); explanations escaped (text after '<' was cut off); first ref is 9.1 |
+| apdr/ch9-testing-debugging-lab.html | 3a863ea9dce2 | 2026-11-19 | Pass, no errors found |
