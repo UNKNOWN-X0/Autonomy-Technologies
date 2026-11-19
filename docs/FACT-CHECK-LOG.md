@@ -81,3 +81,23 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch11-classes-inheritance.html | 5051b524fada | 2026-11-19 | Pass, no errors found |
 | js/apdr/ch11-lab.js | a4efe9a36327 | 2026-11-19 | Pass; explanations now escaped |
 | apdr/ch11-classes-inheritance-lab.html | a9ba8ee1091d | 2026-11-19 | Pass, no errors found |
+| eei/exercise-1-worked-solutions.html | ab94b259a17d | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/exercise-2-worked-solutions.html | bd431a3a9b31 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/exercise-3-worked-solutions.html | 4f0ee284ca16 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/exercise-4-worked-solutions.html | bbc98c3e9522 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-1-worked-solutions.html | c55ef74a4e2c | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-2-worked-solutions.html | 6187e57ed37a | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-3-worked-solutions.html | fd862f2fc482 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-4-worked-solutions.html | 0245d360c664 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-5-worked-solutions.html | 1c05002e3b54 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| eei/tutorial-6-worked-solutions.html | 1acaeba996b4 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| apdr/exercise-0-worked-solutions.html | ea6288947060 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| apdr/exercise-1-worked-solutions.html | 23925c2822ea | 2026-11-19 | Pass; numeric answers and code recomputed |
+| apdr/exercise-2-worked-solutions.html | eea9de15ccd6 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| apdr/blackboard-exercise-2-worked-solutions.html | 85d50f630838 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| apdr/blackboard-exercise-3-worked-solutions.html | 5d7b17485a43 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| mei/exercise-1-worked-solutions.html | 740cb1a40f5a | 2026-11-19 | Pass; numeric answers and code recomputed |
+| mei/exercise-2-worked-solutions.html | 1787eb31af9f | 2026-11-19 | Pass; numeric answers and code recomputed |
+| mei/exercise-3-worked-solutions.html | a141e91fd634 | 2026-11-19 | Pass; numeric answers and code recomputed |
+| mei/exercise-4-worked-solutions.html | 0220b7d0a87f | 2026-11-19 | Pass after fix: 4b(i) said 4 − (t − 3)² falls without bound as t → 0⁺; it tends to −5 there (range unchanged) |
+| mei/exercise-5-worked-solutions.html | 75efbc270eae | 2026-11-19 | Pass; numeric answers and code recomputed |
