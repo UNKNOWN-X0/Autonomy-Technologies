@@ -14,7 +14,7 @@ Cover the whole Autonomy Technologies degree, semester by semester, with materia
 
 ## Next
 
-**Introduction to MATLAB course material** (stated 2026-11-19, [#12](https://github.com/UNKNOWN-X0/Autonomy-Technologies/issues/12)). The only semester 1 subject without pages. Waits on a decision about when the course starts and what form suits a tool course.
+**Introduction to MATLAB course material** (stated 2026-11-19, [#12](https://github.com/UNKNOWN-X0/Autonomy-Technologies/issues/12)). The only semester 1 subject without pages. The course starts around 20 February 2027; its form is decided once the material is known.
 
 **Site-wide search** (stated 2026-11-18, [#10](https://github.com/UNKNOWN-X0/Autonomy-Technologies/issues/10)). With 30+ guides and worked-solution pages, finding a definition means guessing the chapter. A search index built at authoring time keeps the site static.
 
@@ -22,7 +22,7 @@ Cover the whole Autonomy Technologies degree, semester by semester, with materia
 
 ## Later
 
-**Semester 2** (stated 2026-11-19, [#13](https://github.com/UNKNOWN-X0/Autonomy-Technologies/issues/13)). Add the next semester's subjects to the hub when the semester starts. Waits on which modules to cover.
+**Semester 2** (stated 2026-11-19, [#13](https://github.com/UNKNOWN-X0/Autonomy-Technologies/issues/13)). System-level Programming (92328), Mathematics II (62767), Machine Learning for Engineers I (95067), Electrical Engineering II (92316), and the Electrical Engineering Laboratory (92319). Mathematics II and Electrical Engineering II continue their semester 1 colour families.
 
 ## Not planned
 
