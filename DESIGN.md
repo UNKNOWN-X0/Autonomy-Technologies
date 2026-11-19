@@ -24,6 +24,13 @@ colors:
   matlab-1: "#80ecf1"
   matlab-2: "#64d1d7"
   matlab-3: "#48b7bd"
+  eei-lab: "#c7734b"
+  sys-1: "#fd9cba"
+  sys-2: "#e183a1"
+  sys-3: "#ca6e8c"
+  ml-1: "#fbc0fe"
+  ml-2: "#e5a3e8"
+  ml-3: "#ca8ace"
   dark-fau-deep: "#021530"
   dark-fau-tint: "#15305a"
   dark-fau-mark: "#3a68ad"
@@ -248,6 +255,11 @@ Each subject owns one OKLCH hue. Steps I, II and III walk down in lightness (L 0
 - **MEI Green** (mei-1, mei-2, mei-3; hue 130): Mathematics for Engineers.
 - **EEI Amber** (eei-1, eei-2, eei-3; hue 80): Electrical Engineering.
 - **MATLAB Cyan** (matlab-1, matlab-2, matlab-3; hue 200): Introduction to MATLAB.
+- **SYS Rose** (sys-1, sys-2, sys-3; hue 0; L 0.80 / 0.72 / 0.65): System-level Programming (92328), its own family from semester 2.
+- **ML Lilac** (ml-1, ml-2, ml-3; hue 325; L 0.88 / 0.80 / 0.72): Machine Learning for Engineers (95067), from semester 2.
+- **EEII Lab Copper** (eei-lab; oklch 0.64 0.12 45): the Electrical Engineering Laboratory (92319), a darker, warmer sibling of EEII (eei-2) inside the EEI family. Electrical Engineering II carries the code EEII and the eei-2 step; Mathematics II takes mei-2.
+
+The semester 2 families were chosen with the Color Expert skill by search, not by eye. Within semester 2 (mei-2, eei-2, eei-lab, sys-1, ml-1), every pair stays at least 0.073 apart in OKLab under normal, deutan, protan, and tritan vision, and each new colour is at least 0.10 from every semester 1 colour under normal vision. Six families cannot all hold 0.08 under every deficiency at once, so the subject code printed in each square stays the primary cue; colour is never the only one. Ink labels reach at least 4.9:1 on every new step.
 
 A subject class (`s-<code>-<step>`, such as `s-mei-1`) sets `--course`; the code square, the course-part chip marker and the guide's sign-header square all fill with `var(--course)`. Code-square text is always `--code-ink` (#0B1B33), in both colour schemes.
 

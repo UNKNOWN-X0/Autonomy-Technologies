@@ -35,6 +35,16 @@
   --matlab-1: #80ecf1;
   --matlab-2: #64d1d7;
   --matlab-3: #48b7bd;
+  /* EEII lab variant: copper, oklch(0.64 0.12 45); a darker, warmer sibling of eei-2 */
+  --eei-lab: #c7734b;
+  /* SYS (System-level Programming): rose, oklch(L 0.12 0); step 3 at 0.65 for ink contrast */
+  --sys-1: #fd9cba;
+  --sys-2: #e183a1;
+  --sys-3: #ca6e8c;
+  /* ML (Machine Learning for Engineers): lilac, oklch(L 0.12 325); step 1 chroma 0.105 (sRGB edge) */
+  --ml-1: #fbc0fe;
+  --ml-2: #e5a3e8;
+  --ml-3: #ca8ace;
   --course: var(--paper-2);
   --code-ink: #0b1b33;
 
@@ -71,6 +81,13 @@
 .s-matlab-1 { --course: var(--matlab-1); }
 .s-matlab-2 { --course: var(--matlab-2); }
 .s-matlab-3 { --course: var(--matlab-3); }
+.s-eei-lab { --course: var(--eei-lab); }
+.s-sys-1 { --course: var(--sys-1); }
+.s-sys-2 { --course: var(--sys-2); }
+.s-sys-3 { --course: var(--sys-3); }
+.s-ml-1 { --course: var(--ml-1); }
+.s-ml-2 { --course: var(--ml-2); }
+.s-ml-3 { --course: var(--ml-3); }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
