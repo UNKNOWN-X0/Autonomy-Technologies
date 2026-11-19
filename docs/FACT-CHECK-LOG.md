@@ -75,3 +75,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch9-testing-debugging.html | ca891621d308 | 2026-11-19 | Pass after fixes: unescaped n<10 broke problem 4 for parsers; self-check citations and one section ref corrected |
 | js/apdr/ch9-lab.js | 5e24846571d0 | 2026-11-19 | Pass after fixes: every question now has two real wrong options (was an explanation sentence plus 'No tests needed'); explanations escaped (text after '<' was cut off); first ref is 9.1 |
 | apdr/ch9-testing-debugging-lab.html | 3a863ea9dce2 | 2026-11-19 | Pass, no errors found |
+| apdr/ch10-object-oriented-programming.html | 8529bf3c8fea | 2026-11-19 | Pass after fixes: practice 16 asked about class vs instance attributes but its answer was about garbage collection (question now matches); self-check citations corrected |
+| js/apdr/ch10-lab.js | e948aaf5ee77 | 2026-11-19 | Pass; explanations now escaped |
+| apdr/ch10-object-oriented-programming-lab.html | 6ee8fdd3e2f4 | 2026-11-19 | Pass, no errors found |
