@@ -125,5 +125,6 @@ No build step: plain HTML, CSS, and JavaScript, with fonts from Google Fonts and
 | [PRODUCT.md](PRODUCT.md) | What the site is for and what it must never claim |
 | [DESIGN.md](DESIGN.md) | The sign system: tokens, type, components, motion |
 | [STANDARDS.md](STANDARDS.md) | The rules every change meets |
+| [ROADMAP.md](ROADMAP.md) | What is planned next, with an issue per item |
 | [docs/](docs/) | What each kind of page contains: markup, guide, lab, appendix, worked solutions, tooling |
 | [about/version-log.html](about/version-log.html) | Release history |
