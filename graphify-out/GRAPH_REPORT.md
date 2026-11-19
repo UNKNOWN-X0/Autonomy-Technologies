@@ -1,7 +1,7 @@
 # Graph Report - Autonomy-Technologies  (2026-11-19)
 
 ## Corpus Check
-- 97 files · ~440,543 words
+- 97 files · ~441,712 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 9 file(s) not represented in the graph (top: .css 5, (none) 3, .ico 1)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a27ffaa2`
+- Built from commit: `b2e83c8d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -108,12 +108,12 @@
 10. `queue()` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Challenges` --references--> `reveal()`  [INFERRED]
-  docs/LAB-STANDARD.md → js/nav.js
 - `Formulas` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
 - `Markup` --references--> `T()`  [INFERRED]
   docs/MARKUP-STANDARD.md → tools/guide-to-tex.py
+- `Challenges` --references--> `reveal()`  [INFERRED]
+  docs/LAB-STANDARD.md → js/nav.js
 - `Experiments` --references--> `generate()`  [INFERRED]
   docs/LAB-STANDARD.md → js/apdr/ch12-physics.js
 - `Generated challenges (New challenge)` --references--> `generate()`  [INFERRED]
@@ -406,7 +406,7 @@ Nodes (3): mount(), challenge(), paint()
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.151) - this node is a cross-community bridge._
+  _High betweenness centrality (0.145) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `fieldPlayground()` (e.g. with `eei/ch1-lab.js` and `endDrag()`) actually correct?**
   _`fieldPlayground()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

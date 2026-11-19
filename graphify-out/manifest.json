@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795078573.451971,
-    "seen": 1795079001.904935,
-    "ast_hash": "f185dab97b2e6e346d763331273d2399",
+    "mtime": 1795099777.1254294,
+    "seen": 1795099801.003882,
+    "ast_hash": "682f0d74d27b9768dc1087e4b3a02e61",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   ".impeccable/design.json": {
-    "mtime": 1795078573.416571,
-    "seen": 1795079001.904802,
-    "ast_hash": "facf2656fa2b4e20b3ed625ca30489c8",
+    "mtime": 1795083859.7842083,
+    "seen": 1795091313.659304,
+    "ast_hash": "0f3713d52c9573f8b26dc0a92d2b64c4",
     "semantic_hash": ""
   },
   "js/index.js": {
@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1795078573.4174967,
-    "seen": 1795079001.904882,
-    "ast_hash": "7969227d9aba7d88a23d84a5bec53f57",
+    "mtime": 1795079679.8538694,
+    "seen": 1795091313.659381,
+    "ast_hash": "10fc6331c04edee13c3dbda0d8329883",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "tools/guide-to-tex.py": {
-    "mtime": 1795007151.5900612,
-    "seen": 1795007521.655982,
-    "ast_hash": "37f18c96aeaf46ea80f74f671d7add84",
+    "mtime": 1795100164.0655098,
+    "seen": 1795100207.9267662,
+    "ast_hash": "34e815826c3796b0cda65b7a8970a44c",
     "semantic_hash": ""
   },
   "eei/ch1-electrostatic-fields.html": {
@@ -318,9 +318,9 @@
     "semantic_hash": ""
   },
   "mei/ch2-real-numbers.html": {
-    "mtime": 1795078573.4577878,
-    "seen": 1795079001.9049401,
-    "ast_hash": "5d882fdff4c7fe8ef56a4dd621fa836a",
+    "mtime": 1795099777.1259494,
+    "seen": 1795099801.0038888,
+    "ast_hash": "9653c5f500994f88f40448847474e143",
     "semantic_hash": ""
   },
   "js/mei/ch2-lab.js": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795078573.4676294,
-    "seen": 1795079001.904887,
-    "ast_hash": "8a456153b6318acb70678c045f307ac3",
+    "mtime": 1795100170.712174,
+    "seen": 1795100207.92678,
+    "ast_hash": "f5224f1d1e0c3e6d2dfd339908487d2a",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795076481.8533447,
-    "seen": 1795079001.904804,
+    "mtime": 1795099905.334828,
+    "seen": 1795100207.9266958,
     "ast_hash": "45d7baa84e508a141054ebd9c6961c25",
     "semantic_hash": ""
   },
@@ -630,9 +630,9 @@
     "semantic_hash": ""
   },
   "mei/exercise-4-worked-solutions.html": {
-    "mtime": 1795078573.4649358,
-    "seen": 1795079001.904947,
-    "ast_hash": "11cec5e1ade95190ec071c1973cfd0e4",
+    "mtime": 1795098089.7536643,
+    "seen": 1795099024.818796,
+    "ast_hash": "fd7ec8ff7e287321bec93bedb9009886",
     "semantic_hash": ""
   },
   "apdr/blackboard-exercise-2-worked-solutions.html": {
@@ -648,9 +648,9 @@
     "semantic_hash": ""
   },
   "docs/TOOLING-STANDARD.md": {
-    "mtime": 1795039720.1278546,
-    "seen": 1795040020.890691,
-    "ast_hash": "1151ffac4bae9ce0dcd8588097e69281",
+    "mtime": 1795091414.1606643,
+    "seen": 1795091693.345985,
+    "ast_hash": "17546c6b9ae977370902e315704b4367",
     "semantic_hash": ""
   },
   "apdr/blackboard-exercise-3-worked-solutions.html": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795051660.5361736,
-    "seen": 1795076458.804186,
-    "ast_hash": "fb66a48caf409b8a9b30217cea3ca80e",
+    "mtime": 1795100192.8427174,
+    "seen": 1795100207.926692,
+    "ast_hash": "0ab2a03e4d18f9d3ebbfb1bcc7b47606",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -875,12 +875,6 @@
     "ast_hash": "8be9b63fa3077c760cdf2239bf2eceac",
     "semantic_hash": ""
   },
-  "mei/appendix-b-exam-sheet-i.html": {
-    "mtime": 1795078573.4528494,
-    "seen": 1795079001.904937,
-    "ast_hash": "5f9b4216f52caf45abb6d140612a9b4f",
-    "semantic_hash": ""
-  },
   ".github/workflows/checks.yml": {
     "mtime": 1795039706.0817788,
     "seen": 1795040020.8904908,
@@ -930,9 +924,9 @@
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795050666.7641604,
-    "seen": 1795050678.701455,
-    "ast_hash": "96618da643e614807019344e5d854f16",
+    "mtime": 1795098171.8417234,
+    "seen": 1795099024.818757,
+    "ast_hash": "9bf749693e1e096f6de2bd264d0193c5",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
@@ -993,6 +987,24 @@
     "mtime": 1795078219.3513663,
     "seen": 1795079001.9048839,
     "ast_hash": "286353de304318dafe0819915070a165",
+    "semantic_hash": ""
+  },
+  "mei/appendix-b-calculation-rules.html": {
+    "mtime": 1795099751.4767725,
+    "seen": 1795099801.003884,
+    "ast_hash": "83d8aec010202713e68a1994422318bd",
+    "semantic_hash": ""
+  },
+  "assets/mei/appendix-b-calculation-rules.jpg": {
+    "mtime": 1795090757.5288517,
+    "seen": 1795091313.659457,
+    "ast_hash": "407ce94c1ab9b95e7a9bbe351a2bc13c",
+    "semantic_hash": ""
+  },
+  "mei/appendix-x-exam-sheet-i.html": {
+    "mtime": 1795100109.8213875,
+    "seen": 1795100207.926835,
+    "ast_hash": "f73e3b7f03a3885023306e9c98651f06",
     "semantic_hash": ""
   }
 }

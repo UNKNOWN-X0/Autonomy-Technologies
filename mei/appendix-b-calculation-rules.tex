@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · MEI · Personal reference}
+\fancyhead[R]{\small\sffamily Appendix B: Calculation rules for sums and products}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Appendix B: Calculation rules for sums and products}
+\author{Mathematics for Engineers I \ensuremath{\cdot} Module 62765 \ensuremath{\cdot} Personal reference\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large \textbf{Personal study supplement supplied by the student; not a lecturer handout or official course material.} Use these rules to rewrite, split and evaluate finite sums and products. They accompany Chapter 2.4, Sums, Products, Binomial Coefficient. Throughout, \textit{m} \ensuremath{\leq} \textit{n} are integers.}
+
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\section{B.1 Splitting and reordering}
+
+\Needspace{11\baselineskip}
+A finite sum or product may be cut into pieces, read backwards, or pulled apart term by term. The result does not change, because addition and multiplication are associative and commutative.
+
+\begin{equationcard}{Sums}
+\[ \begin{gathered} \sum_{{k}={m}}^{{n}} {a}_{{k}}\, =\, {a}_{{m}}\, +\, \sum_{{k}={m}+1}^{{n}} {a}_{{k}} \\ \sum_{{k}=1}^{{n}} {a}_{{k}}\, =\, \sum_{{k}=1}^{{n}} {a}_{{n}+1-{k}} \\ \sum_{{k}={m}}^{{n}} ({a}_{{k}}\, +\, {b}_{{k}})\, =\, \sum_{{k}={m}}^{{n}} {a}_{{k}}\, +\, \sum_{{k}={m}}^{{n}} {b}_{{k}} \end{gathered} \]
+{\small Splitting off the first term needs at least one term, \textit{m} \ensuremath{\leq} \textit{n}. Reversing pairs the index \textit{k} with \textit{n} + 1 \ensuremath{-} \textit{k}, so \textit{k} = 1 picks \textit{a}\textsubscript{\textit{n}} and \textit{k} = \textit{n} picks \textit{a}\textsubscript{1}.}
+\end{equationcard}
+
+\begin{equationcard}{Products}
+\[ \begin{gathered} \prod_{{k}={m}}^{{n}} {a}_{{k}}\, =\, {a}_{{m}}\, \cdot \, \prod_{{k}={m}+1}^{{n}} {a}_{{k}} \\ \prod_{{k}=1}^{{n}} {a}_{{k}}\, =\, \prod_{{k}=1}^{{n}} {a}_{{n}+1-{k}} \\ \prod_{{k}={m}}^{{n}} ({a}_{{k}}\, \cdot \, {b}_{{k}})\, =\, \prod_{{k}={m}}^{{n}} {a}_{{k}}\, \cdot \, \prod_{{k}={m}}^{{n}} {b}_{{k}} \end{gathered} \]
+{\small Each product rule is the sum rule with \ensuremath{\textstyle\sum} replaced by \ensuremath{\textstyle\prod} and + replaced by \ensuremath{\cdot}. There is no product rule for a sum of factors: \ensuremath{\textstyle\prod}(\textit{a}\textsubscript{\textit{k}} + \textit{b}\textsubscript{\textit{k}}) does not separate.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{B.2 Double sums and index shifts}
+
+\Needspace{9\baselineskip}
+With finitely many terms, the order of two summations can be swapped. An index shift renames the running index and moves both limits the opposite way, so the same terms are added.
+
+\begin{equationcard}{Swapping the order}
+\[ \begin{gathered} \sum_{{l}={r}}^{{s}} \sum_{{k}={m}}^{{n}} {a}_{{l}{k}}\, =\, \sum_{{k}={m}}^{{n}} \sum_{{l}={r}}^{{s}} {a}_{{l}{k}} \\ \prod_{{l}={r}}^{{s}} \prod_{{k}={m}}^{{n}} {a}_{{l}{k}}\, =\, \prod_{{k}={m}}^{{n}} \prod_{{l}={r}}^{{s}} {a}_{{l}{k}} \end{gathered} \]
+{\small Both limits must be fixed numbers. When the inner limits depend on the outer index, for example \textit{k} \ensuremath{\leq} \textit{l}, rewrite the region before swapping.}
+\end{equationcard}
+
+\begin{equationcard}{Shifting the index}
+\[ \begin{gathered} \sum_{{k}=1}^{{n}} {a}_{{k}}\, =\, \sum_{{l}=2}^{{n}+1} {a}_{{l}-1} \\ \sum_{{k}={m}}^{{n}} {a}_{{k}}\, =\, \sum_{{l}={m}+{p}}^{{n}+{p}} {a}_{{l}-{p}} \end{gathered} \]
+{\small Substitute \textit{l} = \textit{k} + \textit{p}: raise both limits by \textit{p} and lower the subscript by \textit{p}. The same shift works for \ensuremath{\textstyle\prod}.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{B.3 Constant terms and telescoping}
+
+\Needspace{10\baselineskip}
+A constant inside the operator is repeated once for each index value, and \textit{k} = \textit{m} to \textit{n} gives \textit{n} \ensuremath{-} \textit{m} + 1 values. In a telescoping sum or product, neighbouring terms cancel and only the two ends remain.
+
+\begin{equationcard}{Constant summands and factors}
+\[ \begin{gathered} \sum_{{k}={m}}^{{n}} {a}\, =\, ({n}\, -\, {m}\, +\, 1)\, {a} \\ \prod_{{k}={m}}^{{n}} {a}\, =\, {a}^{{n}\, -\, {m}\, +\, 1} \end{gathered} \]
+{\small Valid for \textit{m} \ensuremath{\leq} \textit{n}. Example: $\sum_{{k}=3}^{7} $4 = 5 \ensuremath{\cdot} 4 = 20, and $\prod_{{k}=3}^{7} $4 = 4\textsuperscript{5}.}
+\end{equationcard}
+
+\begin{equationcard}{Telescoping}
+\[ \begin{gathered} \sum_{{k}={m}}^{{n}} ({a}_{{k}}\, -\, {a}_{{k}+1})\, =\, {a}_{{m}}\, -\, {a}_{{n}+1} \\ \prod_{{k}={m}}^{{n}} \dfrac{{a}_{{k}}}{{a}_{{k}+1}}\, =\, \dfrac{{a}_{{m}}}{{a}_{{n}+1}} \end{gathered} \]
+{\small The last term left over is \textit{a}\textsubscript{\textit{n}+1}, not \textit{a}\textsubscript{\textit{n}}: write out \textit{k} = \textit{m}, \textit{m} + 1 and watch \ensuremath{-}\textit{a}\textsubscript{\textit{m}+1} cancel +\textit{a}\textsubscript{\textit{m}+1}. The product form needs every \textit{a}\textsubscript{\textit{k}} \ensuremath{\neq} 0 for \textit{m} + 1 \ensuremath{\leq} \textit{k} \ensuremath{\leq} \textit{n} + 1.}
+\end{equationcard}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\section{B.4 Constant factors}
+
+\Needspace{9\baselineskip}
+This is the one place where sums and products behave differently. A sum adds the factor once per term, so it comes out once; a product multiplies it once per term, so it comes out as a power.
+
+\begin{equationcard}{Factor out of a sum}
+\[ \begin{gathered} \sum_{{k}={m}}^{{n}} {c}{a}_{{k}}\, =\, {c}\sum_{{k}={m}}^{{n}} {a}_{{k}} \\ \sum_{{k}=1}^{5} 2{k}\, =\, 2\sum_{{k}=1}^{5} {k}\, =\, 2\, \cdot \, 15\, =\, 30 \end{gathered} \]
+\end{equationcard}
+
+\begin{equationcard}{Factor out of a product}
+\[ \begin{gathered} \prod_{{k}={m}}^{{n}} {c}{a}_{{k}}\, =\, {c}^{{n}\, -\, {m}\, +\, 1}\prod_{{k}={m}}^{{n}} {a}_{{k}} \\ \prod_{{k}=1}^{5} 2{k}\, =\, 2^{5}\prod_{{k}=1}^{5} {k}\, =\, 32\, \cdot \, 120\, =\, 3840 \end{gathered} \]
+{\small Pulling out only one factor \textit{c} is the classic mistake: it gives 2 \ensuremath{\cdot} 120 = 240 instead of 3840.}
+\end{equationcard}
+\end{keepsection}
+
+
+\vfill{\small \textbf{Personal supplement supplied by Thanate Amornjiraporn (Focus).} This is the student's own reference material, reorganised and annotated for personal study. It was not supplied, written, reviewed or endorsed by the lecturer and is not official FAU course material. The supplied table gave the telescoping sum as \textit{a}\textsubscript{\textit{m}} \ensuremath{-} \textit{a}\textsubscript{\textit{n}}; this page uses the correct \textit{a}\textsubscript{\textit{m}} \ensuremath{-} \textit{a}\textsubscript{\textit{n}+1}. Use it as a memory aid and check index ranges when applying the rules.}
+
+\end{document}
