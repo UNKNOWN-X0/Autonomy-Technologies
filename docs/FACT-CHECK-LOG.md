@@ -69,3 +69,6 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | eei/ch3-dc-networks.html | d9c879826cf5 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
 | js/eei/ch3-lab.js | 676198ec1501 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
 | eei/ch3-dc-networks-lab.html | e0cc7bab7d8f | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
+| apdr/ch8-recursion-dictionaries.html | e9bec796a010 | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3; fixed two self-check problem citations |
+| js/apdr/ch8-lab.js | 68d72ac235bf | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3 |
+| apdr/ch8-recursion-dictionaries-lab.html | b37c20dd43d3 | 2026-11-19 | Pass; fib call counts and dictionary traces re-run in Python 3 |
