@@ -51,6 +51,9 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | js/apdr/ch8-physics.js | 7fc5afd9cd54 | 2026-11-19 | Pass; multiplication, Fibonacci, palindrome, frequency and nested-list models checked |
 | js/apdr/ch8-lab.js | 68d72ac235bf | 2026-11-19 | Pass; fixed and generated challenge answers, explanations and input limits checked |
 | apdr/ch8-recursion-dictionaries-lab.html | b37c20dd43d3 | 2026-11-19 | Pass; six experiment links, script wiring, hub counts and rendered layout checked |
+| apdr/ch9-testing-debugging.html | fd7b8e3c641f | 2026-11-19 | Pass; source, exception semantics, all practice answers and both exam solutions checked against 35 slides |
+| js/apdr/ch9-lab.js | 1c5b7a31015d | 2026-11-19 | Pass; all 24 challenge answers and explanations checked against the lecture |
+| apdr/ch9-testing-debugging-lab.html | 3a863ea9dce2 | 2026-11-19 | Pass; six experiment links, stage wiring and guide references checked |
 | eei/ch1-electrostatic-fields.html | 7970d8196aef | 2026-11-18 | Pass; all 38 practice and both exam answers recomputed; fixed: uniqueness theorem was called the reason field lines cannot cross (the reason is that E has one direction at each point) |
 | js/eei/ch1-lab.js | fa04095b9acb | 2026-11-18 | Pass, no errors found |
 | eei/ch1-electrostatic-fields-lab.html | c5f857947918 | 2026-11-18 | Pass, no errors found |
