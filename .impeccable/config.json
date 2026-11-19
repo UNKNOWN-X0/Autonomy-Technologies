@@ -13,7 +13,7 @@
         "rule": "design-system-font",
         "value": "math\",\"stix two math\",\"times new roman\",serif",
         "createdAt": "2026-11-17T13:06:48.391Z",
-        "reason": "The mathematical serif fallback is explicitly documented in DESIGN.md Formula typography; this page uses the shared guide.css stack."
+        "reason": "The mathematical serif fallback is explicitly documented in DESIGN.md Formula typography; this page uses the shared guide.css stack. User confirmed 2026-11-19."
       },
       {
         "rule": "design-system-color",
@@ -213,6 +213,24 @@
         ],
         "createdAt": "2026-11-18T23:51:12.226Z",
         "reason": "The detector reads the lab stage canvas as flush content; its only text, .stage-note, has a paper fill, 6px horizontal padding and an 8px total bottom inset. css/lab.css confirms this is the deliberate full-bleed drawing stage."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch8-recursion-dictionaries-lab.html"
+        ],
+        "createdAt": "2026-11-19T00:48:13.861Z",
+        "reason": "Agent: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has 8px bottom and 14px left inset in css/lab.css."
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "{index.html,about/*.html,mei/*.html,apdr/*.html,eei/*.html}"
+        ],
+        "createdAt": "2026-11-19T01:26:53.565Z",
+        "reason": "user confirmed 2026-11-19; DESIGN.md owner decision 2026-11-04 allows the one shared soft --glow (0 0 6px rgb(128 236 241 / 0.55)) on signal lines and marks"
       }
     ]
   }
