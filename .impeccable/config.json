@@ -240,6 +240,15 @@
         ],
         "createdAt": "2026-11-19T01:27:40.534Z",
         "reason": "Agent: same as the Chapter 8 lab exception: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has its inset in css/lab.css"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch7a-advanced-concepts-lab.html"
+        ],
+        "createdAt": "2026-11-19T10:35:54.104Z",
+        "reason": "The findings are full-bleed drawing canvases inside .stage; the only HTML text, .stage-note, has a paper fill and inset in css/lab.css, matching the existing APDR lab-stage exceptions."
       }
     ]
   }

@@ -669,7 +669,7 @@
  "tools_guide_to_tex_find": "Finds the first element that matches a test. Part of the tool that turns a guide page into LaTeX and PDF, line 54.",
  "tools_guide_to_tex_grow_delims": "Handles the grow delims. Part of the tool that turns a guide page into LaTeX and PDF, line 147.",
  "tools_guide_to_tex_inline": "Converts running text with its bold, italics, symbols and sub- and superscripts. Part of the tool that turns a guide page into LaTeX and PDF, line 93.",
- "tools_guide_to_tex_main": "Runs the tool from the command line. Part of the tool that turns a guide page into LaTeX and PDF, line 1368.",
+ "tools_guide_to_tex_main": "Runs the tool from the command line. Part of the tool that turns a guide page into LaTeX and PDF, line 1367.",
  "tools_guide_to_tex_math": "Converts a formula into LaTeX maths. Part of the tool that turns a guide page into LaTeX and PDF, line 183.",
  "tools_guide_to_tex_math_text": "Converts the text parts inside a formula. Part of the tool that turns a guide page into LaTeX and PDF, line 165.",
  "tools_guide_to_tex_math_wrap": "Wraps a long formula so it fits the PDF page. Part of the tool that turns a guide page into LaTeX and PDF, line 246.",

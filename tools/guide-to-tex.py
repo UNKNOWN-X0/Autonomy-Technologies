@@ -1230,9 +1230,16 @@ class Conv:
         if t == "div" and "eq" in c:
             title = find(k, lambda n: n.tag == "strong" and n.parent is k)
             forms = [n for n in k.kids if isinstance(n, Node) and "formula" in n.cls]
+            photo = find(k, lambda n: n.tag == "figure" and find(n, lambda m: m.tag == "img"))
             note = find(k, lambda n: "eq-note" in n.cls)
             formula_lines = r" \\ ".join(grow_delims(math(form)) for form in forms)
             s = "\n\\begin{equationcard}{%s}\n\\[ \\begin{gathered} %s \\end{gathered} \\]\n" % (inline(title) if title else "", formula_lines)
+            if photo:
+                image = find(photo, lambda n: n.tag == "img")
+                caption = find(photo, lambda n: n.tag == "figcaption")
+                s += "\\begin{center}\\includegraphics[width=\\linewidth,height=.50\\textheight,keepaspectratio]{\\detokenize{%s}}\\end{center}\n" % image.attrs.get("src", "")
+                if caption:
+                    s += "{\\small %s}\n" % inline(caption)
             if note:
                 s += "{\\small %s}\n" % inline(note)
             return s + "\\end{equationcard}\n"
@@ -1375,6 +1382,8 @@ def main(src, dst):
     code = find(head, lambda n: "code" in n.cls).text().strip()
     chapter = course.split("·")[-1].strip()
     pre = PREAMBLE
+    if "\\includegraphics" in body:  # only a page with a card photo loads graphicx, so other pages' .tex stay unchanged
+        pre = pre.replace("\\usepackage{amsmath}\n", "\\usepackage{amsmath}\n\\usepackage{graphicx}\n", 1)
     for k, v in (("@TITLE@", title), ("@COURSE@", course), ("@CODE@", code), ("@CHAPTER@", chapter)):
         pre = pre.replace(k, tex_text(v))
     with open(dst, "w", encoding="utf-8") as f:

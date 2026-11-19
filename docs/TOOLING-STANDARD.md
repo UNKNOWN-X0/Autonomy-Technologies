@@ -7,7 +7,7 @@ This standard describes the authoring and verification tools for the AutonomyTec
 | Tool | Role | Inputs and outputs |
 |---|---|---|
 | `tools/page-check.sh` | Run a page's whole acceptance pipeline | Regenerates the `.tex` and `.pdf` from the HTML, scans the LaTeX log, renders a contact sheet, runs the checker (errors and a quotient written with "/" fail), and runs the workspace probe. Prints PASS/FAIL/SKIP; `--no-pdf` and `--no-probe` skip steps. It is the one explicit generation command; the checker itself stays read-only. |
-| `tools/guide-to-tex.py` | Convert a course page to printable LaTeX | Reads one HTML source and writes one `.tex` file at the explicit destination. The HTML remains authoritative. |
+| `tools/guide-to-tex.py` | Convert a course page to printable LaTeX | Reads one HTML source and writes one `.tex` file at the explicit destination. Appendix equation cards can include a local raster image with its caption; LaTeX resolves the image path from the subject folder. The HTML remains authoritative. |
 | `latexmk -xelatex` | Build the printable copy | Reads the generated `.tex` and writes the `.pdf`; run from the subject folder so relative assets resolve. |
 | `tools/stack-fractions.py` | Turn quotients written with “/” into stacked fractions | Rewrites the named pages in place (`--list` only shows the changes) and lists function quotients such as sin x/cos x to convert by hand; regenerate the `.tex` and `.pdf` afterwards. |
 | `tools/print-sheet.cjs` | Print an exam sheet (`<main data-print="sheet">`) to its A4 PDF with Chromium | `node tools/print-sheet.cjs <page> [--fit]`: `--fit` writes the largest fitting `--pt` per side into the page; fails when a side overflows or the PDF has more pages than sides. Uses the workspace BrowserTests Playwright install; `tools/page-check.sh` runs it for sheet pages. |
@@ -48,7 +48,7 @@ Use the matching subject path and filename for the page being changed. For a bat
 
 Before changing a tool, identify every page type and caller it serves. Preserve existing source files and unrelated working-tree changes. Make the smallest change that keeps the tool's input/output contract stable.
 
-- Converter changes must preserve HTML source authority, explicit source/destination paths, UTF-8 handling, page structure, answers handling, and supported figure/math rendering. Keep rendered geometry in step with the browser renderer.
+- Converter changes must preserve HTML source authority, explicit source/destination paths, UTF-8 handling, page structure, answers handling, and supported figure/math rendering. Appendix card images must resolve from the subject folder and stay within the text measure. Keep rendered geometry in step with the browser renderer.
 - Checker changes must report the affected page clearly, distinguish errors from warnings, and fail with a nonzero exit only for errors. Add checks only when the required fact is deterministic from repository files.
 - A new tool must have a clear purpose, documented invocation, bounded inputs and outputs, useful failure messages, and one focused self-check or test when its logic is non-trivial.
 - Do not make a checker silently rewrite pages or generated files. Keep validation read-only; make generation an explicit command.

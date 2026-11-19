@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "tools/guide-to-tex.py": {
-    "mtime": 1795100164.0655098,
-    "seen": 1795100207.9267662,
-    "ast_hash": "34e815826c3796b0cda65b7a8970a44c",
+    "mtime": 1795100340.4142153,
+    "seen": 1795100465.6499789,
+    "ast_hash": "bbfb71a47f94f729e1e5ce5424dbc119",
     "semantic_hash": ""
   },
   "eei/ch1-electrostatic-fields.html": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795099905.334828,
-    "seen": 1795100207.9266958,
+    "mtime": 1795100232.080185,
+    "seen": 1795100465.649911,
     "ast_hash": "45d7baa84e508a141054ebd9c6961c25",
     "semantic_hash": ""
   },

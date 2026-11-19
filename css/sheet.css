@@ -330,6 +330,7 @@
     border: 0.5pt solid #45556d; /* the light theme's --muted: print stays light whatever the screen theme */
   }
   .sheet-card th {
+    color: #0b1b33;
     background: #e3e9f2;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
