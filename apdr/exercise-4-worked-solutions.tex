@@ -297,16 +297,19 @@ Try first: Compose the daily detectors, classification, weekly summary, and reco
 \begin{keepsection}\subsection{Task 3: Find sustained high-heart-rate intervals}
 
 \begin{workedbox}{Task 03 \ensuremath{\cdot} worked solution}
-\Needspace{20\baselineskip}
+\Needspace{21\baselineskip}
 \begin{enumerate}
 \item Start a run when heart rate first reaches the threshold. A below-threshold or missing row closes it; never join across a gap.
-\item Measure duration from parseable timestamps. For ordinal timestamps only, sample-count fallback assumes one minute per row; this is valid only when the exercise sampling interval is one minute.
+\item With parseable timestamps, duration is elapsed time from the first qualifying reading to the last. For ordinal timestamps only, the fallback counts one minute per row; this assumes one-minute sampling. For example, timestamps 00:00, 00:01, and 00:02 span two elapsed minutes, while three ordinal samples count as three minutes under that fallback.
 \item Return inclusive (start, end) pairs only when duration meets the requested minimum. Also close a run that reaches the final row.
 \item \Needspace{3\baselineskip}
 \textbf{Reference implementation:}
 \begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
 \noindent\hspace*{0em}\texttt{from datetime import datetime}\par
 \noindent\hspace*{0em}\texttt{def flag\_sustained\_anomalies(log, threshold, min\_duration\_min):}\par
+\noindent\hspace*{1em}\texttt{if len(log) \ensuremath{<} 2:}\par
+\noindent\hspace*{3em}\texttt{return []}\par
+\noindent\hspace*{0em}\texttt{}\par
 \noindent\hspace*{1em}\texttt{def keep\_if\_long(result, start, end):}\par
 \noindent\hspace*{3em}\texttt{try:}\par
 \noindent\hspace*{5em}\texttt{a = datetime.fromisoformat(str(log[start][0]))}\par

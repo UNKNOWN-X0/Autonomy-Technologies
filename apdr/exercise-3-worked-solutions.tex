@@ -452,11 +452,11 @@ Try first: Encode a value at a chosen width and verify decoding in each byte ord
 \begin{keepsection}\subsection{Task 9: Simulate first-fit heap allocations}
 
 \begin{workedbox}{Task 09 \ensuremath{\cdot} worked solution}
-\Needspace{14\baselineskip}
+\Needspace{15\baselineskip}
 \begin{enumerate}
-\item Represent each free block as a start and length. Visit blocks in address order and choose the first with enough space.
-\item Split the selected block into any unused prefix and suffix, or mark it fully allocated. Invalid negative requests should fail clearly.
-\item Check that allocations do not overlap and that every successful range stays within the pool.
+\item This function accepts allocation sizes but has no free operation, so the free memory remains one contiguous suffix starting at \texttt{next\_address}.
+\item First-fit therefore succeeds when \texttt{next\_address + size} is within the pool, returns that range, and advances the address. Otherwise it records \texttt{None}. Reject negative pool and request sizes.
+\item Check that successful ranges do not overlap, remain within the pool, and that a failed request does not move the next address.
 \item \Needspace{3\baselineskip}
 \textbf{Reference implementation:}
 \begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
@@ -479,7 +479,7 @@ Try first: Encode a value at a chosen width and verify decoding in each byte ord
 \begin{keepsection}\subsection{Task 10: Check integer encode/decode round trips}
 
 \begin{workedbox}{Task 10 \ensuremath{\cdot} worked solution}
-\Needspace{14\baselineskip}
+\Needspace{16\baselineskip}
 \begin{enumerate}
 \item For an unsigned width w bytes, valid values satisfy 0 \ensuremath{\leq} value \ensuremath{<} 2\textasciicircum{}(8w). Validate width, value, and endianness before encoding.
 \item Emit bytes from most significant to least significant for big-endian, and reverse that order for little-endian.
@@ -494,6 +494,10 @@ Try first: Encode a value at a chosen width and verify decoding in each byte ord
 \noindent\hspace*{3em}\texttt{raise ValueError("value does not fit")}\par
 \noindent\hspace*{1em}\texttt{shifts = range(width - 1, -1, -1) if endianness == "big" else range(width)}\par
 \noindent\hspace*{1em}\texttt{return bytes((value \ensuremath{>}\ensuremath{>} (8 * shift)) \& 255 for shift in shifts)}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{0em}\texttt{def roundtrip\_test(value, endianness, width):}\par
+\noindent\hspace*{1em}\texttt{encoded = uint\_to\_bytes(value, width, endianness)}\par
+\noindent\hspace*{1em}\texttt{return bytes\_to\_uint(encoded, endianness) == value}\par
 \end{tcolorbox}
 \end{enumerate}
 \end{workedbox}
