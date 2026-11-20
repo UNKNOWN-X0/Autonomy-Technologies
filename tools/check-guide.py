@@ -7,6 +7,7 @@ Prints every problem found and exits 1 if any errors remain. Warnings do not fai
 import importlib.util
 import os
 import re
+import subprocess
 import sys
 import tempfile
 
@@ -177,6 +178,13 @@ def check_exercise(path, rel, rep, kind="Exercise"):
     body = find(root, lambda n: n.tag == "body")
     if not body or not re.search(r"\bs-[a-z]+-\d\b", body.attrs.get("class", "")):
         rep.err('<body> needs a subject class such as class="s-eei-1"')
+    page_type = WORKED_PAGE.fullmatch(rel)
+    problem_key = None
+    if page_type:
+        course, kind_name, number = page_type.groups()
+        problem_key = "%s1-%s%s" % (course, "bb" if kind_name == "blackboard-exercise" else "tut" if kind_name == "tutorial" else "ex", number)
+        if not body or body.attrs.get("data-key") != problem_key:
+            rep.err('<body> needs data-key="%s" for per-problem progress' % problem_key)
     toc = find(root, lambda n: n.tag == "nav" and "toc" in n.cls)
     if not toc or not find(toc, lambda n: "brand" in n.cls and find(n, lambda m: m.tag == "svg")):
         rep.err("the rail needs the site brand with its mark, as on the guides")
@@ -188,6 +196,16 @@ def check_exercise(path, rel, rep, kind="Exercise"):
         if not head or not find(head, lambda n, p=part: n.tag == p or p in n.cls):
             rep.err("sign header is missing its %s" % part)
     tasks = [s for s in all_nodes(main, lambda n: n.tag == "section") if re.fullmatch(r"task-\d+", s.attrs.get("id", ""))]
+    problem_heads = all_nodes(main, lambda n: n.tag == "h3")
+    if problem_key:
+        seen = set()
+        for heading in problem_heads:
+            pid, data_p = heading.attrs.get("id", ""), heading.attrs.get("data-p", "")
+            if not data_p or pid != "p-" + data_p:
+                rep.err("every problem h3 needs matching id=\"p-…\" and data-p")
+            if data_p in seen:
+                rep.err("problem progress key %s is duplicated" % data_p)
+            seen.add(data_p)
     if not tasks:
         rep.err("no task sections (#task-N) found")
     for s in tasks:
@@ -229,6 +247,8 @@ def check_exercise(path, rel, rep, kind="Exercise"):
         rep.err("index.html does not link to %s from its subject's %s tab" % (rel, kind))
     elif "data-note=" not in link.group(1) or "data-no=" not in link.group(1):
         rep.err("the hub link to %s needs data-no and data-note (its row number and what it covers)" % rel)
+    elif problem_key and (('data-key="%s"' % problem_key) not in link.group(1) or ('data-total="%s"' % len(problem_heads)) not in link.group(1)):
+        rep.err("the hub link to %s needs matching data-key and data-total for its problem progress badge" % rel)
     if link and not re.search(r'data-added="\d{4}-\d\d-\d\d"', link.group(1)):
         rep.err("the hub link to %s needs data-added=\"YYYY-MM-DD\", the day it went online (js/whatsnew.js)" % rel)
     check_smoke(path, rep)
@@ -300,6 +320,9 @@ def check_appendix(path, rel, rep):
 
 def check(path):
     rep = Report(os.path.relpath(path, ROOT))
+    with open(path, encoding="utf-8") as page:
+        if re.search(r"https?://fonts\.(?:googleapis|gstatic)\.com", page.read(), re.I):
+            rep.err("external Google Fonts request found; use the self-hosted Hanken Grotesk font")
     if APPENDIX.fullmatch(os.path.relpath(path, ROOT)):
         return check_appendix(path, os.path.relpath(path, ROOT), rep)
     worked = WORKED_PAGE.fullmatch(os.path.relpath(path, ROOT))
@@ -562,6 +585,10 @@ def check_lab(path, key, rep):
 
 def main(paths):
     failed = False
+    index = subprocess.run([sys.executable, "-I", os.path.join(ROOT, "tools", "build-search.py"), "--check"], cwd=ROOT, capture_output=True, text=True)
+    if index.returncode:
+        print(index.stderr.strip() or index.stdout.strip())
+        failed = True
     for p in paths:
         # A lab is checked through its guide (check_lab runs from there); checking the lab file itself reports
         # false errors such as missing PDF links, because labs have no print copy.

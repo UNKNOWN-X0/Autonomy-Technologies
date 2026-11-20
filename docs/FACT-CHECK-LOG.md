@@ -27,8 +27,8 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | js/apdr/ch2-lab.js | fa150f9e449b | 2026-11-18 | Pass, no errors found |
 | apdr/ch2-computers-lab.html | 783894f08f69 | 2026-11-18 | Pass, no errors found |
 | apdr/ch3-data-representation.html | 91fd975fb7ab | 2026-11-18 | Pass, no errors found |
-| js/apdr/ch3-lab.js | 3eb6515a0fbf | 2026-11-18 | Pass, no errors found |
-| apdr/ch3-data-representation-lab.html | 81f6f2e0380f | 2026-11-18 | Pass, no errors found |
+| js/apdr/ch3-lab.js | 20cd14b35c82 | 2026-11-20 | Previously fact-checked challenges unchanged; empty readout placeholders now use an ellipsis. |
+| apdr/ch3-data-representation-lab.html | 9c7629520cf1 | 2026-11-20 | Previously fact-checked content unchanged; empty readout placeholders now use an ellipsis. |
 | apdr/ch34a-integer-and-floating-point.html | b84f5b2fc185 | 2026-11-18 | Pass, no errors found |
 | js/apdr/ch34-lab.js | 2c099865cd67 | 2026-11-18 | Pass, no errors found |
 | apdr/ch34a-integer-and-floating-point-lab.html | b02acd7a4a49 | 2026-11-18 | Pass, no errors found |
@@ -61,11 +61,11 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | js/apdr/ch11-lab.js | 6f7057cbd9c5 | 2026-11-19 | Pass; all 24 challenge answers and explanations checked |
 | apdr/ch11-classes-inheritance-lab.html | a9ba8ee1091d | 2026-11-19 | Pass; six experiment links, guide references and Dog example input verified; fixed malformed quoted value |
 | eei/ch1-electrostatic-fields.html | 7970d8196aef | 2026-11-18 | Pass; all 38 practice and both exam answers recomputed; fixed: uniqueness theorem was called the reason field lines cannot cross (the reason is that E has one direction at each point) |
-| js/eei/ch1-lab.js | fa04095b9acb | 2026-11-18 | Pass, no errors found |
-| eei/ch1-electrostatic-fields-lab.html | c5f857947918 | 2026-11-18 | Pass, no errors found |
+| js/eei/ch1-lab.js | 33e8dc315479 | 2026-11-20 | Previously fact-checked challenges unchanged; empty readout placeholders now use an ellipsis. |
+| eei/ch1-electrostatic-fields-lab.html | 835c9cca2b67 | 2026-11-20 | Previously fact-checked content unchanged; empty readout placeholders now use an ellipsis. |
 | eei/ch2-stationary-currents.html | 6b74416c71cc | 2026-11-18 | Pass, no errors found |
-| js/eei/ch2-lab.js | cf43492bbb80 | 2026-11-18 | Pass, no errors found |
-| eei/ch2-stationary-currents-lab.html | b8d7a71b26cb | 2026-11-18 | Pass, no errors found |
+| js/eei/ch2-lab.js | a81adf8ac0df | 2026-11-20 | Previously fact-checked challenges unchanged; empty readout placeholders now use an ellipsis. |
+| eei/ch2-stationary-currents-lab.html | 2bb536a39889 | 2026-11-20 | Previously fact-checked content unchanged; empty readout placeholders now use an ellipsis. |
 | eei/ch3-dc-networks.html | d9c879826cf5 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
 | js/eei/ch3-lab.js | 676198ec1501 | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |
 | eei/ch3-dc-networks-lab.html | e0cc7bab7d8f | 2026-11-18 | Pass; node systems, bridge and exam answers recomputed |

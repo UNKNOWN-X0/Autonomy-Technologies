@@ -73,7 +73,7 @@
   }
 
   function drawBits(ctx, bits, centerX, y, c, activeIndex) {
-    var str = String(bits || "—").replace(/\s/g, ""), cut = str.length > 16, max = Math.min(str.length, 16), w = Math.min(38, 300 / max), h = 38,
+    var str = String(bits || "…").replace(/\s/g, ""), cut = str.length > 16, max = Math.min(str.length, 16), w = Math.min(38, 300 / max), h = 38,
       x = centerX - (max * w + (max - 1) * 3) / 2;
     for (var i = 0; i < max; i++) box(ctx, cut && i === max - 1 ? "…" : str[i], x + i * (w + 3), y, w, h, c, i === activeIndex, 15);
   }
@@ -115,7 +115,7 @@
 
   function drawBases(ctx, w, h, c, s) {
     text(ctx, "Positional value: digit × base place", w / 2, 26, c, 15);
-    text(ctx, String(s.value || "—") + "  in base " + (s.from || "?"), w / 2, 67, c, 16);
+    text(ctx, String(s.value || "…") + "  in base " + (s.from || "?"), w / 2, 67, c, 16);
     var binary = "";
     try { binary = P.toBase(P.parseBase(s.value || "0", s.from || 10), 2); } catch (e) { binary = "enter a valid numeral"; }
     var valid = /^[01]+$/.test(binary), hidden = s.challenge && !s.revealing && s.result == null, size = s.to === 8 ? 3 : s.to === 16 ? 4 : 0;
@@ -211,9 +211,9 @@
     text(ctx, "Unsigned binary arithmetic", w / 2, 25, c, 15);
     var drawn = unsignedRows(ctx, w, h, c, s);
     if (!drawn) {
-      text(ctx, String(s.left || "—"), w * .22, 74, c, 15);
+      text(ctx, String(s.left || "…"), w * .22, 74, c, 15);
       text(ctx, s.operation === "subtract" ? "−" : s.operation === "multiply" ? "×" : s.operation === "divide" ? "÷" : "+", w / 2, 74, c, 19, "center", c.course);
-      text(ctx, String(s.right || "—"), w * .78, 74, c, 15);
+      text(ctx, String(s.right || "…"), w * .78, 74, c, 15);
       arrow(ctx, w * .25, 111, w * .75, 111, c, s.revealing);
       if (s.operation === "divide" && (s.result != null || s.revealing && s.progress > .5)) {
         try {
@@ -282,7 +282,7 @@
       readForm(); try { state.result = P.convert(state.value, state.from, state.to).result; form.querySelector('[data-out="result"]').textContent = state.result; }
       catch (e) { form.querySelector('[data-out="result"]').textContent = "check digits and base"; } show();
     });
-    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-value]").value = "45"; form.querySelector("[data-from]").value = "10"; form.querySelector("[data-to]").value = "2"; set("45", 10, 2); form.querySelector('[data-out="result"]').textContent = "—"; show(); });
+    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-value]").value = "45"; form.querySelector("[data-from]").value = "10"; form.querySelector("[data-to]").value = "2"; set("45", 10, 2); form.querySelector('[data-out="result"]').textContent = "…"; show(); });
     function challenge(id, short, prompt, value, from, to, options, answer, why) {
       return standard(function () { set(value, from, to); state.guess = ""; show(); },
         function (choice) { state.guess = choice; show(); },
@@ -315,7 +315,7 @@
     function calculate(task, bits, encoding, bias) { return task === "bcd" ? P.encodeBcd(Number(bits)) : minus(P.decodeInteger(bits, encoding, bias)); }
     function readForm() { state.task = form.querySelector("[data-task]").value; state.bits = form.querySelector("[data-value]").value; state.encoding = form.querySelector("[data-encoding]").value; state.bias = Number(form.querySelector("[data-bias]").value); }
     liveAction(form).addEventListener("live", function () { readForm(); try { state.result = calculate(state.task, state.bits, state.encoding, state.bias); form.querySelector('[data-out="result"]').textContent = state.result; } catch (e) { state.result = null; form.querySelector('[data-out="result"]').textContent = "check the pattern or bias"; } show(); });
-    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-task]").value = "decode"; form.querySelector("[data-value]").value = "1111"; form.querySelector("[data-encoding]").value = "twos-complement"; form.querySelector("[data-bias]").value = "8"; readForm(); state.result = null; form.querySelector('[data-out="result"]').textContent = "—"; show(); });
+    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-task]").value = "decode"; form.querySelector("[data-value]").value = "1111"; form.querySelector("[data-encoding]").value = "twos-complement"; form.querySelector("[data-bias]").value = "8"; readForm(); state.result = null; form.querySelector('[data-out="result"]').textContent = "…"; show(); });
     form.querySelector("[data-task]").addEventListener("change", function (event) { form.querySelector('[data-value]').value = event.target.value === "bcd" ? "59" : "1111"; });
     function challenge(id, short, prompt, task, bits, encoding, bias, options, answer, why) {
       return standard(function () { state.task = task; state.bits = bits; state.encoding = encoding; state.bias = bias; state.result = null; state.guess = ""; show(); },
@@ -347,7 +347,7 @@
     function show() { queue(canvas, state); }
     function decode(hex) { return P.decodeAsciiHex(hex); }
     liveAction(form).addEventListener("live", function () { state.hex = form.querySelector("[data-hex]").value; try { state.result = decode(state.hex); form.querySelector('[data-out="result"]').textContent = state.result; } catch (e) { state.result = null; form.querySelector('[data-out="result"]').textContent = "use two-digit ASCII-range hex bytes"; } show(); });
-    form.querySelector('[data-act="reset"]').addEventListener("click", function () { state.hex = "46 72 65 64"; state.result = null; state.guess = ""; form.querySelector("[data-hex]").value = state.hex; form.querySelector('[data-out="result"]').textContent = "—"; show(); });
+    form.querySelector('[data-act="reset"]').addEventListener("click", function () { state.hex = "46 72 65 64"; state.result = null; state.guess = ""; form.querySelector("[data-hex]").value = state.hex; form.querySelector('[data-out="result"]').textContent = "…"; show(); });
     function challenge(id, short, prompt, hex, options, answer, why) {
       return standard(function () { state.hex = hex; state.result = null; state.guess = ""; show(); },
         function (choice) { state.guess = choice; show(); },
@@ -383,7 +383,7 @@
     function readForm() { state.left = form.querySelector("[data-left]").value; state.right = form.querySelector("[data-right]").value; state.operation = form.querySelector("[data-operation]").value; }
     function calculate(left, right, operation) { var r = P.unsignedArithmetic(left, right, operation); return { source: r, label: formatUnsigned(r, operation) }; }
     liveAction(form).addEventListener("live", function () { readForm(); try { var r = calculate(state.left, state.right, state.operation); state.result = r.label; state.resultBits = r.source.bits; state.quotientBits = r.source.quotientBits; state.remainderBits = r.source.remainderBits; form.querySelector('[data-out="result"]').textContent = r.label; } catch (e) { state.result = null; form.querySelector('[data-out="result"]').textContent = "check binary digits and divisor"; } show(); });
-    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-left]").value = "111011"; form.querySelector("[data-right]").value = "101010"; form.querySelector("[data-operation]").value = "add"; state = Object.assign(state, { left: "111011", right: "101010", operation: "add", result: null, guess: "" }); form.querySelector('[data-out="result"]').textContent = "—"; show(); });
+    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-left]").value = "111011"; form.querySelector("[data-right]").value = "101010"; form.querySelector("[data-operation]").value = "add"; state = Object.assign(state, { left: "111011", right: "101010", operation: "add", result: null, guess: "" }); form.querySelector('[data-out="result"]').textContent = "…"; show(); });
     function challenge(id, short, prompt, left, right, operation, options, answer, why) {
       return standard(function () { state.left = left; state.right = right; state.operation = operation; state.result = null; state.guess = ""; show(); },
         function (choice) { state.guess = choice; show(); },
@@ -416,8 +416,8 @@
     function show() { queue(canvas, state); }
     function readForm() { state.width = Number(form.querySelector("[data-width]").value); state.left = form.querySelector("[data-left]").value.trim(); state.right = form.querySelector("[data-right]").value.trim(); state.operation = form.querySelector("[data-operation]").value; }
     function calculate(left, right, operation) { return P.twosArithmetic(left, right, operation); }
-    liveAction(form).addEventListener("live", function () { readForm(); function out(name, value) { form.querySelector('[data-out="' + name + '"]').textContent = value; } try { if (state.left.length !== state.width || state.right.length !== state.width) throw new RangeError("wrong width"); var r = calculate(state.left, state.right, state.operation); Object.assign(state, r); state.result = r; out("pattern", r.pattern); out("result", minus(r.decoded)); out("carry", r.carryOut ? "1" : "0"); out("overflow", r.overflow ? "yes" : "no"); } catch (e) { state.result = null; out("pattern", "enter exactly " + state.width + " bits"); out("result", "—"); out("carry", "—"); out("overflow", "—"); } show(); });
-    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-width]").value = "4"; form.querySelector("[data-left]").value = "0101"; form.querySelector("[data-right]").value = "0011"; form.querySelector("[data-operation]").value = "add"; Object.assign(state, { left: "0101", right: "0011", operation: "add", result: null, guess: "" }); form.querySelector('[data-out="pattern"]').textContent = "—"; form.querySelector('[data-out="result"]').textContent = "—"; form.querySelector('[data-out="carry"]').textContent = "—"; form.querySelector('[data-out="overflow"]').textContent = "—"; show(); });
+    liveAction(form).addEventListener("live", function () { readForm(); function out(name, value) { form.querySelector('[data-out="' + name + '"]').textContent = value; } try { if (state.left.length !== state.width || state.right.length !== state.width) throw new RangeError("wrong width"); var r = calculate(state.left, state.right, state.operation); Object.assign(state, r); state.result = r; out("pattern", r.pattern); out("result", minus(r.decoded)); out("carry", r.carryOut ? "1" : "0"); out("overflow", r.overflow ? "yes" : "no"); } catch (e) { state.result = null; out("pattern", "enter exactly " + state.width + " bits"); out("result", "…"); out("carry", "…"); out("overflow", "…"); } show(); });
+    form.querySelector('[data-act="reset"]').addEventListener("click", function () { form.querySelector("[data-width]").value = "4"; form.querySelector("[data-left]").value = "0101"; form.querySelector("[data-right]").value = "0011"; form.querySelector("[data-operation]").value = "add"; Object.assign(state, { left: "0101", right: "0011", operation: "add", result: null, guess: "" }); form.querySelector('[data-out="pattern"]').textContent = "…"; form.querySelector('[data-out="result"]').textContent = "…"; form.querySelector('[data-out="carry"]').textContent = "…"; form.querySelector('[data-out="overflow"]').textContent = "…"; show(); });
     function challenge(id, short, prompt, left, right, operation, options, answer, why) {
       return standard(function () { state.left = left; state.right = right; state.operation = operation; state.result = null; state.guess = ""; show(); },
         function (choice) { state.guess = choice === "yes" ? "Overflow" : "No overflow"; show(); },

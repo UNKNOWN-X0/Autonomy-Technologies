@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-19T10:24:19+00:00",
+  "generatedAt": "2026-11-20T12:35:21+01:00",
   "title": "Design System: From Fundamentals to AI Apocalypse",
   "extensions": {
     "colorMeta": {
@@ -608,6 +608,11 @@
           "oklch(84% 0.077 325)",
           "oklch(95% 0.060 325)"
         ]
+      },
+      "print-ink": {
+        "role": "text",
+        "displayName": "Print Ink",
+        "canonical": "#000000"
       }
     },
     "typographyMeta": {
@@ -650,6 +655,14 @@
       "code": {
         "displayName": "Code",
         "purpose": "Monospace for program text, Python and C examples and lab sandboxes in the APDR guides and labs."
+      },
+      "formula": {
+        "displayName": "Formula",
+        "purpose": "Shared --f-math token in css/system.css: Cambria Math, STIX Two Math and Times New Roman serif stack; displayed formulas use 1.3rem/1.75."
+      },
+      "exam-sheet": {
+        "displayName": "Exam Sheet",
+        "purpose": "IBM Plex Sans Condensed print face at 7pt/1.2 for fitting the exam sheet on one A4 page."
       }
     },
     "shadows": [
@@ -835,14 +848,14 @@
       "name": "Section Opener and Formula Panel",
       "kind": "card",
       "refersTo": "formula-panel",
-      "description": "Guide h2 with a 2px ink rule and 14px blue square, followed by a cool-paper formula panel.",
+      "description": "Guide h2 with a 2px ink rule and 14px blue square, followed by a cool-paper formula panel. Formula text uses Cambria Math, STIX Two Math, Times New Roman, serif.",
       "html": "<section class=\"ds-sec\"><h2>Potential and voltage</h2><div class=\"ds-eq\">U<sub>AB</sub> = φ<sub>A</sub> − φ<sub>B</sub></div></section>",
       "css": ":host { --fau:#04316a; --fau-deep:#021d40; --fau-tint:#dce5f1; --fau-mark:#04316a; --band-overdue:#04316a; --on-fau:#ffffff; --on-fau-soft:#c9d6ea; --paper:#ffffff; --paper-2:#eef2f7; --ink:#0b1b33; --muted:#45556d; --line:#d3dbe6; --act:#04316a; --act-ink:#ffffff; --apdr-1:#bcb2ff; --apdr-2:#a497ea; --apdr-3:#8c7ed0; --mei-1:#bde892; --mei-2:#a4cd79; --mei-3:#8cb460; --eei-1:#e6b55d; --eei-2:#cc9c42; --eei-3:#b28324; --matlab-1:#80ecf1; --matlab-2:#64d1d7; --matlab-3:#48b7bd; --eei-lab:#c7734b; --sys-1:#fd9cba; --sys-2:#e183a1; --sys-3:#ca6e8c; --ml-1:#fbc0fe; --ml-2:#e5a3e8; --ml-3:#ca8ace; --course:var(--paper-2); --code-ink:#0b1b33; --f-display:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif; --ease:cubic-bezier(0.16, 1, 0.3, 1); font-family:var(--f-display); color:var(--ink); } .ds-sec h2 { display:flex; gap:14px; align-items:baseline; font:800 1.65rem/1.2 var(--f-display); letter-spacing:-0.02em; margin:0 0 16px; padding-top:18px; border-top:2px solid var(--ink); } .ds-sec h2::before { content:''; flex:none; width:14px; height:14px; background:var(--fau-mark); transform:translateY(-1px); } .ds-eq { padding:16px 20px; background:var(--paper-2); overflow-x:auto; }"
     }
   ],
   "narrative": {
     "northStar": "The Semester Sign System",
-    "overview": "**Creative North Star: \"The Semester Sign System\"**\n\nFrom Fundamentals to AI Apocalypse reads like an Ulm-school wayfinding system (the Aicher-era airport and Olympic signage) applied to a whole engineering degree, semester by semester. FAU blue enamel fields own the top of every page and every section opener; white and pale blue-grey paper carries the content underneath. Subjects are named by solid code squares in their own colour family, the same way a terminal names its gates, and semesters are numbered blue squares, the way it numbers its halls. The reader should always know where they are and what is due next.\n\nThe system is flat, square and typographic. There are no rounded corners and no shadows, and motion only ever explains a state change, a jump or progress. One grotesque family at heavy weights does all the signing. State is never carried by a new hue: urgency is a tonal band of the same blue (deep for overdue, tint for due, paper for fresh), and progress is carried by line form (dashed for not yet, solid for done or present). Density is calm and generous on the hub, and denser in the guides, where the formulas and problems carry the page. The system is built to grow: a new semester is one more section and one more jump tile, a follow-on course is the next step of its subject's colour family.\n\nThe world rejects the card-grid docs template and the hero-plus-cards hub. The hub is a sign field with a review board pinned across its lower edge, followed by ruled semester sections of subject rows; the guide is a single reading column with a contents rail.\n\n**Second layer: \"The Route Ahead\".** The degree is a route from fundamentals to AI, and the site should feel like it points forward, not like an archive. The sign system stays the ground; on top of it runs one **signal line**: the cyan-to-green gradient already inside the site mark, drawn as thin lines and fills that light up as the student moves forward. It traces the route through the semesters on the hub, fills as skills are mastered, and answers the student in the labs, where values move like instrument readouts. Modern here means precise, alive and responsive to what the student does; it never means decoration, glass, glow or page-load spectacle. Reading surfaces stay calm: the signal lives at the edges (route, progress, feedback), never inside the maths.",
+    "overview": "**Creative North Star: \"The Semester Sign System\"**\n\nFrom Fundamentals to AI Apocalypse reads like an Ulm-school wayfinding system (the Aicher-era airport and Olympic signage) applied to a whole engineering degree, semester by semester. FAU blue enamel fields own the top of every page and every section opener; white and pale blue-grey paper carries the content underneath. Subjects are named by solid code squares in their own colour family, the same way a terminal names its gates, and semesters are numbered blue squares, the way it numbers its halls. The reader should always know where they are and what is due next.\n\nThe system is flat, square and typographic. There are no rounded corners and no shadows except the one soft `--glow` on signal lines and marks, and motion only ever explains a state change, a jump or progress. One grotesque family at heavy weights does all the signing. State is never carried by a new hue: urgency is a tonal band of the same blue (deep for overdue, tint for due, paper for fresh), and progress is carried by line form (dashed for not yet, solid for done or present). Density is calm and generous on the hub, and denser in the guides, where the formulas and problems carry the page. The system is built to grow: a new semester is one more section and one more jump tile, a follow-on course is the next step of its subject's colour family.\n\nThe world rejects the card-grid docs template and the hero-plus-cards hub. The hub is a sign field with a review board pinned across its lower edge, followed by ruled semester sections of subject rows; the guide is a single reading column with a contents rail.\n\n**Second layer: \"The Route Ahead\".** The degree is a route from fundamentals to AI, and the site should feel like it points forward, not like an archive. The sign system stays the ground; on top of it runs one **signal line**: the cyan-to-green gradient already inside the site mark, drawn as thin lines and fills that light up as the student moves forward. It traces the route through the semesters on the hub, fills as skills are mastered, and answers the student in the labs, where values move like instrument readouts. Modern here means precise, alive and responsive to what the student does; it never means decoration, glass, panel glow or page-load spectacle. Reading surfaces stay calm: the signal lives at the edges (route, progress, feedback), never inside the maths.",
     "keyCharacteristics": [
       "FAU blue (#04316A) sign fields for the hub masthead, guide headers and table headers.",
       "Solid subject code squares in one OKLCH hue per subject (APDR violet, MEI green, EEI amber, MATLAB cyan), stepped lighter to darker for courses I, II and III, holding short codes in Hanken Grotesk 800.",

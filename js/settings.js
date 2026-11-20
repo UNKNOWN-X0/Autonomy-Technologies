@@ -1,6 +1,14 @@
 (function () {
   // Site settings: theme, motion and text size. This file loads in <head>, before the page paints, so a chosen theme
   // never flashes the other one first. Choices are saved in this browser only.
+  var script = document.currentScript || document.querySelector('script[src$="settings.js"]'),
+    serviceWorker = typeof navigator !== "undefined" && navigator.serviceWorker,
+    securePage = typeof location !== "undefined" && (location.protocol === "https:" || /^(localhost|127(?:\.\d{1,3}){3})$/.test(location.hostname));
+  if (script && serviceWorker && securePage) {
+    var workerURL = new URL("../sw.js", script.src),
+      workerScope = new URL("../", script.src).pathname;
+    serviceWorker.register(workerURL.href, { scope: workerScope }).catch(function () {});
+  }
   var KEY = "site-settings",
     root = document.documentElement,
     prefs = {};
@@ -24,7 +32,7 @@
   // need no extra script tag.
   if (document.currentScript) {
     var me = document.currentScript.src;
-    ["hud.js", "whatsnew.js"].forEach(function (name) {
+    ["hud.js", "whatsnew.js", "search.js"].forEach(function (name) {
       var s = document.createElement("script");
       s.src = me.replace(/settings\.js(\?.*)?$/, name);
       document.head.appendChild(s);
@@ -194,6 +202,31 @@
     note.className = "settings-note";
     note.textContent = "Saved in this browser. System follows your device's own setting.";
     form.appendChild(note);
+    var offline = document.createElement("p");
+    offline.className = "settings-note offline-availability";
+    offline.setAttribute("aria-live", "polite");
+    offline.textContent = serviceWorker ? "Checking offline availability…" : "Offline support requires HTTPS or localhost.";
+    form.appendChild(offline);
+    function showOfflineCount(count) {
+      offline.textContent = "Available offline: " + count + (count === 1 ? " page." : " pages.");
+    }
+    function refreshOfflineCount() {
+      if (!serviceWorker) return;
+      serviceWorker.ready.then(function (registration) {
+        var worker = serviceWorker.controller || registration.active;
+        if (!worker) return;
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function (event) { if (event.data && Number.isFinite(event.data.count)) showOfflineCount(event.data.count); };
+        worker.postMessage({ type: "offline-count" }, [channel.port2]);
+      }).catch(function () { offline.textContent = "Offline availability could not be read."; });
+    }
+    if (serviceWorker) {
+      serviceWorker.addEventListener("message", function (event) {
+        if (event.data && event.data.type === "offline-count") showOfflineCount(event.data.count);
+      });
+      serviceWorker.addEventListener("controllerchange", refreshOfflineCount);
+      refreshOfflineCount();
+    }
     // Progress backup: Safari may clear a site's saved data after 7 days without a visit, and ticks never leave
     // this browser, so a file carries them to safety or to another device. Only on pages that load js/progress.js.
     var P = window.siteProgress;
@@ -216,7 +249,7 @@
       pick.hidden = true;
       said.className = "settings-note";
       said.setAttribute("aria-live", "polite");
-      said.textContent = "Ticks, review days and lab answers, as a file. Import merges a file into this browser.";
+      said.textContent = "Ticks, worked-solution states, review days and lab answers, as a file. Import merges a file into this browser.";
       out.addEventListener("click", function () {
         var a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([JSON.stringify(P.exportData(P.local), null, 1)], { type: "application/json" }));
@@ -275,7 +308,7 @@
     });
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", refresh);
     window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", refresh);
-    dlg.refresh = refresh;
+    dlg.refresh = function () { refresh(); refreshOfflineCount(); };
     document.body.appendChild(dlg);
     return dlg;
   }
@@ -305,10 +338,13 @@
       row.appendChild(home);
       row.appendChild(button(dlg));
     } else if (sems) {
-      var tools = document.createElement("div");
-      tools.className = "field-tools";
-      sems.parentNode.insertBefore(tools, sems);
-      tools.appendChild(sems);
+      var tools = sems.closest(".field-tools");
+      if (!tools) {
+        tools = document.createElement("div");
+        tools.className = "field-tools";
+        sems.parentNode.insertBefore(tools, sems);
+        tools.appendChild(sems);
+      }
       tools.appendChild(button(dlg));
     }
   });

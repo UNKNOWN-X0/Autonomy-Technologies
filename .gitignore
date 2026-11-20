@@ -13,3 +13,6 @@ graphify-out/.graphify_*
 *.out
 __pycache__/
 graphify-out/20*/
+
+# Temporary Codex coordination log; GitHub issues are the durable record.
+docs/note.md

@@ -76,6 +76,30 @@ test("stamp is the local calendar date", () => {
   assert.strictEqual(P.stamp(new Date(2026, 0, 5, 23, 59)), "2026-01-05");
 });
 
+test("countSolved counts only worked and redo states", () => {
+  assert.deepStrictEqual(P.countSolved({ a: "worked", b: "redo", c: true, d: "other" }), { worked: 1, redo: 1 });
+  assert.deepStrictEqual(P.countSolved(null), { worked: 0, redo: 0 });
+});
+
+test("progress backups preserve worked-solution states", () => {
+  const source = store({ "apdr1-ex1-checks": JSON.stringify({ "task-1-1": "worked", "task-2-2": "redo" }) });
+  const target = store({ "apdr1-ex1-checks": JSON.stringify({ "task-3-3": "worked" }) });
+  P.importData(target, P.exportData(source));
+  assert.deepStrictEqual(JSON.parse(target.getItem("apdr1-ex1-checks")), { "task-3-3": "worked", "task-1-1": "worked", "task-2-2": "redo" });
+});
+
+test("progress import keeps this browser's worked-solution state over an older backup", () => {
+  const target = store({ "apdr1-ex1-checks": JSON.stringify({ a: "worked" }) });
+  P.importData(target, { site: "autonomy-technologies", data: { "apdr1-ex1-checks": { a: "redo", b: "redo" } } });
+  assert.deepStrictEqual(JSON.parse(target.getItem("apdr1-ex1-checks")), { a: "worked", b: "redo" });
+});
+
+test("progress import ignores invalid worked-solution states but keeps legacy ticks", () => {
+  const target = store({ "apdr1-ex1-checks": JSON.stringify({ a: "worked", b: "redo" }) });
+  P.importData(target, { site: "autonomy-technologies", data: { "apdr1-ex1-checks": { a: "done", b: "unsure", c: "true", d: 1, e: true } } });
+  assert.deepStrictEqual(JSON.parse(target.getItem("apdr1-ex1-checks")), { a: "worked", b: "redo", e: true });
+});
+
 test("export then import into another browser merges ticks, days and lab answers (#4)", () => {
   const phone = store({
     "x-checks": JSON.stringify({ a: true, "lab-1": true }),

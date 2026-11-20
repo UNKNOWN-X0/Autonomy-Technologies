@@ -7,7 +7,7 @@
     SERIES = { "0.2": 0.2, "0.1": 0.1, "0.05": 0.05 };
 
   function number(n) {
-    if (!Number.isFinite(n)) return "—";
+    if (!Number.isFinite(n)) return "…";
     if (n === 0) return "0";
     return String(Number(n.toPrecision(3)));
   }

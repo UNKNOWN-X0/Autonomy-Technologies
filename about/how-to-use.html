@@ -9,9 +9,7 @@
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="../manifest.webmanifest" />
     <link rel="stylesheet" href="../css/system.css" /><script src="../js/settings.js"></script><script src="../js/progress.js"></script>
     <link rel="stylesheet" href="../css/guide.css" />
   </head>
@@ -46,6 +44,8 @@
 
         <section id="sec-2" aria-labelledby="s2-title"><h2 id="s2-title">2 The hub</h2>
           <p>The hub is the home page. Use the semester buttons at the top to jump to a semester.</p>
+          <h3>Search</h3>
+          <p>Open the magnifying-glass button on the hub or in a page rail. Search accepts word prefixes, ranks matching titles first, and links to the section, example or exercise. Press <kbd>/</kbd> or <kbd>⌘K</kbd> (Ctrl+K on Windows) to open it from the keyboard.</p>
           <h3>Review today</h3>
           <p>The board at the top lists the chapters you have started, most urgent first. <strong>now</strong> means a review is due today; <strong>in 5 d</strong> means it comes back in five days. Gaps grow with each review: 1 day, then 1 week, then 1 month. <strong>Show all chapters</strong> under the board opens the ones that are not due yet.</p>
           <h3>Subjects and the route</h3>
@@ -88,6 +88,7 @@
         <section id="sec-5" aria-labelledby="s5-title"><h2 id="s5-title">5 Ticks and reviews</h2>
           <p>The end of each guide has a checklist of skills. Tick one only when you can do it from a blank page. The bar under the chapter title fills as you tick, and a full bar gets a green line.</p>
           <p>When you come back to a chapter for a review, press <strong>Log today's review</strong>. That schedules the next one and moves the chapter on the hub's board.</p>
+          <p>On an exercise or tutorial solution page, mark each problem <strong>Worked it</strong> or <strong>Redo</strong>. The page summary and its hub row show how many are worked and how many to revisit. Press the selected choice again to clear it.</p>
         </section>
 
         <section id="sec-6" aria-labelledby="s6-title"><h2 id="s6-title">6 Settings and offline</h2>
@@ -98,8 +99,9 @@
             <li><strong>Text size:</strong> Default or Large.</li>
           </ul>
           <p>The line under the Settings heading says what is in effect right now, including what System means on your device at the moment.</p>
+          <p>On HTTPS, the site saves its shared files and the pages you visit for offline study; PDFs are saved only after you open them. Settings shows how many pages are available offline. If a page looks stale after a release, reload twice to pick up the new files. A page you have not opened yet needs a connection.</p>
           <p>Each guide can be downloaded as a clean PDF for printing, or as its LaTeX source.</p>
-          <p class="method"><strong>Your progress lives in this browser.</strong> Ticks, reviews, lab results and settings are saved on this device only. A different browser or device starts fresh, and clearing this site's data resets it. Safari may also clear it by itself after about a week without a visit. <strong>Export progress</strong> in Settings saves everything as a file; <strong>Import progress</strong> merges such a file back in, on this or another device: a skill ticked in either stays ticked, and review days are combined.</p>
+          <p class="method"><strong>Your progress lives in this browser.</strong> Ticks, worked-solution states, reviews, lab results and settings are saved on this device only. A different browser or device starts fresh, and clearing this site's data resets it. Safari may also clear it by itself after about a week without a visit. <strong>Export progress</strong> in Settings saves everything as a file; <strong>Import progress</strong> merges such a file back in, on this or another device: a skill ticked in either stays ticked, worked-solution states are retained, and review days are combined.</p>
         </section>
 
         <p class="source-note">See the <a href="version-log.html">version log</a> for what has changed. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>

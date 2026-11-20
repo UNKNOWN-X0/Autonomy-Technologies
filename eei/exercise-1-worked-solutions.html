@@ -9,13 +9,11 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="../manifest.webmanifest" />
   <link rel="stylesheet" href="../css/system.css" /><script src="../js/settings.js"></script><script src="../js/progress.js"></script>
   <link rel="stylesheet" href="../css/guide.css" />
 </head>
-<body class="s-eei-1">
+<body class="s-eei-1" data-key="eei1-ex1">
 <div class="wrap">
   <nav class="toc" aria-label="Exercise contents">
     <a class="brand" href="../index.html" aria-label="From Fundamentals to AI Apocalypse home">
@@ -51,7 +49,7 @@
       <p class="topic-link"><strong>Connected topic:</strong> <a href="ch1-electrostatic-fields.html#sec-110">Flux and Gauss’s law (§1.10)</a> use closed surfaces and their outward normals to describe which way flux crosses a boundary.</p>
       <div class="figs"><figure class="viz" data-kind="shape cylinder"><figcaption><strong>Three faces, three outward directions.</strong> The disks have normals along the axis; the curved wall points radially outward. At the rims, two faces meet.</figcaption></figure></div>
 
-      <h3>1a: Describe the three boundary surfaces</h3>
+      <h3 id="p-task-1-1a" data-p="task-1-1a">1a: Describe the three boundary surfaces</h3>
       <p>Try first: write the coordinate ranges for the base, curved side, and top.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">1a · Surface coordinates</p><ol class="method-list">
         <li><p>In cylindrical coordinates, <var>ρ</var> measures distance from the axis, <var>φ</var> gives the angle around it, and <var>z</var> gives height. A point has position:</p><p class="math-line"><var>r</var> = <var>ρ e</var><sub>ρ</sub> + <var>z e</var><sub>z</sub></p><p>The angle has no term of its own: it sits in the direction of <var>e</var><sub>ρ</sub> = cos <var>φ e</var><sub><var>x</var></sub> + sin <var>φ e</var><sub><var>y</var></sub>, which turns as you go round the axis. So <var>r</var> still depends on all three coordinates.</p><p>To describe a surface, hold one coordinate fixed and let the other two run over the part of the surface we want.</p></li>
@@ -61,7 +59,7 @@
         <li><p><strong>Result:</strong> as position vectors, with the ranges above:</p><p class="math-line">base: <var>r</var> = <var>ρ e</var><sub>ρ</sub></p><p class="math-line">side: <var>r</var> = <var>a e</var><sub>ρ</sub> + <var>z e</var><sub>z</sub></p><p class="math-line">top: <var>r</var> = <var>ρ e</var><sub>ρ</sub> + <var>h e</var><sub>z</sub></p><p>In coordinates (<var>ρ</var>, <var>φ</var>, <var>z</var>) these are (<var>ρ</var>, <var>φ</var>, 0), (<var>a</var>, <var>φ</var>, <var>z</var>) and (<var>ρ</var>, <var>φ</var>, <var>h</var>).</p><p><strong>Check:</strong> only the side fixes the radius. Each disk includes the centre and reaches all the way to <var>a</var>.</p></li>
       </ol></div></details>
 
-      <h3>1b: Give the outward unit normals</h3>
+      <h3 id="p-task-1-1b" data-p="task-1-1b">1b: Give the outward unit normals</h3>
       <p>Try first: at each smooth face, which way points from the cylinder’s interior into the surrounding space?</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">1b · Outward normals</p><ol class="method-list">
         <li><p>A surface normal is perpendicular to the surface. “Outward” chooses between the two perpendicular directions by pointing away from the solid. Cylindrical coordinate unit vectors already have length 1.</p></li>
@@ -78,7 +76,7 @@
       <p class="topic-link"><strong>Connected topic:</strong> <a href="ch1-electrostatic-fields.html#sec-113">Spherical capacitors (§1.13)</a> use spherical geometry. The guide’s sphere illustrations help distinguish curved spherical surfaces from flat circular ones.</p>
       <div class="figs"><figure class="viz" data-kind="shape hemisphere"><figcaption><strong>Keep the boundary pieces separate.</strong> The curved hemisphere contributes 2π<var>a</var><sup>2</sup>; the flat base disk contributes π<var>a</var><sup>2</sup>.</figcaption></figure></div>
 
-      <h3>2a: Total surface area</h3>
+      <h3 id="p-task-2-2a" data-p="task-2-2a">2a: Total surface area</h3>
       <p>Try first: find the curved area and base area separately, then add the two pieces.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">2a · Curved surface plus base</p><ol class="method-list">
         <li><p>Use spherical coordinates with polar angle <var>θ</var> measured down from +<var>z</var>. The curved hemisphere lies at <var>r</var> = <var>a</var>, with 0 ≤ <var>θ</var> ≤ <span class="frac"><span>π</span><span>2</span></span> and 0 ≤ <var>φ</var> &lt; 2π.</p></li>
@@ -88,7 +86,7 @@
         <li><p>The flat base is a disk of radius <var>a</var>. Add the boundary pieces:</p><p class="math-line"><var>A</var><sub>total</sub> = 2π<var>a</var><sup>2</sup> + π<var>a</var><sup>2</sup> = 3π<var>a</var><sup>2</sup></p><p><strong>Check:</strong> the curved half is half of 4π<var>a</var><sup>2</sup>. The area has units of length squared. The shared circular edge has zero area, so it does not affect the sum.</p></li>
       </ol></div></details>
 
-      <h3>2b: Volume</h3>
+      <h3 id="p-task-2-2b" data-p="task-2-2b">2b: Volume</h3>
       <p>Try first: write the spherical volume element and integrate over the upper half-sphere.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">2b · Spherical volume integral</p><ol class="method-list">
         <li><p>Inside the hemisphere, radius runs from the centre to the surface: 0 ≤ <var>r</var> ≤ <var>a</var>. The angles cover 0 ≤ <var>θ</var> ≤ <span class="frac"><span>π</span><span>2</span></span> and 0 ≤ <var>φ</var> &lt; 2π.</p></li>
@@ -105,7 +103,7 @@
       <p class="topic-link"><strong>Connected topic:</strong> <a href="ch1-electrostatic-fields.html#sec-18">Electrostatic line integrals (§1.8)</a> use the same path-vector and dot-product steps. Here <var>H</var> is a different supplied field; the connection is the integration method, not an identification of <var>H</var> with <var>E</var>.</p>
       <div class="figs"><figure class="viz" data-kind="shape loop"><figcaption><strong>At the right-hand point, the path tangent points up.</strong> A radial or x-directed field points sideways there; an azimuthal field follows the tangent. Around the full loop, the x-directed contributions cancel.</figcaption></figure></div>
 
-      <h3>3a: Uniform x-directed field</h3>
+      <h3 id="p-task-3-3a" data-p="task-3-3a">3a: Uniform x-directed field</h3>
       <p>Given <var>H</var> = <var>H</var><sub>0</sub><var>e</var><sub>x</sub>. Try first: parameterize the loop and express its tangent in Cartesian components.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">3a · Uniform field</p><ol class="method-list">
         <li><p>Parameterize the circle by its angle:</p><p class="math-line"><var>r</var>(<var>φ</var>) = <var>b</var> cos <var>φ e</var><sub>x</sub> + <var>b</var> sin <var>φ e</var><sub>y</sub>, &nbsp; 0 ≤ <var>φ</var> ≤ 2π</p></li>
@@ -115,7 +113,7 @@
         <li><p><strong>Result:</strong></p><p class="math-line"><span class="op op-int"><span class="op-sym">∮</span></span> <var>H</var> · d<var>s</var> = 0</p><p>The positive and negative tangential contributions cancel over one full turn.</p><p><strong>Check:</strong> the zero is caused by cancellation around the loop, not by the field being perpendicular to the path at every point.</p></li>
       </ol></div></details>
 
-      <h3>3b: Radial field</h3>
+      <h3 id="p-task-3-3b" data-p="task-3-3b">3b: Radial field</h3>
       <p>Given <var>H</var> = <var>H</var><sub>0</sub><var>e</var><sub>ρ</sub>. Try first: compare the local field direction with the tangent at every point.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">3b · Radial field</p><ol class="method-list">
         <li><p>Use the same circle parameterization. At radius <var>b</var>, the tangent line element is:</p><p class="math-line">d<var>s</var> = <var>b e</var><sub>φ</sub> d<var>φ</var></p></li>
@@ -124,7 +122,7 @@
         <li><p><strong>Result:</strong></p><p class="math-line"><span class="op op-int"><span class="op-sym">∮</span></span> <var>H</var> · d<var>s</var> = 0</p><p><strong>Check:</strong> unlike 3a, the integrand is zero point by point. No cancellation between different parts of the circle is needed.</p></li>
       </ol></div></details>
 
-      <h3>3c: Azimuthal field growing with radius</h3>
+      <h3 id="p-task-3-3c" data-p="task-3-3c">3c: Azimuthal field growing with radius</h3>
       <p>Given <var>H</var> = <var>H</var><sub>0</sub>(<span class="frac"><span><var>ρ</var></span><span><var>a</var></span></span>)<var>e</var><sub>φ</sub>. Try first: evaluate this field on the circle and compare it with d<var>s</var>.</p>
       <details class="answers"><summary>Attempted it? Open the worked steps</summary><div class="worked"><p class="worked-title">3c · Tangential field</p><ol class="method-list">
         <li><p>The path is the circle ρ = <var>b</var>, with φ increasing:</p><p class="math-line">d<var>s</var> = <var>b e</var><sub>φ</sub> d<var>φ</var></p></li>

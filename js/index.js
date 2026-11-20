@@ -28,6 +28,10 @@
   function tickTip(c) {
     return c.lab ? c.guideDone + " of " + (c.total - c.lab) + " guide skills · " + c.labDone + " of " + c.lab + " lab experiments" : c.done + " of " + c.total + " chapter skills ticked";
   }
+  function solutionProgress(key, total) {
+    var counts = P.countSolved(read(key + "-checks", {}));
+    return counts.worked + " of " + total + " worked" + (counts.redo ? " · " + counts.redo + " to redo" : "");
+  }
 
   var chapters = Array.prototype.map.call(document.querySelectorAll("li.chapter[data-key]"), function (li) {
     var key = li.dataset.key;
@@ -181,6 +185,14 @@
           row.querySelector(".no").textContent = a.dataset.no || String(ri + 1);
           row.querySelector(".title").textContent = label + " " + (a.dataset.no || ri + 1);
           row.querySelector("p").textContent = a.dataset.note || "";
+          if (a.dataset.key && a.dataset.total) {
+            var progress = solutionProgress(a.dataset.key, +a.dataset.total),
+              badge = document.createElement("span");
+            badge.className = "solution-progress-badge";
+            badge.textContent = progress;
+            badge.setAttribute("aria-label", progress);
+            row.querySelector(".what").appendChild(badge);
+          }
           row.querySelector(".go").appendChild(btn);
           list.appendChild(row);
         });

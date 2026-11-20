@@ -56,6 +56,16 @@
     labs = Math.min(labs, lab);
     return { guideDone: guide, labDone: labs, done: guide + labs };
   }
+  // Counts the two explicit states used by worked-solution problems.
+  function countSolved(checks) {
+    var worked = 0,
+      redo = 0;
+    Object.keys(checks || {}).forEach(function (key) {
+      if (checks[key] === "worked") worked++;
+      else if (checks[key] === "redo") redo++;
+    });
+    return { worked: worked, redo: redo };
+  }
   function utcDay(s) {
     var p = s.split("-");
     return Date.UTC(+p[0], +p[1] - 1, +p[2]);
@@ -110,7 +120,8 @@
       if (/-checks$/.test(k)) {
         out = Object.assign({}, have || {});
         Object.keys(v).forEach(function (c) {
-          if (v[c]) out[c] = true;
+          // A problem state already saved here wins over the file's, so an older backup cannot undo newer progress.
+          if (v[c] === true || ((v[c] === "worked" || v[c] === "redo") && !(c in out))) out[c] = v[c];
         });
       } else if (/-log$/.test(k)) {
         var days = ((have && Array.isArray(have.days) && have.days) || []).slice();
@@ -142,7 +153,7 @@
     };
   }
 
-  var api = { local: local, GAPS: GAPS, stamp: stamp, read: read, write: write, logDay: logDay, prune: prune, count: count, review: review, signature: signature, exportData: exportData, importData: importData };
+  var api = { local: local, GAPS: GAPS, stamp: stamp, read: read, write: write, logDay: logDay, prune: prune, count: count, countSolved: countSolved, review: review, signature: signature, exportData: exportData, importData: importData };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.siteProgress = api;
 })(this);
