@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1795079679.8538694,
-    "seen": 1795091313.659381,
-    "ast_hash": "10fc6331c04edee13c3dbda0d8329883",
+    "mtime": 1795168550.902045,
+    "seen": 1795168809.752522,
+    "ast_hash": "2dda39d3418d71532cd9e54c262d2712",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795166927.3603451,
-    "seen": 1795167131.6016262,
+    "mtime": 1795168565.9853773,
+    "seen": 1795168809.752432,
     "ast_hash": "33e37fe9c3a3ceacc746688415f5aa1f",
     "semantic_hash": ""
   },
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795100192.8427174,
-    "seen": 1795100207.926692,
-    "ast_hash": "0ab2a03e4d18f9d3ebbfb1bcc7b47606",
+    "mtime": 1795168581.9586287,
+    "seen": 1795168809.752428,
+    "ast_hash": "da8f5fa38d7b75f672bd2ec66ea8a6d7",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
