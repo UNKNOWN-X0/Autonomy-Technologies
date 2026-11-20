@@ -1,0 +1,487 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Exercise 3}
+\fancyhead[R]{\small\sffamily Computer Exercise 3: Worked solutions}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Computer Exercise 3: Worked solutions}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Exercise 3\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Manual byte decoding, packet layouts, checksums, stream recovery, address translation, and round trips. Try each task before opening its worked steps. Personalized inputs and results are omitted; apply the methods to your own assigned data.}
+
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 1: Decode an unsigned integer}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 01 \ensuremath{\cdot} Decode an unsigned integer}
+
+\Needspace{3\baselineskip}
+Try first: Decode bytes manually in big-endian order, without int.from\_bytes.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 1: Decode an unsigned integer” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 2: Decode a signed two’s-complement integer}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 02 \ensuremath{\cdot} Decode a signed two’s-complement integer}
+
+\Needspace{3\baselineskip}
+Try first: Decode the unsigned bit pattern, then interpret its top bit as the sign.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 2: Decode a signed two’s-complement integer” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 3: Decode IEEE 754 single precision}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 03 \ensuremath{\cdot} Decode IEEE 754 single precision}
+
+\Needspace{4\baselineskip}
+Try first: Separate sign, exponent, and fraction bits, then apply the normal or subnormal formula.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 3: Decode IEEE 754 single precision” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 4: Infer byte order from a known range}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 04 \ensuremath{\cdot} Infer byte order from a known range}
+
+\Needspace{4\baselineskip}
+Try first: Decode the same bytes both ways and use a plausible range to choose the unique match.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 4: Infer byte order from a known range” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 5: Parse a mixed packet layout}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 05 \ensuremath{\cdot} Parse a mixed packet layout}
+
+\Needspace{4\baselineskip}
+Try first: Walk declared fields in order, consuming padding and decoding each field by its specified type.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 5: Parse a mixed packet layout” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 6: Validate an additive checksum}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 06 \ensuremath{\cdot} Validate an additive checksum}
+
+\Needspace{3\baselineskip}
+Try first: Recompute a modulo-256 sum over payload bytes and compare the final byte.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 6: Validate an additive checksum” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 7: Parse a packet layout}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 07 \ensuremath{\cdot} Parse a packet layout}
+
+\Needspace{4\baselineskip}
+Try first: Walk the declared fields in sequence, track the current byte offset, and decode by type.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 7: Parse a packet layout” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 8: Decode a stream and keep going after errors}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 08 \ensuremath{\cdot} Decode a stream and keep going after errors}
+
+\Needspace{4\baselineskip}
+Try first: Process each packet independently, recording malformed packets rather than aborting the stream.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 8: Decode a stream and keep going after errors” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 9: Simulate first-fit heap allocations}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 09 \ensuremath{\cdot} Simulate first-fit heap allocations}
+
+\Needspace{4\baselineskip}
+Try first: Allocate each request from the first free block large enough, returning its start and size or None.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 9: Simulate first-fit heap allocations” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 10: Check integer encode/decode round trips}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 10 \ensuremath{\cdot} Check integer encode/decode round trips}
+
+\Needspace{3\baselineskip}
+Try first: Encode a value at a chosen width and verify decoding in each byte order returns it.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 10: Check integer encode/decode round trips” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Task 1: Decode an unsigned integer}
+
+\begin{workedbox}{Task 01 \ensuremath{\cdot} worked solution}
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Start with value 0. For every byte, shift the accumulated value left by 8 bits, then OR in the new byte.
+\item For bytes 0x12, 0x34 the calculation is (0 \ensuremath{\times} 256 + 18) \ensuremath{\times} 256 + 52 = 4660. This is positional notation in base 256.
+\item Empty input naturally returns 0. Reject any endianness label other than big or little.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def bytes\_to\_uint(data, endianness="big"):}\par
+\noindent\hspace*{1em}\texttt{if endianness == "big":}\par
+\noindent\hspace*{3em}\texttt{value = 0}\par
+\noindent\hspace*{3em}\texttt{for byte in data:}\par
+\noindent\hspace*{5em}\texttt{value = (value \ensuremath{<}\ensuremath{<} 8) | byte}\par
+\noindent\hspace*{3em}\texttt{return value}\par
+\noindent\hspace*{1em}\texttt{if endianness == "little":}\par
+\noindent\hspace*{3em}\texttt{return sum(byte \ensuremath{<}\ensuremath{<} (8 * i) for i, byte in enumerate(data))}\par
+\noindent\hspace*{1em}\texttt{raise ValueError("endianness must be big or little")}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 2: Decode a signed two’s-complement integer}
+
+\begin{workedbox}{Task 02 \ensuremath{\cdot} worked solution}
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item For w bits, first compute the unsigned value u. If the high bit is 0, the signed value is u; otherwise subtract 2\textasciicircum{}w.
+\item For the one-byte pattern 11111101, u = 253 and w = 8, so the value is 253 \ensuremath{-} 256 = \ensuremath{-}3.
+\item The range is \ensuremath{-}2\textasciicircum{}(w\ensuremath{-}1) through 2\textasciicircum{}(w\ensuremath{-}1)\ensuremath{-}1. Check the all-zero and all-one patterns.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def bytes\_to\_int\_twos\_complement(data, endianness="big"):}\par
+\noindent\hspace*{1em}\texttt{value = bytes\_to\_uint(data, endianness)}\par
+\noindent\hspace*{1em}\texttt{width = 8 * len(data)}\par
+\noindent\hspace*{1em}\texttt{if width and value \& (1 \ensuremath{<}\ensuremath{<} (width - 1)):}\par
+\noindent\hspace*{3em}\texttt{value -= 1 \ensuremath{<}\ensuremath{<} width}\par
+\noindent\hspace*{1em}\texttt{return value}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 3: Decode IEEE 754 single precision}
+
+\begin{workedbox}{Task 03 \ensuremath{\cdot} worked solution}
+\Needspace{15\baselineskip}
+\begin{enumerate}
+\item A binary32 word has 1 sign bit, 8 exponent bits, and 23 fraction bits. For a normal number, value = (\ensuremath{-}1)\textasciicircum{}s \ensuremath{\times} (1 + fraction/2\textasciicircum{}23) \ensuremath{\times} 2\textasciicircum{}(exponent\ensuremath{-}127).
+\item If exponent is zero, use the subnormal significand fraction/2\textasciicircum{}23 and exponent \ensuremath{-}126, with no implicit leading one.
+\item Exponent 255 represents infinity when fraction is zero and NaN otherwise. Require exactly 4 bytes and verify endianness first.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def bytes\_to\_float32(data, endianness="big"):}\par
+\noindent\hspace*{1em}\texttt{if len(data) != 4:}\par
+\noindent\hspace*{3em}\texttt{raise ValueError("float32 requires exactly 4 bytes")}\par
+\noindent\hspace*{1em}\texttt{bits = bytes\_to\_uint(data, endianness)}\par
+\noindent\hspace*{1em}\texttt{sign = -1 if bits \ensuremath{>}\ensuremath{>} 31 else 1}\par
+\noindent\hspace*{1em}\texttt{exponent, fraction = (bits \ensuremath{>}\ensuremath{>} 23) \& 255, bits \& 0x7fffff}\par
+\noindent\hspace*{1em}\texttt{if exponent == 255:}\par
+\noindent\hspace*{3em}\texttt{return sign * float("inf") if fraction == 0 else float("nan")}\par
+\noindent\hspace*{1em}\texttt{if exponent == 0:}\par
+\noindent\hspace*{3em}\texttt{return sign * (fraction / 2**23) * 2**-126}\par
+\noindent\hspace*{1em}\texttt{return sign * (1 + fraction / 2**23) * 2**(exponent - 127)}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 4: Infer byte order from a known range}
+
+\begin{workedbox}{Task 04 \ensuremath{\cdot} worked solution}
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item Compute big- and little-endian candidates independently.
+\item A candidate matches when lower \ensuremath{\leq} value \ensuremath{\leq} upper. Return an order only if exactly one candidate matches; neither or both is ambiguous and should raise ValueError.
+\item Test boundary values inclusively and include an ambiguous example.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def detect\_endianness(raw, known\_field\_range):}\par
+\noindent\hspace*{1em}\texttt{lower, upper = known\_field\_range}\par
+\noindent\hspace*{1em}\texttt{big = lower \ensuremath{<}= bytes\_to\_uint(raw, "big") \ensuremath{<}= upper}\par
+\noindent\hspace*{1em}\texttt{little = lower \ensuremath{<}= bytes\_to\_uint(raw, "little") \ensuremath{<}= upper}\par
+\noindent\hspace*{1em}\texttt{if big == little:}\par
+\noindent\hspace*{3em}\texttt{raise ValueError("range does not identify unique byte order")}\par
+\noindent\hspace*{1em}\texttt{return "big" if big else "little"}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 5: Parse a mixed packet layout}
+
+\begin{workedbox}{Task 05 \ensuremath{\cdot} worked solution}
+\Needspace{17\baselineskip}
+\begin{enumerate}
+\item Track a byte offset. For each field, slice exactly its width and advance the offset, including for padding.
+\item Decode uint, int, float32, or bytes using that field’s endianness; padding produces no output key. Reject negative widths, truncated fields, and unknown types.
+\item Check a layout with one padding byte and mixed-endian fields.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def parse\_packet(raw, layout):}\par
+\noindent\hspace*{1em}\texttt{result, offset = \{\}, 0}\par
+\noindent\hspace*{1em}\texttt{for field in layout:}\par
+\noindent\hspace*{3em}\texttt{width = field["width"]}\par
+\noindent\hspace*{3em}\texttt{end = offset + width}\par
+\noindent\hspace*{3em}\texttt{if width \ensuremath{<} 0 or end \ensuremath{>} len(raw): raise ValueError("field exceeds packet")}\par
+\noindent\hspace*{3em}\texttt{data, offset = raw[offset:end], end}\par
+\noindent\hspace*{3em}\texttt{kind = field["type"]}\par
+\noindent\hspace*{3em}\texttt{order = field.get("endianness", "big")}\par
+\noindent\hspace*{3em}\texttt{if kind == "padding": continue}\par
+\noindent\hspace*{3em}\texttt{if kind == "uint": value = bytes\_to\_uint(data, order)}\par
+\noindent\hspace*{3em}\texttt{elif kind == "int": value = bytes\_to\_int\_twos\_complement(data, order)}\par
+\noindent\hspace*{3em}\texttt{elif kind == "float32": value = bytes\_to\_float32(data, order)}\par
+\noindent\hspace*{3em}\texttt{elif kind == "bytes": value = data}\par
+\noindent\hspace*{3em}\texttt{else: raise ValueError(f"unsupported field type: \{kind\}")}\par
+\noindent\hspace*{3em}\texttt{result[field["name"]] = value}\par
+\noindent\hspace*{1em}\texttt{return result}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 6: Validate an additive checksum}
+
+\begin{workedbox}{Task 06 \ensuremath{\cdot} worked solution}
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item For packet bytes b\textsubscript{0} … b\textsubscript{n}, the expected checksum is sum(b\textsubscript{0} … b\textsubscript{n\ensuremath{-}1}) mod 256.
+\item In Python, sum(raw[:-1]) \& 0xff keeps the low eight bits. Require a nonempty packet before indexing its last byte.
+\item A checksum detects many accidental changes but is not authentication; distinct corruptions can collide.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def validate\_checksum(raw):}\par
+\noindent\hspace*{1em}\texttt{return bool(raw) and (sum(raw[:-1]) \& 0xff) == raw[-1]}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 7: Parse a packet layout}
+
+\begin{workedbox}{Task 07 \ensuremath{\cdot} worked solution}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item For each field, take raw[offset:offset + width] and advance the offset even for padding. Check that width is nonnegative and the slice stays within the packet.
+\item Dispatch uint, int, float32, and bytes to their corresponding decoders. Padding consumes bytes without creating a result entry.
+\item Reject unsupported types and malformed widths; test mixed endianness and padding with a small synthetic layout.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 8: Decode a stream and keep going after errors}
+
+\begin{workedbox}{Task 08 \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item Enumerate packets so error records retain the original packet index.
+\item Check checksum before parsing. Wrap validation and parsing for one packet in try/except; append successful values to decoded and failures to errors.
+\item A valid later packet must still be handled after a corrupt packet. Keep the original index in each error record.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{class PageFaultError(Exception):}\par
+\noindent\hspace*{1em}\texttt{pass}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{0em}\texttt{class PageTableSim:}\par
+\noindent\hspace*{1em}\texttt{def \_\_init\_\_(self, page\_size, page\_table):}\par
+\noindent\hspace*{3em}\texttt{if page\_size \ensuremath{<}= 0: raise ValueError("page\_size must be positive")}\par
+\noindent\hspace*{3em}\texttt{self.page\_size, self.page\_table = page\_size, page\_table}\par
+\noindent\hspace*{1em}\texttt{def translate(self, virtual\_addr):}\par
+\noindent\hspace*{3em}\texttt{page, offset = divmod(virtual\_addr, self.page\_size)}\par
+\noindent\hspace*{3em}\texttt{if page not in self.page\_table: raise PageFaultError(page)}\par
+\noindent\hspace*{3em}\texttt{return self.page\_table[page] * self.page\_size + offset}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 9: Simulate first-fit heap allocations}
+
+\begin{workedbox}{Task 09 \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item Represent each free block as a start and length. Visit blocks in address order and choose the first with enough space.
+\item Split the selected block into any unused prefix and suffix, or mark it fully allocated. Invalid negative requests should fail clearly.
+\item Check that allocations do not overlap and that every successful range stays within the pool.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def simulate\_heap\_alloc(requests, pool\_size):}\par
+\noindent\hspace*{1em}\texttt{if pool\_size \ensuremath{<} 0: raise ValueError("pool\_size cannot be negative")}\par
+\noindent\hspace*{1em}\texttt{allocations, next\_address = [], 0}\par
+\noindent\hspace*{1em}\texttt{for size in requests:}\par
+\noindent\hspace*{3em}\texttt{if size \ensuremath{<} 0: raise ValueError("allocation size cannot be negative")}\par
+\noindent\hspace*{3em}\texttt{if next\_address + size \ensuremath{<}= pool\_size:}\par
+\noindent\hspace*{5em}\texttt{allocations.append((next\_address, size))}\par
+\noindent\hspace*{5em}\texttt{next\_address += size}\par
+\noindent\hspace*{3em}\texttt{else:}\par
+\noindent\hspace*{5em}\texttt{allocations.append(None)}\par
+\noindent\hspace*{1em}\texttt{return allocations}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 10: Check integer encode/decode round trips}
+
+\begin{workedbox}{Task 10 \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item For an unsigned width w bytes, valid values satisfy 0 \ensuremath{\leq} value \ensuremath{<} 2\textasciicircum{}(8w). Validate width, value, and endianness before encoding.
+\item Emit bytes from most significant to least significant for big-endian, and reverse that order for little-endian.
+\item Round-trip zero, the maximum representable value, and a value with distinct bytes. The decoder should reproduce the original integer.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def uint\_to\_bytes(value, width, endianness="big"):}\par
+\noindent\hspace*{1em}\texttt{if endianness not in ("big", "little") or width \ensuremath{<} 0:}\par
+\noindent\hspace*{3em}\texttt{raise ValueError("invalid encoding parameters")}\par
+\noindent\hspace*{1em}\texttt{if value \ensuremath{<} 0 or value \ensuremath{>}= 1 \ensuremath{<}\ensuremath{<} (8 * width):}\par
+\noindent\hspace*{3em}\texttt{raise ValueError("value does not fit")}\par
+\noindent\hspace*{1em}\texttt{shifts = range(width - 1, -1, -1) if endianness == "big" else range(width)}\par
+\noindent\hspace*{1em}\texttt{return bytes((value \ensuremath{>}\ensuremath{>} (8 * shift)) \& 255 for shift in shifts)}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+
+\vfill{\small Personal worked solutions based on the APDR Computer Exercise 3 sheet, explained in my own words. Examples are generic; use your own assigned inputs for any personalized result. Not an official FAU publication; check course details against current materials. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}

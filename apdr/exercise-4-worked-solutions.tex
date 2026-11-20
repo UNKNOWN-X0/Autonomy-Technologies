@@ -1,0 +1,485 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Exercise 4}
+\fancyhead[R]{\small\sffamily Computer Exercise 4: Worked solutions}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Computer Exercise 4: Worked solutions}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Exercise 4\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Parsing sensor logs, detecting instant and sustained alerts, daily classification, interpolation, and weekly reporting. Try each task before opening its worked steps. Personalized inputs and results are omitted; apply the methods to your own assigned data.}
+
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 1: Parse wearable log rows}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 01 \ensuremath{\cdot} Parse wearable log rows}
+
+\Needspace{4\baselineskip}
+Try first: Parse three comma-separated fields, preserving valid rows with missing sensor values.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 1: Parse wearable log rows” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 2: Flag instantaneous heart-rate anomalies}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 02 \ensuremath{\cdot} Flag instantaneous heart-rate anomalies}
+
+\Needspace{3\baselineskip}
+Try first: Return indices where a present heart-rate reading reaches 180 bpm.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 2: Flag instantaneous heart-rate anomalies” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 3: Find sustained high-heart-rate intervals}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 03 \ensuremath{\cdot} Find sustained high-heart-rate intervals}
+
+\Needspace{3\baselineskip}
+Try first: Scan once, recording the start and end of each uninterrupted qualifying interval.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 3: Find sustained high-heart-rate intervals” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 4: Classify a day with ordered rules}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 04 \ensuremath{\cdot} Classify a day with ordered rules}
+
+\Needspace{3\baselineskip}
+Try first: Apply the overtraining rules first, then distinguish active from rest days.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 4: Classify a day with ordered rules” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 5: Interpolate short missing runs}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 05 \ensuremath{\cdot} Interpolate short missing runs}
+
+\Needspace{4\baselineskip}
+Try first: Fill only interior runs of at most three missing heart rates when both endpoints exist.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 5: Interpolate short missing runs” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 6: Summarize a week}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 06 \ensuremath{\cdot} Summarize a week}
+
+\Needspace{3\baselineskip}
+Try first: Compute daily values and weekly totals in one pass over the day logs.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 6: Summarize a week” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 7: Detect a recovery trend}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 07 \ensuremath{\cdot} Detect a recovery trend}
+
+\Needspace{4\baselineskip}
+Try first: Compare daily mean heart rates in chronological order, ignoring days with no valid readings.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 7: Detect a recovery trend” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 8: Handle boundaries and missing samples}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 08 \ensuremath{\cdot} Handle boundaries and missing samples}
+
+\Needspace{4\baselineskip}
+Try first: Check empty, single-row, final-run, and missing-reading cases for sustained detection.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 8: Handle boundaries and missing samples” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 9: Keep anomaly detection linear}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{Task 09 \ensuremath{\cdot} Keep anomaly detection linear}
+
+\Needspace{3\baselineskip}
+Try first: Explain why a single ordered pass is O(n), and avoid rescanning all prefixes.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 9: Keep anomaly detection linear” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Task 10: Integrate the alert report}
+
+\textbf{Connected topic:} Related APDR guide section
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{Task 10 \ensuremath{\cdot} Integrate the alert report}
+
+\Needspace{4\baselineskip}
+Try first: Compose the daily detectors, classification, weekly summary, and recovery trend into one result.
+
+\nopagebreak[4]{\small\itshape Answers: see “Task 10: Integrate the alert report” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Task 1: Parse wearable log rows}
+
+\begin{workedbox}{Task 01 \ensuremath{\cdot} worked solution}
+\Needspace{16\baselineskip}
+\begin{enumerate}
+\item Split each line on commas and trim whitespace. Accept exactly three fields and require a timestamp.
+\item Map blank, NA, None, and NaN readings to None. Convert other readings to float; if conversion fails, skip the malformed row.
+\item Do not discard a row merely because one sensor reading is missing. Test blank fields, malformed numeric text, and wrong field counts.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def parse\_log(raw\_lines):}\par
+\noindent\hspace*{1em}\texttt{rows = []}\par
+\noindent\hspace*{1em}\texttt{for line in raw\_lines:}\par
+\noindent\hspace*{3em}\texttt{fields = [part.strip() for part in line.split(",")]}\par
+\noindent\hspace*{3em}\texttt{if len(fields) != 3 or not fields[0]: continue}\par
+\noindent\hspace*{3em}\texttt{try:}\par
+\noindent\hspace*{5em}\texttt{values = []}\par
+\noindent\hspace*{5em}\texttt{for field in fields[1:]:}\par
+\noindent\hspace*{7em}\texttt{if not field or field.lower() in ("nan", "na", "none"): values.append(None)}\par
+\noindent\hspace*{7em}\texttt{else:}\par
+\noindent\hspace*{9em}\texttt{value = float(field)}\par
+\noindent\hspace*{9em}\texttt{values.append(None if value != value else value)}\par
+\noindent\hspace*{5em}\texttt{rows.append((fields[0], *values))}\par
+\noindent\hspace*{3em}\texttt{except (TypeError, ValueError):}\par
+\noindent\hspace*{5em}\texttt{continue}\par
+\noindent\hspace*{1em}\texttt{return rows}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 2: Flag instantaneous heart-rate anomalies}
+
+\begin{workedbox}{Task 02 \ensuremath{\cdot} worked solution}
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Enumerate the ordered log so results refer to the original row positions.
+\item A reading qualifies when it is not None and is at least 180. A missing reading is not an anomaly.
+\item Check values 179, 180, and None to confirm the inclusive boundary.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def flag\_instant\_anomalies(log):}\par
+\noindent\hspace*{1em}\texttt{return [i for i, row in enumerate(log) if row[1] is not None and row[1] \ensuremath{>}= 180]}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 3: Find sustained high-heart-rate intervals}
+
+\begin{workedbox}{Task 03 \ensuremath{\cdot} worked solution}
+\Needspace{20\baselineskip}
+\begin{enumerate}
+\item Start a run when heart rate first reaches the threshold. A below-threshold or missing row closes it; never join across a gap.
+\item Measure duration from parseable timestamps. For ordinal timestamps only, sample-count fallback assumes one minute per row; this is valid only when the exercise sampling interval is one minute.
+\item Return inclusive (start, end) pairs only when duration meets the requested minimum. Also close a run that reaches the final row.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{from datetime import datetime}\par
+\noindent\hspace*{0em}\texttt{def flag\_sustained\_anomalies(log, threshold, min\_duration\_min):}\par
+\noindent\hspace*{1em}\texttt{def keep\_if\_long(result, start, end):}\par
+\noindent\hspace*{3em}\texttt{try:}\par
+\noindent\hspace*{5em}\texttt{a = datetime.fromisoformat(str(log[start][0]))}\par
+\noindent\hspace*{5em}\texttt{b = datetime.fromisoformat(str(log[end][0]))}\par
+\noindent\hspace*{5em}\texttt{duration = (b - a).total\_seconds() / 60}\par
+\noindent\hspace*{3em}\texttt{except (TypeError, ValueError):}\par
+\noindent\hspace*{5em}\texttt{duration = end - start + 1 \# assumes one-minute sample spacing}\par
+\noindent\hspace*{3em}\texttt{if duration \ensuremath{>}= min\_duration\_min: result.append((start, end))}\par
+\noindent\hspace*{1em}\texttt{result, start = [], None}\par
+\noindent\hspace*{1em}\texttt{for i, row in enumerate(log):}\par
+\noindent\hspace*{3em}\texttt{if row[1] is not None and row[1] \ensuremath{>}= threshold:}\par
+\noindent\hspace*{5em}\texttt{if start is None: start = i}\par
+\noindent\hspace*{3em}\texttt{elif start is not None:}\par
+\noindent\hspace*{5em}\texttt{keep\_if\_long(result, start, i - 1)}\par
+\noindent\hspace*{5em}\texttt{start = None}\par
+\noindent\hspace*{1em}\texttt{if start is not None: keep\_if\_long(result, start, len(log) - 1)}\par
+\noindent\hspace*{1em}\texttt{return result}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 4: Classify a day with ordered rules}
+
+\begin{workedbox}{Task 04 \ensuremath{\cdot} worked solution}
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Collect valid heart-rate readings and sum steps, treating missing steps as zero.
+\item Return overtrained if there are at least three instantaneous anomalies or the valid-reading mean is at least 130. This precedence must come before active/rest.
+\item Otherwise, no valid heart-rate readings means rest. With readings, at least 5000 steps means active; otherwise rest.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def classify\_day(log):}\par
+\noindent\hspace*{1em}\texttt{hrs = [row[1] for row in log if row[1] is not None]}\par
+\noindent\hspace*{1em}\texttt{steps = sum(row[2] or 0 for row in log)}\par
+\noindent\hspace*{1em}\texttt{if len(flag\_instant\_anomalies(log)) \ensuremath{>}= 3 or (hrs and sum(hrs)/len(hrs) \ensuremath{>}= 130):}\par
+\noindent\hspace*{3em}\texttt{return "overtrained"}\par
+\noindent\hspace*{1em}\texttt{if not hrs: return "rest"}\par
+\noindent\hspace*{1em}\texttt{if steps \ensuremath{>}= 5000: return "active"}\par
+\noindent\hspace*{1em}\texttt{return "rest"}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 5: Interpolate short missing runs}
+
+\begin{workedbox}{Task 05 \ensuremath{\cdot} worked solution}
+\Needspace{15\baselineskip}
+\begin{enumerate}
+\item Find each consecutive missing run and count its length. Leave leading, trailing, and runs longer than three unchanged.
+\item For m missing values between left and right, fill offset j (1 through m) with left + (right \ensuremath{-} left) \ensuremath{\times} {\small\ensuremath{\dfrac{\mathrm{j}}{\mathrm{m}\, +\, 1}}}.
+\item Preserve timestamps and step counts. Return new tuples so the input rows are not mutated.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def interpolate\_missing(log):}\par
+\noindent\hspace*{1em}\texttt{out = [list(row) for row in log]}\par
+\noindent\hspace*{1em}\texttt{i = 0}\par
+\noindent\hspace*{1em}\texttt{while i \ensuremath{<} len(out):}\par
+\noindent\hspace*{3em}\texttt{if out[i][1] is not None: i += 1; continue}\par
+\noindent\hspace*{3em}\texttt{start = i}\par
+\noindent\hspace*{3em}\texttt{while i \ensuremath{<} len(out) and out[i][1] is None: i += 1}\par
+\noindent\hspace*{3em}\texttt{count = i - start}\par
+\noindent\hspace*{3em}\texttt{if (count \ensuremath{<}= 3 and start \ensuremath{>} 0 and i \ensuremath{<} len(out)}\par
+\noindent\hspace*{7em}\texttt{and out[start-1][1] is not None and out[i][1] is not None):}\par
+\noindent\hspace*{5em}\texttt{left, right = out[start-1][1], out[i][1]}\par
+\noindent\hspace*{5em}\texttt{for j in range(count):}\par
+\noindent\hspace*{7em}\texttt{out[start+j][1] = left + (right-left)*(j+1)/(count+1)}\par
+\noindent\hspace*{1em}\texttt{return [tuple(row) for row in out]}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 6: Summarize a week}
+
+\begin{workedbox}{Task 06 \ensuremath{\cdot} worked solution}
+\Needspace{16\baselineskip}
+\begin{enumerate}
+\item For each day, calculate that day’s steps, classification, and number of readings. Store the daily steps value in that day’s record.
+\item Separately accumulate weekly steps and increment exactly one classification count per day. Do not put the running weekly total into each daily record.
+\item Check that daily steps sum to the weekly total and the three class counts sum to the number of days. The supplied student.py stores cumulative steps in the daily field; this solution corrects it.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def weekly\_summary(week\_logs):}\par
+\noindent\hspace*{1em}\texttt{days, total = [], 0}\par
+\noindent\hspace*{1em}\texttt{counts = \{"rest": 0, "active": 0, "overtrained": 0\}}\par
+\noindent\hspace*{1em}\texttt{for log in week\_logs:}\par
+\noindent\hspace*{3em}\texttt{steps = sum(row[2] or 0 for row in log)}\par
+\noindent\hspace*{3em}\texttt{label = classify\_day(log)}\par
+\noindent\hspace*{3em}\texttt{total += steps}\par
+\noindent\hspace*{3em}\texttt{counts[label] += 1}\par
+\noindent\hspace*{3em}\texttt{days.append(\{"total\_steps": steps, "classification": label, "readings": len(log)\})}\par
+\noindent\hspace*{1em}\texttt{return \{"days": days, "total\_steps": total, "rest\_days": counts["rest"], "active\_days": counts["active"], "overtrained\_days": counts["overtrained"]\}}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 7: Detect a recovery trend}
+
+\begin{workedbox}{Task 07 \ensuremath{\cdot} worked solution}
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Compute one mean per day with at least one valid heart-rate value. Skip empty days rather than treating their mean as zero.
+\item Require at least three means. A strict recovery trend holds only if every successive mean is lower than the previous one.
+\item Test a descending sequence, a tie, an increase, and fewer than three valid days.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def detect\_recovery\_trend(week\_logs):}\par
+\noindent\hspace*{1em}\texttt{means = []}\par
+\noindent\hspace*{1em}\texttt{for log in week\_logs:}\par
+\noindent\hspace*{3em}\texttt{values = [row[1] for row in log if row[1] is not None]}\par
+\noindent\hspace*{3em}\texttt{if values: means.append(sum(values) / len(values))}\par
+\noindent\hspace*{1em}\texttt{return len(means) \ensuremath{>}= 3 and all(a \ensuremath{>} b for a, b in zip(means, means[1:]))}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 8: Handle boundaries and missing samples}
+
+\begin{workedbox}{Task 08 \ensuremath{\cdot} worked solution}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item An empty or one-row log cannot establish a sustained interval under the supplied implementation, so return an empty list.
+\item A qualifying run ending at the final sample still needs to be evaluated; close it after the loop.
+\item Missing heart rate closes a run. Do not bridge the missing sample, even if the readings on both sides qualify.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 9: Keep anomaly detection linear}
+
+\begin{workedbox}{Task 09 \ensuremath{\cdot} worked solution}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Each row is visited once. The active run is represented by one start index, so each transition takes constant work.
+\item The scan therefore takes O(n) time and O(k) output space, where k is the number of detected intervals.
+\item Repeatedly slicing or recounting the prefix inside the loop can make an otherwise simple solution quadratic.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Task 10: Integrate the alert report}
+
+\begin{workedbox}{Task 10 \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item For each daily log, store instant anomaly indices, sustained intervals using the specified threshold and duration, and its classification.
+\item Add weekly\_summary and detect\_recovery\_trend results under stable top-level keys. Keep tuple intervals; the JSON encoder serializes tuples as arrays.
+\item Check an empty week and a small synthetic week. Ensure each daily alert aligns with its input day.
+\item \Needspace{3\baselineskip}
+\textbf{Reference implementation:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def generate\_alert\_report(week\_logs):}\par
+\noindent\hspace*{1em}\texttt{alerts = []}\par
+\noindent\hspace*{1em}\texttt{for log in week\_logs:}\par
+\noindent\hspace*{3em}\texttt{alerts.append(\{"instant\_anomalies": flag\_instant\_anomalies(log),}\par
+\noindent\hspace*{10em}\texttt{"sustained\_anomalies": flag\_sustained\_anomalies(log, 160, 3),}\par
+\noindent\hspace*{10em}\texttt{"classification": classify\_day(log)\})}\par
+\noindent\hspace*{1em}\texttt{return \{"daily\_alerts": alerts, "summary": weekly\_summary(week\_logs),}\par
+\noindent\hspace*{5em}\texttt{"recovery\_trend": detect\_recovery\_trend(week\_logs)\}}\par
+\end{tcolorbox}
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+
+\vfill{\small Personal worked solutions based on the APDR Computer Exercise 4 sheet, explained in my own words. Examples are generic; use your own assigned inputs for any personalized result. Not an official FAU publication; check course details against current materials. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
