@@ -120,7 +120,8 @@
       if (/-checks$/.test(k)) {
         out = Object.assign({}, have || {});
         Object.keys(v).forEach(function (c) {
-          if (v[c] === true || v[c] === "worked" || v[c] === "redo") out[c] = v[c];
+          // A problem state already saved here wins over the file's, so an older backup cannot undo newer progress.
+          if (v[c] === true || ((v[c] === "worked" || v[c] === "redo") && !(c in out))) out[c] = v[c];
         });
       } else if (/-log$/.test(k)) {
         var days = ((have && Array.isArray(have.days) && have.days) || []).slice();
