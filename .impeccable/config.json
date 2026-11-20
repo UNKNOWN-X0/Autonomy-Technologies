@@ -22,51 +22,6 @@
         "reason": "Claude: the only source is the square-root bar (.sqrt > .rad border-top: currentColor in css/guide.css); the static scan resolves currentColor as black. No literal black exists in css/"
       },
       {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "index.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.444Z",
-        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
-      },
-      {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "about/*.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.460Z",
-        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
-      },
-      {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "mei/*.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.476Z",
-        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
-      },
-      {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "eei/*.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.491Z",
-        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
-      },
-      {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "apdr/*.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.508Z",
-        "reason": "Claude: the shared --glow token (css/system.css, 6px/8px signal-a halo) is sanctioned by DESIGN.md's Signal Is Forward Rule for signal lines and marks"
-      },
-      {
         "rule": "cramped-padding",
         "value": "*",
         "files": [
@@ -196,15 +151,6 @@
         "reason": "Claude: IBM Plex Sans Condensed is the exam-sheet print face documented in docs/APPENDIX-STANDARD.md (Exam sheets); it fits about a fifth more per line at 7pt"
       },
       {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "apdr/ch11-classes-inheritance.html"
-        ],
-        "createdAt": "2026-11-18T23:38:18.523Z",
-        "reason": "The only glow is the documented shared active-navigation/progress signal in css/guide.css; this new page adds no shadow styling."
-      },
-      {
         "rule": "cramped-padding",
         "value": "*",
         "files": [
@@ -227,10 +173,14 @@
         "rule": "dark-glow",
         "value": "*",
         "files": [
-          "{index.html,about/*.html,mei/*.html,apdr/*.html,eei/*.html}"
+          "index.html",
+          "about/*.html",
+          "mei/*.html",
+          "apdr/*.html",
+          "eei/*.html"
         ],
         "createdAt": "2026-11-19T01:26:53.565Z",
-        "reason": "user confirmed 2026-11-19; DESIGN.md owner decision 2026-11-04 allows the one shared soft --glow (0 0 6px rgb(128 236 241 / 0.55)) on signal lines and marks"
+        "reason": "Owner decision 2026-11-20 (issue #18): keep the one soft --glow (0 0 6px rgb(128 236 241 / 0.55); 8px / 0.7 in dark mode) on signal lines and marks; DESIGN.md names it as the only allowed shadow."
       },
       {
         "rule": "cramped-padding",
