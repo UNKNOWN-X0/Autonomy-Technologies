@@ -71,6 +71,7 @@
         "value": "*",
         "files": [
           "index.html",
+          "offline.html",
           "about/*.html",
           "mei/*.html",
           "apdr/*.html",
