@@ -1,0 +1,904 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 1011a}
+\fancyhead[R]{\small\sffamily Advanced Object-Oriented Programming}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Advanced Object-Oriented Programming}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Chapter 1011a\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Follow how Python objects are stored and found, then use types, descriptors, inheritance, and design patterns to shape dependable interfaces. The last sections connect those mechanisms to language dispatch, common traps, and small decorator-based registries.}
+
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{Start from memory}
+
+\Needspace{12\baselineskip}
+Try each prompt before reading; mark it sure, unsure, or guessed.
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item When does assigning one name to another copy a mutable object?
+\item Which attribute lookup rule can take priority over an instance dictionary?
+\item What property does a consistent method resolution order preserve?
+\item What does a normal Python function do when accessed through an instance?
+\item What does a Protocol check, and when is it checked?
+\item How can a factory differ from a constructor?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{17\baselineskip}
+\section{How to use this guide}
+
+\Needspace{14\baselineskip}
+Trace the object or class first, then identify the lookup or construction rule that applies. When a pattern seems useful, compare its added flexibility with the simpler option it replaces.
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} Study §10.1–10.2; solve practice 1–6.
+\item \textbf{Day 1:} Rebuild §10.3–10.4 and solve practice 7–12.
+\item \textbf{Day 3:} Study §10.5 and §11.1; solve practice 13–17.
+\item \textbf{About day 7:} Rebuild §11.2–11.3 and solve practice 18–24.
+\item \textbf{About day 14:} Attempt both exam problems closed-book; explain uncertain decisions aloud.
+\item \textbf{Before the exam:} Recheck only skills supported by the practice evidence and revisit each linked section for missed answers.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} draw the names, objects, and lookup path; then test one small example before adding a metaclass or pattern.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{21\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{18\baselineskip}
+Object identity and layout explain what is being shared. Type contracts and MRO explain which behaviours are promised and found. Descriptors control attribute access; design patterns organise construction and collaboration around those rules.
+
+\Needspace{10\baselineskip}
+\textbf{Measure} \ensuremath{\cdot} inspect object relationships
+
+\Needspace{8\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Identity and references} \hfill{\small\color{FAUblue}§10.1}
+
+\Needspace{4\baselineskip}
+\texttt{two names \ensuremath{\to} one object}
+
+Rests on: assignment binds names to objects.
+\item \Needspace{4\baselineskip}
+\textbf{Layout and attribute lookup} \hfill{\small\color{FAUblue}§10.2}
+
+\Needspace{4\baselineskip}
+\texttt{descriptor \ensuremath{\to} instance \ensuremath{\to} class MRO}
+
+Rests on: type and descriptor precedence.
+\item \Needspace{4\baselineskip}
+\textbf{Dispatch and runtimes} \hfill{\small\color{FAUblue}§11.1}
+
+\Needspace{4\baselineskip}
+\texttt{receiver type \ensuremath{\to} implementation}
+
+Rests on: lookup strategy and runtime.
+\end{itemize}
+
+\Needspace{9\baselineskip}
+\textbf{Define} \ensuremath{\cdot} state behavioural contracts
+
+\Needspace{7\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Nominal, structural, and variance rules} \hfill{\small\color{FAUblue}§10.3}
+
+\Needspace{4\baselineskip}
+\texttt{inputs contravariant \ensuremath{\cdot} outputs covariant}
+
+Rests on: substitutability and promises.
+\item \Needspace{4\baselineskip}
+\textbf{C3 MRO} \hfill{\small\color{FAUblue}§10.4}
+
+\Needspace{4\baselineskip}
+\texttt{class + merge(parent MROs, bases)}
+
+Rests on: ordered, monotonic inheritance.
+\item \Needspace{4\baselineskip}
+\textbf{Descriptors and class creation} \hfill{\small\color{FAUblue}§10.5}
+
+\Needspace{4\baselineskip}
+\texttt{lookup \ensuremath{\to} \_\_get\_\_ / \_\_set\_\_}
+
+Rests on: objects stored on classes can mediate access.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Derive} \ensuremath{\cdot} choose a design from its job
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Factories and collaboration patterns} \hfill{\small\color{FAUblue}§11.2}
+
+\Needspace{4\baselineskip}
+\texttt{client \ensuremath{\to} contract \ensuremath{\to} interchangeable object}
+
+Rests on: stable contracts, replaceable implementations.
+\item \Needspace{4\baselineskip}
+\textbf{Quirks and decorator registries} \hfill{\small\color{FAUblue}§11.3}
+
+\Needspace{4\baselineskip}
+\texttt{definition time \ensuremath{\to} shared state / registration}
+
+Rests on: binding time and object lifetime.
+\end{itemize}
+
+Match the question to the tool: identity versus value uses \texttt{is} versus \texttt{==}; inheritance order uses \texttt{\_\_mro\_\_}; attribute access uses the descriptor rules; implementation choice uses a contract or factory.
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.1 Objects, references, and copying}
+
+\Needspace{7\baselineskip}
+Assignment creates another route to an object; it does not duplicate a mutable value. A copy makes a new outer container, and a deep copy recursively copies referenced parts where the copy protocol allows.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} an \textbf{object} is the value with identity and behaviour; a \textbf{reference} is a way to reach it; an \textbf{alias} is another name or container entry that reaches the same object.\end{plainbox}
+
+\begin{equationcard}{Binding and copying}
+\[ \begin{gathered} \texttt{b = a}\, \text{binds}\, \mathrm{b}\, \text{to}\, \text{the}\, \text{object}\, \text{already}\, \text{named}\, \text{by}\, \mathrm{a} \end{gathered} \]
+{\small For compound objects, \texttt{copy.copy} makes a shallow copy; \texttt{copy.deepcopy} recursively copies supported parts and may copy too much. Python copy documentation.}
+\end{equationcard}
+
+\Needspace{14\baselineskip}
+In CPython, names refer to objects; assignment changes a binding. Mutating a list through either alias is visible through the other. CPython may reuse some immutable objects, so identity observations such as \texttt{256 is 256} are not a value-comparison rule. A shallow copy creates a distinct outer list but keeps references to nested items. A deep copy uses a memo to handle cycles and can be customised by a class.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} nested aliases}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item \texttt{a = [[1], [2]]} creates an outer list and two inner lists.
+\item \texttt{b = a.copy()} creates a new outer list; \texttt{a is b} is false.
+\item \texttt{a[0] is b[0]} is true, so \texttt{b[0].append(9)} changes the nested list seen through \texttt{a}.
+\item For independent nested lists, use a suitable deep-copy operation; check whether custom objects or resources should remain shared.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} \texttt{is} tests identity, not value equality; use \texttt{==} when equal contents are the question.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} Copying only the outer list does not isolate a nested mutable item; copy that item too if independent mutation is required.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does assignment do to a name?
+\item What remains shared after a shallow copy?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.1 Objects, references, and copying” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.2 Memory, attributes, and object layout}
+
+\Needspace{7\baselineskip}
+Python gives objects a flexible interface, while CPython implements them with runtime structures. Instance dictionaries are convenient; slots can reserve known attributes. Attribute access also follows descriptor precedence, so a simple dictionary search is only a sketch.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} an \textbf{instance dictionary} is the usual place for per-object attributes; \textbf{slots} declare a fixed set; a \textbf{descriptor} is a class attribute that controls access.\end{plainbox}
+
+\begin{equationcard}{Instance attribute lookup (simplified precedence)}
+\[ \begin{gathered} \texttt{data descriptor \ensuremath{\to} instance \ensuremath{\to} class value \ensuremath{\to} fallback} \end{gathered} \]
+{\small The exact lookup is defined by \texttt{object.\_\_getattribute\_\_} and may be customised. Descriptor guide.}
+\end{equationcard}
+
+\Needspace{14\baselineskip}
+In CPython’s C API, a regular object header includes a reference count and a type pointer; variable-sized objects add size information. These are implementation details: do not write application logic around a claimed byte size or directly access the fields. Many objects are tracked differently by the garbage collector; reference counting alone cannot reclaim unreachable cycles, so a cyclic collector complements it. C object structures \ensuremath{\cdot} garbage collector.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} a slotted point}
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item A point always needs \texttt{x} and \texttt{y}, so declare \texttt{\_\_slots\_\_ = ("x", "y")}.
+\item Instances can assign those names; an undeclared attribute raises \texttt{AttributeError} when no base class supplies a dictionary.
+\item Add \texttt{"\_\_dict\_\_"} to the slots only if arbitrary instance attributes are part of the design.
+\item Check the trade-off: fixed attributes and possible memory savings versus less flexibility; do not assume a universal byte count.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A non-data descriptor can be shadowed by an instance attribute; a data descriptor takes precedence over it.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} \texttt{\_\_slots\_\_} on a subclass does not remove a dictionary inherited from a base class that provides one.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Which kind of descriptor wins before an instance dictionary?
+\item What changes when a class declares slots without \texttt{\_\_dict\_\_}?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.2 Memory, attributes, and object layout” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{10.3 Types, protocols, and substitution}
+
+\Needspace{10\baselineskip}
+Nominal checks use declared class relationships; structural compatibility asks whether the needed operations are present. A type contract is useful only if implementations honour the behaviour that callers rely on. Gradual type hints let checked and unchecked code coexist; user-defined generic classes are invariant by default unless their type parameter is covariant or contravariant. Static analysers approximate program behaviour to find likely mistakes without executing every path.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{nominal typing} recognises named inheritance; \textbf{structural typing} recognises the required shape; \textbf{substitutability} means a replacement preserves the caller’s expectations.\end{plainbox}
+
+\begin{equationcard}{Function-type variance}
+\[ \begin{gathered} \texttt{accepted inputs may widen \ensuremath{\cdot} promised outputs may narrow} \end{gathered} \]
+{\small A subtype should accept at least the inputs its parent accepts and return values meeting the parent’s promise.}
+\end{equationcard}
+
+\Needspace{13\baselineskip}
+\texttt{typing.Protocol} describes a structural interface for static type checkers. A protocol annotation does not add a runtime check. A protocol marked \texttt{@runtime\_checkable} allows a limited runtime membership check that checks attribute presence, not full signatures. Abstract base classes provide a nominal mechanism and can prevent instantiation while abstract methods remain.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} a readable protocol}
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item A reporting function needs only \texttt{write(text)}.
+\item Describe that operation in a \texttt{Protocol}; a logger with a compatible method can satisfy a static checker without inheriting from the protocol.
+\item If the logger accepts fewer kinds of text than callers may provide, the contract is not substitutable.
+\item Use an ABC when explicit shared implementation or nominal registration is actually needed.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} An annotation does not validate runtime values by itself.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} A subclass method that rejects a valid base-class input narrows the accepted contract and can break callers.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does a Protocol primarily support?
+\item How do safe method arguments and results vary in a subtype?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.3 Types, protocols, and substitution” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.4 MRO and cooperative inheritance}
+
+\Needspace{7\baselineskip}
+Multiple inheritance needs a predictable order for finding methods. Python’s C3 linearisation preserves each class’s declared base order and the order already established by its parents; inconsistent hierarchies are rejected.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} the \textbf{method resolution order (MRO)} is the sequence of classes searched for an attribute; \textbf{cooperative inheritance} lets each class continue that search with \texttt{super()}.\end{plainbox}
+
+\begin{equationcard}{C3 merge rule}
+\[ \begin{gathered} \texttt{L[C] = [C] + merge(parent MROs, bases)} \end{gathered} \]
+{\small Choose a list head that appears in no other list’s tail; remove it from all lists and repeat. No valid head means the hierarchy conflicts.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+For \texttt{D(B, C)} where both \texttt{B} and \texttt{C} inherit from \texttt{A}, the merge gives \texttt{D, B, C, A, object}. The search respects \texttt{B} before \texttt{C}, while moving \texttt{A} behind both parents. \texttt{super()} means the next implementation in this MRO, not simply “the parent”.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} diamond lookup}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Set \texttt{class B(A)}, \texttt{class C(A)}, then \texttt{class D(B, C)}.
+\item Start with \texttt{L[B] = [B, A, object]}, \texttt{L[C] = [C, A, object]}, and the base order \texttt{[B, C]}.
+\item \texttt{B} is a valid head, then \texttt{C} is valid; \texttt{A} must wait until both parent branches are respected.
+\item The final order is \texttt{D, B, C, A, object}; inspect it with \texttt{D.\_\_mro\_\_}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} A depth-first walk can violate local base order; use the actual MRO.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Repeating a shared base in a mixin method without calling \texttt{super()} can stop the cooperative chain early.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.4}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does C3 preserve?
+\item Where does zero-argument \texttt{super()} continue?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.4 MRO and cooperative inheritance” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{10.5 Descriptors and class creation}
+
+\Needspace{7\baselineskip}
+Descriptors make properties and bound methods work through a shared attribute-access protocol. Class hooks and metaclasses extend the class-creation step; choose the smallest hook that expresses the requirement.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{descriptor} is an object on a class that participates in reading, writing, or deleting an attribute; a \textbf{metaclass} is the type that creates a class object.\end{plainbox}
+
+\begin{equationcard}{Descriptor operations}
+\[ \begin{gathered} \texttt{read \ensuremath{\to} \_\_get\_\_ \ensuremath{\cdot} write \ensuremath{\to} \_\_set\_\_ \ensuremath{\cdot} delete \ensuremath{\to} \_\_delete\_\_} \end{gathered} \]
+{\small A normal function is a non-data descriptor; instance access binds it as a method. The metaclass creates a class object, and its \texttt{\_\_new\_\_} method can inspect or alter the class namespace during creation. A descriptor defining \texttt{\_\_set\_\_} or \texttt{\_\_delete\_\_} is a data descriptor.}
+\end{equationcard}
+
+\Needspace{13\baselineskip}
+\texttt{property}, \texttt{staticmethod}, and \texttt{classmethod} use descriptor behaviour. A function fetched from a class is unbound; through an instance its descriptor returns a method that supplies the instance. For subclass registration, \texttt{\_\_init\_subclass\_\_} or a class decorator is often simpler than a custom metaclass.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} method binding}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item \texttt{class A: def f(self, x): …} stores a function as \texttt{A.\_\_dict\_\_["f"]}.
+\item \texttt{A.f} accesses it with no instance, so the function is returned without a receiver bound.
+\item \texttt{A().f} invokes the function descriptor with that instance and returns a bound method.
+\item Calling \texttt{A().f(3)} supplies the instance and \texttt{3}; the method body receives both arguments.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A descriptor’s \texttt{\_\_get\_\_} protocol is invoked by attribute access; the class dictionary still contains the descriptor object.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} Use a metaclass to register every subclass only if \texttt{\_\_init\_subclass\_\_} cannot satisfy the registration rule.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §10.5}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does function descriptor access through an instance create?
+\item Which simpler hook can observe subclass creation?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “10.5 Descriptors and class creation” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{11.1 Dispatch and language architectures}
+
+\Needspace{7\baselineskip}
+Languages choose different points at which to select an implementation. Static, virtual, single, and multiple dispatch describe selection rules; they do not by themselves determine the total speed of a program.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{dispatch} selects which implementation handles a call; \textbf{single dispatch} usually selects by one receiver or argument; \textbf{multiple dispatch} selects using several argument types.\end{plainbox}
+
+\begin{equationcard}{Python single dispatch}
+\[ \begin{gathered} \texttt{functools.singledispatch \ensuremath{\to} first argument type} \end{gathered} \]
+{\small \texttt{singledispatchmethod} dispatches on the first non-\texttt{self} or non-\texttt{cls} argument. See the functools documentation.}
+\end{equationcard}
+
+\Needspace{14\baselineskip}
+Static languages may bind a non-virtual call at compile time; virtual dispatch selects by runtime class. Python performs dynamic lookup and supports runtime replacement, while modern interpreters may optimise common call sites. Avoid assigning one fixed cost to all dynamic calls. When an operation depends on a pair of types, conditional logic, a visitor, or a multiple-dispatch library may be appropriate; the standard library’s \texttt{singledispatch} is not pairwise dispatch.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} collision dispatch}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item The function \texttt{collide(a, b)} has two relevant types.
+\item \texttt{singledispatch} can select on \texttt{a} but does not select directly on the pair \texttt{(type(a), type(b))}.
+\item If behaviour differs for each pair, write explicit branching, use a visitor, or choose a library with a clear multiple-dispatch contract.
+\item Keep the choice visible to callers and test the supported combinations.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{4\baselineskip}
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} Dynamic dispatch does not imply a particular measured slowdown; benchmark the actual call path.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{notebox}\textbf{Near miss:} Registering a handler for the first argument’s class does not distinguish two values of the second argument.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §11.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Which argument does \texttt{singledispatch} use?
+\item What should guide a performance claim?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “11.1 Dispatch and language architectures” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{11.2 Patterns and object construction}
+
+\Needspace{8\baselineskip}
+Patterns name recurring ways to separate a client from a changing algorithm, collaborator, or product family. Use a direct constructor until configuration, substitution, or coordination makes a pattern useful.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{strategy} is an interchangeable algorithm; an \textbf{observer} is a registered recipient of changes; a \textbf{factory} chooses how to make an object; a \textbf{builder} assembles a complex value in steps.\end{plainbox}
+
+\begin{equationcard}{Factory boundary}
+\[ \begin{gathered} \texttt{client \ensuremath{\to} factory \ensuremath{\to} compatible product} \end{gathered} \]
+{\small An abstract factory creates a related family; a factory method lets a subclass choose a product; a simple factory may be only a function.}
+\end{equationcard}
+
+\Needspace{13\baselineskip}
+The Borg pattern shares state between instances; a singleton restricts instance creation. A module is normally imported once per interpreter process, but this does not make it a universal cross-process singleton. Dependency injection supplies collaborators from outside, which makes replacements easier to test.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} swap a logger}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item A service depends on the behaviour \texttt{log(message)}, not on a concrete logger class.
+\item A factory chooses a text or JSON logger from configuration.
+\item The service receives that logger through its constructor; tests can pass a recording fake.
+\item If one setting chooses a single product, a small function may be enough; use an abstract factory only when several related products must stay compatible.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A builder object is mutable configuration; the built request should not accidentally keep a mutable headers dictionary that later builder calls change.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} Use a singleton when identity is a real requirement, not merely to make access convenient.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §11.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When is an abstract factory more useful than a simple factory?
+\item What makes a dependency easy to replace in tests?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “11.2 Patterns and object construction” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{11\baselineskip}
+\section{11.3 Quirks and decorator DSLs}
+
+\Needspace{8\baselineskip}
+Several surprising behaviours come from when Python evaluates a definition and what a closure captures. Decorators turn definition-time functions or classes into registries and other small domain-specific languages.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{mutable default} is created when the function is defined; \textbf{late binding} reads a closure variable when the function runs; \textbf{name mangling} changes a class’s double-underscore attribute name to reduce accidental clashes.\end{plainbox}
+
+\begin{equationcard}{Capture-at-definition fixes}
+\[ \begin{gathered} \texttt{def f(x, values=None): …}\, \cdot \, \texttt{lambda i=i: i} \end{gathered} \]
+{\small Use a sentinel to create a fresh mutable value per call; use a default argument or a separate factory to capture a loop value.}
+\end{equationcard}
+
+\Needspace{12\baselineskip}
+Double underscores do not create security privacy. Monkey patching changes a name or attribute at runtime, so keep its scope small and patch where the code under test looks it up. A decorator factory can capture configuration, register a function or class, then return the original object or a wrapper.
+
+\begin{workedbox}{Worked example \ensuremath{\cdot} route registry}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Create a dictionary named \texttt{routes}.
+\item \texttt{route(path)} returns a decorator that records the function under that path.
+\item Apply \texttt{@route("/home")}; the function is registered when its definition executes.
+\item Look up and call the registered function later; duplicate-path behaviour should be defined by the application.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{5\baselineskip}
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A default list is shared between calls; \texttt{None} is a common sentinel for creating a fresh list.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} \texttt{lambda: i} in a loop closes over the changing name; \texttt{lambda i=i: i} captures the current value as a default.\end{notebox}
+
+\begin{recallbox}{Recall \ensuremath{\cdot} §11.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When is a function’s default value evaluated?
+\item What does name mangling protect against?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “11.3 Quirks and decorator DSLs” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{18\baselineskip}
+\section{Model map}
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Question} & \textbf{Rule} & \textbf{Use} \\ \midrule
+Did a copy happen? & Assignment binds; shallow and deep copy differ. & Trace aliases and nested mutation. \\
+Where does an attribute come from? & Descriptor precedence, instance data, class MRO. & Explain shadowing and bound methods. \\
+Can the replacement substitute? & It accepts promised inputs and returns promised results. & Review a subtype or Protocol implementation. \\
+Which method is next? & C3 MRO, then cooperative \texttt{super()}. & Trace a diamond hierarchy. \\
+Which implementation handles a call? & Dispatch rule of the runtime or library. & Choose single dispatch or a pairwise design. \\
+Who creates the collaborator? & Constructor, factory, builder, or injected contract. & Separate configuration from service behaviour. \\
+\bottomrule\end{tabularx}\end{center}
+
+\begin{notebox}\textbf{Check every answer:} distinguish identity from equality; state when lookup or registration occurs; check whether a promised interface is actually honoured; name the runtime when describing implementation details.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\section{Derive it cold}
+
+\Needspace{13\baselineskip}
+Rebuild each chain on blank paper, using only the definitions above.
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item \textbf{Shallow versus deep copy:} draw the outer and nested references before and after each operation. \hfill{\small\color{FAUblue}§10.1}
+\item \textbf{Attribute resolution:} apply data descriptor, instance dictionary, non-data descriptor, class value, and fallback in order. \hfill{\small\color{FAUblue}§10.2}
+\item \textbf{C3 merge:} trace the diamond lists until the result is \texttt{D, B, C, A, object}. \hfill{\small\color{FAUblue}§10.4}
+\item \textbf{Bound method:} trace the function’s \texttt{\_\_get\_\_} inputs for class access and instance access. \hfill{\small\color{FAUblue}§10.5}
+\item \textbf{Factory choice:} derive the smallest construction boundary that allows a configured product and a test fake. \hfill{\small\color{FAUblue}§11.2}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{18\baselineskip}
+\section{Explain it}
+
+\Needspace{15\baselineskip}
+Answer each question aloud before opening the model response.
+
+\Needspace{13\baselineskip}
+\begin{enumerate}
+\item Why does assignment not protect a mutable value from changes through another name?
+\item When can a shallow copy still expose shared mutation?
+\item Why is a byte-size claim about a Python object tied to an implementation?
+\item Why can a Protocol help without changing runtime behaviour?
+\item Why does C3 delay a common ancestor in a diamond?
+\item When is a descriptor more useful than a plain attribute?
+\item Why should you avoid claiming a fixed cost for dynamic dispatch?
+\item When does an abstract factory justify more code than a function?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Mixed practice}
+
+\Needspace{7\baselineskip}
+Try all 24 problems before opening the answers. Their order mixes object tracing, contracts, lookup, and design choices.
+
+\begin{enumerate}
+\item \texttt{a = [1]; b = a; b.append(2)}. What is \texttt{a}?
+\item A user-defined read-only descriptor defines \texttt{\_\_get\_\_} and \texttt{\_\_set\_\_} that raises. Can an instance dictionary override it?
+\item A function annotation says \texttt{item: Sizable} where \texttt{Sizable} is a Protocol. Does the annotation reject an incompatible object at runtime?
+\item For \texttt{D(B, C)}, where both inherit from \texttt{A}, give the C3 order.
+\item \texttt{A.f} and \texttt{A().f} access a normal function in a class. Which one binds an instance?
+\item A service calls \texttt{handle(item)}, and the implementation depends on the type of \texttt{item}. Is \texttt{singledispatch} a reasonable standard-library option?
+\item A GUI can choose Windows or Mac buttons and checkboxes together. Which pattern models the related product family?
+\item \texttt{def f(items=[]): items.append(1); return items}. What does two calls with no argument return?
+\item A top-level copy of a list contains a nested dictionary. Which object is still shared after \texttt{copy.copy}?
+\item A class has \texttt{\_\_slots\_\_ = ("x",)} and no dictionary in its bases. What happens on \texttt{obj.y = 2}?
+\item A subtype accepts \texttt{str} where its base accepts any \texttt{object}. Is that safe substitutability?
+\item A mixin method calls \texttt{super().save()}. Which class does it call next?
+\item A base needs to add every subclass to a registry. What is a simple hook to try before a metaclass?
+\item An operation depends on two argument types. What limitation does plain \texttt{singledispatch} have?
+\item A sort algorithm can be swapped without changing the client. Which pattern fits?
+\item What does \texttt{\_\_token} name mangling provide?
+\item A profile shows that one dynamic call is hot. What evidence supports changing the design?
+\item Several \texttt{Borg} instances share the same state dictionary. Are they the same instance?
+\item Three lambdas created in a loop all return the final loop value. Name one concise fix.
+\item A builder returns a request that directly stores the builder’s mutable headers dictionary. What later action could surprise the caller?
+\item A registry decorator stores a function then returns it unchanged. Is the function name still callable?
+\item A factory reads configuration and may return either a JSON or text logger. What should the service depend on?
+\item A class lookup finds a property and the instance dictionary also has a same-named value. Which normally wins?
+\item An abstract base class registers a virtual subclass. Does the ABC’s implementation enter that class’s MRO?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\section{Exam-style problems}
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\subsection{1 \ensuremath{\cdot} Storage, lookup, and inheritance \ensuremath{\cdot} 20 minutes}
+
+\Needspace{11\baselineskip}
+A library defines a slotted \texttt{Record} base, a mixin that adds a computed \texttt{label} property, and two subclasses arranged as a diamond. A caller shallow-copies a record’s list of tags.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Trace whether the copy and original share the outer list and nested tag values. (3 marks)
+\item Explain how the property participates in attribute lookup and whether a same-named instance value wins. (3 marks)
+\item Write the C3 order for \texttt{Final(Left, Right)} where both inherit from \texttt{Base}. (2 marks)
+\item Give two checks before relying on \texttt{\_\_slots\_\_} to restrict storage. (4 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\subsection{2 \ensuremath{\cdot} Extensible service design \ensuremath{\cdot} 20 minutes}
+
+\Needspace{13\baselineskip}
+A service can run with either of two transports and either of two output formats. Plugins register implementations with decorators. A team is considering a metaclass, a singleton, and \texttt{singledispatch}.
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Choose a construction pattern if transport and format combinations must be compatible. (3 marks)
+\item Describe how a decorator can register each plugin and what it should return. (3 marks)
+\item Explain which argument \texttt{singledispatch} uses and when it is insufficient. (2 marks)
+\item Suggest a simpler subclass-registration mechanism and two tests for plugin contracts. (4 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{18\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{15\baselineskip}
+These points were checked against the lecture and current official Python documentation.
+
+\Needspace{13\baselineskip}
+\begin{itemize}
+\item \textbf{Slide 3, copying.} The slide says copying requires \texttt{copy.deepcopy()}, but a shallow copy is also a copy; it creates a new outer compound object while keeping references to its elements. Use a deep copy only when recursive independence is intended, and note that copying everything may be inappropriate. Python copy documentation. \hfill{\small\color{FAUblue}§10.1}
+\item \textbf{Slide 8, attribute lookup.} The shown instance-dictionary then class-dictionary sequence is a sketch: data descriptors on the class take precedence over the instance dictionary, and non-data descriptors follow it. Descriptor guide. \hfill{\small\color{FAUblue}§10.2, §10.5}
+\item \textbf{Slide 34, dispatch cost.} The fixed “hashing, collision resolution, MRO traversal” cost is too categorical for modern Python: specialisation and inline caches can optimise common call sites. Treat performance as runtime- and workload-dependent, then profile. Python 3.11 specialisation notes. \hfill{\small\color{FAUblue}§11.1}
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Self-check}
+
+\Needspace{7\baselineskip}
+Tick a skill only in a later session, at least one day after studying, when you can demonstrate it without notes.
+
+\begin{itemize}
+\item $\mdlgwhtsquare$\ Trace aliases, shallow copies, and deep copies. (1, 9, exam 1)
+\item $\mdlgwhtsquare$\ Explain slots, object-layout limits, and attribute precedence. (2, 10, 23, exam 1)
+\item $\mdlgwhtsquare$\ Distinguish Protocols, ABCs, and runtime checks. (3, 24)
+\item $\mdlgwhtsquare$\ Apply input and output variance to substitutability. (11)
+\item $\mdlgwhtsquare$\ Build a C3 order and trace cooperative super. (4, 12, exam 1)
+\item $\mdlgwhtsquare$\ Trace descriptor precedence and method binding. (2, 5, 23, exam 1)
+\item $\mdlgwhtsquare$\ Choose single or pairwise dispatch appropriately. (6, 14, 17, exam 2)
+\item $\mdlgwhtsquare$\ Select and justify a design pattern. (7, 15, 18, exam 2)
+\item $\mdlgwhtsquare$\ Keep builder state and injected dependencies safe. (20, 22, exam 2)
+\item $\mdlgwhtsquare$\ Fix mutable defaults, late binding, and name mangling misconceptions. (8, 16, 19)
+\item $\mdlgwhtsquare$\ Trace decorators and plugin registration. (13, 21, exam 2)
+\item $\mdlgwhtsquare$\ Use the simplest construction boundary that meets the contract. (7, 22, exam 2)
+\item $\mdlgwhtsquare$\ Rebuild the five derivations listed above. (Derive it cold)
+\item $\mdlgwhtsquare$\ Complete both multi-part problems closed-book. (Exam-style problems)
+\end{itemize}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Assignment binds another name to the same object; it does not copy the object. \hfill{\small\color{FAUblue}§10.1}
+\item A data descriptor found on the class is consulted before the instance dictionary. \hfill{\small\color{FAUblue}§10.2, §10.5}
+\item It preserves local base-class order and monotonicity while linearising the hierarchy. \hfill{\small\color{FAUblue}§10.4}
+\item Its descriptor binds the instance as the first argument, producing a bound method. \hfill{\small\color{FAUblue}§10.5}
+\item Static type checkers can check structural compatibility; the annotation alone does not enforce it at runtime. \hfill{\small\color{FAUblue}§10.3}
+\item A factory may choose and return a compatible implementation after applying configuration or validation. \hfill{\small\color{FAUblue}§11.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.1 Objects, references, and copying}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item It binds the name to an object; assignment itself does not copy that object. \hfill{\small\color{FAUblue}§10.1}
+\item References to nested items remain shared. \hfill{\small\color{FAUblue}§10.1}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.2 Memory, attributes, and object layout}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item A data descriptor. \hfill{\small\color{FAUblue}§10.2}
+\item Instances are limited to declared slots unless a base class or explicit slot provides a dictionary. \hfill{\small\color{FAUblue}§10.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.3 Types, protocols, and substitution}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Structural compatibility checking by static type checkers. \hfill{\small\color{FAUblue}§10.3}
+\item Arguments may be accepted more broadly; results must meet at least the original promise. \hfill{\small\color{FAUblue}§10.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.4 MRO and cooperative inheritance}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Local base order and the monotonic parent ordering. \hfill{\small\color{FAUblue}§10.4}
+\item At the next class in the instance’s MRO after the current class. \hfill{\small\color{FAUblue}§10.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{10.5 Descriptors and class creation}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item A bound method that supplies the instance as the first argument. \hfill{\small\color{FAUblue}§10.5}
+\item \texttt{\_\_init\_subclass\_\_} on a base class. \hfill{\small\color{FAUblue}§10.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{11.1 Dispatch and language architectures}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The first argument. \hfill{\small\color{FAUblue}§11.1}
+\item Measurements on the relevant implementation and workload. \hfill{\small\color{FAUblue}§11.1}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{11.2 Patterns and object construction}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When the client needs a compatible family of related products. \hfill{\small\color{FAUblue}§11.2}
+\item Depend on a behavioural contract and inject the collaborator. \hfill{\small\color{FAUblue}§11.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{11.3 Quirks and decorator DSLs}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When the function definition executes. \hfill{\small\color{FAUblue}§11.3}
+\item Accidental name collisions in subclasses; it is not a security boundary. \hfill{\small\color{FAUblue}§11.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{20\baselineskip}
+\begin{enumerate}
+\item Both names refer to the same object, so a mutation through either path changes that object. \hfill{\small\color{FAUblue}§10.1}
+\item The new outer container still refers to the same nested mutable objects. \hfill{\small\color{FAUblue}§10.1}
+\item Object layout and allocator details belong to a particular interpreter build, version, and platform. \hfill{\small\color{FAUblue}§10.2}
+\item A Protocol is primarily a static structural contract; annotations do not enforce values at runtime. \hfill{\small\color{FAUblue}§10.3}
+\item Putting the shared ancestor first could violate the order already promised by each parent branch. \hfill{\small\color{FAUblue}§10.4}
+\item When reading, writing, or deleting an attribute needs validation, computation, or managed storage. \hfill{\small\color{FAUblue}§10.5}
+\item Interpreters can specialise common calls, and costs depend on the call site and workload; measure the actual program. \hfill{\small\color{FAUblue}§11.1}
+\item When a client needs a compatible family of products and must be insulated from which family is selected. \hfill{\small\color{FAUblue}§11.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item \texttt{[1, 2]}: both names refer to the same list. \hfill{\small\color{FAUblue}§10.1}
+\item No. Defining \texttt{\_\_set\_\_} makes it a data descriptor, which takes precedence over the instance dictionary. \hfill{\small\color{FAUblue}§10.2}
+\item No; the annotation supports static checking, but does not itself validate the object when the function runs. \hfill{\small\color{FAUblue}§10.3}
+\item \texttt{D, B, C, A, object}; local base order places B before C. \hfill{\small\color{FAUblue}§10.4}
+\item \texttt{A().f}; function descriptor access through the instance returns a bound method. \hfill{\small\color{FAUblue}§10.5}
+\item Yes; it dispatches on the first argument’s type. \hfill{\small\color{FAUblue}§11.1}
+\item Abstract factory: it creates a compatible family of related products. \hfill{\small\color{FAUblue}§11.2}
+\item Both return the same accumulating list, because the default is made once when the definition executes. \hfill{\small\color{FAUblue}§11.3}
+\item The nested dictionary remains the same object in both outer lists. \hfill{\small\color{FAUblue}§10.1}
+\item It raises \texttt{AttributeError}, because \texttt{y} is not a slot. \hfill{\small\color{FAUblue}§10.2}
+\item No. It narrows valid inputs; a subtype should accept at least the inputs callers can pass to the base. \hfill{\small\color{FAUblue}§10.3}
+\item The next class after the mixin in the object’s MRO, not necessarily its direct textual parent. \hfill{\small\color{FAUblue}§10.4}
+\item \texttt{\_\_init\_subclass\_\_} on the base class, if it expresses the rule. \hfill{\small\color{FAUblue}§10.5}
+\item It selects on the first argument only; it does not directly dispatch on the pair of types. \hfill{\small\color{FAUblue}§11.1}
+\item Strategy: the client uses an interchangeable algorithm object. \hfill{\small\color{FAUblue}§11.2}
+\item It helps avoid accidental collisions in subclasses; it is not security privacy. \hfill{\small\color{FAUblue}§11.3}
+\item A benchmark or profile on the relevant interpreter and workload, followed by a check that the alternative improves the measured result. \hfill{\small\color{FAUblue}§11.1}
+\item No. They are distinct instances that deliberately share state. \hfill{\small\color{FAUblue}§11.2}
+\item Capture the current value in a default, such as \texttt{lambda i=i: i}, or use a factory function. \hfill{\small\color{FAUblue}§11.3}
+\item Further builder mutations could change the already-built request; copy or freeze the configuration during \texttt{build}. \hfill{\small\color{FAUblue}§11.2}
+\item Yes. The decorator returns the original function, which remains bound to its name as usual. \hfill{\small\color{FAUblue}§11.3}
+\item The shared logging behaviour, not a concrete class; inject the chosen compatible logger. \hfill{\small\color{FAUblue}§11.2}
+\item The property is a data descriptor and takes priority over the instance dictionary. \hfill{\small\color{FAUblue}§10.2, §10.5}
+\item No. Virtual registration affects \texttt{issubclass}/\texttt{isinstance} checks, but does not add the ABC to the MRO. \hfill{\small\color{FAUblue}§10.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item A shallow copy creates a new outer list, but nested mutable tag values remain shared. \hfill{\small\color{FAUblue}§10.1}
+\item A property is a data descriptor, so its getter runs before the instance dictionary value. \hfill{\small\color{FAUblue}§10.2, §10.5}
+\item \texttt{Final, Left, Right, Base, object}, assuming the stated consistent parent order. \hfill{\small\color{FAUblue}§10.4}
+\item Check that bases do not supply an instance dictionary, and that every needed dynamic attribute is declared (or \texttt{\_\_dict\_\_} is explicitly included). Also avoid assuming a fixed byte saving across implementations. \hfill{\small\color{FAUblue}§10.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item An abstract factory can create a compatible family of transport and formatter products; a small factory function may suffice if selection is simpler. \hfill{\small\color{FAUblue}§11.2}
+\item A decorator receives the plugin, stores it under a stable key, then returns it or an intentional wrapper so the name remains meaningful. \hfill{\small\color{FAUblue}§11.3}
+\item It dispatches on the first argument only; it is insufficient when behaviour depends on a pair of argument types. \hfill{\small\color{FAUblue}§11.1}
+\item Use \texttt{\_\_init\_subclass\_\_} or a class decorator if sufficient. Test each implementation’s promised methods and test factory selection plus failure for an unknown key. \hfill{\small\color{FAUblue}§10.5, §10.3, §11.2–11.3}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Personal study guide based on “1011a.pdf” (61 slides, 20 November 2025), with regular APDR Chapters 10–11 used for prerequisites. Written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}

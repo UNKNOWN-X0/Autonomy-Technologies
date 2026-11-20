@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795099777.1254294,
-    "seen": 1795099801.003882,
-    "ast_hash": "682f0d74d27b9768dc1087e4b3a02e61",
+    "mtime": 1795166706.6975942,
+    "seen": 1795166808.818843,
+    "ast_hash": "2ee1f789336717f92518416ad0facdbf",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -84,9 +84,9 @@
     "semantic_hash": ""
   },
   "tools/check-guide.py": {
-    "mtime": 1795039691.3565335,
-    "seen": 1795040020.890642,
-    "ast_hash": "1eb0237948ed569e8dffbbae487f12e5",
+    "mtime": 1795166647.2717657,
+    "seen": 1795166808.818766,
+    "ast_hash": "0c3c5eb77c6b278d87c95394ef5fa2cb",
     "semantic_hash": ""
   },
   "js/tooltip.js": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795100170.712174,
-    "seen": 1795100207.92678,
-    "ast_hash": "f5224f1d1e0c3e6d2dfd339908487d2a",
+    "mtime": 1795166747.7324347,
+    "seen": 1795166808.818783,
+    "ast_hash": "095f051038c4577af544dc1a54354787",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -480,15 +480,15 @@
     "semantic_hash": ""
   },
   "tools/graph-describe.py": {
-    "mtime": 1795045459.4450774,
-    "seen": 1795045464.2238998,
-    "ast_hash": "cd65538a782c4b0957d1ce9382359595",
+    "mtime": 1795166647.2731702,
+    "seen": 1795166808.818767,
+    "ast_hash": "95adeaf34945acdc7717c110ce176e2f",
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795100232.080185,
-    "seen": 1795100465.649911,
-    "ast_hash": "45d7baa84e508a141054ebd9c6961c25",
+    "mtime": 1795166839.354488,
+    "seen": 1795166899.172044,
+    "ast_hash": "33e37fe9c3a3ceacc746688415f5aa1f",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -924,9 +924,9 @@
     "semantic_hash": ""
   },
   "docs/FACT-CHECK-LOG.md": {
-    "mtime": 1795098171.8417234,
-    "seen": 1795099024.818757,
-    "ast_hash": "9bf749693e1e096f6de2bd264d0193c5",
+    "mtime": 1795166535.8942723,
+    "seen": 1795166808.81882,
+    "ast_hash": "25bdf8a6e587bc98c3b5100964fb3554",
     "semantic_hash": ""
   },
   "js/apdr/ch9-lab.js": {
@@ -995,16 +995,130 @@
     "ast_hash": "83d8aec010202713e68a1994422318bd",
     "semantic_hash": ""
   },
-  "assets/mei/appendix-b-calculation-rules.jpg": {
-    "mtime": 1795090757.5288517,
-    "seen": 1795091313.659457,
-    "ast_hash": "407ce94c1ab9b95e7a9bbe351a2bc13c",
+  "mei/appendix-x-exam-sheet-i.html": {
+    "mtime": 1795166759.6219823,
+    "seen": 1795166808.818846,
+    "ast_hash": "801232b552a89935e021fa18903cf8ce",
     "semantic_hash": ""
   },
-  "mei/appendix-x-exam-sheet-i.html": {
-    "mtime": 1795100109.8213875,
-    "seen": 1795100207.926835,
-    "ast_hash": "f73e3b7f03a3885023306e9c98651f06",
+  "js/apdr/ch1011a-lab.js": {
+    "mtime": 1795166647.2632961,
+    "seen": 1795166808.818691,
+    "ast_hash": "2b04d5d8209919f743670f3e9c04e25b",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch1011a-physics.js": {
+    "mtime": 1795166647.263857,
+    "seen": 1795166808.8186922,
+    "ast_hash": "0ac3d4938fb224afd92c7bb7a5dbd175",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch56-lab.js": {
+    "mtime": 1795166647.2644303,
+    "seen": 1795166808.818706,
+    "ast_hash": "05c02bde6da56633e8eaa229ee318f24",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch56-physics.js": {
+    "mtime": 1795166647.2650626,
+    "seen": 1795166808.818707,
+    "ast_hash": "2227a88f07781fafd01e920565ad1ca4",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch7a-lab.js": {
+    "mtime": 1795166647.265644,
+    "seen": 1795166808.8187141,
+    "ast_hash": "e180d8f90f39460a726be1f213a31a1a",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch7a-physics.js": {
+    "mtime": 1795166647.2659864,
+    "seen": 1795166808.8187149,
+    "ast_hash": "7a3e407a09c908b23daa8e8c5519037e",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch89a-lab.js": {
+    "mtime": 1795166647.2661614,
+    "seen": 1795166808.818717,
+    "ast_hash": "9f92d73ee658d7aa38c0f9d43309d98d",
+    "semantic_hash": ""
+  },
+  "js/apdr/ch89a-physics.js": {
+    "mtime": 1795166647.2668524,
+    "seen": 1795166808.818718,
+    "ast_hash": "916ad10c286c5cf9ab0dd0812734a7d0",
+    "semantic_hash": ""
+  },
+  "tests/apdr-ch1011a-physics.test.js": {
+    "mtime": 1795166647.2671561,
+    "seen": 1795166808.8187451,
+    "ast_hash": "010381491b7cd5f6c1b7d0866b045365",
+    "semantic_hash": ""
+  },
+  "tests/apdr-ch56-physics.test.js": {
+    "mtime": 1795166647.2681837,
+    "seen": 1795166808.8187509,
+    "ast_hash": "c504a85d50a5a8ce52d2ee4e2f897311",
+    "semantic_hash": ""
+  },
+  "tests/apdr-ch7a-physics.test.js": {
+    "mtime": 1795166647.2683878,
+    "seen": 1795166808.818754,
+    "ast_hash": "ae018f1aff881cc0cd5c30494ac59e4d",
+    "semantic_hash": ""
+  },
+  "tests/apdr-ch89a-physics.test.js": {
+    "mtime": 1795166647.269393,
+    "seen": 1795166808.8187551,
+    "ast_hash": "4fea5b950bd40745e77bef3098bbdd69",
+    "semantic_hash": ""
+  },
+  "apdr/ch1011a-advanced-object-oriented-programming-lab.html": {
+    "mtime": 1795166765.9372807,
+    "seen": 1795166808.818788,
+    "ast_hash": "fdda7d60fff6087aab11b7029f1b9b80",
+    "semantic_hash": ""
+  },
+  "apdr/ch1011a-advanced-object-oriented-programming.html": {
+    "mtime": 1795166765.9349515,
+    "seen": 1795166808.818789,
+    "ast_hash": "37ca138533f74a78327b61e9ab1668b1",
+    "semantic_hash": ""
+  },
+  "apdr/ch56a-numbers-memory-models-lab.html": {
+    "mtime": 1795166765.9202116,
+    "seen": 1795166808.8188028,
+    "ast_hash": "771ed156341788fcdcfca98a3acc3596",
+    "semantic_hash": ""
+  },
+  "apdr/ch56a-numbers-memory-models.html": {
+    "mtime": 1795166765.9171486,
+    "seen": 1795166808.8188028,
+    "ast_hash": "9b6ab0d3efe75dca60b5339ba7efa23a",
+    "semantic_hash": ""
+  },
+  "apdr/ch7a-advanced-concepts-lab.html": {
+    "mtime": 1795166765.9262495,
+    "seen": 1795166808.818808,
+    "ast_hash": "8e572a2d07a368fac5b0124023be0970",
+    "semantic_hash": ""
+  },
+  "apdr/ch7a-advanced-concepts.html": {
+    "mtime": 1795166765.9233994,
+    "seen": 1795166808.818809,
+    "ast_hash": "1236632df81468943bc01456816ae663",
+    "semantic_hash": ""
+  },
+  "apdr/ch89a-concurrency-metaprogramming-lab.html": {
+    "mtime": 1795166765.9323921,
+    "seen": 1795166808.818812,
+    "ast_hash": "1917eb0a8dafc77662b1fa30a2d1f74f",
+    "semantic_hash": ""
+  },
+  "apdr/ch89a-concurrency-metaprogramming.html": {
+    "mtime": 1795166765.9293208,
+    "seen": 1795166808.8188128,
+    "ast_hash": "9fbefab187a7103e466bdbdec43ed11d",
     "semantic_hash": ""
   }
 }

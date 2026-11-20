@@ -1,0 +1,1011 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 89a}
+\fancyhead[R]{\small\sffamily Concurrency, Metaprogramming, and Debugging}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Concurrency, Metaprogramming, and Debugging}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Chapter 89a\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large Choose a concurrency model by the work and the sharing it needs, then use Python’s reflective tools deliberately. The guide ends with a testing and debugging workflow for code that behaves differently across runs.}
+
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{Start from memory}
+
+\Needspace{12\baselineskip}
+Try each prompt first; mark it sure, unsure, or guessed.
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Which work benefits most from overlapping I/O waits?
+\item What does an \texttt{await} let an asyncio event loop do?
+\item Does every CPython build require the GIL?
+\item What does a decorator return?
+\item What does a metaclass control?
+\item Why can \texttt{inspect.getsource} fail?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{19\baselineskip}
+\section{How to use this guide}
+
+\Needspace{16\baselineskip}
+Work the concurrency cases by first naming the bottleneck, the shared state, and the needed parallelism. For metaprogramming, trace what object is read or replaced at definition time before considering a more powerful mechanism.
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} Study §8.1–8.3; solve practice 1–6.
+\item \textbf{Day 1:} Rebuild §8.4–8.5 and solve practice 7–10.
+\item \textbf{Day 3:} Study §9.1–9.3; solve practice 11–15.
+\item \textbf{About day 7:} Rebuild §9.4–9.6; solve practice 16–21.
+\item \textbf{About day 14:} Attempt both exam problems closed-book, then explain your uncertain choices aloud.
+\item \textbf{Before the exam:} Recheck only skills supported by the listed practice evidence; revisit the section links for missed answers.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} write down the observable question, the state that can change, and the next event that can run. For a failing test, reduce the input while preserving the failure before changing the implementation.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{21\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{18\baselineskip}
+First choose how work is scheduled; then inspect or alter program objects only where the simpler language features are not enough; finally collect evidence with tests and debugging tools.
+
+\Needspace{12\baselineskip}
+\textbf{Measure} \ensuremath{\cdot} select and observe execution
+
+\Needspace{10\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Threads, processes, and tasks} \hfill{\small\color{FAUblue}§8.1}
+
+\Needspace{4\baselineskip}
+\texttt{shared memory \ensuremath{\cdot} separate process}
+
+Rests on: how the work shares data.
+\item \Needspace{4\baselineskip}
+\textbf{GIL and free-threaded builds} \hfill{\small\color{FAUblue}§8.2}
+
+\Needspace{4\baselineskip}
+\texttt{default build \ensuremath{\cdot} optional free-threading}
+
+Rests on: interpreter build and extensions.
+\item \Needspace{4\baselineskip}
+\textbf{Asyncio scheduling} \hfill{\small\color{FAUblue}§8.3}
+
+\Needspace{4\baselineskip}
+\texttt{await \ensuremath{\to} suspend \ensuremath{\to} resume}
+
+Rests on: the event loop and suspension points.
+\item \Needspace{4\baselineskip}
+\textbf{Workload and language models} \hfill{\small\color{FAUblue}§8.4–8.5}
+
+\Needspace{4\baselineskip}
+\texttt{wait \ensuremath{\cdot} compute \ensuremath{\cdot} coordinate}
+
+Rests on: bottleneck, sharing, and runtime.
+\end{itemize}
+
+\Needspace{10\baselineskip}
+\textbf{Define} \ensuremath{\cdot} inspect and transform
+
+\Needspace{8\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Introspection} \hfill{\small\color{FAUblue}§9.1}
+
+\Needspace{4\baselineskip}
+\texttt{type \ensuremath{\cdot} attributes \ensuremath{\cdot} signature}
+
+Rests on: runtime objects expose metadata.
+\item \Needspace{4\baselineskip}
+\textbf{Decorators} \hfill{\small\color{FAUblue}§9.2}
+
+\Needspace{4\baselineskip}
+\texttt{name = decorate(function)}
+
+Rests on: functions are values that can be replaced.
+\item \Needspace{4\baselineskip}
+\textbf{Metaclasses and class hooks} \hfill{\small\color{FAUblue}§9.3}
+
+\Needspace{4\baselineskip}
+\texttt{class object \ensuremath{\to} metaclass}
+
+Rests on: classes are runtime objects.
+\item \Needspace{4\baselineskip}
+\textbf{Dynamic code and ASTs} \hfill{\small\color{FAUblue}§9.4}
+
+\Needspace{4\baselineskip}
+\texttt{syntax tree \ensuremath{\to} compiled code}
+
+Rests on: code can be represented as data, then executed.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Derive} \ensuremath{\cdot} observe and verify
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Instrumentation and patching} \hfill{\small\color{FAUblue}§9.5}
+
+\Needspace{4\baselineskip}
+\texttt{observe \ensuremath{\cdot} replace \ensuremath{\cdot} restore}
+
+Rests on: names are resolved at lookup sites.
+\item \Needspace{4\baselineskip}
+\textbf{Testing and debugging} \hfill{\small\color{FAUblue}§9.6}
+
+\Needspace{4\baselineskip}
+\texttt{reproduce \ensuremath{\to} reduce \ensuremath{\to} verify}
+
+Rests on: evidence from tests, tasks, and stacks.
+\end{itemize}
+
+\Needspace{11\baselineskip}
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Question} & \textbf{Start with} \\ \midrule
+Many waits or many CPU calculations? & Threads/async I/O versus processes, native code, or a free-threaded build \\
+Need to change a callable’s behaviour? & Decorator before a metaclass or dynamic code \\
+Failure depends on timing or input? & Reproduce, trace state, then add a focused test \\
+\bottomrule\end{tabularx}\end{center}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.1 Threads and processes}
+
+\Needspace{7\baselineskip}
+Concurrency overlaps progress; parallelism runs work at the same instant. The memory-sharing choice affects both coordination and failure isolation.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Threads are several workers sharing one room and its objects; processes are workers in separate rooms who need a message or shared-memory arrangement to exchange results. A \textbf{thread} belongs to a process; a \textbf{process} has its own address space.\end{plainbox}
+
+\begin{equationcard}{Model comparison}
+\[ \begin{gathered} \text{Threads}\, \to \, \text{shared}\, \text{process}\, \text{memory};\, \text{coordinate}\, \text{shared}\, \text{mutable}\, \text{state} \\ \text{Processes}\, \to \, \text{separate}\, \text{memory}\, \text{by}\, \text{default};\, \text{communicate}\, \text{explicitly} \end{gathered} \]
+{\small These are OS/runtime concepts, not a promise that every task will run faster. Startup, copying, communication and scheduling all cost time.}
+\end{equationcard}
+
+\Needspace{9\baselineskip}
+Python’s \texttt{threading} suits overlapping waits and APIs that block. Threads can share objects cheaply, but shared mutation needs a clear synchronisation rule. \texttt{multiprocessing} uses processes that can run on multiple cores; their state is separate by default, so results cross a queue, pipe, or shared-memory interface.
+
+\Needspace{7\baselineskip}
+A pool hides some lifecycle work. \texttt{ThreadPoolExecutor} and \texttt{ProcessPoolExecutor} submit callables and return futures. Select the pool from the workload and data movement: passing a huge object to another process can erase the benefit of parallel calculation.
+
+\Needspace{7\baselineskip}
+\begin{notebox}\textbf{Trap:} “A process is always faster.” Process creation, serialisation and communication can cost more than the calculation.\end{notebox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Near miss:} Two threads increment one shared total and produce a stable answer in a tiny test. That does not prove the operation is atomic or safe under another schedule. Protect the whole update or avoid shared mutation.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Which memory is shared by threads?
+\item Name two costs to consider before using processes.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.1 Threads and processes” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.2 The Global Interpreter Lock}
+
+\Needspace{7\baselineskip}
+The GIL affects CPU parallelism in ordinary CPython and is often overgeneralised as a rule about every Python implementation and build.
+
+\Needspace{13\baselineskip}
+\begin{plainbox}\textbf{In plain words:} In the usual GIL-enabled CPython build, a thread must hold the \textbf{Global Interpreter Lock} to operate on Python objects. The interpreter therefore serialises Python bytecode execution between threads, although I/O and some native code can release the lock.\end{plainbox}
+
+\begin{equationcard}{Three cases to separate}
+\[ \begin{gathered} \text{Default}\, \text{CPython}\, \text{build}\, \to \, \text{one}\, \text{thread}\, \text{at}\, \mathrm{a}\, \text{time}\, \text{executes}\, \text{Python}\, \text{bytecode} \\ \text{Free}-\text{threaded}\, \text{CPython}\, \text{build}\, \to \, \text{threads}\, \text{may}\, \text{execute}\, \text{Python}\, \text{code}\, \text{in}\, \text{parallel} \\ \text{Native}\, \text{extension}\, \text{releases}\, \text{GIL}\, \to \, \text{native}\, \text{work}\, \text{may}\, \text{overlap},\, \text{subject}\, \text{to}\, \text{that}\, \text{library}’\mathrm{s}\, \text{rules} \end{gathered} \]
+{\small Free-threading was added as an optional build in Python 3.13 and is officially supported as of Python 3.14; it is not the default. The Python 3.14 documentation notes that an extension not marked compatible may re-enable the GIL. Use explicit synchronisation for shared invariants.}
+\end{equationcard}
+
+\Needspace{8\baselineskip}
+For CPU-bound Python code in the default build, multiple threads generally do not give multicore speed-up. Consider processes, a native library that releases the GIL, or a tested free-threaded deployment when its dependency stack supports it. For I/O-bound work, threads may improve throughput because a waiting thread does not monopolise useful CPU time.
+
+\Needspace{7\baselineskip}
+\begin{notebox}\textbf{Trap:} The GIL does not make application-level operations or compound updates safe. It also says nothing universal about PyPy, Jython, or a free-threaded CPython build.\end{notebox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Near miss:} A package imports in free-threaded CPython, so you assume the GIL is disabled. A C extension may have enabled it during import; check the running interpreter’s state and the package’s support.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Is free-threaded CPython the default in Python 3.14?
+\item Why can a native numerical routine still use several cores?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.2 The Global Interpreter Lock” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.3 Asyncio and cooperative concurrency}
+
+\Needspace{7\baselineskip}
+Asyncio gives many I/O tasks a lightweight event-loop scheduler, but its scheduling points and shared-state rules must be understood.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} An \textbf{event loop} runs one task until it finishes or suspends at an awaitable operation. That task gives up its turn while waiting, so another ready task can progress; a long CPU calculation blocks the loop.\end{plainbox}
+
+\begin{equationcard}{Task lifecycle}
+\[ \begin{gathered} \text{create}_\text{task}(\text{coro})\, \to \, \text{scheduled}\, \text{task} \\ \text{await}\, \text{pending}\, \text{operation}\, \to \, \text{task}\, \text{suspends};\, \text{loop}\, \text{runs}\, \text{other}\, \text{work} \\ \text{awaited}\, \text{operation}\, \text{completes}\, \to \, \text{task}\, \text{resumes} \end{gathered} \]
+{\small This describes cooperative scheduling within an event loop. It is concurrency, not CPU parallelism by itself.}
+\end{equationcard}
+
+\Needspace{10\baselineskip}
+Use \texttt{asyncio.gather} or task groups to coordinate related coroutines, and use asynchronous I/O APIs instead of blocking calls. Move unavoidable blocking work to a suitable executor. Cancellation and exceptions are part of task control flow; ensure resources close in \texttt{finally} blocks or asynchronous context managers.
+
+\Needspace{8\baselineskip}
+A task is not pre-empted in the middle of ordinary straight-line Python code by another task on the same loop, but any awaited operation can expose partially updated state. If an invariant spans an \texttt{await}, another task may observe or change it. A shared async resource can be protected with \texttt{asyncio.Lock}; see the asyncio synchronisation documentation.
+
+\Needspace{7\baselineskip}
+\begin{notebox}\textbf{Trap:} “No locks are needed in async code.” Locks may be needed when a task releases control while an invariant is temporarily broken.\end{notebox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Near miss:} Read a balance, await a network request, then write a new balance. A second task can make an update during the wait; make the critical operation atomic at the application level or hold an appropriate lock.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does awaiting a pending future do to the current task?
+\item When can async shared state need a lock?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.3 Asyncio and cooperative concurrency” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.4 Concurrency models in other languages}
+
+\Needspace{7\baselineskip}
+Comparing models helps separate the idea of concurrent tasks from a language’s specific scheduler, memory model, and safety guarantees.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Languages make different choices about who schedules tasks, how tasks communicate, and when the compiler checks shared-memory rules. A familiar word such as “thread” does not guarantee identical behaviour across runtimes.\end{plainbox}
+
+\Needspace{18\baselineskip}
+Go combines goroutines with channels and a runtime scheduler; it also supports shared memory and synchronisation. Rust provides OS threads and async runtimes, while its ownership and \texttt{Send}/\texttt{Sync} rules constrain safe sharing. Java provides platform threads, virtual threads, executors and locks. GHC Haskell offers lightweight threads and synchronisation tools such as STM and MVars.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Model} & \textbf{Useful question} & \textbf{Important limit} \\ \midrule
+Go goroutines and channels & Can tasks communicate by messages? & Channels do not remove every shared-state design choice. \\
+Rust threads or async runtime & What data may safely cross threads? & Runtime and ownership choices still matter. \\
+Java platform/virtual threads & Can blocking-style code scale across many tasks? & Shared mutable state still requires coordination. \\
+Haskell threads, STM or MVars & Can concurrent updates be coordinated transactionally? & Runtime and abstraction overhead remain trade-offs. \\
+\bottomrule\end{tabularx}\end{center}
+
+\Needspace{7\baselineskip}
+\begin{notebox}\textbf{Trap:} “This language has no GIL, so races are impossible.” A runtime lock is only one possible source of coordination; it does not establish the correctness of every application invariant.\end{notebox}
+
+\Needspace{12\baselineskip}
+\begin{notebox}\textbf{Near miss:} A channel passes a pointer to shared mutable data. The message was sent safely, but the data may still be concurrently mutated unless ownership or synchronisation rules prevent it.\end{notebox}
+
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What are two questions to ask when comparing language concurrency models?
+\item Does message passing guarantee that referenced data cannot be changed elsewhere?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.4 Concurrency models in other languages” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{8.5 Use cases and concurrency pitfalls}
+
+\Needspace{7\baselineskip}
+The right model follows the bottleneck and the state boundary; the wrong one can add complexity without useful overlap or speed.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Ask whether the program spends time calculating, waiting, or coordinating. Then ask whether tasks must share live objects. This narrows the choice before you consider a framework or a pool.\end{plainbox}
+
+\begin{equationcard}{Workload routing}
+\[ \begin{gathered} \text{Many}\, \text{independent}\, \mathrm{I}/\mathrm{O}\, \text{waits}\, \to \, \text{threads}\, \text{or}\, \text{asyncio},\, \text{according}\, \text{to}\, \text{the}\, \text{APIs} \\ \text{CPU}-\text{heavy}\, \text{Python}\, \text{in}\, \text{default}\, \text{CPython}\, \to \, \text{processes}\, \text{or}\, \text{parallel}\, \text{native}\, \text{code} \\ \text{Shared}\, \text{mutation}\, \to \, \text{define}\, \text{ownership},\, \text{locking},\, \text{or}\, \text{message}\, \text{passing} \end{gathered} \]
+{\small These are starting points, not performance guarantees. Measure the real workload.}
+\end{equationcard}
+
+\Needspace{8\baselineskip}
+Common failures include data races, deadlocks caused by inconsistent lock order, starvation, hidden non-thread-safe library state, and overhead from excessive task or process creation. Minimise shared mutable state, use queues or higher-level pools where they clarify ownership, and measure end-to-end time including transfer and startup.
+
+\Needspace{7\baselineskip}
+\begin{notebox}\textbf{Trap:} A faster microbenchmark for one function does not prove the full pipeline is faster after copying, queueing and coordination.\end{notebox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Near miss:} Two locks appear harmless when acquired one at a time. If one path takes A then B and another takes B then A, both tasks can wait forever. Establish one global acquisition order or reduce the locks.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What makes a deadlock possible with two locks?
+\item What should a benchmark include when work crosses process boundaries?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “8.5 Use cases and concurrency pitfalls” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.1 Introspection}
+
+\Needspace{6\baselineskip}
+Introspection lets code adapt to objects and supports tools such as debuggers, frameworks and command-line help.
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A running program can ask an object what type it has and what names or call signature it exposes. This is \textbf{introspection}: examining live objects and their metadata.\end{plainbox}
+
+\Needspace{9\baselineskip}
+Use \texttt{type} for an exact runtime type, \texttt{isinstance} when subclasses count, \texttt{getattr} for a named attribute, and \texttt{dir} for a discoverable-name list. The \texttt{inspect} module can read signatures and docstrings. Its \texttt{getsource} helper works only when source can be retrieved; built-ins, interactive definitions, or generated code may not have accessible source.
+
+\Needspace{12\baselineskip}
+Duck typing asks whether an object supports the operation the caller needs, rather than requiring one concrete class. Prefer the actual operation or a small protocol when possible; testing attribute presence alone may not prove that the attribute behaves as expected.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Question} & \textbf{Tool} \\ \midrule
+Exact runtime class? & \texttt{type(obj)} \\
+Instance of class or subclass? & \texttt{isinstance(obj, C)} \\
+Call signature or documentation? & \texttt{inspect.signature} / \texttt{inspect.getdoc} \\
+\bottomrule\end{tabularx}\end{center}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} \texttt{dir(obj)} is not a list of only public methods or a stable API contract.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} A plugin has a \texttt{run} attribute, but it is a string rather than a callable. Check or invoke the capability with a clear error policy instead of assuming its type from its name.\end{notebox}
+
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When is \texttt{isinstance} more appropriate than comparing \texttt{type} directly?
+\item Why may \texttt{inspect.getsource} raise an error?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.1 Introspection” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.2 Decorators}
+
+\Needspace{6\baselineskip}
+Decorators give a function or class a transformation at definition time, with a compact syntax for wrapping cross-cutting behaviour.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A decorator receives a function or class and returns the object that will be bound to its name. A wrapper can run code before and after the original call.\end{plainbox}
+
+\begin{equationcard}{Decorator equivalence}
+\[ \begin{gathered} @\text{decorate}\, \text{on}\, \text{def}\, \mathrm{f}\, …\, ≡\, \mathrm{f}\, =\, \text{decorate}(\mathrm{f}) \end{gathered} \]
+{\small \emph{Read it as: “the name f is bound to the result of calling decorate with the original function f.”}\par  For stacked decorators, the one nearest the \texttt{def} is applied first; the outer decorator receives its result.}
+\end{equationcard}
+
+\Needspace{9\baselineskip}
+A general function wrapper accepts \texttt{*args} and \texttt{**kwargs}, calls the wrapped function with both, and returns the result. Use \texttt{functools.wraps} so metadata such as the name, docstring and wrapped-function link is preserved. A parameterised decorator is a factory that returns a decorator. A class instance can also decorate if it is callable.
+
+\Needspace{7\baselineskip}
+Decorators are useful for caching, logging, validation and registration. Their order can change behaviour: a cache outside an authorisation wrapper may create a very different policy from the reverse.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A decorator that forgets to return the wrapped result changes the function’s return value to \texttt{None}.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} A wrapper logs positional arguments but rejects keyword arguments. Accept and forward both argument collections unless the wrapper intentionally defines a narrower signature.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What name is bound after a decorator is applied?
+\item Why use \texttt{functools.wraps}?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.2 Decorators” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.3 Metaclasses}
+
+\Needspace{6\baselineskip}
+Metaclasses can enforce or construct rules across a family of classes, though simpler class-level hooks often communicate intent better.
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} An instance is created from a class; a class object is itself created by a \textbf{metaclass}. Python’s usual metaclass is \texttt{type}.\end{plainbox}
+
+\Needspace{10\baselineskip}
+A custom metaclass can inspect or alter the class name, bases and namespace while the class is created. The three-argument form \texttt{type(name, bases, namespace)} creates a class dynamically. Metaclasses can register subclasses or validate declarations, but they can make behaviour hard to find.
+
+\Needspace{13\baselineskip}
+Before writing a metaclass, consider a class decorator, \texttt{\_\_init\_subclass\_\_}, a factory, or composition. These often handle one-class or subclass-registration needs with less hidden machinery. Multiple metaclasses can conflict when base classes require incompatible metaclass hierarchies.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Mechanism} & \textbf{Operates on} \\ \midrule
+Class decorator & One completed class object \\
+\texttt{\_\_init\_subclass\_\_} & Subclass creation through a base hook \\
+Metaclass & Class-object creation rules \\
+\bottomrule\end{tabularx}\end{center}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} A metaclass does not run as a substitute for each instance’s ordinary method calls; its main hook is class creation and class-level behaviour.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} A base class only needs to register each subclass. A full metaclass may work, but \texttt{\_\_init\_subclass\_\_} is often a simpler hook for that job.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What information is passed to a metaclass’s class-creation hook?
+\item Name a simpler alternative for subclass registration.
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.3 Metaclasses” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{9.4 Dynamic code and abstract syntax trees}
+
+\Needspace{7\baselineskip}
+Runtime code generation is powerful but crosses a trust boundary and can make behaviour harder to inspect and test.
+
+\Needspace{9\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \texttt{eval} evaluates an expression, \texttt{exec} executes statements, and \texttt{compile} turns source or an AST into a code object. An \textbf{abstract syntax tree} represents code by its grammatical structure.\end{plainbox}
+
+\Needspace{9\baselineskip}
+Use a data format, mapping or ordinary function dispatch when those solve the problem. If generating code is justified, construct and validate it deliberately. An AST avoids some fragile string-building errors, but compiling and executing an AST still runs code; it is not a sandbox for untrusted input.
+
+\Needspace{10\baselineskip}
+Never evaluate arbitrary user text as Python. Restricting the globals dictionary does not turn Python execution into a secure sandbox. If the goal is a small expression language, define and parse that language explicitly, with permitted operations and bounded resources.
+
+\begin{equationcard}{Dynamic-code pipeline}
+\[ \begin{gathered} \text{source}\, \text{or}\, \text{AST}\, \to \, \text{compile}\, \to \, \text{code}\, \text{object}\, \to \, \text{eval}\, \text{or}\, \text{exec} \end{gathered} \]
+{\small Every step still belongs to an execution path. Parsing structure does not grant safety.}
+\end{equationcard}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} “It is an AST, so it is safe.” Structure helps transformation; it does not remove execution authority.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} A calculator accepts \texttt{eval(user\_text)} because the interface asks for arithmetic only. The input remains arbitrary Python code. Parse a deliberately limited grammar instead.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What is the main difference between \texttt{eval} and \texttt{exec}?
+\item Why is an AST not a sandbox?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.4 Dynamic code and abstract syntax trees” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.5 Instrumentation and monkey patching}
+
+\Needspace{6\baselineskip}
+Instrumentation observes or changes behaviour at runtime; patching can help in tests but creates order-dependent global state.
+
+\Needspace{8\baselineskip}
+\begin{plainbox}\textbf{In plain words:} Instrumentation adds observation such as timing or tracing. A \textbf{monkey patch} replaces an existing attribute or callable while the program is running.\end{plainbox}
+
+\Needspace{9\baselineskip}
+A patch can be useful to isolate a dependency in a test or to work around a temporary defect. Patch the name where the code under test looks it up, scope the replacement to a context manager or fixture, and restore it afterwards. A method patched on a class should be a function with the expected binding behaviour.
+
+\Needspace{10\baselineskip}
+Long-lived patches can depend on import order, collide with other patches, bypass invariants, and surprise code that holds an earlier reference. Prefer a supported extension point, dependency injection, or a wrapper you own when the behaviour is part of normal product design.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Code under test} & \textbf{Patch target} \\ \midrule
+\texttt{from transport import send} & \texttt{client.send} \\
+\texttt{import transport}, then \texttt{transport.send} & \texttt{transport.send} \\
+\bottomrule\end{tabularx}\end{center}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} Patching \texttt{library.fetch} does not affect code that already imported and bound \texttt{fetch} into another module.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{notebox}\textbf{Near miss:} A test patches a global function and forgets to restore it. Later tests pass alone but fail in a suite depending on execution order. Use a scoped patch and verify cleanup.\end{notebox}
+
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Where should a dependency usually be patched in a unit test?
+\item Why keep a monkey patch scoped?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.5 Instrumentation and monkey patching” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{9.6 Debugging and testing}
+
+\Needspace{6\baselineskip}
+Reliable fixes begin with a repeatable failure and end with a test that would have caught it.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} A test states what must hold; a debugger or trace helps show where execution diverges. Start with the smallest observation that distinguishes the expected result from the actual one.\end{plainbox}
+
+\Needspace{11\baselineskip}
+In pytest, fixtures provide reusable setup and cleanup; parametrisation runs a case over explicit inputs. Property-based tools such as Hypothesis generate examples from a stated invariant and shrink failures. Mocks isolate external effects, while autospec can catch calls that do not match the real interface. Avoid mocks when they merely copy the implementation instead of checking a useful boundary.
+
+\Needspace{9\baselineskip}
+For async code, inspect task names and stacks, enable event-loop debug mode when appropriate, and make task exceptions visible. For threads, collect stack traces and reason about lock ownership and ordering. \texttt{faulthandler} can dump Python tracebacks. Coverage reports which code ran; it does not prove that assertions were strong.
+
+\Needspace{13\baselineskip}
+Use CI to run tests on supported Python versions and dependency configurations. The lecture’s Python 3.8 and 3.9 matrix is obsolete: both releases are end-of-life. Choose a current supported range for the project and pin that policy in its tooling, using the Python version status.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Evidence} & \textbf{What it can show} & \textbf{What it cannot show by itself} \\ \midrule
+Failing minimal test & Reproduces a behaviour & Its root cause \\
+Coverage report & Which code executed & Whether assertions are strong \\
+Task/thread stack & Where work is paused or blocked & Whether the program’s intended invariant is correct \\
+\bottomrule\end{tabularx}\end{center}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} High line coverage means every important behaviour has been tested.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} A mock returns the expected value for any call, including invalid arguments. Use a spec or a small integration test to verify the real boundary.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{recallbox}{Recall without looking}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What extra information does property-based testing provide beyond one example?
+\item What does coverage fail to establish?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “9.6 Debugging and testing” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{21\baselineskip}
+\section{Model map}
+
+\Needspace{18\baselineskip}
+This chapter has no core numerical formula. Use the following decision rules as a compact model map; check them against the workload and runtime you actually deploy.
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Need} & \textbf{First choice to evaluate} & \textbf{Check before relying on it} \\ \midrule
+Overlap blocking I/O & Threads or asyncio & Whether the APIs block and whether state is shared \\
+CPU parallelism in default CPython & Processes or native code & Transfer costs and library behaviour \\
+CPU parallelism with CPython threads & Free-threaded build & Build mode, extension compatibility, explicit locks \\
+Shared state across an await & Redesign invariant or use asyncio synchronisation & Every suspension point and cancellation path \\
+Change function behaviour & Decorator & Signature, metadata, return value and wrapper order \\
+Generate or execute code & Ordinary dispatch or constrained parser first & Trust boundary and execution authority \\
+\bottomrule\end{tabularx}\end{center}
+
+\begin{notebox}\textbf{Check every answer:} state the runtime/build, workload, shared state and measurement boundary. “Concurrent”, “parallel” and “thread-safe” do not mean the same thing.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{Derive it cold}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Route a workload: classify CPU versus I/O, shared versus isolated data, then compare setup and communication costs. \hfill{\small\color{FAUblue}§8.1–8.5}
+\item Trace a coroutine schedule around every \texttt{await} and mark which invariants remain true at each suspension. \hfill{\small\color{FAUblue}§8.3}
+\item Expand a decorated definition into the equivalent rebinding, then trace nested wrapper order and return value. \hfill{\small\color{FAUblue}§9.2}
+\item Trace class creation from name, bases and namespace through the metaclass hook. \hfill{\small\color{FAUblue}§9.3}
+\item Turn a flaky report into a minimal reproduction, a likely cause, a regression test and a measured fix. \hfill{\small\color{FAUblue}§9.6}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Explain it}
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Why can threads improve an I/O-bound program even when its default CPython build has a GIL?
+\item When can asyncio tasks race over shared data?
+\item Why might adding processes make a CPU task slower?
+\item When is a decorator clearer than a metaclass?
+\item Why does building an AST not make execution of untrusted code safe?
+\item When can a mock make a test less useful?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Mixed practice}
+
+\Needspace{7\baselineskip}
+24 mixed problems. Constants: use the stated runtime and do not assume a particular scheduler interleaving unless the prompt says so.
+
+\begin{enumerate}
+\item Module \texttt{client} used \texttt{from transport import send}. Your test patches \texttt{transport.send}. Why may the client still call the original?
+\item A program downloads 200 small files and spends most time waiting. Name one suitable concurrency approach and one constraint to check.
+\item Name one technique that ensures a monkey patch is restored after a test, including on failure.
+\item On ordinary GIL-enabled CPython, will two CPU-bound Python threads normally execute Python bytecode simultaneously on separate cores?
+\item A suite has 100\% line coverage but no assertion on an important result. What can you conclude?
+\item A process pool receives a 2 GB object to perform a 1 ms calculation. What cost may dominate?
+\item Which tool can help dump Python stack traces when a program hangs or crashes: \texttt{faulthandler} or \texttt{functools}?
+\item Two tasks both execute \texttt{value += 1} with no await in a single-threaded event loop. Does another task normally interleave within that statement sequence?
+\item Why is a test with an unrestricted mock return less informative than an autospecced mock?
+\item Python 3.14 is installed. Is that alone enough to conclude that the GIL is disabled?
+\item As of the current Python release status, may a new project treat Python 3.8 and 3.9 as maintained test targets?
+\item One task reads inventory, awaits a remote price, then writes inventory minus one. Name the risk and a mitigation direction.
+\item A function has a flaky failure under load. Give a short evidence-first debugging sequence.
+\item Match: a Go program launches many lightweight tasks and passes messages through channels. Name the model components.
+\item A worker holds lock A and waits for B; another holds B and waits for A. What has occurred?
+\item What is the likely outcome of \texttt{inspect.getsource(len)}?
+\item A decorator wrapper calls \texttt{f(*args, **kwargs)} but does not return the call result. What does a successful wrapper call return by default?
+\item What does pytest parametrisation add when testing \texttt{clamp} at negative, boundary and positive inputs?
+\item For \texttt{@outer} above \texttt{@inner} on \texttt{f}, write the resulting binding.
+\item A class hierarchy needs to register each subclass. Name a standard hook to try before a metaclass.
+\item What does \texttt{type("Worker", (Base,), namespace)} return?
+\item Hypothesis reports a long failing list and then reduces it. What is the reduced value for?
+\item A calculator passes user text to \texttt{eval} after removing spaces. Is this a safe allowlist?
+\item An AST has been checked to contain a lambda. Does compiling it guarantee no dangerous behaviour?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+
+\begin{keepsection}
+\section{Exam-style problems}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\subsection{1 \ensuremath{\cdot} Schedule, sharing, and GIL \ensuremath{\cdot} 20 minutes}
+
+\Needspace{13\baselineskip}
+A service downloads records, normalises each record in Python, and accumulates a shared count. The ordinary CPython deployment is GIL-enabled.
+
+\Needspace{10\baselineskip}
+\begin{enumerate}
+\item Classify each stage as primarily I/O-bound or CPU-bound and choose a starting model. (3 marks)
+\item Explain whether two CPU-heavy Python threads should be expected to use two cores for bytecode. Give one alternative. (3 marks)
+\item Identify the shared-state risk in the count and propose a coordination or ownership design. (3 marks)
+\item The team considers free-threaded CPython. Name two deployment checks before adopting it. (3 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\subsection{2 \ensuremath{\cdot} Inspect, transform, and test \ensuremath{\cdot} 20 minutes}
+
+\Needspace{12\baselineskip}
+A framework discovers plugin classes and wraps each plugin’s \texttt{run} method with timing. A test fails intermittently after monkey-patching a transport dependency.
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Describe what a decorator does to the method binding and one metadata measure. (3 marks)
+\item Give a simpler alternative to a metaclass if the only requirement is subclass registration. (2 marks)
+\item Explain why generated AST code is not automatically safe for untrusted plugin input. (3 marks)
+\item Give a test/debugging sequence for the intermittent failure, including where to patch. (4 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{18\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{15\baselineskip}
+These points were checked against the rendered lecture slides and current official Python documentation.
+
+\Needspace{12\baselineskip}
+\begin{itemize}
+\item \textbf{Slide 3, GIL and parallelism.} The statement that only separate processes achieve parallelism is too broad for CPython: optional free-threaded builds allow Python threads to run in parallel. The later slides mention this direction, but do not qualify the broad claim. The Python 3.14 documentation describes the optional build. \hfill{\small\color{FAUblue}§8.2}
+\item \textbf{Slide 14, async locking.} The claim that locks are unnecessary because tasks only switch at awaits is too broad. An invariant can be interrupted across an await; the asyncio documentation provides a task lock for shared resources. \hfill{\small\color{FAUblue}§8.3}
+\item \textbf{Slides 53–54, Python version matrix.} The sample CI/tox targets Python 3.8 and 3.9; both are end-of-life according to the Python version status. Select maintained versions for a live project matrix. \hfill{\small\color{FAUblue}§9.6}
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Self-check}
+
+\Needspace{7\baselineskip}
+Tick a skill only in a later session, at least one day after studying, when you can demonstrate it without notes.
+
+\begin{itemize}
+\item $\mdlgwhtsquare$\ Choose threads or processes from sharing and workload. (2, 4, 6, exam 1)
+\item $\mdlgwhtsquare$\ Explain the GIL for default and free-threaded CPython. (4, 10, exam 1)
+\item $\mdlgwhtsquare$\ Trace task suspension and shared invariants. (8, 12)
+\item $\mdlgwhtsquare$\ Compare concurrency models without overclaiming. (14)
+\item $\mdlgwhtsquare$\ Recognise deadlock and transfer costs. (6, 15)
+\item $\mdlgwhtsquare$\ Use introspection with its limits. (16)
+\item $\mdlgwhtsquare$\ Expand and trace a decorator. (17, 19, exam 2)
+\item $\mdlgwhtsquare$\ Choose a class hook before a metaclass. (20, 21, exam 2)
+\item $\mdlgwhtsquare$\ Explain dynamic-code trust boundaries. (23, 24, exam 2)
+\item $\mdlgwhtsquare$\ Scope a monkey patch at the lookup site. (1, 3, exam 2)
+\item $\mdlgwhtsquare$\ Use fixtures, properties, mocks and coverage appropriately. (5, 7, 9, 11, 18, 22)
+\item $\mdlgwhtsquare$\ Reduce a flaky failure to a regression test. (13, exam 2)
+\item $\mdlgwhtsquare$\ Rebuild all five derivations listed above. (Derive it cold)
+\item $\mdlgwhtsquare$\ Complete both multi-part problems closed-book. (Exam-style problems)
+\end{itemize}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item I/O-bound work can progress while another task waits. \hfill{\small\color{FAUblue}§8.1–8.3}
+\item It suspends the current task while the awaited operation is incomplete, allowing other tasks or I/O to run. \hfill{\small\color{FAUblue}§8.3}
+\item No. Since Python 3.13 there are optional free-threaded builds; Python 3.14 officially supports them, while the ordinary build still has the GIL. \hfill{\small\color{FAUblue}§8.2}
+\item Usually a replacement callable that wraps or otherwise changes the original function. \hfill{\small\color{FAUblue}§9.2}
+\item How a class object is created. \hfill{\small\color{FAUblue}§9.3}
+\item Its source may be unavailable, for example for built-ins or dynamically created code. \hfill{\small\color{FAUblue}§9.1}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.1 Threads and processes}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Threads in one process share its address space, though each thread has its own execution state.
+\item Startup and memory costs, plus communication or data-serialisation costs.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.2 The Global Interpreter Lock}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item No. It is an officially supported optional build; the ordinary build remains GIL-enabled.
+\item It may release the GIL while native code runs; actual parallelism depends on the library and build.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.3 Asyncio and cooperative concurrency}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item It suspends that task and lets the event loop run other ready tasks or I/O.
+\item When an invariant spans a suspension point and another task could observe or change the shared state.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.4 Concurrency models in other languages}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Who schedules tasks, how state is shared or communicated, and what safety rules constrain mutation.
+\item No. A message may carry a reference; ownership and mutation rules still matter.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{8.5 Use cases and concurrency pitfalls}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Tasks can hold one lock while waiting for another held by the other task, forming a cycle.
+\item Startup and data-transfer/serialisation time as well as the calculation.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.1 Introspection}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item When instances of subclasses should also be accepted.
+\item The object’s source may not be available, such as for built-ins or dynamically created code.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.2 Decorators}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The name is bound to the object returned by the decorator, often a wrapper.
+\item It copies useful metadata from the wrapped function and records the wrapped object.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.3 Metaclasses}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The class name, base classes and namespace, along with the metaclass itself.
+\item A base class’s \texttt{\_\_init\_subclass\_\_} hook is often enough.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.4 Dynamic code and abstract syntax trees}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item \texttt{eval} evaluates an expression and returns its value; \texttt{exec} executes statements.
+\item It can still be compiled and executed, so the generated program retains its authority to perform operations.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.5 Instrumentation and monkey patching}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item At the name lookup site used by the code under test.
+\item To restore global state and prevent import-order or test-order effects.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{9.6 Debugging and testing}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item It explores many generated inputs and can shrink a failure to a smaller counterexample.
+\item It does not show that the tests asserted the right behaviour or exercised meaningful cases.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{16\baselineskip}
+\begin{enumerate}
+\item A thread waiting for I/O does not need to hold the interpreter while another thread can progress. The gain is overlapping waits, not parallel Python-bytecode execution. \hfill{\small\color{FAUblue}§8.1–8.2}
+\item Tasks can interleave at suspension points. If shared state is temporarily inconsistent across an await, another task can observe or change it. \hfill{\small\color{FAUblue}§8.3}
+\item Worker startup and moving data to and from processes can cost more than the saved calculation time. \hfill{\small\color{FAUblue}§8.1, §8.5}
+\item A decorator is usually clearer when one function or class needs a wrapper at definition time. A metaclass is broader and controls class creation. \hfill{\small\color{FAUblue}§9.2–9.3}
+\item An AST represents structure, but it can still compile into executable operations with the authority of the process. \hfill{\small\color{FAUblue}§9.4}
+\item A mock is less useful when it accepts invalid calls or mirrors implementation details instead of testing a meaningful boundary. \hfill{\small\color{FAUblue}§9.6}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item \texttt{client} already bound its own name \texttt{send}; patch the name where the code under test looks it up. \hfill{\small\color{FAUblue}§9.5}
+\item Threads or asyncio can overlap waits. Check whether the client API is blocking or asynchronous and whether rate limits/shared state need coordination. \hfill{\small\color{FAUblue}§8.1, §8.3, §8.5}
+\item Use a scoped patch context/decorator or a fixture finaliser so cleanup runs when the scope exits. \hfill{\small\color{FAUblue}§9.5}
+\item No. The GIL serialises bytecode execution between threads in that build. \hfill{\small\color{FAUblue}§8.2}
+\item Only that those lines executed; coverage does not establish that expected behaviour was checked. \hfill{\small\color{FAUblue}§9.6}
+\item Serialising, copying or transferring the input and starting/scheduling work can dominate the calculation. \hfill{\small\color{FAUblue}§8.1, §8.5}
+\item \texttt{faulthandler} can dump tracebacks. \hfill{\small\color{FAUblue}§9.6}
+\item No pre-emptive task switch happens between ordinary statements in one task; tasks switch when the running task suspends. This does not generalise to threads or free-threaded execution. \hfill{\small\color{FAUblue}§8.3}
+\item An unrestricted mock may accept invalid method calls and signatures; autospec constrains the mock to the real interface. \hfill{\small\color{FAUblue}§9.6}
+\item No. Free-threaded execution uses an optional build; the ordinary build is still GIL-enabled, and extensions may enable the GIL. \hfill{\small\color{FAUblue}§8.2}
+\item No. Both are end-of-life; choose versions that remain supported and match the project’s users. \hfill{\small\color{FAUblue}§9.6}
+\item Another task may change inventory during the await. Keep the invariant within a protected operation, use an async lock, or redesign around a single owner/queue. \hfill{\small\color{FAUblue}§8.3}
+\item Capture the failure and runtime conditions, reproduce it, reduce the case, inspect the relevant task and thread state, form one hypothesis, then add a regression test and rerun it. \hfill{\small\color{FAUblue}§8.5, §9.6}
+\item Goroutines are scheduled by the Go runtime; channels communicate values. Shared memory still requires safe coordination. \hfill{\small\color{FAUblue}§8.4}
+\item A deadlock cycle. Enforce a consistent acquisition order or restructure ownership. \hfill{\small\color{FAUblue}§8.5}
+\item It raises \texttt{TypeError} for a built-in function because Python source is not available in the expected form. \hfill{\small\color{FAUblue}§9.1}
+\item \texttt{None}, because the wrapper itself has no return statement carrying the result. \hfill{\small\color{FAUblue}§9.2}
+\item It runs the same test logic against explicit input/expected-output cases. \hfill{\small\color{FAUblue}§9.6}
+\item \texttt{f = outer(inner(f))}; the decorator nearest the definition is applied first. \hfill{\small\color{FAUblue}§9.2}
+\item \texttt{\_\_init\_subclass\_\_} on a base class is often a simpler registration hook. \hfill{\small\color{FAUblue}§9.3}
+\item A newly created class named \texttt{Worker} with the listed base and namespace. \hfill{\small\color{FAUblue}§9.3}
+\item It is a smaller counterexample that still violates the property, making the defect easier to understand. \hfill{\small\color{FAUblue}§9.6}
+\item No. Whitespace removal does not restrict Python syntax or execution authority. Parse a small explicit expression grammar. \hfill{\small\color{FAUblue}§9.4}
+\item No. The accepted AST and its names or operations still need a safe, bounded execution model; an AST is not a sandbox. \hfill{\small\color{FAUblue}§9.4}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{13\baselineskip}
+\begin{enumerate}
+\item Downloads are I/O-bound; normalisation is CPU-bound. Threads or asyncio can overlap downloads; the CPU stage may use a process pool or native implementation if measurement justifies transfer costs. \hfill{\small\color{FAUblue}§8.1, §8.3, §8.5}
+\item No. In the default build, the GIL serialises Python bytecode between threads. Processes or suitable native code are alternatives. \hfill{\small\color{FAUblue}§8.2}
+\item Concurrent increments may lose updates. Use a lock around the whole update, one aggregator that owns the count, or return local counts and combine them. \hfill{\small\color{FAUblue}§8.1, §8.5}
+\item Check that the interpreter is actually a free-threaded build with the GIL disabled, and that C extensions/dependencies support free-threading without re-enabling the GIL. Also measure workload performance and test shared-state correctness. \hfill{\small\color{FAUblue}§8.2}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item The decorator receives the function and returns a wrapper that is bound to \texttt{run}. Use \texttt{functools.wraps} to preserve metadata and identify the original callable. \hfill{\small\color{FAUblue}§9.2}
+\item Use a base class’s \texttt{\_\_init\_subclass\_\_} or a class decorator if it suffices. \hfill{\small\color{FAUblue}§9.3}
+\item An AST can still compile into executable code. Structural representation does not constrain what the resulting program can access or do. \hfill{\small\color{FAUblue}§9.4}
+\item Reproduce and minimise the failure; inspect task and thread stacks and order of patch setup; patch the transport name where the plugin looks it up; scope cleanup; add a deterministic regression test. \hfill{\small\color{FAUblue}§8.5, §9.5–9.6}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Personal study guide based on “89a.pdf” (59 slides, 15 November 2025), written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+\end{keepsection}
+
+\end{document}

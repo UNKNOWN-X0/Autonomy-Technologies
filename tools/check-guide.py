@@ -332,7 +332,7 @@ def check(path):
     key = body.attrs.get("data-key", "") if body else ""
     if not body or not re.search(r"\bs-[a-z]+-\d\b", body.attrs.get("class", "")):
         rep.err('<body> needs a subject class such as class="s-eei-1"')
-    if not re.fullmatch(r"[a-z]+\d-ch\d+", key):
+    if not re.fullmatch(r"[a-z]+\d-ch\d+[a-z]?", key):
         rep.err('<body data-key> must look like "eei1-ch1", got "%s"' % key)
 
     main = find(root, lambda n: n.tag == "main")

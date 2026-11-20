@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#04316A" />
+    <meta name="description" content="Predict-then-reveal lab for APDR Chapter 56a: integer encodings, arithmetic, binary fractions, IEEE formats, and numerical stability." />
+    <title>Numbers, Caches, and Memory Models Lab · APDR Chapter 56a</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/system.css" /><script src="../js/settings.js"></script><script src="../js/progress.js"></script>
+    <link rel="stylesheet" href="../css/guide.css" />
+    <link rel="stylesheet" href="../css/lab.css" />
+  </head>
+  <body class="s-apdr-1 lab" data-key="apdr1-ch56" data-guide="ch56a-numbers-memory-models.html" data-skills="21">
+    <div class="wrap">
+      <nav class="toc" aria-label="Lab contents">
+        <a class="brand" href="../index.html"><span>From Fundamentals to AI Apocalypse</span></a>
+        <a class="home" href="../index.html">All semesters</a>
+        <nav class="chapter-switch" aria-label="Chapter 56a">
+          <a href="ch56a-numbers-memory-models.html">Guide</a><a aria-current="page" href="ch56a-numbers-memory-models-lab.html">Lab</a>
+        </nav>
+        <details class="mobile-toc"><summary>Jump to an experiment</summary><ol>
+          <li><a href="#how">How the lab works</a></li><li class="toc-group" aria-hidden="true">Experiments</li>
+          <li><a href="#exp-integers">3.1–3.2 Integer representations</a></li><li><a href="#exp-arithmetic">3.4–3.5 Binary arithmetic</a></li><li><a href="#exp-ieee">4.4 IEEE 754 fields</a></li><li><a href="#exp-stability">4.5 Numerical stability</a></li><li><a href="#exp-cache">2.1–2.2 Cache</a></li><li><a href="#exp-coherence">3.1–3.2 Coherence and order</a></li><li><a href="#lab-results">Your results</a></li>
+        </ol></details>
+        <ol>
+          <li><a href="#how">How the lab works</a></li><li class="toc-group" aria-hidden="true">Experiments</li>
+          <li><a href="#exp-integers">3.1–3.2 Integer representations</a></li><li><a href="#exp-arithmetic">3.4–3.5 Binary arithmetic</a></li><li><a href="#exp-ieee">4.4 IEEE 754 fields</a></li><li><a href="#exp-stability">4.5 Numerical stability</a></li><li><a href="#exp-cache">2.1–2.2 Cache</a></li><li><a href="#exp-coherence">3.1–3.2 Coherence and order</a></li><li><a href="#lab-results">Your results</a></li>
+        </ol>
+      </nav>
+      <main>
+        <header class="sign"><span class="code" aria-label="Algorithms, Programming, and Data Representation">APDR</span><h1>Numbers, Caches, and Memory Models Lab</h1><p class="course">Algorithms, Programming, and Data Representation · Module 92313 · Chapter 56a</p><p class="meta" id="lab-meta"></p></header>
+        <p class="standfirst">Commit to a prediction, rate your confidence, then watch the representation or calculation unfold. Finish each experiment to open its sandbox.</p>
+        <noscript><p class="method">The experiments need JavaScript. The <a href="ch56a-numbers-memory-models.html">Chapter 56a guide</a> covers the same ideas without it.</p></noscript>
+
+        <section id="how" aria-labelledby="how-title"><h2 id="how-title">How the lab works</h2><ol class="route"><li><strong>Predict.</strong> Choose an answer before the stage reveals the result.</li><li><strong>Rate your confidence.</strong> A sure but wrong answer appears in Your results as a useful review target.</li><li><strong>Watch the steps.</strong> Follow the integer or floating-point calculation, cache lookup, or multicore state change.</li><li><strong>Explore.</strong> Complete all four challenges to unlock the experiment controls.</li></ol></section>
+
+        <section id="exp-integers" class="experiment" data-experiment="integers" aria-labelledby="integers-title">
+          <h2 id="integers-title">3.1–3.2 Integer representations: encode and decode</h2>
+          <p>Convert values between bases, then decode the same fixed-width bits under named integer encodings.</p>
+          <div class="bench"><div class="stage"><canvas role="img" aria-label="Integer digits pass through a conversion or encoding rule"></canvas><p class="stage-note">Name the base, encoding, and bit width</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Explore integer representations</legend><label class="field-row">Task <select data-task><option value="convert">Convert base</option><option value="decode">Decode integer bits</option><option value="bcd">Encode BCD</option></select></label><label class="field-row">Value or bits <input data-value value="53" /></label><label class="field-row">From base <select data-from><option value="2">Binary</option><option value="10" selected>Decimal</option><option value="16">Hexadecimal</option></select></label><label class="field-row">To base <select data-to><option value="2" selected>Binary</option><option value="8">Octal</option><option value="10">Decimal</option><option value="16">Hexadecimal</option></select></label><label class="field-row">Encoding <select data-encoding><option value="unsigned">Unsigned</option><option value="sign-magnitude">Sign and magnitude</option><option value="ones-complement">One’s complement</option><option value="twos-complement">Two’s complement</option><option value="excess">Excess-B</option></select></label><label class="field-row">Bias <input data-bias type="number" value="4" min="0" max="255" /></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Result: <output data-out="result">—</output></p></fieldset></form></div></div>
+        </section>
+
+        <section id="exp-arithmetic" class="experiment" data-experiment="arithmetic" aria-labelledby="arithmetic-title">
+          <h2 id="arithmetic-title">3.4–3.5 Binary arithmetic: carry and overflow</h2>
+          <p>Compare unsigned arithmetic with signed fixed-width arithmetic. Carry-out and signed overflow answer different questions.</p>
+          <div class="bench"><div class="stage"><canvas role="img" aria-label="Binary operands are added column by column with carries, then range-checked"></canvas><p class="stage-note">Keep the operation and the encoding explicit</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Calculate binary arithmetic</legend><label class="field-row">Mode <select data-mode><option value="unsigned">Unsigned</option><option value="signed">Two’s complement</option></select></label><label class="field-row">Operation <select data-operation><option value="add">Add</option><option value="subtract">Subtract</option><option value="multiply">Multiply (unsigned)</option><option value="divide">Divide (unsigned)</option></select></label><label class="field-row">First bit pattern <input data-left data-bitcells value="1011" /></label><label class="field-row">Second bit pattern <input data-right data-bitcells value="0011" /></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Result: <output data-out="result">—</output></p></fieldset></form></div></div>
+        </section>
+
+        <section id="exp-ieee" class="experiment" data-experiment="ieee" aria-labelledby="ieee-title">
+          <h2 id="ieee-title">4.4 IEEE 754 fields: decode single precision</h2>
+          <p>Single precision stores one sign bit, eight exponent bits, and 23 fraction bits. Reserved exponent patterns identify zero, subnormal values, infinity, and NaN.</p>
+          <div class="bench"><div class="stage"><canvas role="img" aria-label="A 32-bit IEEE single-precision word separates into sign, exponent, and fraction"></canvas><p class="stage-note">Decode all 32 bits before assigning a value</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Decode a 32-bit word</legend><label class="field-row">Hexadecimal word <input data-hex value="3F800000" /></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Fields: <output data-out="result">—</output></p></fieldset></form></div></div>
+        </section>
+
+        <section id="exp-stability" class="experiment" data-experiment="stability" aria-labelledby="stability-title">
+          <h2 id="stability-title">4.5 Numerical stability: cancellation and reformulation</h2>
+          <p>Track how rounding affects close values. Compare a direct calculation with a stable formula that avoids subtracting nearly equal quantities.</p>
+          <div class="bench"><div class="stage"><canvas role="img" aria-label="The steps of a rounding, subtraction or stable-formula calculation are listed"></canvas><p class="stage-note">An exact operation can still expose earlier rounding</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Explore numerical stability</legend><label class="field-row">Calculation <select data-task><option value="cancellation">Cancellation example</option><option value="sterbenz">Sterbenz subtraction</option><option value="quadratic">Stable quadratic roots</option></select></label><label class="field-row">x or a <input data-a type="number" step="any" value="0.123456789" /></label><label class="field-row">y or b <input data-b type="number" step="any" value="0.123451234" /></label><label class="field-row">c <input data-c type="number" step="any" value="1" /></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Result: <output data-out="result">—</output></p></fieldset></form></div></div>
+        </section>
+
+        <section id="exp-cache" class="experiment" data-experiment="cache" aria-labelledby="cache-title"><h2 id="cache-title">2.1–2.2 Cache locality and mapping</h2><p>Trace the weighted cost of a miss and map byte addresses to cache sets. The sandbox uses a simplified two-level cache or a set-index calculation.</p><div class="bench"><div class="stage"><canvas role="img" aria-label="Cache hit and miss path or address-to-set mapping shown as a sequence"></canvas><p class="stage-note">Only a miss pays the next-level access time.</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Explore cache behaviour</legend><label class="field-row">Calculation <select data-task><option value="amat">Two-level AMAT</option><option value="set">Cache set</option><option value="layout">Array layout</option></select></label><label class="field-row">L1 hit time (ns) or address <input data-a type="number" value="2" /></label><label class="field-row">Miss rate or line size <input data-b type="number" step="any" value="0.1" /></label><label class="field-row">L2 time (ns) or set count <input data-c type="number" value="10" /></label><label class="field-row">Access pattern <select data-pattern><option value="records">Read every field in each record</option><option value="field">Read every x field</option></select></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Result: <output data-out="result">—</output></p></fieldset></form></div></div></section>
+<section id="exp-coherence" class="experiment" data-experiment="coherence" aria-labelledby="coherence-title"><h2 id="coherence-title">3.1–3.2 Coherence and consistency</h2><p>Separate a cache-line ownership transition from the ordering guarantees of the memory model.</p><div class="bench"><div class="stage"><canvas role="img" aria-label="Two cores change cache-line states or execute a store-buffering test"></canvas><p class="stage-note">Coherence orders one address; consistency constrains observations across addresses.</p></div><div class="side"><div class="challenge" aria-live="polite"></div><form class="controls" onsubmit="return false"><fieldset><legend>Explore multicore state</legend><label class="field-row">Trace <select data-task><option value="mesi">Core 0 read, then Core 1 read</option><option value="sb">Store-buffering test</option></select></label><label class="field-row">Memory model <select data-model><option value="SC">Sequential consistency</option><option value="TSO">x86 TSO</option><option value="weak">Weaker ordering</option></select></label><div class="row-btns"><button class="btn small" type="button" data-act="reset">Reset</button></div><p class="readout" aria-live="polite">Result: <output data-out="result">—</output></p></fieldset></form></div></div></section>
+<section id="results" aria-labelledby="results-title"><h2 id="results-title">Your results</h2><div id="lab-results"></div></section>
+        <p class="source-note">Personal study lab based on the APDR Chapter 56a guide and supplied lecture notes, including “FAU_beamer_56a.pdf” (55 slides, 26 October 2025). The controls illustrate selected finite-precision cases and do not model every platform or rounding mode. Not an official FAU publication; check course details against the current materials. Made by <strong>Thanate Amornjiraporn (Focus)</strong>.</p>
+      </main>
+    </div>
+    <script src="../js/apdr/ch3-physics.js"></script>
+    <script src="../js/apdr/ch4-physics.js"></script>
+    <script src="../js/apdr/ch56-physics.js"></script>
+    <script src="../js/lab.js"></script>
+    <script src="../js/apdr/ch56-lab.js"></script>
+    <script src="../js/tooltip.js"></script><script src="../js/nav.js"></script>
+  </body>
+</html>

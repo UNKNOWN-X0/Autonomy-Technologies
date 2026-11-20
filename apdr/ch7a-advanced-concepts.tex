@@ -1,0 +1,835 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Chapter 7a}
+\fancyhead[R]{\small\sffamily Advanced Programming Concepts and Recursion}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Advanced Programming Concepts and Recursion}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Chapter 7a\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{9\baselineskip}
+{\large This guide connects memory models, type systems, abstraction, resource ownership, and compilation across C++ and Python, then develops recursion and induction as tools for program design and proof.}
+
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Start from memory}
+
+\Needspace{10\baselineskip}
+Try each question first. Mark it sure, unsure, or guessed.
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item What does a Python variable name refer to?
+\item How does static typing differ from dynamic typing?
+\item What does a C++ destructor do in RAII?
+\item What two pieces make a recursive definition terminate?
+\item What does a phi-node represent in SSA?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Start from memory” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{17\baselineskip}
+\section{How to use this guide}
+
+\Needspace{14\baselineskip}
+Compare the languages by tracing what each name, object, and call means. For recursion, write the base case and decreasing measure before tracing any calls.
+
+\Needspace{11\baselineskip}
+\begin{enumerate}
+\item \textbf{Day 0:} Study §7.1–7.2; solve practice 1–4.
+\item \textbf{Day 1:} Rebuild §7.3–7.4 from memory; solve practice 5–9.
+\item \textbf{Day 3:} Study §7.5 and trace compiler stages; solve practice 10–13.
+\item \textbf{About day 7:} Rebuild §7.6–7.7 and solve practice 14–20.
+\item \textbf{About day 14:} Complete both exam problems without notes and answer the “Explain it” questions aloud.
+\item \textbf{Before the exam:} Tick only skills you can demonstrate cold; revisit missed-answer references.
+\end{enumerate}
+
+\begin{notebox}\textbf{When stuck:} state the language and its rules first. For memory, draw names and objects separately. For recursion, trace calls down, returns up, and show the measure decreases.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{19\baselineskip}
+\section{How the chapter fits together}
+
+\Needspace{16\baselineskip}
+Programming-language rules shape where values live, how operations are checked, and when resources are released. Abstraction hides details behind interfaces; compilation transforms source through intermediate forms. Recursion applies the same idea of smaller subproblems to algorithms, while induction supplies a matching correctness proof.
+
+\Needspace{8\baselineskip}
+\textbf{Measure} \ensuremath{\cdot} locate values and rules
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Names, objects, and lifetime} \hfill{\small\color{FAUblue}§7.1}
+
+\Needspace{4\baselineskip}
+\texttt{name \ensuremath{\to} object}
+
+Rests on: binding and the runtime’s storage model.
+\item \Needspace{4\baselineskip}
+\textbf{Type rules and dispatch} \hfill{\small\color{FAUblue}§7.2}
+
+\Needspace{4\baselineskip}
+\texttt{check early \ensuremath{\leftrightarrow} check at runtime}
+
+Rests on: values, operations, and their supported interfaces.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Define} \ensuremath{\cdot} manage change
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Interfaces and encapsulation} \hfill{\small\color{FAUblue}§7.3}
+
+\Needspace{4\baselineskip}
+\texttt{public contract \ensuremath{\cdot} private choice}
+
+Rests on: separating observable behaviour from implementation.
+\item \Needspace{4\baselineskip}
+\textbf{Ownership and reclamation} \hfill{\small\color{FAUblue}§7.4}
+
+\Needspace{4\baselineskip}
+\texttt{acquire \ensuremath{\to} use \ensuremath{\to} release}
+
+Rests on: object lifetime and resource ownership.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\textbf{Derive} \ensuremath{\cdot} execute and prove
+
+\Needspace{6\baselineskip}
+\begin{itemize}
+\item \Needspace{4\baselineskip}
+\textbf{Compilation and SSA} \hfill{\small\color{FAUblue}§7.5}
+
+\Needspace{4\baselineskip}
+\texttt{source \ensuremath{\to} IR \ensuremath{\to} machine code}
+
+Rests on: syntax, type rules, and control flow.
+\item \Needspace{4\baselineskip}
+\textbf{Recursive reduction and proof} \hfill{\small\color{FAUblue}§7.6–7.7}
+
+\Needspace{4\baselineskip}
+\texttt{base + smaller case + combine}
+
+Rests on: call frames, a decreasing measure, and induction.
+\end{itemize}
+
+\Needspace{13\baselineskip}
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Question} & \textbf{Tool} \\ \midrule
+Why did changing one list name affect another? & Draw the names pointing to a shared mutable object (§7.1). \\
+When is a type error detected? & Identify static checks, runtime checks, or an external type checker (§7.2). \\
+Who releases a resource? & Trace its owner and lifetime (§7.4). \\
+Will recursion stop and return the right result? & Prove a decreasing measure and match the code to induction (§7.6–7.7). \\
+\bottomrule\end{tabularx}\end{center}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{7.1 Memory models and variables}
+
+\Needspace{7\baselineskip}
+A program manipulates names, values, and objects. Distinguishing them explains aliasing, lifetimes, and the different abstractions exposed by C++ and Python.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{name} is how code refers to a value or object. In Python, assignment binds a name to an object; two names can refer to the same mutable object. C++ assignment to an ordinary value usually copies it, while a reference or pointer can provide another route to an object.\end{plainbox}
+
+\begin{equationcard}{Python binding and mutation}
+\[ \begin{gathered} \texttt{b = a}\, \text{binds}\, \texttt{b}\, \text{to}\, \text{the}\, \text{object}\, \text{currently}\, \text{named}\, \text{by}\, \texttt{a} \end{gathered} \]
+{\small \emph{Read it as: “b now refers to the same object as a”.}\par  Mutating that shared list is visible through either name; rebinding one name does not rebind the other.}
+\end{equationcard}
+
+\begin{workedbox}{Worked trace \ensuremath{\cdot} shared list}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item \texttt{a = [1, 2]} creates a list object and binds \texttt{a} to it.
+\item \texttt{b = a} binds \texttt{b} to that same list; there are still two names and one list.
+\item \texttt{b.append(3)} mutates the list, so both names observe \texttt{[1, 2, 3]}.
+\item \texttt{b = [9]} rebinds \texttt{b}; now the names refer to different lists.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{9\baselineskip}
+C++ examples often describe automatic local objects as “on the stack” and dynamic allocations as “on the heap”. These are useful implementation pictures, not a language guarantee that every local occupies a hardware stack. In Python, object storage is managed by the implementation; call frames hold local bindings. Do not infer exact physical placement from the source syntax.
+
+\Needspace{7\baselineskip}
+In C++, a pointer stores an address and can be null or invalid; dereferencing an invalid pointer is undefined behaviour. A reference aliases an existing object and cannot be reseated. Python hides raw addresses and pointer arithmetic from ordinary code.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} assignment is not always a deep copy. Check whether the operation copies a value, copies a reference, or mutates an object.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} two variables holding equal lists need not share one list. Equality compares contents; identity asks whether they are the same object.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.1}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item After \texttt{b = a} for a Python list, how many list objects are there?
+\item Does the phrase “local variables are on the stack” state a portable C++ guarantee?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.1 Memory models and variables” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{7.2 Types and polymorphism}
+
+\Needspace{6\baselineskip}
+A type system determines which operations are permitted and when errors are detected. Polymorphism lets one piece of code work with different values through shared operations.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{static typing} checks types before a program runs; \textbf{dynamic typing} checks what an operation can do at runtime. Neither means that a language has no type rules.\end{plainbox}
+
+\begin{equationcard}{Three common forms of polymorphism}
+\[ \begin{gathered} \text{Ad}-\text{hoc}\, \cdot \, \text{Parametric}\, \cdot \, \text{Subtype} \end{gathered} \]
+{\small \emph{Read it as: “separate implementations, one generic implementation, or one subtype used through a parent interface”.}\par C++ supports overloads, templates, and virtual dispatch. Python supports runtime operator dispatch, duck typing, and subtype dispatch.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+C++ is statically typed: an expression’s type is established before execution, with limited inference such as \texttt{auto}. Python is dynamically and strongly typed: names can be rebound to values of different types, but incompatible operations still raise errors. Type annotations in Python are primarily for tools and documentation; Python itself does not generally enforce them.
+
+\Needspace{10\baselineskip}
+In ad-hoc polymorphism, overloaded functions or operators select among implementations. Parametric polymorphism uses a generic definition, such as a C++ template. Subtype polymorphism lets a derived object be used through a base interface; C++ uses \texttt{virtual} for dynamic dispatch, while Python methods dispatch dynamically by default. Duck typing asks whether an object supports the needed operations, rather than requiring a declared parent class.
+
+\Needspace{7\baselineskip}
+Type inference derives types without spelling them out. C++ deduces some types locally; Hindley–Milner systems infer more general types. A Python type checker can infer and check annotations statically, but this is an external analysis rather than Python runtime enforcement.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} “dynamic” does not mean “untyped”, and a Python annotation does not by itself reject a wrong value at runtime.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} two objects with a \texttt{speak()} method can be used by duck typing even if neither inherits from \texttt{Animal}; the shared operation, not ancestry, makes the call work.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.2}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Which polymorphism form uses a single generic definition?
+\item Does Python enforce a type hint on every call?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.2 Types and polymorphism” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{7.3 Abstraction and encapsulation}
+
+\Needspace{7\baselineskip}
+A stable interface lets a component change internally without forcing every caller to change. Encapsulation groups state with the operations that preserve its rules.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{abstraction} presents the useful operation and hides incidental detail. \textbf{Encapsulation} keeps related state and methods together; \textbf{information hiding} limits which implementation details callers should rely on.\end{plainbox}
+
+\begin{equationcard}{Interface boundary}
+\[ \begin{gathered} \text{caller}\, \text{depends}\, \text{on}\, \text{contract},\, \text{not}\, \text{representation} \end{gathered} \]
+{\small \emph{Read it as: “callers use the promised behaviour without depending on the internal layout”.}\par A contract describes valid inputs, observable results, and relevant errors.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+C++ access specifiers (\texttt{public}, \texttt{protected}, \texttt{private}) are enforced by the compiler; a \texttt{class} defaults to private members while a \texttt{struct} defaults to public. Python relies more on convention: a leading underscore signals internal use. Double-leading underscores trigger name mangling to reduce accidental clashes; they do not make an attribute inaccessible to determined code.
+
+\Needspace{11\baselineskip}
+Modules and packages organize code. Python modules are files; package behavior includes regular packages with \texttt{\_\_init\_\_.py} and namespace packages that may omit it. \texttt{\_\_all\_\_} affects wildcard imports, not whether a name can be accessed directly. C++ headers declare interfaces and source files commonly contain definitions; namespaces organize names, while unnamed namespaces or internal linkage can limit visibility.
+
+\Needspace{7\baselineskip}
+Python permits runtime introspection and monkey patching, which can help testing but can make invariants harder to maintain. C++ class layout and declarations are generally fixed by compilation, though dynamic libraries and polymorphism still allow runtime extension through designed interfaces.
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Trap:} do not present Python’s double underscore as a security boundary.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} placing a leading underscore on a name documents “internal”; it does not stop another module from importing or reading it.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.3}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What does Python name mangling do?
+\item What does \texttt{\_\_all\_\_} control?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.3 Abstraction and encapsulation” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{7.4 Memory management}
+
+\Needspace{7\baselineskip}
+Allocated memory and other resources need clear ownership and a release point. The language’s memory model determines which mistakes it can prevent automatically.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{manual memory management} makes the programmer responsible for releasing allocations. \textbf{Automatic reclamation} finds objects that are no longer reachable. \textbf{RAII} ties a resource’s lifetime to an owning C++ object.\end{plainbox}
+
+\begin{equationcard}{Ownership discipline}
+\[ \begin{gathered} \text{acquire}\, \text{once}\, \cdot \, \text{release}\, \text{once}\, \cdot \, \text{do}\, \text{not}\, \text{use}\, \text{after}\, \text{release} \end{gathered} \]
+{\small \emph{Read it as: “give each resource a clear owner and a clear end to its lifetime”.}\par Ownership can be shared by an explicit design, but cycles and failure paths need attention.}
+\end{equationcard}
+
+\Needspace{11\baselineskip}
+In C, \texttt{malloc}/\texttt{free} pair allocation and release; in C++, \texttt{new}/\texttt{delete} exist, but modern C++ usually prefers automatic objects and standard containers. RAII releases resources in destructors when scope ends, including during exception unwinding. \texttt{std::unique\_ptr} expresses exclusive ownership; \texttt{std::shared\_ptr} shares reference-counted ownership; \texttt{std::weak\_ptr} can observe shared objects without keeping them alive and can break ownership cycles.
+
+\Needspace{9\baselineskip}
+CPython primarily uses reference counting and supplements it with cyclic garbage collection. Other Python implementations may use different strategies. Unreachable cycles can be reclaimed, but objects retained by live references are not garbage. Garbage collection does not replace deterministic cleanup for files or sockets; use context managers such as \texttt{with open(...)}.
+
+\Needspace{7\baselineskip}
+Common manual-management errors include leaks, dangling pointers, double frees, and out-of-bounds writes. Automatic collection reduces some lifetime errors but cannot prevent all memory growth or resource misuse.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} a garbage collector cannot free an object that remains reachable through a live reference.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} two \texttt{shared\_ptr} objects can keep each other alive in a cycle; reference counting alone cannot reduce either count to zero.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.4}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What lifetime does RAII attach resource cleanup to?
+\item Why can a shared-ownership cycle resist reference counting?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.4 Memory management” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{7.5 Compilation and execution}
+
+\Needspace{7\baselineskip}
+Source code is transformed into forms a runtime or processor can execute. Intermediate representations make analysis and optimization easier.
+
+\Needspace{12\baselineskip}
+\begin{plainbox}\textbf{In plain words:} a \textbf{compiler} translates a program. An \textbf{interpreter} executes instructions under a runtime. Many real systems combine both, so “compiled versus interpreted” is a spectrum rather than a clean divide.\end{plainbox}
+
+\begin{equationcard}{A common C++ compiler pipeline}
+\[ \begin{gathered} \text{source}\, \to \, \text{tokens}\, \to \, \text{syntax}\, \text{tree}\, \to \, \text{semantic}\, \text{checks} \\ \text{IR}\, \to \, \text{optimization}\, \to \, \text{machine}\, \text{code}\, \to \, \text{linking} \end{gathered} \]
+{\small \emph{Read it as: “parse source, check its meaning, optimize an intermediate form, then generate and link target code”.}\par Compilers vary: stages can be combined, repeated, or omitted, and optimization is not guaranteed to improve every input.}
+\end{equationcard}
+
+\Needspace{10\baselineskip}
+CPython compiles source to bytecode and its virtual machine executes that bytecode; \texttt{.pyc} files cache compiled code for imports. The bytecode format and runtime details can vary by version and implementation. PyPy uses a tracing JIT for hot paths; Cython can compile selected Python-like code to native extensions.
+
+\Needspace{11\baselineskip}
+Static Single Assignment form gives each assigned variable a single definition by creating versions such as \texttt{x1} and \texttt{x2}. At a control-flow join, a phi-function selects the version supplied by the path taken. The phi is an intermediate representation concept, not necessarily a machine instruction.
+
+\begin{workedbox}{Worked merge \ensuremath{\cdot} SSA}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Start with \texttt{x1 = a + b}.
+\item If \texttt{c \ensuremath{>} 0}, define \texttt{x2 = x1 + c}; otherwise define \texttt{x3 = x1 \ensuremath{-} c}.
+\item At the join, \texttt{x4 = phi(x2, x3)} represents the value from the branch that ran.
+\item Use \texttt{x4} in the following expression.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} Python is not simply “interpreted without compilation”; bytecode compilation is part of ordinary execution.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} source-level variable \texttt{x} may be assigned more than once, but SSA creates a distinct version for each assignment.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.5}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What problem does a phi-function solve?
+\item Does a \texttt{.pyc} file contain native machine code?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.5 Compilation and execution” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{7.6 Recursion and termination}
+
+\Needspace{7\baselineskip}
+Recursion expresses a solution through smaller instances. A correct design must both reach a directly solved case and return the intended result.
+
+\Needspace{11\baselineskip}
+\begin{plainbox}\textbf{In plain words:} every recursive function needs \textbf{base case(s)} and a \textbf{recursive step} that reduces the problem. A well-founded measure, such as a non-negative integer, proves there cannot be an infinite descending chain.\end{plainbox}
+
+\begin{equationcard}{Factorial}
+\[ \begin{gathered} \texttt{fact(0) = 1} \\ \texttt{fact(n) = n \ensuremath{\times} fact(n \ensuremath{-} 1)}\, \text{for}\, \text{integer}\, \texttt{n \ensuremath{>} 0} \end{gathered} \]
+{\small \emph{Read it as: “zero factorial is one; otherwise multiply n by the factorial of one less”.}\par The measure is \texttt{n}; this definition’s stated domain is the non-negative integers.}
+\end{equationcard}
+
+\begin{workedbox}{Worked trace \ensuremath{\cdot} \texttt{fact(3)}}
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Calls descend: \texttt{fact(3) \ensuremath{\to} fact(2) \ensuremath{\to} fact(1) \ensuremath{\to} fact(0)}.
+\item The base call returns 1.
+\item \texttt{fact(1)} returns 1; \texttt{fact(2)} returns 2; \texttt{fact(3)} returns 6.
+\item Each waiting call has its own arguments and pending multiplication in its call frame.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{11\baselineskip}
+With multiple recursive branches, each must reduce a suitable measure. Naive Fibonacci revisits subproblems; memoization stores results so each distinct input is solved once, aside from dictionary and output costs.
+
+\begin{equationcard}{Fibonacci with zero-based indexing}
+\[ \begin{gathered} \texttt{F(0)=0},\, \texttt{F(1)=1} \\ \texttt{F(n)=F(n\ensuremath{-}1)+F(n\ensuremath{-}2)}\, \text{for}\, \texttt{n\ensuremath{\geq}2} \end{gathered} \]
+{\small \emph{Read it as: “each term from n=2 is the sum of the two preceding terms”.}\par The lecture’s code returns n for n\ensuremath{\leq}1; adding a cache avoids recomputing overlapping calls.}
+\end{equationcard}
+
+\Needspace{9\baselineskip}
+Recursion suits trees and divide-and-conquer: solve smaller inputs and combine results. Backtracking explores choices depth-first and returns when a branch cannot succeed. In mutual recursion, one measure must decrease across the call cycle. Iteration makes state explicit and can avoid call overhead and stack growth. Primitive recursion restricts recursion form; general recursion is more expressive, as Ackermann’s function illustrates.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} a base case does not guarantee termination if some path skips it or fails to reduce the measure.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} the call \texttt{f(n)} inside \texttt{f(n)} is recursive syntax but gives no progress toward termination.\end{notebox}
+
+\Needspace{9\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.6}
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item What measure proves the factorial calls terminate?
+\item Why is naive Fibonacci inefficient?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.6 Recursion and termination” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{9\baselineskip}
+\section{7.7 Induction and recursive algorithms}
+
+\Needspace{6\baselineskip}
+Induction proves statements about every input size or recursively built structure. Its assumptions mirror how a recursive algorithm uses results for smaller cases.
+
+\Needspace{10\baselineskip}
+\begin{plainbox}\textbf{In plain words:} \textbf{weak induction} uses the immediately preceding case; \textbf{strong induction} may use any smaller case; \textbf{structural induction} follows the constructors of a recursive structure.\end{plainbox}
+
+\begin{equationcard}{Induction proof pattern}
+\[ \begin{gathered} \text{base}:\, \mathrm{P}(\mathrm{n}_{0});\, \text{step}:\, \mathrm{P}(\mathrm{k})\, \Rightarrow \, \mathrm{P}(\mathrm{k}\, +\, 1) \end{gathered} \]
+{\small \emph{Read it as: “prove the starting case, then show a case implies its successor”.}\par For structural induction on a tree, prove the empty case and then a node assuming the property for both children.}
+\end{equationcard}
+
+\begin{workedbox}{Worked proof \ensuremath{\cdot} triangular numbers}
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item Claim: 1 + … + n = {\small\ensuremath{\dfrac{\mathrm{n}(\mathrm{n}\, +\, 1)}{2}}} for \texttt{n \ensuremath{\geq} 1}.
+\item Base \texttt{n=1}: both sides equal 1.
+\item Assume \texttt{1 + … + k = k(k+1)/2}.
+\item Add \texttt{k+1}: \texttt{k(k+1)/2 + (k+1) = (k+1)(k+2)/2}.
+\item This is the claim for \texttt{k+1}, so induction proves it for every \texttt{n \ensuremath{\geq} 1}.
+\end{enumerate}
+\end{workedbox}
+
+\Needspace{11\baselineskip}
+Weak induction assumes the immediately smaller case; strong induction may assume all smaller natural numbers; well-founded induction generalizes this to any relation with no infinite descending chain. The Ackermann function is a classic total computable function that is not primitive recursive. Under the lecture’s recurrence, \texttt{A(4,1)=65,533}, and \texttt{A(4,2)=2\textsuperscript{65,536}\ensuremath{-}3}, which has 19,729 decimal digits. General recursion, lambda-definability, and Turing computability describe equivalent classes of effectively computable functions; practical runtimes still impose resource limits.
+
+\Needspace{6\baselineskip}
+\begin{notebox}\textbf{Trap:} when proving a recursive algorithm, match each code base case to a proof base and each recursive branch to the induction assumption it uses.\end{notebox}
+
+\Needspace{5\baselineskip}
+\begin{notebox}\textbf{Near miss:} “the result is true for k, so it is true for k+1” omits the algebra or program step that connects the two cases.\end{notebox}
+
+\Needspace{10\baselineskip}
+\begin{recallbox}{Recall check \ensuremath{\cdot} §7.7}
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item What does the induction step assume and what does it prove?
+\item Does Python optimize tail calls?
+\item How many decimal digits does the lecture’s \texttt{A(4,2)} have?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “7.7 Induction and recursive algorithms” under Answers at the end.}
+\end{recallbox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{Formula map and units}
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Rule} & \textbf{Meaning} \\ \midrule
+\texttt{name \ensuremath{\to} object} & Python name binding; assignment does not imply a deep copy \\
+RAII: resource lifetime = owner lifetime & Destructor releases owned resources at object lifetime end \\
+\texttt{n! = n \ensuremath{\times} (n\ensuremath{-}1)!}; \texttt{0! = 1} & Factorial recursion for non-negative integer n \\
+\texttt{1+…+n = n(n+1)/2} & Triangular-number identity, n \ensuremath{\geq} 1 \\
+\texttt{A(4,2) = 2\textsuperscript{65,536}\ensuremath{-}3} & Lecture’s Ackermann variant; 19,729 decimal digits \\
+\bottomrule\end{tabularx}\end{center}
+
+\begin{notebox}\textbf{Check every answer:} state the language and implementation assumptions; distinguish names, objects, and copies; identify the owner of every resource; trace every recursive path to a base case; align each proof assumption with the smaller case actually used.\end{notebox}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{15\baselineskip}
+\section{Derive it cold}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Draw the bindings and list object before and after mutation and rebinding. \hfill{\small\color{FAUblue}§7.1}
+\item Classify overloads, templates, subtype dispatch, and duck typing by their polymorphism form. \hfill{\small\color{FAUblue}§7.2}
+\item Trace one resource from acquisition through RAII destruction or smart-pointer release. \hfill{\small\color{FAUblue}§7.4}
+\item Show how two branch values meet at an SSA phi-function. \hfill{\small\color{FAUblue}§7.5}
+\item Expand \texttt{fact(3)} to the base case, unwind returns, and name its decreasing measure. \hfill{\small\color{FAUblue}§7.6}
+\item Prove the triangular-number formula by induction. \hfill{\small\color{FAUblue}§7.7}
+\item Compute \texttt{A(4,1)} and \texttt{A(4,2)} from the stated recurrence. \hfill{\small\color{FAUblue}§7.7}
+\end{enumerate}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{16\baselineskip}
+\section{Explain it}
+
+\Needspace{13\baselineskip}
+\begin{enumerate}
+\item Why can two Python names show a change made through either name?
+\item Why is stack versus heap often a useful picture but not a source-level guarantee?
+\item How do ad-hoc, parametric, and subtype polymorphism differ?
+\item Why is Python name mangling not privacy enforcement?
+\item How does RAII release resources during exception handling?
+\item What does a phi-function represent at an SSA control-flow join?
+\item Why do Fibonacci’s recursive branches need a cache for efficiency?
+\item Why does tail recursion still use stack space in Python?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Explain it” under Answers at the end.}
+\end{keepsection}
+
+\clearpage
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Mixed practice}
+
+\Needspace{7\baselineskip}
+Try all 24 problems before opening the answers. State assumptions, draw intermediate states, and justify each result.
+
+\begin{enumerate}
+\item After \texttt{a=[1]}; \texttt{b=a}; \texttt{b.append(2)}, what does \texttt{a} contain?
+\item Classify a C++ function template as ad-hoc, parametric, or subtype polymorphism.
+\item What does Python’s \texttt{\_\_all\_\_} affect?
+\item Why can a pair of shared owners cause a reference-counted cycle?
+\item Put lexing, parsing, semantic analysis, IR, optimization, and code generation in a typical order.
+\item Give a decreasing measure for factorial on non-negative integers.
+\item State the base and induction step for proving \texttt{1+…+n=n(n+1)/2}.
+\item Does \texttt{b=a.copy()} make a nested list independent at every level?
+\item Classify a virtual method call through a base pointer.
+\item Can another Python module deliberately access a double-underscore class attribute?
+\item How does RAII close a file if an exception exits the function?
+\item What does a phi-function select?
+\item Trace the return values of \texttt{fact(3)}.
+\item In structural induction on a binary tree, what are the base and step cases?
+\item Is \texttt{int x} guaranteed to occupy a physical stack slot in C++?
+\item Does Python’s dynamic typing mean it permits \texttt{5 + "hi"}?
+\item What access level do members of a C++ \texttt{class} have by default?
+\item Why must a file still be closed deliberately in Python even though it has garbage collection?
+\item Does CPython compile source to bytecode before executing it?
+\item Why is naive Fibonacci exponential while memoized Fibonacci has linear distinct subproblems?
+\item Under the lecture recurrence, calculate \texttt{A(4,1)}.
+\item For \texttt{fact\_tail(4,1)}, what accumulator reaches the base case?
+\item How many decimal digits does \texttt{A(4,2)=2\textsuperscript{65,536}\ensuremath{-}3} have?
+\item Will Python eliminate the tail-recursive frames?
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Mixed practice” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\section{Exam-style problems}
+
+\begin{keepsection}
+\Needspace{14\baselineskip}
+\subsection{1 \ensuremath{\cdot} References, lifetime, and abstraction \ensuremath{\cdot} 20 minutes}
+
+\Needspace{11\baselineskip}
+Compare this Python code with a C++ object that owns a file handle.
+
+\Needspace{9\baselineskip}
+\begin{enumerate}
+\item Trace \texttt{a=[1,2]; b=a; c=a[:]; b.append(3)}. State the values and identities. (4 marks)
+\item Explain why a Python object is not simply “a value stored in the stack slot of its variable”. (3 marks)
+\item Describe how RAII releases the C++ file handle on normal return and exception exit. (3 marks)
+\item Explain why a Python double-underscore attribute is not equivalent to a C++ private member. (2 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{12\baselineskip}
+\subsection{2 \ensuremath{\cdot} Termination and correctness \ensuremath{\cdot} 20 minutes}
+
+\Needspace{9\baselineskip}
+Consider recursive flattening of a nested list, and the triangular-number formula.
+
+\Needspace{7\baselineskip}
+\begin{enumerate}
+\item Define a measure that decreases for recursive flattening and give its base case. (3 marks)
+\item State a structural induction proof shape for correctness on a nested list. (3 marks)
+\item Prove \texttt{1+…+n=n(n+1)/2} by induction for n\ensuremath{\geq}1. (4 marks)
+\item Explain why tail-recursive factorial can still hit Python’s recursion limit. (2 marks)
+\end{enumerate}
+
+\nopagebreak[4]{\small\itshape Answers: see “Exam-style problems” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{13\baselineskip}
+\section{Slips in the notes}
+
+\Needspace{10\baselineskip}
+These corrections were checked against the rendered lecture slides and the stated examples.
+
+\Needspace{8\baselineskip}
+\begin{itemize}
+\item \textbf{Slide 29, monkey-patching example.} The displayed assignment \texttt{SomeClass.newmethod} = \texttt{lambda self: …} is malformed Python. A valid method assignment needs a function definition or a compatible callable, and the formatting should preserve its body. \hfill{\small\color{FAUblue}§7.3}
+\item \textbf{Slide 67, Ackermann digit count.} The slide says \texttt{A(4,2)} is on the order of \texttt{10\textasciicircum{}19,000} digits. For the displayed recurrence, \texttt{A(4,2)} = \texttt{2\textasciicircum{}65,536 \ensuremath{-} 3}, which has 19,729 decimal digits (about 20,000 digits), not 10\textasciicircum{}19,000 digits. \hfill{\small\color{FAUblue}§7.7}
+\end{itemize}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{10\baselineskip}
+\section{Self-check}
+
+\Needspace{7\baselineskip}
+Tick a skill only in a later session, at least one day after studying, when you can demonstrate it without notes.
+
+\begin{itemize}
+\item $\mdlgwhtsquare$\ Trace aliasing, mutation, and rebinding. (1, 8)
+\item $\mdlgwhtsquare$\ Separate language guarantees from storage implementation models. (15, exam 1)
+\item $\mdlgwhtsquare$\ Compare static and dynamic type checks. (16)
+\item $\mdlgwhtsquare$\ Classify the three polymorphism forms. (2, 9)
+\item $\mdlgwhtsquare$\ Explain access boundaries and Python conventions. (3, 10, 17)
+\item $\mdlgwhtsquare$\ Trace RAII, smart-pointer ownership, and cycles. (4, 11, 18)
+\item $\mdlgwhtsquare$\ Order compiler stages and interpret SSA phi. (5, 12, 19)
+\item $\mdlgwhtsquare$\ Trace factorial and prove its measure decreases. (6, 13, 20, 22)
+\item $\mdlgwhtsquare$\ Prove a claim by ordinary or structural induction. (7, 14, exam 2)
+\item $\mdlgwhtsquare$\ Explain tail-call limits and compute the Ackermann example. (21, 23, 24)
+\end{itemize}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Start from memory}
+
+\Needspace{8\baselineskip}
+\begin{enumerate}
+\item A name is bound to an object; assignment usually binds another name to the same object. \hfill{\small\color{FAUblue}§7.1}
+\item Static type checks happen before execution; dynamic type checks happen as operations run. \hfill{\small\color{FAUblue}§7.2}
+\item It releases resources when the owning object’s lifetime ends. \hfill{\small\color{FAUblue}§7.4}
+\item A base case and a recursive call that strictly reduces a well-founded measure. \hfill{\small\color{FAUblue}§7.6}
+\item It merges values arriving from different control-flow branches. \hfill{\small\color{FAUblue}§7.5}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.1 Memory models and variables}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item One list object, referenced by both names.
+\item No. It is a common implementation model, not a language guarantee.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.2 Types and polymorphism}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item Parametric polymorphism.
+\item No. External tools may check hints; normal Python execution does not generally enforce them.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.3 Abstraction and encapsulation}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item It rewrites a double-leading-underscore attribute name within a class to reduce accidental clashes; it is not access protection.
+\item The names imported by \texttt{from module import *}.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.4 Memory management}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The lifetime of the owning object; its destructor releases the resource.
+\item Each object’s reference count is kept above zero by the other.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.5 Compilation and execution}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item It represents the value selected from different predecessor branches at a control-flow join.
+\item No. It contains Python bytecode for the relevant implementation and version.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.6 Recursion and termination}
+
+\Needspace{4\baselineskip}
+\begin{enumerate}
+\item The non-negative argument n strictly decreases to zero.
+\item It recomputes many identical subproblems; memoization can reuse completed values.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{7.7 Induction and recursive algorithms}
+
+\Needspace{5\baselineskip}
+\begin{enumerate}
+\item Assume the statement for a smaller case k and prove it for k+1.
+\item No. Python retains the call frames and enforces a recursion limit.
+\item 19,729 digits, since \texttt{A(4,2)=2\textsuperscript{65,536}\ensuremath{-}3}.
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Explain it}
+
+\Needspace{19\baselineskip}
+\begin{enumerate}
+\item Assignment binds both names to the same mutable object, so mutation is visible through either reference. \hfill{\small\color{FAUblue}§7.1}
+\item Compilers and runtimes choose physical storage; language rules specify behavior, not a required hardware stack layout. \hfill{\small\color{FAUblue}§7.1}
+\item Separate implementations by operation/type; one generic implementation; or a derived value used through a parent interface. \hfill{\small\color{FAUblue}§7.2}
+\item Name mangling changes the stored attribute spelling to avoid accidental clashes but can be accessed deliberately. \hfill{\small\color{FAUblue}§7.3}
+\item Scope exit destroys the owner, and its destructor releases its resources even during stack unwinding. \hfill{\small\color{FAUblue}§7.4}
+\item It selects the value produced by the predecessor branch that reached the join. \hfill{\small\color{FAUblue}§7.5}
+\item Naive recursion recomputes overlapping subproblems; a cache stores completed answers for reuse. \hfill{\small\color{FAUblue}§7.6}
+\item Python does not optimize tail calls; each call retains a frame until it returns. \hfill{\small\color{FAUblue}§7.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Mixed practice}
+
+\begin{enumerate}
+\item \texttt{[1, 2]}; both names refer to the mutated list. \hfill{\small\color{FAUblue}§7.1}
+\item Parametric polymorphism. \hfill{\small\color{FAUblue}§7.2}
+\item The names included in \texttt{from module import *}. \hfill{\small\color{FAUblue}§7.3}
+\item Each object’s count is kept positive by the other object’s owning reference. \hfill{\small\color{FAUblue}§7.4}
+\item Lexing \ensuremath{\to} parsing \ensuremath{\to} semantic analysis \ensuremath{\to} IR generation \ensuremath{\to} optimization \ensuremath{\to} code generation. \hfill{\small\color{FAUblue}§7.5}
+\item \texttt{n} strictly decreases until zero. \hfill{\small\color{FAUblue}§7.6}
+\item Base n=1; assume the formula for k, then add k+1 and simplify to {\small\ensuremath{\dfrac{(\mathrm{k}+1)(\mathrm{k}+2)}{2}}}. \hfill{\small\color{FAUblue}§7.7}
+\item No. A shallow copy duplicates the outer list but can still share its nested objects. \hfill{\small\color{FAUblue}§7.1}
+\item Subtype polymorphism with dynamic dispatch. \hfill{\small\color{FAUblue}§7.2}
+\item Yes, by using the mangled name; this is not an access-control boundary. \hfill{\small\color{FAUblue}§7.3}
+\item The file object is destroyed during scope exit and its destructor closes the resource. \hfill{\small\color{FAUblue}§7.4}
+\item The incoming value from the control-flow branch that executed. \hfill{\small\color{FAUblue}§7.5}
+\item Calls: 3,2,1,0; returns: 1,1,2,6. \hfill{\small\color{FAUblue}§7.6}
+\item Base: Empty. Step: assume the property for both children and prove it for Node(v,L,R). \hfill{\small\color{FAUblue}§7.7}
+\item No. That is a common implementation model, not a C++ guarantee. \hfill{\small\color{FAUblue}§7.1}
+\item No; it is dynamically typed but strongly typed, so this unsupported operation raises \texttt{TypeError}. \hfill{\small\color{FAUblue}§7.2}
+\item Private. \hfill{\small\color{FAUblue}§7.3}
+\item Garbage collection timing is not a reliable resource-lifetime policy; use a context manager. \hfill{\small\color{FAUblue}§7.4}
+\item Yes, normal CPython execution uses compiled bytecode and a virtual machine. \hfill{\small\color{FAUblue}§7.5}
+\item Naive recursion recalculates shared subproblems; caching computes each argument once, with constant work per cached entry. \hfill{\small\color{FAUblue}§7.6}
+\item \texttt{A(4,0)=A(3,1)=13}; then \texttt{A(4,1)=A(3,13)=2\textasciicircum{}16\ensuremath{-}3=65,533}. \hfill{\small\color{FAUblue}§7.7}
+\item \texttt{24}. \hfill{\small\color{FAUblue}§7.6}
+\item \texttt{2\textasciicircum{}65,536} has 19,729 digits; subtracting 3 does not change the digit count. \hfill{\small\color{FAUblue}§7.7}
+\item No. Python retains frames and has a recursion limit. \hfill{\small\color{FAUblue}§7.7}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item \texttt{a} and \texttt{b} refer to the same list, now \texttt{[1,2,3]}. \texttt{c} is a shallow copy of the outer list and remains \texttt{[1,2]}; the lists are distinct. \hfill{\small\color{FAUblue}§7.1}
+\item Python names are bindings to objects managed by the runtime. Physical layout depends on the implementation; a call frame holds local bindings, and the language does not expose ordinary raw pointer arithmetic. \hfill{\small\color{FAUblue}§7.1}
+\item The owning automatic object is destroyed when its scope exits. Its destructor closes the handle, including during exception unwinding. \hfill{\small\color{FAUblue}§7.4}
+\item C++ private access is checked by the compiler. Python name mangling changes a name to reduce accidental clashes but deliberate access remains possible. \hfill{\small\color{FAUblue}§7.3}
+\end{enumerate}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exam-style problems}
+
+\Needspace{12\baselineskip}
+\begin{enumerate}
+\item Use the number of nested list nodes or total number of elements remaining. Empty list returns empty list; each recursive branch handles a proper sublist or advances past an element. \hfill{\small\color{FAUblue}§7.6}
+\item Base: empty input flattens to empty. Step: assume the recursive result is correct for each nested sublist; concatenating scalar elements and those results in order gives the correct flattening. \hfill{\small\color{FAUblue}§7.7}
+\item Base n=1 gives 1=1\ensuremath{\cdot}{\small\ensuremath{\dfrac{2}{2}}}. Assume the formula for k. Then the next sum is {\small\ensuremath{\dfrac{\mathrm{k}(\mathrm{k}+1)}{2}}}+(k+1)={\small\ensuremath{\dfrac{(\mathrm{k}+1)(\mathrm{k}+2)}{2}}}, the formula for k+1. \hfill{\small\color{FAUblue}§7.7}
+\item Python does not guarantee tail-call optimization, so every recursive call keeps a frame until it returns. \hfill{\small\color{FAUblue}§7.7}
+\end{enumerate}
+
+\end{keepsection}
+
+\vfill{\small Personal study guide based on “lecture7a.pdf” (70 slides, 8 November 2025), written in my own words; no lecture pages or figures are reproduced. Not an official FAU publication; check course details against the current notes. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
