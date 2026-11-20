@@ -103,3 +103,15 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | mei/exercise-5-worked-solutions.html | 75efbc270eae | 2026-11-19 | Pass; numeric answers and code recomputed |
 | eei/appendix-a-coordinate-systems.html | 9861f4c00c16 | 2026-11-19 | Pass; every example recomputed |
 | eei/appendix-b-mathematical-tools.html | af2dd40cf06a | 2026-11-19 | Pass; every example recomputed |
+| apdr/ch56a-numbers-memory-models.html | 97a1416254bb | 2026-11-20 | Pass after fixes on codex/apdr-1011a (a7181d3): duplicate slip removed, self-check citations |
+| js/apdr/ch56-lab.js | 57f87472b82f | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch56a-numbers-memory-models-lab.html | 0a03307515d1 | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch7a-advanced-concepts.html | 94cb9ddb2b92 | 2026-11-20 | Pass after fix on codex/apdr-1011a (a7181d3): self-check citations |
+| js/apdr/ch7a-lab.js | 1c7b27ff4cd9 | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch7a-advanced-concepts-lab.html | 543eb5ef469d | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch89a-concurrency-metaprogramming.html | d18878c16a45 | 2026-11-20 | Pass after fix on codex/apdr-1011a (a7181d3): self-check citations |
+| js/apdr/ch89a-lab.js | 3d9ea2ceec00 | 2026-11-20 | Pass after fix (a7181d3): a correct answer had been offered as a wrong option |
+| apdr/ch89a-concurrency-metaprogramming-lab.html | b07a162c3735 | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch1011a-advanced-object-oriented-programming.html | a5db726f7167 | 2026-11-20 | Pass after fix on codex/apdr-1011a (a7181d3): self-check citations |
+| js/apdr/ch1011a-lab.js | 540b7ae890f5 | 2026-11-20 | Pass after fix (a7181d3): dict literal {x: 1} → {'x': 1} |
+| apdr/ch1011a-advanced-object-oriented-programming-lab.html | 565d6d828c84 | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
