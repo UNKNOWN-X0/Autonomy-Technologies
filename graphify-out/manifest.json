@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795215684.767886,
-    "seen": 1795215692.130591,
-    "ast_hash": "3e6959e2e30f00bdcd7373f404bd55e4",
+    "mtime": 1795216145.118029,
+    "seen": 1795216231.769475,
+    "ast_hash": "b8614362c1a66dc24bed421e8f654e72",
     "semantic_hash": ""
   },
   "assets/preview.png": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795215684.7682893,
-    "seen": 1795215692.130529,
-    "ast_hash": "39d2375aa0d94b4d6570c1003c01a3f5",
+    "mtime": 1795216211.4353964,
+    "seen": 1795216231.769411,
+    "ast_hash": "98d08db8c24f8e9532415a320fcd009e",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795215590.3362107,
-    "seen": 1795215692.130424,
+    "mtime": 1795215758.4611979,
+    "seen": 1795216231.769304,
     "ast_hash": "088bd8317c85a806de910d12a607632c",
     "semantic_hash": ""
   },
@@ -1122,9 +1122,9 @@
     "semantic_hash": ""
   },
   "assets/search.json": {
-    "mtime": 1795215685.30769,
-    "seen": 1795215692.130425,
-    "ast_hash": "9b8b61058b5f8b9b3dc0108c23b26775",
+    "mtime": 1795216223.480964,
+    "seen": 1795216231.7693062,
+    "ast_hash": "fe22166bb0005f238aafcd98e740d2ea",
     "semantic_hash": ""
   },
   "js/search.js": {
@@ -1194,15 +1194,15 @@
     "semantic_hash": ""
   },
   "apdr/exercise-3-worked-solutions.html": {
-    "mtime": 1795215673.3342698,
-    "seen": 1795215692.130562,
-    "ast_hash": "4d898ef8de6f83668bb81fc4dcc19205",
+    "mtime": 1795216222.9498608,
+    "seen": 1795216231.769446,
+    "ast_hash": "038442504b69dce56f7e02b164d750e9",
     "semantic_hash": ""
   },
   "apdr/exercise-4-worked-solutions.html": {
-    "mtime": 1795215666.5065296,
-    "seen": 1795215692.130563,
-    "ast_hash": "7ded0aafaac01a98f13e8600acd64bc2",
+    "mtime": 1795215710.5380034,
+    "seen": 1795216231.7694468,
+    "ast_hash": "0edf16af2df83e37ebe627a4eb009c14",
     "semantic_hash": ""
   }
 }

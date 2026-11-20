@@ -175,35 +175,35 @@ Try first: Recompute a modulo-256 sum over payload bytes and compare the final b
 
 \begin{keepsection}
 \Needspace{5\baselineskip}
-\section{Task 7: Parse a packet layout}
+\section{Task 7: Decode a stream and keep going after errors}
 
 \textbf{Connected topic:} Related APDR guide section
 
 \begin{keepsection}
 \Needspace{7\baselineskip}
-\subsection{Task 07 \ensuremath{\cdot} Parse a packet layout}
+\subsection{Task 07 \ensuremath{\cdot} Decode a stream}
 
 \Needspace{4\baselineskip}
-Try first: Walk the declared fields in sequence, track the current byte offset, and decode by type.
+Try first: Process packets independently, validate before parsing, and record failures by their original index.
 
-\nopagebreak[4]{\small\itshape Answers: see “Task 7: Parse a packet layout” under Answers at the end.}
+\nopagebreak[4]{\small\itshape Answers: see “Task 7: Decode a stream and keep going after errors” under Answers at the end.}
 \end{keepsection}
 \end{keepsection}
 
 \begin{keepsection}
 \Needspace{5\baselineskip}
-\section{Task 8: Decode a stream and keep going after errors}
+\section{Task 8: Translate virtual addresses}
 
 \textbf{Connected topic:} Related APDR guide section
 
 \begin{keepsection}
 \Needspace{7\baselineskip}
-\subsection{Task 08 \ensuremath{\cdot} Decode a stream and keep going after errors}
+\subsection{Task 08 \ensuremath{\cdot} PageTableSim}
 
 \Needspace{4\baselineskip}
-Try first: Process each packet independently, recording malformed packets rather than aborting the stream.
+Try first: Split an address into its virtual page and within-page offset, then map the page to a physical frame.
 
-\nopagebreak[4]{\small\itshape Answers: see “Task 8: Decode a stream and keep going after errors” under Answers at the end.}
+\nopagebreak[4]{\small\itshape Answers: see “Task 8: Translate virtual addresses” under Answers at the end.}
 \end{keepsection}
 \end{keepsection}
 
@@ -392,39 +392,57 @@ Try first: Encode a value at a chosen width and verify decoding in each byte ord
 \end{workedbox}
 
 \end{keepsection}
-\begin{keepsection}\subsection{Task 7: Parse a packet layout}
+\begin{keepsection}\subsection{Task 7: Decode a stream and keep going after errors}
 
-\begin{workedbox}{Task 07 \ensuremath{\cdot} worked solution}
-\Needspace{8\baselineskip}
+\begin{workedbox}{Task 07 \ensuremath{\cdot} decode\_stream(packets) \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
 \begin{enumerate}
-\item For each field, take raw[offset:offset + width] and advance the offset even for padding. Check that width is nonnegative and the slice stays within the packet.
-\item Dispatch uint, int, float32, and bytes to their corresponding decoders. Padding consumes bytes without creating a result entry.
-\item Reject unsupported types and malformed widths; test mixed endianness and padding with a small synthetic layout.
+\item Enumerate the input so each packet keeps its original zero-based index. Check the checksum before trying to parse its payload.
+\item For a good checksum, parse the packet bytes before the final checksum byte. Catch malformed packet errors for this packet, record them, and continue the loop.
+\item Return successful decoded packets and indexed errors separately. A corrupt packet must not prevent later packets from being decoded.
+\item \Needspace{3\baselineskip}
+\textbf{The stream decoder, using Tasks 5 and 6:}
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def decode\_stream(packets, layout):}\par
+\noindent\hspace*{1em}\texttt{decoded, errors = [], []}\par
+\noindent\hspace*{1em}\texttt{for index, packet in enumerate(packets):}\par
+\noindent\hspace*{3em}\texttt{try:}\par
+\noindent\hspace*{5em}\texttt{if not validate\_checksum(packet):}\par
+\noindent\hspace*{7em}\texttt{raise ValueError("invalid checksum")}\par
+\noindent\hspace*{5em}\texttt{decoded.append(parse\_packet(packet[:-1], layout))}\par
+\noindent\hspace*{3em}\texttt{except Exception as error:}\par
+\noindent\hspace*{5em}\texttt{errors.append(\{"index": index, "error": str(error)\})}\par
+\noindent\hspace*{1em}\texttt{return \{"decoded": decoded, "errors": errors\}}\par
+\end{tcolorbox}
 \end{enumerate}
 \end{workedbox}
 
 \end{keepsection}
-\begin{keepsection}\subsection{Task 8: Decode a stream and keep going after errors}
+\begin{keepsection}\subsection{Task 8: Translate virtual addresses}
 
-\begin{workedbox}{Task 08 \ensuremath{\cdot} worked solution}
-\Needspace{14\baselineskip}
+\begin{workedbox}{Task 08 \ensuremath{\cdot} PageTableSim \ensuremath{\cdot} worked solution}
+\Needspace{15\baselineskip}
 \begin{enumerate}
-\item Enumerate packets so error records retain the original packet index.
-\item Check checksum before parsing. Wrap validation and parsing for one packet in try/except; append successful values to decoded and failures to errors.
-\item A valid later packet must still be handled after a corrupt packet. Keep the original index in each error record.
+\item Require a positive page size and retain the supplied page table. Use \texttt{divmod(virtual\_addr, page\_size)} to obtain the virtual page number and offset.
+\item If the page has frame number \textit{f}, the physical address is \textit{f} \ensuremath{\times} page\_size + offset. If the page is absent, raise \texttt{PageFaultError} instead of inventing a mapping.
+\item Check the first and last address in a page, a mapped page with a nonzero offset, and an unmapped page that must raise the fault.
 \item \Needspace{3\baselineskip}
-\textbf{Reference implementation:}
+\textbf{The simulator:}
 \begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
 \noindent\hspace*{0em}\texttt{class PageFaultError(Exception):}\par
 \noindent\hspace*{1em}\texttt{pass}\par
 \noindent\hspace*{0em}\texttt{}\par
 \noindent\hspace*{0em}\texttt{class PageTableSim:}\par
 \noindent\hspace*{1em}\texttt{def \_\_init\_\_(self, page\_size, page\_table):}\par
-\noindent\hspace*{3em}\texttt{if page\_size \ensuremath{<}= 0: raise ValueError("page\_size must be positive")}\par
-\noindent\hspace*{3em}\texttt{self.page\_size, self.page\_table = page\_size, page\_table}\par
+\noindent\hspace*{3em}\texttt{if page\_size \ensuremath{<}= 0:}\par
+\noindent\hspace*{5em}\texttt{raise ValueError("page\_size must be positive")}\par
+\noindent\hspace*{3em}\texttt{self.page\_size = page\_size}\par
+\noindent\hspace*{3em}\texttt{self.page\_table = page\_table}\par
+\noindent\hspace*{0em}\texttt{}\par
 \noindent\hspace*{1em}\texttt{def translate(self, virtual\_addr):}\par
 \noindent\hspace*{3em}\texttt{page, offset = divmod(virtual\_addr, self.page\_size)}\par
-\noindent\hspace*{3em}\texttt{if page not in self.page\_table: raise PageFaultError(page)}\par
+\noindent\hspace*{3em}\texttt{if page not in self.page\_table:}\par
+\noindent\hspace*{5em}\texttt{raise PageFaultError(f"virtual page \{page\} is unmapped")}\par
 \noindent\hspace*{3em}\texttt{return self.page\_table[page] * self.page\_size + offset}\par
 \end{tcolorbox}
 \end{enumerate}
