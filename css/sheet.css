@@ -127,7 +127,7 @@
     margin: 0;
     padding: 0;
     background: #fff !important;
-    color: #000 !important;
+    color: var(--print-ink) !important;
   }
   .wrap {
     display: block !important;
@@ -166,7 +166,7 @@
     /* a condensed face fits about a fifth more per line and stays legible at 7pt (loaded by the sheet page) */
     --f-sheet: "IBM Plex Sans Condensed", "Arial Narrow", var(--f-body);
     font: 400 var(--pt) / 1.2 var(--f-sheet);
-    color: #000;
+    color: var(--print-ink);
   }
   /* Match the author watermark used by the LaTeX PDFs. */
   .sheet-side::before {
@@ -258,7 +258,7 @@
     padding: 0 0 0 0.5em;
     font-size: 1.04em;
     line-height: 1.22;
-    color: #000;
+    color: var(--print-ink);
     break-inside: avoid;
   }
   .sheet-card p,

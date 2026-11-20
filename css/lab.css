@@ -220,6 +220,7 @@
 .stage {
   position: relative;
   border: 2px solid var(--ink);
+  padding: 8px;
   background: var(--paper);
   touch-action: none;
   overflow: hidden;
@@ -230,11 +231,13 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  clip-path: inset(8px);
 }
 .stage-note {
   position: absolute;
   left: 8px;
   bottom: 6px;
+  z-index: 1;
   margin: 0;
   padding: 2px 6px;
   background: var(--paper);
@@ -409,9 +412,11 @@
   position: relative;
   flex: 1;
   display: flex;
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
   min-height: 40px;
+  padding: 8px;
   font: 700 0.9rem/1.2 var(--f-display);
   color: var(--act);
   cursor: pointer;
@@ -753,7 +758,7 @@
 .analogy {
   max-width: var(--measure, 42rem);
   margin: 4px 0 6px;
-  padding: 0 20px;
+  padding: 8px 20px 0;
   border-top: 3px solid var(--course);
   background: var(--paper-2);
 }

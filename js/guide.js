@@ -10,6 +10,64 @@
   if (!Array.isArray(log.days)) log.days = [];
   var stamp = P.stamp;
 
+  // Worked-solution pages keep a separate, explicit self-check for each h3 problem.
+  var solutionProblems = document.querySelectorAll("h3[data-p][id^='p-']");
+  if (document.body.dataset.key && solutionProblems.length) {
+    var summary = document.createElement("p"),
+      sign = document.querySelector("header.sign"),
+      course = sign && sign.querySelector(".course");
+    summary.className = "solutions-summary";
+    summary.setAttribute("aria-live", "polite");
+    if (course) course.insertAdjacentElement("afterend", summary);
+    function renderSolutions() {
+      var counts = P.countSolved(saved);
+      summary.textContent = counts.worked + " of " + solutionProblems.length + " worked" + (counts.redo ? " · " + counts.redo + " to redo" : "");
+      solutionProblems.forEach(function (heading) {
+        var key = heading.dataset.p,
+          group = heading.nextElementSibling;
+        if (!group || !group.classList.contains("solution-progress")) return;
+        group.querySelectorAll("button[data-state]").forEach(function (button) {
+          button.setAttribute("aria-pressed", String(saved[key] === button.dataset.state));
+        });
+      });
+    }
+    solutionProblems.forEach(function (heading) {
+      var group = document.createElement("div");
+      group.className = "solution-progress";
+      group.setAttribute("role", "group");
+      group.setAttribute("aria-label", heading.textContent.trim() + " progress");
+      [
+        ["worked", "Worked it"],
+        ["redo", "Redo"],
+      ].forEach(function (choice) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn solution-progress-choice";
+        button.dataset.state = choice[0];
+        button.textContent = choice[1];
+        button.setAttribute("aria-pressed", "false");
+        button.addEventListener("click", function () {
+          saved = P.read(P.local, KEY, {});
+          var selecting = saved[heading.dataset.p] !== choice[0];
+          if (selecting) saved[heading.dataset.p] = choice[0];
+          else delete saved[heading.dataset.p];
+          P.write(P.local, KEY, saved);
+          if (selecting) logToday();
+          renderSolutions();
+        });
+        group.appendChild(button);
+      });
+      heading.insertAdjacentElement("afterend", group);
+    });
+    renderSolutions();
+    window.addEventListener("storage", function (event) {
+      if (event.key === KEY) {
+        saved = P.read(P.local, KEY, {});
+        renderSolutions();
+      }
+    });
+  }
+
   function logToday() {
     log = P.logDay(P.local, PREFIX);
     render();

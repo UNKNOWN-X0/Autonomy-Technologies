@@ -13,9 +13,10 @@ Study guides and interactive labs for the Autonomy Technologies programme at FAU
 
 - **Study guides:** one per chapter, each with practice problems, an exam checklist, and a printable PDF whose answers move to the end so the questions can be tried first.
 - **Interactive labs:** predict, say how sure you are, then reveal; after four fixed challenges, **New challenge** keeps generating fresh ones in most experiments, and **Explore freely** opens the sandbox.
-- **Worked solutions:** exercises, tutorials, and appendices for each subject.
+- **Worked solutions:** exercises and tutorials with private per-problem “Worked it” or “Redo” progress, summarized on the course hub; appendices for reference.
+- **Search:** find sections, definitions, examples and exercises from the hub or any page; search loads its local index only when opened.
 - **Spaced review:** **Review today** on the home page lists every chapter you have started, most overdue first; the gap grows from 1 day to 1 week to 1 month.
-- **Progress you keep:** checklist ticks and review days are saved in your browser, and Settings exports or imports them as a file.
+- **Progress you keep:** checklist ticks, worked-solution states, and review days are saved in your browser, and Settings exports or imports them as a file.
 - **Every screen:** phone and desktop, light or dark (from your system or Settings), and clean printing.
 
 ## Getting started
@@ -61,9 +62,17 @@ Check anything exam-relevant against your course materials.
 
 ## Privacy
 
-Checklist ticks, review days, and display choices (theme, folded panels, open tabs) are kept in your browser's local storage; **Settings** exports them to a file and imports them back. Nothing is sent anywhere: there are no accounts and no analytics. The pages load their fonts from Google Fonts.
+Checklist ticks, worked-solution states, review days, and display choices (theme, folded panels, open tabs) are kept in your browser's local storage; **Settings** exports them to a file and imports them back. Nothing is sent anywhere: there are no accounts and no analytics. The site fonts are self-hosted.
 
 ## Development
+
+### Search index
+
+The search index is generated from authored pages and checked by `tools/check-guide.py`; `tools/page-check.sh` rebuilds it. To refresh it directly:
+
+```sh
+python3 -I tools/build-search.py
+```
 
 ### Working on a page
 
@@ -116,15 +125,17 @@ docs/             The standards: MARKUP, GUIDE, LAB, APPENDIX, EXERCISE-SOLUTION
 assets/           preview.png (the screenshot above), graph-orb.json (written by graph-orb.py)
 ```
 
-No build step: plain HTML, CSS, and JavaScript, with fonts from Google Fonts and formulas as plain HTML.
+No build step: plain HTML, CSS, and JavaScript, with self-hosted Hanken Grotesk, formulas as plain HTML, and a search index generated from the authored pages.
 
 ## Project documents
 
 | File | What it covers |
 | --- | --- |
 | [PRODUCT.md](PRODUCT.md) | What the site is for and what it must never claim |
+| [NOTICE.md](NOTICE.md) | Third-party font attribution and licence |
 | [DESIGN.md](DESIGN.md) | The sign system: tokens, type, components, motion |
 | [STANDARDS.md](STANDARDS.md) | The rules every change meets |
 | [ROADMAP.md](ROADMAP.md) | What is planned next, with an issue per item |
 | [docs/](docs/) | What each kind of page contains: markup, guide, lab, appendix, worked solutions, tooling |
+| [docs/TEAM-ROLES.md](docs/TEAM-ROLES.md) | Shared agent roles and cross-session handoffs |
 | [about/version-log.html](about/version-log.html) | Release history |

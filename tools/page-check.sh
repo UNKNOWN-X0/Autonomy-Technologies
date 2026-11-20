@@ -93,6 +93,9 @@ PY
     fi ;;
 esac
 
+# Search index follows the HTML source, so rebuild it whenever a page check runs.
+if python3 -I tools/build-search.py; then pass "search index: rebuilt from authored pages"; else fail "search index: build failed"; fi
+
 # check-guide: errors fail; the "/" quotient warning fails too, because the Signs rule is firm. Other warnings are shown.
 cg=$(python3 -I tools/check-guide.py "$checked" 2>&1); rc=$?
 echo "$cg" | sed -n '2,$p' | sed 's/^/      /'

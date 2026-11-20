@@ -40,6 +40,7 @@ colors:
   dark-ink: "#e6ecf5"
   dark-muted: "#a6b4c9"
   dark-line: "#233653"
+  print-ink: "#000000"
   dark-action: "#a9c4ec"
   signal-a: "#80ecf1"
   signal-b: "#9be34a"
@@ -89,6 +90,16 @@ typography:
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "0.01em"
+  formula:
+    fontFamily: '"Cambria Math", "STIX Two Math", "Times New Roman", serif'
+    fontSize: "1.3rem"
+    fontWeight: 400
+    lineHeight: 1.75
+  exam-sheet:
+    fontFamily: 'IBM Plex Sans Condensed, "Arial Narrow", sans-serif'
+    fontSize: "7pt"
+    fontWeight: 400
+    lineHeight: 1.2
   numeral:
     fontFamily: "Hanken Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "1.85rem"
@@ -240,6 +251,8 @@ The world rejects the card-grid docs template and the hero-plus-cards hub. The h
 - Interfaces that respond: values tween, lines draw, rows settle into place, always as the result of something the student did or reached.
 
 ## Colors
+
+Printed exam-sheet content uses the `print-ink` token (#000000) on white paper for crisp reproduction.
 
 One institutional blue does the signing, four subject colour families do the naming, and cool blue-grey neutrals carry everything else.
 
@@ -420,7 +433,8 @@ A 2px ink rule above, 18px top padding, then a 14px solid blue square before the
 ### Formula panels and tables
 - **Formula panel:** Cool Paper fill, 16px by 20px padding, no horizontal scroll: a formula too wide for the card wraps (see Formula typography), no border. The bold title sits 8px above the formulas; each relation takes its own line (line-height 1.6, no gap between lines), and the `eq-note` is set apart 12px below by a 1px `--line` hairline with 10px above its text.
 - **Code typography:** code blocks and code in prose (C, MATLAB, Python, identifiers) use the system monospace stack `ui-monospace, SFMono-Regular, Consolas, monospace` (token `typography.code`): 0.9rem/1.55 in a `.code-sample` block, 0.92em inline so a sentence keeps its rhythm. No web font is loaded for code.
-- **Formula typography:** equations use a math-capable serif fallback (`Cambria Math`, `STIX Two Math`, `Times New Roman`, serif), centered on wide screens and allowed to wrap at spaces on narrow screens. Every quotient is a stacked fraction, in formula lines and in running text alike; in running text it is set at 0.9 of the text size so it opens the line only a little, and a slash survives only inside exponents and limits, in units and between words. Variables (`<var>`) are italic with a 0.04em trailing space so a following bracket does not collide; function names, units and numbers stay upright. Formula lines never scroll sideways: `js/hud.js` cuts each `.formula` into segments at its top-level relations (= ≤ → ⇔ and the like, never inside brackets, fractions or stacked limits) and after list commas; a segment stays whole, so a long formula breaks just before a relation sign, and the lines are balanced. Only a segment wider than the card by itself (a worded chain) wraps at its spaces. Superscripts and subscripts are 80% of the surrounding size (85% when nested), stacked limits 72%, so exponents such as f⁻¹ stay legible. The browser sets signs flush where TeX would space them, so `js/hud.js` adds the spacing on screen: a set or relation sign written without spaces (∈ ⊂ ⊆ × ∘ ∪ ∩ → = ≤ and a set-builder colon) gets 0.22em either side, a comma gets 0.22em after it, an italic letter gets 0.08em before a bracket, and an exponent sits 0.06em off its letter; indices, stacked limits and anything already spaced are left alone. Notes under formulas get only the set and relation signs spaced.
+- **Formula typography:** equations use the `--f-math` token in `css/system.css` for a math-capable serif fallback (`Cambria Math`, `STIX Two Math`, `Times New Roman`, serif), centered on wide screens and allowed to wrap at spaces on narrow screens. Every quotient is a stacked fraction, in formula lines and in running text alike; in running text it is set at 0.9 of the text size so it opens the line only a little, and a slash survives only inside exponents and limits, in units and between words. Variables (`<var>`) are italic with a 0.04em trailing space so a following bracket does not collide; function names, units and numbers stay upright. Formula lines never scroll sideways: `js/hud.js` cuts each `.formula` into segments at its top-level relations (= ≤ → ⇔ and the like, never inside brackets, fractions or stacked limits) and after list commas; a segment stays whole, so a long formula breaks just before a relation sign, and the lines are balanced. Only a segment wider than the card by itself (a worded chain) wraps at its spaces. Superscripts and subscripts are 80% of the surrounding size (85% when nested), stacked limits 72%, so exponents such as f⁻¹ stay legible. The browser sets signs flush where TeX would space them, so `js/hud.js` adds the spacing on screen: a set or relation sign written without spaces (∈ ⊂ ⊆ × ∘ ∪ ∩ → = ≤ and a set-builder colon) gets 0.22em either side, a comma gets 0.22em after it, an italic letter gets 0.08em before a bracket, and an exponent sits 0.06em off its letter; indices, stacked limits and anything already spaced are left alone. Notes under formulas get only the set and relation signs spaced. The fraction bar is the denominator's top border; `cramped-padding` on `.frac` is expected and must not be treated as a box edge.
+- **Exam-sheet typography:** the two-sided printed sheet uses IBM Plex Sans Condensed at 7pt and 1.18 line height to fit its material on one A4 sheet. Its `.sheet-card.eq` cards intentionally have no border, background or padding in screen and print; the detector’s `cramped-padding` result for these cards is a separate density exception from the `.frac` fraction-bar exception (issue #25, `css/sheet.css`). Screen and print contrast are evaluated under their respective media rules.
 - **Big operators:** sums, products and indexed unions and intersections (∑ ∏ ⋃ ⋂) stack top limit, sign (1.3em) and bottom limit, centered; integrals set a 1.7em sign with the top limit over the bottom one on its right. Limits are 0.72em (see Formula typography). The PDF uses `\sum`, `\prod`, `\bigcup`, `\bigcap` and `\int`, which stack in display formulas and sit beside the sign in running text.
 - **Table:** full width, collapsed, 1px hairline under each row, 9px by 12px cells, tabular figures. The header row is an FAU-blue band with white 700 labels at 0.85rem.
 

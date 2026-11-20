@@ -467,7 +467,7 @@
       var pr = st.probe;
       if (!pr) {
         ["E", "angle", "phi", "F", "W"].forEach(function (k) {
-          if (out[k]) out[k].textContent = "—";
+          if (out[k]) out[k].textContent = "…";
         });
         return;
       }
@@ -475,10 +475,10 @@
         m = Math.hypot(e[0], e[1]),
         phi = P.potential(st.charges, pr.x, pr.y);
       out.E.textContent = P.fmt(m, "V/m");
-      out.angle.textContent = m > 0 ? Math.round((Math.atan2(e[1], e[0]) * 180) / Math.PI) + "°" : "—";
+      out.angle.textContent = m > 0 ? Math.round((Math.atan2(e[1], e[0]) * 180) / Math.PI) + "°" : "…";
       out.phi.textContent = P.fmt(phi, "V");
       out.F.textContent = P.fmt(m * Math.abs(pr.q), "N");
-      out.W.textContent = st.pathWork != null ? P.fmt(st.pathWork, "J") : st.workFrom == null ? "—" : P.fmt(P.work(pr.q, st.workFrom, phi), "J");
+      out.W.textContent = st.pathWork != null ? P.fmt(st.pathWork, "J") : st.workFrom == null ? "…" : P.fmt(P.work(pr.q, st.workFrom, phi), "J");
     }
 
     // Sandbox controls
@@ -1130,7 +1130,7 @@
       show("Q", s.Q, "C");
       show("U", s.U, "V");
       show("Eair", s.Eair, "V/m");
-      if (st.p.slab === "none") out.Eslab.textContent = "—";
+      if (st.p.slab === "none") out.Eslab.textContent = "…";
       else show("Eslab", s.Eslab, "V/m");
       show("W", s.W, "J");
     }

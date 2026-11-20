@@ -14,7 +14,7 @@ Use this format for worked exercise pages and tutorial handouts that accompany t
 ## Page frame
 
 - The rail is the guides' rail: the brand with its mark, “All semesters”, and the task list (`toc-group` with the exercise name). No `chapter-switch`: `js/nav.js` reads the hub and adds the Chapters list (chapters, then the subject’s exercises) and a Previous / Next exercise pager. Load `../js/nav.js` after `guide.js` and `tooltip.js`.
-- The sign header has the code, `h1` and course line; there is no progress line (`p.meta`), because exercises carry no ticks.
+- The sign header has the code, `h1`, course line, and a live per-problem summary. Every problem `h3` has a stable `id="p-…"` and matching `data-p`; the page body has a unique `data-key`, so “Worked it” and “Redo” states stay in that page's `data-key + "-checks"` browser storage.
 - On the hub, list the page inside its subject’s matching Exercise, Blackboard exercise, or Tutorial part (`li[data-tab="Exercise"]`, `li[data-tab="Blackboard exercise"]`, or `li[data-tab="Tutorial"]`) as `<a href="…" data-added="YYYY-MM-DD" data-no="N" data-note="what it covers">…: Worked solutions</a>`, where `data-added` is the day the page went online (the "Recently added" notice, `js/whatsnew.js`, reads it; the checker fails without it). `js/index.js` turns each link into a row shaped like a chapter row.
 - `tools/check-guide.py` recognises exercise and tutorial worked-solution pages and checks this frame, every task’s topic link, every subpart’s try-first prompt and step-by-step answer, the contents lists, downloads and a fresh `.tex`, and the hub link; it must exit 0.
 
