@@ -1,17 +1,17 @@
 # Graph Report - Autonomy-Technologies  (2026-11-20)
 
 ## Corpus Check
-- 120 files · ~522,413 words
+- 119 files · ~522,357 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 11 file(s) not represented in the graph (top: .css 5, (none) 3, .woff2 1)
 
 ## Summary
-- 1693 nodes · 3207 edges · 94 communities (77 shown, 17 thin omitted)
+- 1695 nodes · 3211 edges · 91 communities (75 shown, 16 thin omitted)
 - Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 387 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cf1c1c11`
+- Built from commit: `b7832149`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -53,7 +53,7 @@
 - MEI 1 formulas
 - MEI 3 lab: mappings
 - Heading effects and reading chip
-- mei-ch1-physics.test.js
+- print-sheet.cjs
 - MEI 2 formulas
 - MEI 3 formulas
 - Study guide rules
@@ -62,6 +62,7 @@
 - Project roadmap
 - Product truth
 - APDR 2 lab: NAND gate models
+- ch5-physics.js
 - Page check script
 - Home page orb
 - Tooling rules
@@ -72,7 +73,7 @@
 - Physics model tests
 - Appendix rules
 - EEI 3 lab: DC network experiments
-- ref_node_fs
+- eei-ch3-physics.test.js
 - Tooling: guide checker
 - APDR 7 physics: a small Python interpreter
 - EEI 3 physics: DC network formulas
@@ -91,12 +92,9 @@
 - fieldPlayground
 - APDR 11 inheritance lab
 - APDR Chapter 10 lab
-- print-sheet.cjs
 - Fact-check log
-- eei-ch3-physics.test.js
 - ch7a-physics.js
 - ch89a-physics.js
-- mei-ch4-physics.test.js
 - ch56-physics.js
 - mount
 - mount
@@ -104,7 +102,6 @@
 - apdr-ch1011a-physics.test.js
 - search.test.js
 - Team roles
-- apdr-ch7-physics.test.js
 - Third-party notices
 - sw.js
 
@@ -135,7 +132,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (94 total, 17 thin omitted)
+## Communities (91 total, 16 thin omitted)
 
 ### Community 0 - "capacitorBench"
 Cohesion: 0.07
@@ -265,6 +262,10 @@ Nodes (35): bindSlider(), compositionDraw(), elementaryDraw(), fmt(), graphDraw(
 Cohesion: 0.23
 Nodes (14): decode(), frame(), decodeAll(), fit(), fitAll(), fitFormulas(), glyph(), readout() (+6 more)
 
+### Community 37 - "print-sheet.cjs"
+Cohesion: 0.13
+Nodes (9): cube, args, { chromium }, fit, fs, page, path, pdf (+1 more)
+
 ### Community 39 - "MEI 3 formulas"
 Cohesion: 0.14
 Nodes (4): discriminant(), relationValues(), roots(), squarePreimages()
@@ -322,8 +323,8 @@ Cohesion: 0.38
 Nodes (9): age(), read(), remember(), seen(), show(), dismiss(), esc(), start() (+1 more)
 
 ### Community 55 - "Physics model tests"
-Cohesion: 0.13
-Nodes (8): row(), rows(), assert, test, assert, test, assert, test
+Cohesion: 0.11
+Nodes (10): row(), rows(), assert, test, assert, test, assert, test (+2 more)
 
 ### Community 56 - "Appendix rules"
 Cohesion: 0.50
@@ -333,9 +334,9 @@ Nodes (4): Acceptance, Appendix standard, Exam sheets, Page
 Cohesion: 0.17
 Nodes (32): arrow(), dot(), drawDivider(), drawKirchhoff(), drawPower(), drawSource(), drawSuper(), flow() (+24 more)
 
-### Community 58 - "ref_node_fs"
-Cohesion: 0.16
-Nodes (4): moduleConfiguration(), rowsToBytes(), definitions(), fake()
+### Community 58 - "eei-ch3-physics.test.js"
+Cohesion: 0.10
+Nodes (12): definitions(), fake(), assert, fs, path, test, vm, assert (+4 more)
 
 ### Community 59 - "Tooling: guide checker"
 Cohesion: 0.10
@@ -405,18 +406,6 @@ Nodes (3): mount(), challenge(), paint()
 Cohesion: 0.67
 Nodes (3): mount(), challenge(), paint()
 
-### Community 79 - "print-sheet.cjs"
-Cohesion: 0.22
-Nodes (8): args, { chromium }, fit, fs, page, path, pdf, src
-
-### Community 81 - "eei-ch3-physics.test.js"
-Cohesion: 0.25
-Nodes (5): assert, fs, path, test, vm
-
-### Community 84 - "mei-ch4-physics.test.js"
-Cohesion: 0.25
-Nodes (5): assert, fs, path, test, vm
-
 ### Community 87 - "mount"
 Cohesion: 0.43
 Nodes (6): mount(), build(), live(), paint(), s(), spec()
@@ -442,13 +431,13 @@ Cohesion: 0.40
 Nodes (4): Handoffs, Roles, Scope, Team roles
 
 ### Community 98 - "sw.js"
-Cohesion: 0.43
-Nodes (5): fetchPage(), pageResponse(), pagesAvailable(), SHELL, tellClients()
+Cohesion: 0.36
+Nodes (8): assetResponse(), fetchPage(), isSaved(), keepSaved(), pageResponse(), pagesAvailable(), SHELL, tellClients()
 
 ## Knowledge Gaps
 - **11 isolated node(s):** `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow`, `Jekyll site CI`, `LaTeX, Pandoc, and KaTeX publishing pipeline` (+6 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 526 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 525 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Work-memory lessons
 
@@ -459,7 +448,7 @@ Nodes (5): fetchPage(), pageResponse(), pagesAvailable(), SHELL, tellClients()
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Lab standard` connect `Lab rules and APDR 12a formulas` to `Project docs map`?**
-  _High betweenness centrality (0.186) - this node is a cross-community bridge._
+  _High betweenness centrality (0.202) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `run()` (e.g. with `ch7-physics.js` and `str()`) actually correct?**
   _`run()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `Study Pages preview showing Electrical Engineering 1 and Mathematics for Engineers I course cards`, `Active-recall study workflow` to the rest of the system?**

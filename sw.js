@@ -1,6 +1,8 @@
 const VERSION = "2.76";
 const CACHE_PREFIX = "autonomy-technologies-site-v";
 const CACHE = CACHE_PREFIX + VERSION;
+// Visited pages and opened PDFs live outside the versioned cache, so a release does not wipe them.
+const SAVED = "autonomy-technologies-pages";
 const SHELL = [
   "./",
   "./index.html",
@@ -33,22 +35,39 @@ const SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  // "reload" skips the browser's HTTP cache, so a new version never stores the previous release's files.
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL.map((url) => new Request(url, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE).map((key) => caches.delete(key))))
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE).map((key) => keepSaved(key).then(() => caches.delete(key)))))
       .then(() => self.clients.claim())
   );
 });
 
+function isSaved(url) {
+  return url.pathname.endsWith(".html") || url.pathname.endsWith(".pdf");
+}
+
+// Moves visited pages and PDFs out of an old versioned cache before it is deleted.
+function keepSaved(key) {
+  return Promise.all([caches.open(key), caches.open(SAVED)]).then(([old, saved]) => old.keys().then((requests) =>
+    Promise.all(requests.filter((request) => isSaved(new URL(request.url))).map((request) =>
+      saved.match(request).then((have) => have || old.match(request).then((response) => response && saved.put(request, response)))
+    ))
+  ));
+}
+
 function pagesAvailable() {
-  return caches.open(CACHE).then((cache) => cache.keys()).then((requests) => {
-    const scope = new URL(self.registration.scope);
-    return requests.map((request) => new URL(request.url)).filter((url) =>
-      url.origin === scope.origin && url.pathname.startsWith(scope.pathname) && url.pathname.endsWith(".html") && !url.pathname.endsWith("/offline.html")
-    );
+  return Promise.all([CACHE, SAVED].map((key) => caches.open(key).then((cache) => cache.keys()))).then((lists) => {
+    const scope = new URL(self.registration.scope),
+      seen = new Set();
+    return lists.flat().map((request) => new URL(request.url)).filter((url) => {
+      if (seen.has(url.href)) return false;
+      seen.add(url.href);
+      return url.origin === scope.origin && url.pathname.startsWith(scope.pathname) && url.pathname.endsWith(".html") && !url.pathname.endsWith("/offline.html");
+    });
   });
 }
 
@@ -65,15 +84,15 @@ function fetchPage(request) {
 }
 
 function pageResponse(request, event) {
-  return caches.open(CACHE).then((cache) => fetchPage(request).then((response) => {
-    if (!response.ok) return cache.match(request).then((saved) => saved || response);
+  return caches.open(SAVED).then((cache) => fetchPage(request).then((response) => {
+    if (!response.ok) return caches.match(request).then((saved) => saved || response);
     event.waitUntil(cache.put(request, response.clone()).then(tellClients));
     return response;
-  }).catch(() => cache.match(request).then((saved) => saved || Response.redirect(new URL("offline.html", self.registration.scope).href, 302))));
+  }).catch(() => caches.match(request).then((saved) => saved || Response.redirect(new URL("offline.html", self.registration.scope).href, 302))));
 }
 
 function assetResponse(request, event) {
-  return caches.open(CACHE).then((cache) => cache.match(request).then((saved) => {
+  return caches.open(isSaved(new URL(request.url)) ? SAVED : CACHE).then((cache) => cache.match(request).then((saved) => {
     const update = fetch(request).then((response) => {
       if (!response.ok) return response;
       return cache.put(request, response.clone()).then(() => response);
