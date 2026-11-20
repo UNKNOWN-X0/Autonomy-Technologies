@@ -115,3 +115,11 @@ while IFS='|' read -r _ f h _; do f=$(echo $f); h=$(echo $h); [ -f "$f" ] && [ "
 | apdr/ch1011a-advanced-object-oriented-programming.html | a5db726f7167 | 2026-11-20 | Pass after fix on codex/apdr-1011a (a7181d3): self-check citations |
 | js/apdr/ch1011a-lab.js | 540b7ae890f5 | 2026-11-20 | Pass after fix (a7181d3): dict literal {x: 1} → {'x': 1} |
 | apdr/ch1011a-advanced-object-oriented-programming-lab.html | 565d6d828c84 | 2026-11-20 | Pass, no errors found (branch codex/apdr-1011a) |
+| apdr/ch56a-numbers-memory-models.html | 246ba26b9040 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch56a-numbers-memory-models-lab.html | 69bb6543fffe | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch7a-advanced-concepts.html | c08699f932a5 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch7a-advanced-concepts-lab.html | 2670b7f1f226 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch89a-concurrency-metaprogramming.html | a21c38b55bd7 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch89a-concurrency-metaprogramming-lab.html | 3710a017def7 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch1011a-advanced-object-oriented-programming.html | e2af36855895 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
+| apdr/ch1011a-advanced-object-oriented-programming-lab.html | c1095eff53b1 | 2026-11-20 | Re-recorded after merge: only the module number changed (23131 → 92313) |
