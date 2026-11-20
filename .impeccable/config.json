@@ -249,6 +249,33 @@
         ],
         "createdAt": "2026-11-19T10:35:54.104Z",
         "reason": "The findings are full-bleed drawing canvases inside .stage; the only HTML text, .stage-note, has a paper fill and inset in css/lab.css, matching the existing APDR lab-stage exceptions."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch56a-numbers-memory-models-lab.html"
+        ],
+        "createdAt": "2026-11-20T09:32:16.143Z",
+        "reason": "Agent: same as the Chapter 8 and 9 lab exceptions: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has its inset in css/lab.css"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch89a-concurrency-metaprogramming-lab.html"
+        ],
+        "createdAt": "2026-11-20T09:32:16.192Z",
+        "reason": "Agent: same as the Chapter 8 and 9 lab exceptions: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has its inset in css/lab.css"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apdr/ch1011a-advanced-object-oriented-programming-lab.html"
+        ],
+        "createdAt": "2026-11-20T09:32:16.231Z",
+        "reason": "Agent: same as the Chapter 8 and 9 lab exceptions: the hits are full-bleed drawing canvases inside .stage; the only text label .stage-note has its inset in css/lab.css"
       }
     ]
   }
