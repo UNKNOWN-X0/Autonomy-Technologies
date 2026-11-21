@@ -396,7 +396,6 @@ nav.toc > ol li a[aria-current]::after {
 nav.toc > ol li a[aria-current]::before {
   background: var(--signal-b);
   border-color: var(--signal-b);
-  box-shadow: var(--glow);
 }
 nav.toc > ol li a[aria-current]::after {
   border: 2px solid var(--signal-b);
@@ -496,7 +495,6 @@ nav.toc > ol li a[aria-current]::after {
 }
 .tele-segs i.now {
   background: var(--signal-b);
-  box-shadow: var(--glow);
   opacity: 1;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -2023,7 +2021,6 @@ main h2 {
   display: block;
   height: 100%;
   background: var(--signal);
-  box-shadow: var(--glow);
 }
 .hud-chip .hc-time {
   color: var(--ink);

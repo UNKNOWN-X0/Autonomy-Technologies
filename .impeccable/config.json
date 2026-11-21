@@ -67,20 +67,6 @@
         "reason": "Claude: the sheet cards have no box: the title bar sits flush on top of its own text by design, and nothing borders the card text (css/sheet.css)"
       },
       {
-        "rule": "dark-glow",
-        "value": "*",
-        "files": [
-          "index.html",
-          "offline.html",
-          "about/*.html",
-          "mei/*.html",
-          "apdr/*.html",
-          "eei/*.html"
-        ],
-        "createdAt": "2026-11-19T01:26:53.565Z",
-        "reason": "Owner decision 2026-11-20 (issue #18): keep the one soft --glow (0 0 6px rgb(128 236 241 / 0.55); 8px / 0.7 in dark mode) on signal lines and marks; DESIGN.md names it as the only allowed shadow."
-      },
-      {
         "rule": "cramped-padding",
         "value": "*",
         "files": [
