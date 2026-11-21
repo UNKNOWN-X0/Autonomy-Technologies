@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-20T12:35:21+01:00",
+  "generatedAt": "2026-11-21T00:05:38Z",
   "title": "Design System: From Fundamentals to AI Apocalypse",
   "extensions": {
     "colorMeta": {
@@ -667,9 +667,9 @@
     },
     "shadows": [
       {
-        "name": "glow",
-        "value": "0 0 6px rgb(128 236 241 / 0.55)",
-        "purpose": "The one shared --glow, on signal lines and HUD marks only (dark mode: 0 0 8px rgb(128 236 241 / 0.7)); never on panels or text."
+        "name": "lab-menu-elevation",
+        "value": "0 10px 24px -12px color-mix(in srgb, var(--ink) 55%, transparent)",
+        "purpose": "Neutral offset shadow separates the open custom-select menu from nearby content."
       }
     ],
     "motion": [
@@ -855,7 +855,7 @@
   ],
   "narrative": {
     "northStar": "The Semester Sign System",
-    "overview": "**Creative North Star: \"The Semester Sign System\"**\n\nFrom Fundamentals to AI Apocalypse reads like an Ulm-school wayfinding system (the Aicher-era airport and Olympic signage) applied to a whole engineering degree, semester by semester. FAU blue enamel fields own the top of every page and every section opener; white and pale blue-grey paper carries the content underneath. Subjects are named by solid code squares in their own colour family, the same way a terminal names its gates, and semesters are numbered blue squares, the way it numbers its halls. The reader should always know where they are and what is due next.\n\nThe system is flat, square and typographic. There are no rounded corners and no shadows except the one soft `--glow` on signal lines and marks, and motion only ever explains a state change, a jump or progress. One grotesque family at heavy weights does all the signing. State is never carried by a new hue: urgency is a tonal band of the same blue (deep for overdue, tint for due, paper for fresh), and progress is carried by line form (dashed for not yet, solid for done or present). Density is calm and generous on the hub, and denser in the guides, where the formulas and problems carry the page. The system is built to grow: a new semester is one more section and one more jump tile, a follow-on course is the next step of its subject's colour family.\n\nThe world rejects the card-grid docs template and the hero-plus-cards hub. The hub is a sign field with a review board pinned across its lower edge, followed by ruled semester sections of subject rows; the guide is a single reading column with a contents rail.\n\n**Second layer: \"The Route Ahead\".** The degree is a route from fundamentals to AI, and the site should feel like it points forward, not like an archive. The sign system stays the ground; on top of it runs one **signal line**: the cyan-to-green gradient already inside the site mark, drawn as thin lines and fills that light up as the student moves forward. It traces the route through the semesters on the hub, fills as skills are mastered, and answers the student in the labs, where values move like instrument readouts. Modern here means precise, alive and responsive to what the student does; it never means decoration, glass, panel glow or page-load spectacle. Reading surfaces stay calm: the signal lives at the edges (route, progress, feedback), never inside the maths.",
+    "overview": "**Creative North Star: \"The Semester Sign System\"**\n\nFrom Fundamentals to AI Apocalypse reads like an Ulm-school wayfinding system (the Aicher-era airport and Olympic signage) applied to a whole engineering degree, semester by semester. FAU blue enamel fields own the top of every page and every section opener; white and pale blue-grey paper carries the content underneath. Subjects are named by solid code squares in their own colour family, the same way a terminal names its gates, and semesters are numbered blue squares, the way it numbers its halls. The reader should always know where they are and what is due next.\n\nThe system is flat, square and typographic. There are no rounded corners, colored glow shadows or decorative shadows; the open custom-select menu gets one neutral offset shadow to separate it from nearby content, and motion only ever explains a state change, a jump or progress. One grotesque family at heavy weights does all the signing. State is never carried by a new hue: urgency is a tonal band of the same blue (deep for overdue, tint for due, paper for fresh), and progress is carried by line form (dashed for not yet, solid for done or present). Density is calm and generous on the hub, and denser in the guides, where the formulas and problems carry the page. The system is built to grow: a new semester is one more section and one more jump tile, a follow-on course is the next step of its subject's colour family.\n\nThe world rejects the card-grid docs template and the hero-plus-cards hub. The hub is a sign field with a review board pinned across its lower edge, followed by ruled semester sections of subject rows; the guide is a single reading column with a contents rail.\n\n**Second layer: \"The Route Ahead\".** The degree is a route from fundamentals to AI, and the site should feel like it points forward, not like an archive. The sign system stays the ground; on top of it runs one **signal line**: the cyan-to-green gradient already inside the site mark, drawn as thin lines and fills that light up as the student moves forward. It traces the route through the semesters on the hub, fills as skills are mastered, and answers the student in the labs, where values move like instrument readouts. Modern here means precise, alive and responsive to what the student does; it never means decoration, glass, panel glow or page-load spectacle. Reading surfaces stay calm: the signal lives at the edges (route, progress, feedback), never inside the maths.",
     "keyCharacteristics": [
       "FAU blue (#04316A) sign fields for the hub masthead, guide headers and table headers.",
       "Solid subject code squares in one OKLCH hue per subject (APDR violet, MEI green, EEI amber, MATLAB cyan), stepped lighter to darker for courses I, II and III, holding short codes in Hanken Grotesk 800.",
@@ -869,7 +869,7 @@
     "rules": [
       {
         "name": "The Signal Is Forward Rule",
-        "body": "The signal gradient means \"reached\" or \"moving forward\", nothing else. It is not an action colour (nothing is clickable because it is signal-coloured), not schedule state (urgency stays the one-hue blue band) and not a subject colour. Never set text in it, never use it as a panel background, and keep any glow soft: the one shared `--glow` shadow (6px, or 8px in dark mode) on signal lines and marks, never a blur halo, neon text or glowing panel.",
+        "body": "The signal gradient means \"reached\" or \"moving forward\", nothing else. It is not an action colour (nothing is clickable because it is signal-coloured), not schedule state (urgency stays the one-hue blue band) and not a subject colour. Never set text in it, never use it as a panel background, and keep signal lines and marks crisp, with no glow, never a blur halo, neon text or glowing panel.",
         "section": "colors"
       },
       {
@@ -904,7 +904,7 @@
       },
       {
         "name": "The Rule Not Shadow Rule",
-        "body": "When something needs to stand forward, give it a heavier ink rule or a blue field, never a shadow.",
+        "body": "When something needs to stand forward, give it a heavier ink rule or a blue field; the open custom-select menu is the sole exception and uses neutral elevation.",
         "section": "elevation"
       },
       {
@@ -942,13 +942,13 @@
       "Don't use `box-shadow` for an accent line; use a border.",
       "Don't position an element without checking what overlaps it: `position: relative` paints it over later non-positioned siblings, so the overlapping element (the hub's review board over the sign field) needs `position: relative` and a higher `z-index`.",
       "Don't put a kicker or eyebrow label above a heading; context lines go under the heading.",
-      "Don't add rounded corners or shadows.",
+      "Don't add rounded corners, colored glow shadows or decorative shadows.",
       "Don't signal state with a new hue: no red, amber or green for overdue, due or done.",
       "Don't use a subject colour as text, border or line colour; it is a fill behind dark ink.",
       "Don't give a follow-on course a new hue.",
       "Don't colour a non-clickable element with the action colour token.",
       "Don't add decorative motion: no parallax, hover lifts, looping effects outside the site mark and the loops listed under Motion, or page-load choreography that delays reading. Scroll-linked motion is allowed only as listed under Motion, and content must be visible without it.",
-      "Don't read \"modern\" as glassmorphism, neon glow beyond the soft `--glow`, gradient text, blurred blobs, 3D tilt cards or a dark-by-default sci-fi skin. The future is shown by the route and the signal line, not by costume.",
+      "Don't read \"modern\" as glassmorphism, glow, gradient text, blurred blobs, 3D tilt cards or a dark-by-default sci-fi skin. The future is shown by the route and the signal line, not by costume.",
       "Don't put the signal gradient behind text, on clickable controls or inside formula panels.",
       "Don't use the FAU logo; the site mark is its own square sign.",
       "Don't build a card grid or a hero-plus-cards hub."

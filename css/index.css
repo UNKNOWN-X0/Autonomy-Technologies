@@ -917,7 +917,6 @@ footer {
   width: 2px;
   height: 50%;
   background: linear-gradient(to top, rgb(128 236 241 / 0), var(--signal-a));
-  box-shadow: var(--glow);
 }
 .blip {
   position: absolute;
@@ -925,7 +924,6 @@ footer {
   height: 6px;
   margin: -3px 0 0 -3px;
   background: var(--signal-b);
-  box-shadow: var(--glow);
   opacity: 0.9;
 }
 .blip.here {
