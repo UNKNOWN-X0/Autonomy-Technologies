@@ -1,0 +1,318 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Blackboard Exercise 5}
+\fancyhead[R]{\small\sffamily Blackboard Exercise 5: Worked solutions}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Blackboard Exercise 5: Worked solutions}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Blackboard Exercise 5\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{8\baselineskip}
+{\large Build the recursive pattern from its base case and smaller calls, trace the Sierpinski counts, and use the call stack to move into and out of nested dream levels.}
+
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 5.1: Recursion}
+
+\textbf{Connected topic:} The recursive pattern (§8.1) \ensuremath{\cdot} Tracing calls (§8.2)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{5.1.1 Define recursion}
+
+\Needspace{4\baselineskip}
+Try first: Define recursion in fewer than three sentences, including how a recursive process stops.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.1: Recursion” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{5.1.2 Complete the factorial function}
+
+\Needspace{4\baselineskip}
+Try first: Fill the blanks with a base-case comparison, its return value, and the decrement in the recursive call.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.1: Recursion” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 5.2: Sierpinski triangle}
+
+\textbf{Connected topic:} The recursive pattern (§8.1) \ensuremath{\cdot} Tracing calls (§8.2)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{5.2.1 Continue the triangle pattern}
+
+\Needspace{4\baselineskip}
+Try first: Continue the given stages for \textit{n} = 2 and \textit{n} = 3 while leaving the empty central triangles blank.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.2: Sierpinski triangle” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{5.2.2 Write a recursive triangle counter}
+
+\Needspace{4\baselineskip}
+Try first: Turn the repeated three-way growth into a recurrence with a base case for the starting triangle.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.2: Sierpinski triangle” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{5.2.3 Count the triangles at step 6}
+
+\Needspace{3\baselineskip}
+Try first: Use the recurrence table to find the black-triangle count at \textit{n} = 6.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.2: Sierpinski triangle” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 5.3: Recursion application}
+
+\textbf{Connected topic:} The recursive pattern (§8.1) \ensuremath{\cdot} Tracing calls (§8.2)
+
+\begin{keepsection}
+\Needspace{6\baselineskip}
+\subsection{5.3.1 Recursion and repetition}
+
+\Needspace{3\baselineskip}
+Try first: State the difference between recursion and repetition in one sentence.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.3: Recursion application” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{5.3.2 Write the recursive \texttt{dream} function}
+
+\Needspace{4\baselineskip}
+Try first: Make the dream level progress to the maximum, do the job once, unwind one level at a time, and check the totem after waking.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 5.3: Recursion application” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Exercise 5.1: Recursion}
+
+\begin{workedbox}{5.1.1 Define recursion \ensuremath{\cdot} worked solution}
+\Needspace{6\baselineskip}
+\begin{enumerate}
+\item \textbf{Recursion} solves a problem by having a function call itself on a simpler instance of the same problem; a base case answers directly, and each recursive case must make progress toward it.
+\item \textbf{Check:} the definition includes both the self-call and the stopping case, so it rules out a call that repeats forever without getting simpler.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.1: Recursion}
+
+\begin{workedbox}{5.1.2 Complete the factorial function \ensuremath{\cdot} worked solution}
+\Needspace{13\baselineskip}
+\begin{enumerate}
+\item Use the course's positive-integer convention for this version: \texttt{factorial(1)} is the base case, and for \textit{x} \ensuremath{>} 1 the recurrence is \textit{x}! = \textit{x} \ensuremath{\cdot} (\textit{x} \ensuremath{-} 1)!.
+\item \Needspace{3\baselineskip}
+Fill the blanks with \texttt{1}, \texttt{1}, and \texttt{1}:
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def factorial(x):}\par
+\noindent\hspace*{1em}\texttt{if x == 1:}\par
+\noindent\hspace*{3em}\texttt{return 1}\par
+\noindent\hspace*{1em}\texttt{return x * factorial(x - 1)}\par
+\end{tcolorbox}
+\item For \texttt{factorial(5)}, calls descend to \texttt{factorial(1)}; then the waiting calls return 1, 2, 6, 24, and 120.
+\item The sheet does not specify whether zero is an allowed input. If the function must also accept zero, use \texttt{x == 0} as the base case and return 1, which follows the convention 0! = 1.
+\item \textbf{Check:} the argument decreases by one on each call, so every positive integer input reaches 1; the value then multiplies back up.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.2: Sierpinski triangle}
+
+\begin{workedbox}{5.2.1 Continue the triangle pattern \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item Start at \textit{n} = 0 with one solid triangle. At every next step, split each black triangle into four equal smaller triangles and keep the three corner triangles black; the middle triangle stays blank.
+\item \Needspace{11\baselineskip}
+So the counts at the requested steps are:
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Step \textit{n}} & \textbf{Black triangles} & \textbf{Construction} \\ \midrule
+0 & 1 & One solid starting triangle. \\
+1 & 3 & Three black corner triangles. \\
+2 & 9 & Each of the 3 black triangles produces 3 black corners. \\
+3 & 27 & Each of the 9 black triangles produces 3 black corners. \\
+\bottomrule\end{tabularx}\end{center}
+\item For the drawing, repeat that replacement inside every black triangle at \textit{n} = 1 to obtain step 2, then repeat it inside all nine black triangles to obtain step 3. Previously empty central triangles remain empty.
+\item \textbf{Check:} the number triples at each step, and the large central gaps remain blank rather than being recoloured.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.2: Sierpinski triangle}
+
+\begin{workedbox}{5.2.2 Write a recursive triangle counter \ensuremath{\cdot} worked solution}
+\Needspace{13\baselineskip}
+\begin{enumerate}
+\item Let \texttt{black\_triangles(n)} return the number at step \textit{n}. The domain is a non-negative integer step, and step zero contains one black triangle.
+\item \Needspace{5\baselineskip}
+For \textit{n} \ensuremath{>} 0, each black triangle creates three black corner triangles, so the total is three times the previous step's count:
+
+\begin{equation*}\mathrm{T}(0)\, =\, 1,\, \quad \, \mathrm{T}(\mathrm{n})\, =\, 3\, \cdot \, \mathrm{T}(\mathrm{n}\, -\, 1)\end{equation*}
+\item \Needspace{3\baselineskip}
+That recurrence gives a fully recursive implementation:
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def black\_triangles(n):}\par
+\noindent\hspace*{1em}\texttt{if n == 0:}\par
+\noindent\hspace*{3em}\texttt{return 1}\par
+\noindent\hspace*{1em}\texttt{return 3 * black\_triangles(n - 1)}\par
+\end{tcolorbox}
+\item The base case returns directly. Each recursive call reduces \texttt{n}, and the returned smaller count is multiplied by three on the way back.
+\item \textbf{Check:} \texttt{black\_triangles(0)} returns 1 and \texttt{black\_triangles(1)} returns 3, matching the first two drawings.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.2: Sierpinski triangle}
+
+\begin{workedbox}{5.2.3 Count the triangles at step 6 \ensuremath{\cdot} worked solution}
+\Needspace{6\baselineskip}
+\begin{enumerate}
+\item \Needspace{13\baselineskip}
+Continue multiplying the previous count by three:
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{\textit{n}} & \textbf{Calculation} & \textbf{\textit{T}(\textit{n})} \\ \midrule
+0 & Base case & 1 \\
+1 & 3 \ensuremath{\times} 1 & 3 \\
+2 & 3 \ensuremath{\times} 3 & 9 \\
+3 & 3 \ensuremath{\times} 9 & 27 \\
+4 & 3 \ensuremath{\times} 27 & 81 \\
+5 & 3 \ensuremath{\times} 81 & 243 \\
+6 & 3 \ensuremath{\times} 243 & 729 \\
+\bottomrule\end{tabularx}\end{center}
+\item Equivalently, \textit{T}(6) = 3\textsuperscript{6} = \textbf{729 black triangles}.
+\item \textbf{Check:} six recursive steps multiply the starting count 1 by 3 six times, giving 729.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.3: Recursion application}
+
+\begin{workedbox}{5.3.1 Recursion and repetition \ensuremath{\cdot} worked solution}
+\Needspace{6\baselineskip}
+\begin{enumerate}
+\item \textbf{Recursion} repeats work through a function calling itself on a smaller problem, whereas \textbf{repetition} repeats a block with a loop.
+\item \textbf{Check:} both can perform work repeatedly; the distinction is how the next repetition is expressed.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 5.3: Recursion application}
+
+\begin{workedbox}{5.3.2 Write the recursive \texttt{dream} function \ensuremath{\cdot} worked solution}
+\Needspace{22\baselineskip}
+\begin{enumerate}
+\item Assume level 0 means awake, \texttt{current\_level} is the level the dreamer is in now, and the helper's \texttt{level} argument names the destination level. Start with \texttt{dream(0, max\_level)}, where \texttt{max\_level} is non-negative.
+\item The recursive case enters the next deeper level with \texttt{play\_lullaby(current\_level + 1)}, then calls \texttt{dream} for that level. The base case runs \texttt{do\_important\_job()} once at the maximum level.
+\item When the deeper call returns, \texttt{kick(current\_level)} wakes the dreamer to this call's level. That line runs after the recursive call, so it executes on the way back up the call stack.
+\item \Needspace{4\baselineskip}
+Here is one complete version. It rejects a maximum below the current level, returns totems only from the outer awake-level call, and checks the totem after the last upward transition:
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def dream(current\_level, max\_level):}\par
+\noindent\hspace*{1em}\texttt{if current\_level \ensuremath{<} 0 or max\_level \ensuremath{<} current\_level:}\par
+\noindent\hspace*{3em}\texttt{raise ValueError("expected 0 \ensuremath{<}= current\_level \ensuremath{<}= max\_level")}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{1em}\texttt{if current\_level == max\_level:}\par
+\noindent\hspace*{3em}\texttt{do\_important\_job()}\par
+\noindent\hspace*{1em}\texttt{else:}\par
+\noindent\hspace*{3em}\texttt{next\_level = current\_level + 1}\par
+\noindent\hspace*{3em}\texttt{play\_lullaby(next\_level)}\par
+\noindent\hspace*{3em}\texttt{dream(next\_level, max\_level)}\par
+\noindent\hspace*{3em}\texttt{kick(current\_level)}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{1em}\texttt{if current\_level == 0:}\par
+\noindent\hspace*{3em}\texttt{return check\_totem()}\par
+\end{tcolorbox}
+\item For \texttt{dream(0, 3)}, the calls go 0 \ensuremath{\to} 1 \ensuremath{\to} 2 \ensuremath{\to} 3. The job runs at 3; returns then call \texttt{kick(2)}, \texttt{kick(1)}, and \texttt{kick(0)}. Once awake at 0, \texttt{check\_totem()} runs.
+\item \textbf{Check:} \texttt{play\_lullaby} runs once per downward move, \texttt{kick} once per upward move, the job runs once at the maximum, and the totem check runs only after the outermost call wakes.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+
+\vfill{\small Personal worked solutions based on APDR Blackboard Exercise 5, written in my own words; no exercise-sheet prose or figures are reproduced. The dream helpers are abstract functions supplied by the prompt. Not an official FAU publication; check course details against the current materials. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
