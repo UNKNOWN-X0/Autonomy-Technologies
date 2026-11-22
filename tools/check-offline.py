@@ -11,12 +11,18 @@ def check():
     errors = []
     log = (ROOT / "about/version-log.html").read_text(encoding="utf-8")
     worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-    latest = re.search(r"<h2[^>]*>\s*(\d+\.\d+)", log)
+    latest = re.search(r"<h2[^>]*>\s*(\d+\.\d+\.\d+)", log)
+    release_headings = re.findall(r"<h2 id=\"v\d+-t\">(\d+(?:\.\d+)+) ", log)
+    toc_versions = re.findall(r"<a href=\"#v\d+-\d+(?:-\d+)?\">(\d+(?:\.\d+)+) ", log)
     version = re.search(r'const VERSION = "([^"]+)";', worker)
     if not latest:
         errors.append("about/version-log.html has no leading version entry")
     if not version:
         errors.append("sw.js has no VERSION constant")
+    if any(not re.fullmatch(r"\d+\.\d+\.\d+", value) for value in release_headings):
+        errors.append("version-log headings must use X.Y.Z format")
+    if any(not re.fullmatch(r"\d+\.\d+\.\d+", value) for value in toc_versions):
+        errors.append("version-log table of contents must use X.Y.Z format")
     if latest and version and latest.group(1) != version.group(1):
         errors.append("sw.js VERSION %s does not match the latest log version %s" % (version.group(1), latest.group(1)))
 

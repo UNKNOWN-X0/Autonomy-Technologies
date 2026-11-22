@@ -941,7 +941,6 @@ html::before,
 .route-pulse::before,
 .chapter.here::after,
 nav.toc > ol::after,
-nav.toc > ol li a[aria-current]::before,
 nav.toc > ol li a[aria-current]::after,
 body:has(nav.toc)::after,
 .tick-dot {
