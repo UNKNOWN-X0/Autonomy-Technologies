@@ -1,0 +1,314 @@
+\documentclass[11pt]{article}
+\usepackage[margin=18mm,headheight=22pt]{geometry}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{NewCM10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookItalic,BoldItalicFont=*-BoldItalic]
+\setsansfont{NewCMSans10}[Extension=.otf,UprightFont=*-Book,BoldFont=*-Bold,ItalicFont=*-BookOblique,BoldItalicFont=*-BoldOblique]
+\setmathfont{NewCMMath-Book.otf}
+\usepackage{xcolor}
+\definecolor{FAUblue}{HTML}{04316A}
+\definecolor{Paperblue}{HTML}{EEF2F7}
+\definecolor{EEIgold}{HTML}{CC9C42}
+\usepackage{etoolbox,enumitem,booktabs,tabularx,array,needspace,microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{draftwatermark}
+\SetWatermarkText{Made by Thanate Amornjiraporn (Focus)}
+\SetWatermarkColor{black!7}\SetWatermarkFontSize{30pt}\SetWatermarkAngle{45}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=3pt,leftmargin=1.6em,beginpenalty=10000,endpenalty=10000}
+\raggedbottom
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000 \interlinepenalty=10000
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{FAUblue} From Fundamentals to AI Apocalypse · APDR · Blackboard Exercise 4}
+\fancyhead[R]{\small\sffamily Blackboard Exercise 4: Worked solutions}
+\fancyfoot[C]{\small\thepage}
+\titleformat{\section}{\Large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{FAUblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{16pt}{6pt}
+\preto\section{\Needspace{8\baselineskip}}
+\preto\subsection{\Needspace{6\baselineskip}}
+\newtcolorbox{equationcard}[1]{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=10pt,right=10pt,top=6pt,bottom=6pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,before skip=8pt,after skip=8pt}
+\newtcolorbox{workedbox}[1]{colback=white,colframe=EEIgold,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\newtcolorbox{recallbox}[1]{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,top=4pt,bottom=4pt,title={#1},fonttitle=\small\bfseries\sffamily,coltitle=FAUblue,attach title to upper={\par},before skip=8pt,after skip=8pt}
+\usepackage{environ}
+\newsavebox\measurebox
+% Typeset the section once invisibly to measure it; start a new page if it will not fit in what is left.
+\makeatletter
+\newif\ifkeep@measuring
+\NewEnviron{keepsection}{%
+  \ifkeep@measuring \BODY \else
+    \edef\keep@sec{\the\value{section}}\edef\keep@sub{\the\value{subsection}}%
+    \setbox\measurebox\vbox{\hsize\linewidth\keep@measuringtrue\def\Needspace##1{}\BODY}%
+    \setcounter{section}{\keep@sec}\setcounter{subsection}{\keep@sub}%
+    \dimen2=\ht\measurebox \advance\dimen2\dp\measurebox
+    \dimen@=\textheight
+    \ifdim\pagegoal<\maxdimen
+      \dimen@=\pagegoal \advance\dimen@-\pagetotal
+      \ifdim\dimen2>\dimen@ \clearpage \dimen@=\textheight \fi
+    \fi
+    % if it fits, nothing inside may force an early break
+    \ifdim\dimen2>\dimen@ \BODY \else \begingroup\def\Needspace##1{}\BODY\endgroup \fi
+  \fi}
+\makeatother
+\newtcolorbox{notebox}{colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=8pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=6pt}
+\newtcolorbox{plainbox}{colback=white,colframe=FAUblue,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=8pt,top=4pt,bottom=4pt,before skip=6pt,after skip=8pt}
+\usetikzlibrary{arrows.meta}
+\title{\sffamily\bfseries\color{FAUblue}Blackboard Exercise 4: Worked solutions}
+\author{Algorithms, Programming, and Data Representation \ensuremath{\cdot} Module 92313 \ensuremath{\cdot} Blackboard Exercise 4\\[2pt]\small From Fundamentals to AI Apocalypse · personal study guide}
+\date{}
+\begin{document}
+\maketitle
+\begingroup\footnotesize\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\Needspace{8\baselineskip}
+{\large Break a restaurant robot into manageable jobs, describe its customer-facing black box, then specify and implement functions for taking orders, serving meals, and presenting the bill.}
+
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 4.1: Decomposition}
+
+\textbf{Connected topic:} Decomposition and abstraction (§7.1)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.1.1 Decompose the waiter robot}
+
+\Needspace{4\baselineskip}
+Try first: Split the restaurant-waiter program into three main jobs and give two smaller tasks under each.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.1: Decomposition” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.1.2 Model communication as a black box}
+
+\Needspace{4\baselineskip}
+Try first: Give three inputs to the robot's communication box, three possible outputs, and show which way each signal travels.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.1: Decomposition” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 4.2: Abstraction}
+
+\textbf{Connected topic:} Decomposition and abstraction (§7.1)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.2.1 Describe the customer and service robot}
+
+\Needspace{4\baselineskip}
+Try first: List at least two useful attributes and two actions for each of the customer and the service robot. Which details does the waiter program need?
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.2: Abstraction” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 4.3: Functions}
+
+\textbf{Connected topic:} Defining and calling functions (§7.2) \ensuremath{\cdot} Return values (§7.3)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.3.1 Specify \texttt{serve} and \texttt{state\_account}}
+
+\Needspace{4\baselineskip}
+Try first: For each function, choose only the parameters it needs, outline its steps, and name its output.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.3: Functions” under Answers at the end.}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.3.2 Write the functions in Python}
+
+\Needspace{4\baselineskip}
+Try first: Turn the two function designs into Python, using a loop for the list of meals and returning useful results.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.3: Functions” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+\begin{keepsection}
+\Needspace{5\baselineskip}
+\section{Exercise 4.4: Problem solving}
+
+\textbf{Connected topic:} Decomposition and abstraction (§7.1) \ensuremath{\cdot} Functions (§7.2)
+
+\begin{keepsection}
+\Needspace{7\baselineskip}
+\subsection{4.4.1 Continue when a meal is unavailable}
+
+\Needspace{4\baselineskip}
+Try first: Decompose the response to one unavailable meal so the other meals in the same order can still be served.
+
+\nopagebreak[4]{\small\itshape Answers: see “Exercise 4.4: Problem solving” under Answers at the end.}
+\end{keepsection}
+\end{keepsection}
+
+
+\clearpage
+\section{Answers}
+\begin{keepsection}\subsection{Exercise 4.1: Decomposition}
+
+\begin{workedbox}{4.1.1 Decompose the waiter robot \ensuremath{\cdot} worked solution}
+\Needspace{15\baselineskip}
+\begin{enumerate}
+\item Start with the complete job: \textbf{serve a restaurant customer}. Decomposition means breaking that goal into smaller jobs with clear purposes.
+\item \Needspace{11\baselineskip}
+One workable three-part tree is:
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Main task} & \textbf{Two example sub-tasks} \\ \midrule
+Take the order & Approach and greet the customer; record the requested meals. \\
+Serve the order & Collect the prepared meals; bring each meal to the correct table. \\
+Close the service & Ask whether anything else is needed; prepare and present the bill. \\
+\bottomrule\end{tabularx}\end{center}
+\item The diagram is one possible design, not the only valid decomposition. Each child should help complete its parent task, and the six leaf tasks together should cover the service the program is expected to provide.
+\item \textbf{Check:} the list moves from the customer's request, through delivery, to the end of the interaction; payment processing can be added as a child of closing service if the robot is responsible for it.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 4.1: Decomposition}
+
+\begin{workedbox}{4.1.2 Model communication as a black box \ensuremath{\cdot} worked solution}
+\Needspace{16\baselineskip}
+\begin{enumerate}
+\item Treat the communication function as an interface: describe what enters and leaves without claiming how the sensors or software work inside it.
+\item \Needspace{15\baselineskip}
+One restaurant example is:
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Direction} & \textbf{Example signals} & \textbf{Possible meaning} \\ \midrule
+Customer \ensuremath{\to} robot input & Spoken request & “Please bring the menu.” \\
+Customer \ensuremath{\to} robot input & Touchscreen selection & Selected menu item or table option. \\
+Customer \ensuremath{\to} robot input & Hand gesture & Calling the waiter or indicating readiness. \\
+Robot \ensuremath{\to} customer output & Spoken response & Greeting, clarification, or confirmation. \\
+Robot \ensuremath{\to} customer output & Screen message & Shows the current order or bill. \\
+Robot \ensuremath{\to} customer output & Sound signal & Confirms a request or asks for attention. \\
+\bottomrule\end{tabularx}\end{center}
+\item Draw the three input arrows toward the black box and the three output arrows away from it. Other choices are valid if they are plausible communication signals and the directions are correct.
+\item \textbf{Check:} each item belongs to one side of the interface; a spoken order is input to the robot, while its spoken confirmation is output.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 4.2: Abstraction}
+
+\begin{workedbox}{4.2.1 Describe the customer and service robot \ensuremath{\cdot} worked solution}
+\Needspace{15\baselineskip}
+\begin{enumerate}
+\item An abstraction keeps the details needed for the job and leaves out unrelated facts. Attributes describe the current state; actions describe something an actor can do.
+\item \Needspace{10\baselineskip}
+For example:
+
+\Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Entity} & \textbf{Attributes (state)} & \textbf{Actions (behaviour)} \\ \midrule
+Customer & Table identifier; current order; dietary request. & Ask for a menu; place or change an order; request the bill. \\
+Service robot & Current table; order list; meal availability or status. & Move to a table; record an order; deliver meals; present a bill. \\
+\bottomrule\end{tabularx}\end{center}
+\item For the waiter program, the table identifier connects the customer to the correct delivery, and the order list records meal identifiers. The robot's current position and meal status support navigation and serving. A customer's hair colour or the robot's internal motor temperature can be left out unless another requirement uses them.
+\item \textbf{Check:} each listed attribute helps the service task, and each action is a verb that changes the interaction or its state.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 4.3: Functions}
+
+\begin{workedbox}{4.3.1 Specify \texttt{serve} and \texttt{state\_account} \ensuremath{\cdot} worked solution}
+\Needspace{14\baselineskip}
+\begin{enumerate}
+\item A function should have one job. Let \texttt{serve} handle one customer's order and let \texttt{state\_account} calculate and present that customer's bill.
+\item \Needspace{10\baselineskip}
+\begin{center}\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}\toprule
+\textbf{Function} & \textbf{Parameters} & \textbf{Steps} & \textbf{Output} \\ \midrule
+\texttt{serve} & \texttt{customer}, \texttt{customer\_order\_list} & For each meal: arrange preparation, deliver it to that customer, record it as served. & The list of meals actually served. \\
+\texttt{state\_account} & \texttt{customer}, \texttt{served\_meals} & Add the price of each served meal, present the total to the customer. & The amount presented as due. \\
+\bottomrule\end{tabularx}\end{center}
+\item Passing the order list into \texttt{serve} makes the data dependency visible. The example sheet's illustrative \texttt{get\_order} refers to a list in its description that is not in its parameter list; passing such state explicitly avoids relying on an undocumented global.
+\item \textbf{Check:} the account uses the returned served-meal list, so an unserved item need not be charged later.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 4.3: Functions}
+
+\begin{workedbox}{4.3.2 Write the functions in Python \ensuremath{\cdot} worked solution}
+\Needspace{16\baselineskip}
+\begin{enumerate}
+\item Assume the robot and restaurant provide these interface helpers: \texttt{prepare\_meal(meal\_id)}, \texttt{deliver\_meal(customer, meal\_id)}, \texttt{price\_for(meal\_id)}, and \texttt{present\_bill(customer, total)}. Their hardware or restaurant-system internals are outside this exercise's abstraction.
+\item \Needspace{3\baselineskip}
+Use a \texttt{for} loop because the order is a finite collection of meal identifiers:
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def serve(customer, customer\_order\_list):}\par
+\noindent\hspace*{1em}\texttt{served\_meals = []}\par
+\noindent\hspace*{1em}\texttt{for meal\_id in customer\_order\_list:}\par
+\noindent\hspace*{3em}\texttt{prepare\_meal(meal\_id)}\par
+\noindent\hspace*{3em}\texttt{deliver\_meal(customer, meal\_id)}\par
+\noindent\hspace*{3em}\texttt{served\_meals.append(meal\_id)}\par
+\noindent\hspace*{1em}\texttt{return served\_meals}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{0em}\texttt{}\par
+\noindent\hspace*{0em}\texttt{def state\_account(customer, served\_meals):}\par
+\noindent\hspace*{1em}\texttt{total = 0}\par
+\noindent\hspace*{1em}\texttt{for meal\_id in served\_meals:}\par
+\noindent\hspace*{3em}\texttt{total += price\_for(meal\_id)}\par
+\noindent\hspace*{1em}\texttt{present\_bill(customer, total)}\par
+\noindent\hspace*{1em}\texttt{return total}\par
+\end{tcolorbox}
+\item The first function returns the meals it served. The second totals only those meals, presents the bill, and returns the amount so another function could use it.
+\item \textbf{Check:} if the list is empty, both loops do zero iterations; \texttt{serve} returns an empty list and \texttt{state\_account} presents a total of zero.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+\begin{keepsection}\subsection{Exercise 4.4: Problem solving}
+
+\begin{workedbox}{4.4.1 Continue when a meal is unavailable \ensuremath{\cdot} worked solution}
+\Needspace{19\baselineskip}
+\begin{enumerate}
+\item Separate the decision for each meal: check availability, serve it if available, otherwise tell the customer and record it as unavailable. Then continue to the next meal rather than returning from the whole function.
+\item One decomposition is \texttt{check availability} \ensuremath{\to} \texttt{prepare and deliver available meal} or \texttt{notify customer and record unavailable meal} \ensuremath{\to} \texttt{continue order}. Ask before substituting a different meal; a replacement should not be chosen without the customer's agreement.
+\item \Needspace{3\baselineskip}
+Adapt \texttt{serve} to return both outcomes:
+\begin{tcolorbox}[colback=Paperblue,colframe=Paperblue,boxrule=0pt,arc=0pt,left=7pt,right=7pt,top=5pt,bottom=5pt]\small\sloppy
+\noindent\hspace*{0em}\texttt{def serve(customer, customer\_order\_list):}\par
+\noindent\hspace*{1em}\texttt{served\_meals = []}\par
+\noindent\hspace*{1em}\texttt{unavailable\_meals = []}\par
+\noindent\hspace*{1em}\texttt{for meal\_id in customer\_order\_list:}\par
+\noindent\hspace*{3em}\texttt{if meal\_available(meal\_id):}\par
+\noindent\hspace*{5em}\texttt{prepare\_meal(meal\_id)}\par
+\noindent\hspace*{5em}\texttt{deliver\_meal(customer, meal\_id)}\par
+\noindent\hspace*{5em}\texttt{served\_meals.append(meal\_id)}\par
+\noindent\hspace*{3em}\texttt{else:}\par
+\noindent\hspace*{5em}\texttt{notify\_unavailable(customer, meal\_id)}\par
+\noindent\hspace*{5em}\texttt{unavailable\_meals.append(meal\_id)}\par
+\noindent\hspace*{1em}\texttt{return served\_meals, unavailable\_meals}\par
+\end{tcolorbox}
+\item Use \texttt{state\_account(customer, served\_meals)} after serving. This bills the meals actually delivered; unavailable items are excluded. If the customer accepts a substitute, add its identifier to the served list only after it has been delivered.
+\item \textbf{Check:} the unavailable branch records and reports the item but does not exit the loop, so the next ordered meal is still checked.
+\end{enumerate}
+\end{workedbox}
+
+\end{keepsection}
+
+\vfill{\small Personal worked solutions based on APDR Blackboard Exercise 4, written in my own words; no exercise-sheet prose or figures are reproduced. The restaurant helper functions are abstract interfaces assumed for the example. Not an official FAU publication; check course details against the current materials. Made by \textbf{Thanate Amornjiraporn (Focus)}.}
+
+\end{document}
