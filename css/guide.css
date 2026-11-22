@@ -396,7 +396,6 @@ nav.toc > ol li a[aria-current]::after {
 nav.toc > ol li a[aria-current]::before {
   background: var(--signal-b);
   border-color: var(--signal-b);
-  box-shadow: var(--glow);
 }
 nav.toc > ol li a[aria-current]::after {
   border: 2px solid var(--signal-b);
