@@ -64,4 +64,5 @@ In this order, for the parts a change touches:
 - The invariants hold and the change meets the workspace Code change standard; an interface change also meets the Interface change standard.
 - Every check above that applies ran, or the report says which did not and why.
 - A release that changes what students see adds an entry at the top of `about/version-log.html`, and `about/how-to-use.html` still describes the current features.
+- Use `X.Y.Z` (major.minor.patch) for every version in the log and service-worker cache. Keep historical entries in that format too; use `.0` when normalizing a version that had no patch component. Increment the patch for small content or documentation updates, the minor for backward-compatible features, and the major for incompatible changes.
 - README, PRODUCT, DESIGN, and the `docs/` standards that describe the changed behavior were updated in the same change.
