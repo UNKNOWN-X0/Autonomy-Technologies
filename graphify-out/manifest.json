@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1795186940.150923,
-    "seen": 1795567737.518016,
-    "ast_hash": "524499107e56a9a5acc78ece16bdbf67",
+    "mtime": 1795568008.029927,
+    "seen": 1795568559.5754912,
+    "ast_hash": "40471460d10e83dbf6c148a85cffd3b9",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795567674.9668016,
-    "seen": 1795567737.5180218,
-    "ast_hash": "9da239c6002522cde60740d83f591fbc",
+    "mtime": 1795568555.7014046,
+    "seen": 1795568559.5754979,
+    "ast_hash": "fa97b2dbe2615306ca827f7262a3a387",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795567440.3334184,
-    "seen": 1795567737.517927,
-    "ast_hash": "088bd8317c85a806de910d12a607632c",
+    "mtime": 1795567782.0660365,
+    "seen": 1795568559.575392,
+    "ast_hash": "7402071dde9bbfb98d9b57322698d82a",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795567440.3129983,
-    "seen": 1795567737.517923,
-    "ast_hash": "9cf7a36a23fc4de5ee757693fa32f0f0",
+    "mtime": 1795568286.0200908,
+    "seen": 1795568559.575388,
+    "ast_hash": "723ae41bdff31cba6c31d206627ec814",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -1122,8 +1122,8 @@
     "semantic_hash": ""
   },
   "assets/search.json": {
-    "mtime": 1795567440.3374236,
-    "seen": 1795567737.517929,
+    "mtime": 1795568302.7865767,
+    "seen": 1795568559.575393,
     "ast_hash": "1277ec3176e5e111c956948c9dadcd42",
     "semantic_hash": ""
   },
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "sw.js": {
-    "mtime": 1795567674.9670663,
-    "seen": 1795567737.5179808,
-    "ast_hash": "bf2edbafb0bec3df5894f6166c522be0",
+    "mtime": 1795568555.7016916,
+    "seen": 1795568559.5754519,
+    "ast_hash": "74cd4cc2a2e6852da6db414e318d9679",
     "semantic_hash": ""
   },
   "tests/offline.test.js": {

@@ -101,7 +101,7 @@
 }
 .sheet-card th,
 .sheet-card td {
-  padding: 0.12em 0.35em;
+  padding: 0.2em 0.6em;
   border: 1px solid var(--line);
   text-align: left;
   vertical-align: top;

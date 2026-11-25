@@ -74,8 +74,7 @@
   --signal-a: #80ecf1;
   --signal-b: #9be34a;
   --signal: linear-gradient(90deg, var(--signal-a), var(--signal-b));
-  /* Soft glow for signal lines and HUD marks; brackets and rulers use --hud-c. */
-  --glow: 0 0 6px rgb(128 236 241 / 0.55);
+  /* Signal lines and HUD marks are flat: no glow or shadow (issue #33). Brackets and rulers use --hud-c. */
   --hud-c: var(--fau-mark);
   color-scheme: light;
 }
@@ -120,7 +119,6 @@
     --link: #a9c4ec;
     color-scheme: dark;
     --hud-c: var(--signal-a);
-    --glow: 0 0 8px rgb(128 236 241 / 0.7);
   }
 }
 :root[data-theme="dark"] {
@@ -142,7 +140,6 @@
   --link: #a9c4ec;
   color-scheme: dark;
   --hud-c: var(--signal-a);
-  --glow: 0 0 8px rgb(128 236 241 / 0.7);
 }
 
 /* Browser surfaces */
@@ -717,7 +714,6 @@ dialog.settings .seg label:hover input:not(:checked) + span {
   width: 6px;
   height: 6px;
   background: var(--signal-b);
-  box-shadow: var(--glow);
 }
 .settings-note {
   margin: 0 0 14px;
@@ -934,25 +930,6 @@ html::before {
   }
 }
 
-/* Soft glow on the signal lines (owner's request, 2026-11-04: lines may now glow). */
-html::before,
-.sweep-line,
-.subjects::after,
-.route-pulse::before,
-.chapter.here::after,
-nav.toc > ol::after,
-nav.toc > ol li a[aria-current]::after,
-body:has(nav.toc)::after,
-.tick-dot {
-  box-shadow: var(--glow);
-}
-@media print {
-  html::before,
-  nav.toc > ol::after,
-  .tick-dot {
-    box-shadow: none;
-  }
-}
 
 /* Heading decode (js/hud.js): the 2px signal line that sweeps across a heading while its letters settle. */
 .decode-line {
@@ -961,7 +938,6 @@ body:has(nav.toc)::after,
   width: 2px;
   margin-left: -1px;
   background: linear-gradient(to bottom, var(--signal-a), var(--signal-b));
-  box-shadow: var(--glow);
   pointer-events: none;
 }
 /* Site pages (How to use, Version log) take the signal green as their tile colour. */

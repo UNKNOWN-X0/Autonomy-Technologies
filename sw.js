@@ -1,4 +1,4 @@
-const VERSION = "2.80.2";
+const VERSION = "2.80.3";
 const CACHE_PREFIX = "autonomy-technologies-site-v";
 const CACHE = CACHE_PREFIX + VERSION;
 // Visited pages and opened PDFs live outside the versioned cache, so a release does not wipe them.
