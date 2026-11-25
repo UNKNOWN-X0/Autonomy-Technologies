@@ -95,7 +95,8 @@
       gain.gain.setValueAtTime(0.0001, start);
       gain.gain.exponentialRampToValueAtTime(0.07, start + 0.012);
       gain.gain.exponentialRampToValueAtTime(0.0001, end);
-      osc.connect(gain).connect(ac.destination);
+      osc.connect(gain);
+      gain.connect(ac.destination); // two calls: older Safari's connect() returns nothing to chain on
       osc.start(start);
       osc.stop(end + 0.02);
     });
