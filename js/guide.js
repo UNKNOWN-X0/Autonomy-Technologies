@@ -53,6 +53,7 @@
           else delete saved[heading.dataset.p];
           P.write(P.local, KEY, saved);
           if (selecting) logToday();
+          if (window.siteSound) window.siteSound(!selecting ? "untick" : choice[0] === "worked" ? "tick" : "redo");
           renderSolutions();
         });
         group.appendChild(button);
@@ -86,6 +87,7 @@
       saved = P.read(P.local, KEY, {});
       saved[cb.dataset.k] = cb.checked;
       P.write(P.local, KEY, saved);
+      if (window.siteSound) window.siteSound(cb.checked ? "tick" : "untick");
       // A new tick flies to the bar segment it fills, if a bar is on screen; otherwise the segment just fills.
       var target = null;
       hold = -1;

@@ -53,10 +53,12 @@
   }
 
   function complete(id) {
-    var checks = read(CHECKS, {});
+    var checks = read(CHECKS, {}),
+      fresh = !checks["lab-" + id];
     checks["lab-" + id] = true;
     write(CHECKS, checks);
     window.siteProgress.logDay(window.siteProgress.local, PREFIX);
+    return fresh;
   }
 
   // Each lab's setup must call c.stage() itself, in its own order; the engine only reports when it does not.
@@ -164,7 +166,7 @@
     nxt.tabIndex = -1;
     nxt.addEventListener("click", function () {
       if (gen) return self.practice();
-      if (last) complete(def.id);
+      if (last && complete(def.id) && window.siteSound) window.siteSound("complete");
       self.stepped = !last;
       self.show(self.next());
       if (last) refresh();
@@ -200,6 +202,7 @@
         // keep the card exactly as tall as it was while the question showed
         swap.style.minHeight = swap.getBoundingClientRect().height + "px";
         verdict.className = "ch-verdict " + (correct ? "right" : "wrong");
+        if (window.siteSound) window.siteSound(correct ? "correct" : "wrong");
         mark.textContent = correct ? "Correct" : "Not quite";
         // the badge's line records how well the confidence matched; the labels underneath get their own lines
         mark.className = "ch-mark conf-" + conf;
@@ -274,7 +277,8 @@
     });
     // Every fixed challenge is answered here, so tick the skill even if "Open the sandbox" was never clicked
     // (a reload or "Explore freely" after the last answer used to leave it unticked on the hub).
-    if (this.next() < 0) complete(def.id);
+    // The finishing chime plays once, when the experiment is first completed, never on a reload.
+    if (this.next() < 0 && complete(def.id) && window.siteSound) window.siteSound("complete");
     this.card.innerHTML = ""; // also reached straight from a practice challenge
     this.card.classList.add("finished");
     this.card.appendChild(h("p", "ch-count", "Challenges done · " + score + " of " + def.challenges.length + " predicted correctly"));

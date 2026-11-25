@@ -20,6 +20,7 @@ Study guides and interactive labs for the Autonomy Technologies programme at FAU
 - **Spaced review:** **Review today** on the home page lists every chapter you have started, most overdue first; the gap grows from 1 day to 1 week to 1 month.
 - **Progress you keep:** checklist ticks, worked-solution states, and review days are saved in your browser, and Settings exports or imports them as a file.
 - **Every screen:** phone and desktop, light or dark (from your system or Settings), and clean printing.
+- **Optional sound:** short, quiet tones for a ticked skill, a worked problem, a lab answer and a finished experiment; off until turned on in Settings, made in the browser with no audio files.
 
 ## Getting started
 
