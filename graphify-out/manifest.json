@@ -1,8 +1,8 @@
 {
   "README.md": {
-    "mtime": 1795569239.379657,
-    "seen": 1795569832.836558,
-    "ast_hash": "4461122177e96b37f7db682316ce921a",
+    "mtime": 1795570522.413706,
+    "seen": 1795570776.753752,
+    "ast_hash": "84204c0d120eb77f480555574e7e67d7",
     "semantic_hash": ""
   },
   "index.html": {
@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1795569744.0273144,
-    "seen": 1795569832.836554,
-    "ast_hash": "b3f4f62d38e06b8f0e3b3329965d0a60",
+    "mtime": 1795570513.1172657,
+    "seen": 1795570776.753738,
+    "ast_hash": "6dd7baa8d93a10127c2b2e737de70173",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -66,9 +66,9 @@
     "semantic_hash": ""
   },
   "js/guide.js": {
-    "mtime": 1795186940.2722874,
-    "seen": 1795567737.517963,
-    "ast_hash": "0ca287cbecedf0cc58da1781b1b7408c",
+    "mtime": 1795570386.2298307,
+    "seen": 1795570776.753552,
+    "ast_hash": "0ee04ff9805aedb890c44c2258b52b1f",
     "semantic_hash": ""
   },
   "tools/guide-to-tex.py": {
@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "js/lab.js": {
-    "mtime": 1795039597.2592826,
-    "seen": 1795567737.517966,
-    "ast_hash": "c8b015203da78ad074c339e5b6471af5",
+    "mtime": 1795570411.6134317,
+    "seen": 1795570776.753558,
+    "ast_hash": "73b0b29e79aa113814c8391f45a06395",
     "semantic_hash": ""
   },
   "tests/eei-ch1-physics.test.js": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "js/settings.js": {
-    "mtime": 1795186940.2772284,
-    "seen": 1795567737.517979,
-    "ast_hash": "9cb6efea675942004b4fad1cc030df95",
+    "mtime": 1795570386.228757,
+    "seen": 1795570776.753581,
+    "ast_hash": "a3ab65e14e335a96113131e26336838e",
     "semantic_hash": ""
   },
   "js/hud.js": {
@@ -450,15 +450,15 @@
     "semantic_hash": ""
   },
   "about/how-to-use.html": {
-    "mtime": 1795567440.3153172,
-    "seen": 1795567737.518021,
-    "ast_hash": "630c9d06c9585aef062aceddfb2f7796",
+    "mtime": 1795570513.118345,
+    "seen": 1795570776.753767,
+    "ast_hash": "752aab5f1d53e8edf7d92d98b4290b35",
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795569829.1545613,
-    "seen": 1795569832.836562,
-    "ast_hash": "77203089ca19ddb4fe5885ab2c389165",
+    "mtime": 1795570513.1202955,
+    "seen": 1795570776.7537699,
+    "ast_hash": "ff1b6cd9e68d5b23fe9feb911b2d7c51",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795568589.7104113,
-    "seen": 1795569832.836462,
-    "ast_hash": "7402071dde9bbfb98d9b57322698d82a",
+    "mtime": 1795569924.0369372,
+    "seen": 1795570776.753458,
+    "ast_hash": "35d8d873a242718f9f7a06180438d92b",
     "semantic_hash": ""
   },
   "js/orb.js": {
@@ -690,8 +690,8 @@
     "semantic_hash": ""
   },
   "docs/APPENDIX-STANDARD.md": {
-    "mtime": 1795569744.0278099,
-    "seen": 1795569832.836601,
+    "mtime": 1795569924.0383775,
+    "seen": 1795570776.753921,
     "ast_hash": "ad9ccc57ae161e1716d3a673273561f6",
     "semantic_hash": ""
   },
@@ -708,8 +708,8 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795569744.0280912,
-    "seen": 1795569832.836459,
+    "mtime": 1795569924.0339453,
+    "seen": 1795570776.753448,
     "ast_hash": "2f54a756bce42fc722fd829154a4fbb5",
     "semantic_hash": ""
   },
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "sw.js": {
-    "mtime": 1795569829.155189,
-    "seen": 1795569832.8365161,
-    "ast_hash": "963e0d5dab4f9df00149fae81cb47343",
+    "mtime": 1795570513.1215827,
+    "seen": 1795570776.7535849,
+    "ast_hash": "3fe034d324235eda31e89f2e6c527274",
     "semantic_hash": ""
   },
   "tests/offline.test.js": {

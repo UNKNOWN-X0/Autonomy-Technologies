@@ -43,10 +43,69 @@
     return root.dataset.motion === "reduced" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   };
 
+  // Sound cues, off unless the student turns them on in Settings. Each cue is a few short, quiet tones made with the
+  // Web Audio API, so there are no audio files to download or cache. Browsers (Safari above all) only let audio start
+  // from a tap or key press, so the context is created or resumed on the first one; a cue fired later (a lab verdict
+  // after its reveal) then plays too.
+  var audio = null;
+  var CUES = {
+    // [frequency in Hz, start in s, length in s, wave]
+    tick: [[880, 0, 0.07, "sine"], [1320, 0.05, 0.08, "sine"]],
+    untick: [[660, 0, 0.06, "sine"], [440, 0.04, 0.07, "sine"]],
+    redo: [[523, 0, 0.08, "triangle"], [392, 0.07, 0.1, "triangle"]],
+    correct: [[660, 0, 0.09, "sine"], [990, 0.08, 0.14, "sine"]],
+    wrong: [[247, 0, 0.12, "triangle"], [196, 0.1, 0.16, "triangle"]],
+    complete: [[523, 0, 0.1, "sine"], [659, 0.08, 0.1, "sine"], [784, 0.16, 0.1, "sine"], [1047, 0.24, 0.22, "sine"]],
+  };
+  function soundOn() {
+    return prefs.sound === "on";
+  }
+  function context() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!audio) {
+      try {
+        audio = new AC();
+      } catch (e) {
+        return null;
+      }
+    }
+    if (audio.state === "suspended") audio.resume().catch(function () {});
+    return audio;
+  }
+  ["pointerdown", "keydown"].forEach(function (type) {
+    document.addEventListener(type, function () {
+      if (soundOn()) context();
+    }, true);
+  });
+  window.siteSound = function (name) {
+    var cue = CUES[name];
+    if (!cue || !soundOn() || document.hidden) return;
+    var ac = context();
+    if (!ac) return;
+    var t0 = ac.currentTime + 0.01;
+    cue.forEach(function (n) {
+      var osc = ac.createOscillator(),
+        gain = ac.createGain(),
+        start = t0 + n[1],
+        end = start + n[2];
+      osc.type = n[3];
+      osc.frequency.value = n[0];
+      // A quick rise and a smooth fall, so no tone clicks.
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.07, start + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, end);
+      osc.connect(gain).connect(ac.destination);
+      osc.start(start);
+      osc.stop(end + 0.02);
+    });
+  };
+
   var GROUPS = [
     ["theme", "Theme", [["system", "System"], ["light", "Light"], ["dark", "Dark"]]],
     ["motion", "Motion", [["system", "System"], ["reduced", "Reduced"]]],
     ["text", "Text size", [["default", "Default"], ["large", "Large"]]],
+    ["sound", "Sound", [["off", "Off"], ["on", "On"]]],
   ];
   function gear() {
     var NS = "http://www.w3.org/2000/svg",
@@ -88,6 +147,8 @@
     "motion-system": '<rect x="1.5" y="8" width="4" height="4" fill="currentColor" opacity=".3"/><rect x="7" y="8" width="4" height="4" fill="currentColor" opacity=".6"/><rect x="12.5" y="7" width="6" height="6" fill="currentColor"/>',
     "motion-reduced": '<rect x="7" y="7" width="6" height="6" fill="currentColor"/>',
     "text-default": '<text x="10" y="14.5" text-anchor="middle" font-size="11" font-weight="800" fill="currentColor" font-family="Hanken Grotesk, system-ui, sans-serif">Aa</text>',
+    "sound-off": '<rect x="2.5" y="7" width="4" height="6" fill="currentColor"/><path d="M6.5 7 11 3.5v13L6.5 13Z" fill="currentColor"/><path d="M13.5 7.5l4 5m0-5-4 5" stroke="currentColor" stroke-width="1.6"/>',
+    "sound-on": '<rect x="2.5" y="7" width="4" height="6" fill="currentColor"/><path d="M6.5 7 11 3.5v13L6.5 13Z" fill="currentColor"/><rect x="13" y="8" width="2" height="4" fill="currentColor"/><rect x="16.5" y="6" width="2" height="8" fill="currentColor"/>',
     "text-large": '<text x="10" y="16" text-anchor="middle" font-size="15" font-weight="800" fill="currentColor" font-family="Hanken Grotesk, system-ui, sans-serif">Aa</text>',
   };
   function icon(key) {
@@ -104,8 +165,9 @@
     var dark = window.matchMedia("(prefers-color-scheme: dark)").matches,
       theme = prefs.theme ? (prefs.theme === "dark" ? "Dark" : "Light") : (dark ? "Dark" : "Light") + " (from your device)",
       motion = window.siteReduceMotion() ? "Reduced motion" + (prefs.motion ? "" : " (from your device)") : "Full motion",
-      text = prefs.text === "large" ? "Large text" : "Default text";
-    return theme + " · " + motion + " · " + text;
+      text = prefs.text === "large" ? "Large text" : "Default text",
+      sound = soundOn() ? "Sound on" : "Sound off";
+    return theme + " · " + motion + " · " + text + " · " + sound;
   }
   // The control console (owner's request, 2026-11-11: upgrade the settings, in the rail's instrument style). Four
   // corner brackets frame the panel and close in as it opens; a live line under the heading says what is in effect;
@@ -176,6 +238,7 @@
           } catch (e) {}
           apply();
           refresh();
+          if (g[0] === "sound" && o[0] === "on") window.siteSound("tick");
           lock.classList.remove("lock-in");
           void lock.offsetWidth;
           lock.classList.add("lock-in");
