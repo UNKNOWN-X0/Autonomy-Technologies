@@ -1,7 +1,9 @@
 # From Fundamentals to AI Apocalypse
 
 [![Live site](https://img.shields.io/badge/live%20site-GitHub%20Pages-2ea44f?logo=github)](https://unknown-x0.github.io/Autonomy-Technologies/)
+[![Checks](https://github.com/UNKNOWN-X0/Autonomy-Technologies/actions/workflows/checks.yml/badge.svg)](https://github.com/UNKNOWN-X0/Autonomy-Technologies/actions/workflows/checks.yml)
 [![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![License: MIT and CC BY-NC-SA 4.0](https://img.shields.io/badge/license-MIT%20%2B%20CC%20BY--NC--SA%204.0-blue)](LICENSE-CONTENT.md)
 
 Study guides and interactive labs for the Autonomy Technologies programme at FAU Erlangen-Nürnberg, built up semester by semester for the whole degree. Personal study material written from the lecture notes, not an official FAU publication.
 
@@ -139,3 +141,15 @@ No build step: plain HTML, CSS, and JavaScript, with self-hosted Hanken Grotesk,
 | [docs/](docs/) | What each kind of page contains: markup, guide, lab, appendix, worked solutions, tooling |
 | [docs/TEAM-ROLES.md](docs/TEAM-ROLES.md) | Shared agent roles and cross-session handoffs |
 | [about/version-log.html](about/version-log.html) | Release history |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to report a mistake or send a change |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Contributor Covenant 2.1 and how to report conduct |
+| [SECURITY.md](SECURITY.md) | How to report a vulnerability privately |
+| [LICENSE-CONTENT.md](LICENSE-CONTENT.md) | Which licence covers code and which covers study content |
+
+## Contributing
+
+Found a wrong formula or a broken page? Open an issue from the templates; [CONTRIBUTING.md](CONTRIBUTING.md) explains how to report a mistake or send a change.
+
+## License
+
+Code: MIT. See [LICENSE](LICENSE). Study content: CC BY-NC-SA 4.0. See [LICENSE-CONTENT.md](LICENSE-CONTENT.md).

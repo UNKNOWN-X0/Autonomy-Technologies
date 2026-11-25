@@ -1,0 +1,30 @@
+name: Content error
+description: A wrong formula, result, explanation or worked solution.
+title: "[Content] "
+labels: ["bug"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The page link, ideally with the section (for example …/mei/ch2-real-numbers.html#sec-24).
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What the page says
+    validations:
+      required: true
+  - type: textarea
+    id: right
+    attributes:
+      label: What it should say
+      description: The correction and, if you can, how you checked it.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Lecture slide, exercise sheet or textbook page that confirms it (optional).
