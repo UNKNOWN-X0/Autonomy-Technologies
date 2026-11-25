@@ -122,11 +122,35 @@
     size: A4;
     margin: 0;
   }
+  /* Paper is always light: print uses the light theme's colours whatever the screen theme, so no dark-theme
+     ink (light greys and blues) can land on the white page. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme] {
+    --fau-deep: #021d40;
+    --fau-tint: #dce5f1;
+    --fau-mark: #04316a;
+    --band-overdue: #04316a;
+    --paper: #ffffff;
+    --paper-2: #eef2f7;
+    --ink: #0b1b33;
+    --muted: #45556d;
+    --line: #d3dbe6;
+    --act: #04316a;
+    --act-ink: #ffffff;
+    --bg: var(--paper-2);
+    --surface: var(--paper);
+    --hl: var(--fau-tint);
+    --accent: var(--fau);
+    --link: var(--fau);
+    --hud-c: var(--fau-mark);
+    color-scheme: light;
+  }
   html,
   body {
     margin: 0;
     padding: 0;
-    background: #fff !important;
+    background: var(--paper) !important;
     color: var(--print-ink) !important;
   }
   .wrap {

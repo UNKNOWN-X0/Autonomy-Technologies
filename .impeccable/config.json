@@ -4,31 +4,13 @@
     "ignoreFiles": [],
     "ignoreValues": [
       {
-        "rule": "flat-type-hierarchy",
-        "value": "*",
-        "files": [
-          "index.html"
-        ],
-        "createdAt": "2026-11-17T13:46:37.712Z",
-        "reason": "The hub uses a deliberate weight-led hierarchy: the masthead h1 is fluid at clamp(1.9rem, 1rem + 4.8vw, 4.75rem), while review, loop and semester h2 use 1.35–1.6rem, subject h3 uses 1.25rem, and chapter/part h4 use 1.1rem (css/index.css). The detector reads the wrong static sequence for this responsive sign system."
-      },
-      {
-        "rule": "low-contrast",
-        "value": "*",
-        "files": [
-          "mei/appendix-x-exam-sheet-i.html"
-        ],
-        "createdAt": "2026-11-18T13:25:36.554Z",
-        "reason": "Claude: measured in Chromium (light, dark, print): every text run is 7.6:1 or better; the static scan pairs print colours with the dark screen background, and the 1.0:1 runs are sqrt root glyphs drawn as a currentColor mask"
-      },
-      {
         "rule": "tight-leading",
         "value": "*",
         "files": [
           "mei/appendix-x-exam-sheet-i.html"
         ],
         "createdAt": "2026-11-18T13:25:36.571Z",
-        "reason": "Claude: an exam sheet is a deliberate density exception (docs/APPENDIX-STANDARD.md, Exam sheets): 1.2 line height in print so each A4 side holds the whole syllabus"
+        "reason": "Owner delegated, agent decided 2026-11-25 (issue #39): the Exam Sheet Density Exception in DESIGN.md (Exam-sheet typography) keeps print leading at 1.18-1.25 so the syllabus fits the one allowed A4 sheet; side 1 is at the 6.5 pt floor."
       }
     ]
   }
