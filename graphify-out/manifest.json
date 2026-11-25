@@ -1,8 +1,8 @@
 {
   "README.md": {
-    "mtime": 1795186940.1523283,
-    "seen": 1795567737.518018,
-    "ast_hash": "2c68245a43304adfe07f531ae9cf389d",
+    "mtime": 1795569239.379657,
+    "seen": 1795569832.836558,
+    "ast_hash": "4461122177e96b37f7db682316ce921a",
     "semantic_hash": ""
   },
   "index.html": {
@@ -54,9 +54,9 @@
     "semantic_hash": ""
   },
   "DESIGN.md": {
-    "mtime": 1795568008.029927,
-    "seen": 1795568559.5754912,
-    "ast_hash": "40471460d10e83dbf6c148a85cffd3b9",
+    "mtime": 1795569744.0273144,
+    "seen": 1795569832.836554,
+    "ast_hash": "b3f4f62d38e06b8f0e3b3329965d0a60",
     "semantic_hash": ""
   },
   "PRODUCT.md": {
@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "about/version-log.html": {
-    "mtime": 1795568555.7014046,
-    "seen": 1795568559.5754979,
-    "ast_hash": "fa97b2dbe2615306ca827f7262a3a387",
+    "mtime": 1795569829.1545613,
+    "seen": 1795569832.836562,
+    "ast_hash": "77203089ca19ddb4fe5885ab2c389165",
     "semantic_hash": ""
   },
   "js/mei/expr.js": {
@@ -486,8 +486,8 @@
     "semantic_hash": ""
   },
   "assets/graph-orb.json": {
-    "mtime": 1795567782.0660365,
-    "seen": 1795568559.575392,
+    "mtime": 1795568589.7104113,
+    "seen": 1795569832.836462,
     "ast_hash": "7402071dde9bbfb98d9b57322698d82a",
     "semantic_hash": ""
   },
@@ -690,9 +690,9 @@
     "semantic_hash": ""
   },
   "docs/APPENDIX-STANDARD.md": {
-    "mtime": 1795023935.680509,
-    "seen": 1795567737.518059,
-    "ast_hash": "3b3de2c425291fd02eda17ad4814fbfa",
+    "mtime": 1795569744.0278099,
+    "seen": 1795569832.836601,
+    "ast_hash": "ad9ccc57ae161e1716d3a673273561f6",
     "semantic_hash": ""
   },
   "docs/MARKUP-STANDARD.md": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   ".impeccable/config.json": {
-    "mtime": 1795568286.0200908,
-    "seen": 1795568559.575388,
-    "ast_hash": "723ae41bdff31cba6c31d206627ec814",
+    "mtime": 1795569744.0280912,
+    "seen": 1795569832.836459,
+    "ast_hash": "2f54a756bce42fc722fd829154a4fbb5",
     "semantic_hash": ""
   },
   "mei/ch4-complex-numbers.html": {
@@ -1122,8 +1122,8 @@
     "semantic_hash": ""
   },
   "assets/search.json": {
-    "mtime": 1795568302.7865767,
-    "seen": 1795568559.575393,
+    "mtime": 1795569763.9678152,
+    "seen": 1795569832.836462,
     "ast_hash": "1277ec3176e5e111c956948c9dadcd42",
     "semantic_hash": ""
   },
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "sw.js": {
-    "mtime": 1795568555.7016916,
-    "seen": 1795568559.5754519,
-    "ast_hash": "74cd4cc2a2e6852da6db414e318d9679",
+    "mtime": 1795569829.155189,
+    "seen": 1795569832.8365161,
+    "ast_hash": "963e0d5dab4f9df00149fae81cb47343",
     "semantic_hash": ""
   },
   "tests/offline.test.js": {
@@ -1215,6 +1215,60 @@
     "mtime": 1795567440.3235471,
     "seen": 1795567737.5180259,
     "ast_hash": "0f2ef8623ed99e36e55060fe2e0dd9b5",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/bug-report.yml": {
+    "mtime": 1795569222.3690317,
+    "seen": 1795569832.836447,
+    "ast_hash": "03b2c450b4b605b7f440e43e28fa8186",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/config.yml": {
+    "mtime": 1795569222.3647153,
+    "seen": 1795569832.836452,
+    "ast_hash": "9248ef09b12f3316e073a9fad616eee3",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/content-error.yml": {
+    "mtime": 1795569222.366963,
+    "seen": 1795569832.836454,
+    "ast_hash": "9130fbee797529691e167777fa250466",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/feature-request.yml": {
+    "mtime": 1795569222.3714044,
+    "seen": 1795569832.8364549,
+    "ast_hash": "7d8983d9015e139bd9bda51e4f2ab58a",
+    "semantic_hash": ""
+  },
+  ".github/pull_request_template.md": {
+    "mtime": 1795569222.3736308,
+    "seen": 1795569832.836548,
+    "ast_hash": "bd07d1814f0327eb6aeadac98324c219",
+    "semantic_hash": ""
+  },
+  "CODE_OF_CONDUCT.md": {
+    "mtime": 1795569202.1100862,
+    "seen": 1795569832.8365529,
+    "ast_hash": "649e3944238b3682499554c592f4920d",
+    "semantic_hash": ""
+  },
+  "CONTRIBUTING.md": {
+    "mtime": 1795569222.3603995,
+    "seen": 1795569832.836554,
+    "ast_hash": "16466927d8801c93282f9983025eb798",
+    "semantic_hash": ""
+  },
+  "LICENSE-CONTENT.md": {
+    "mtime": 1795569202.048341,
+    "seen": 1795569832.836555,
+    "ast_hash": "32077c3b24c9634c51a4133ec5b8c12c",
+    "semantic_hash": ""
+  },
+  "SECURITY.md": {
+    "mtime": 1795569222.3626301,
+    "seen": 1795569832.8365598,
+    "ast_hash": "d42a2657da32acb72e0e466ce8ed16dc",
     "semantic_hash": ""
   }
 }

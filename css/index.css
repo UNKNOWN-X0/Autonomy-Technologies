@@ -205,7 +205,7 @@ main {
 /* Study loop as numbered signs */
 .loop h2,
 .semester h2 {
-  font: 800 1.35rem/1.2 var(--f-display);
+  font: 800 1.6rem/1.15 var(--f-display);
   letter-spacing: -0.015em;
   padding-bottom: 14px;
   border-bottom: 2px solid var(--ink);
